@@ -1,0 +1,328 @@
+@import '../../common/css/variable.scss';
+
+.weight {
+  .container {
+    // position: absolute;
+    margin-bottom: 2.5rem;
+    width:100%;
+    top:0;
+    bottom: 2.5rem;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  footer {
+    height: 2.5rem;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    z-index: 10;
+    button {
+      width: 100%;
+      text-align: center;
+      font-size: .8rem;
+      color: white;
+      &.device-input {
+        background: $secondBackgroundColor;
+        &:active {
+          background: #10ABB4;
+        }
+      }
+      &.manual-input {
+        background: $mainComponBackGroundColor;
+        &:active {
+          background: #2087D0;
+        }
+      }
+    }
+  }
+
+  .weight-record {
+    padding: 1.25rem .7rem;
+    color: #C5C5C5;
+    margin-top: .4rem;
+    > div{
+      text-align: right;
+
+      >span{
+        float: left;
+        margin-top: .5rem;
+        color: #98B8CF;
+      }
+
+      .record-btn {
+        padding: .5rem .75rem;
+        text-align: center;
+        border-radius: 3px;
+      }
+
+    }
+  }
+
+  .weight-record-list {
+    min-height: 4rem;
+    margin-top: .5rem;
+    .mint-cell {
+      min-height: 4rem;
+    }
+    .record-mmHg, .record-heart {
+      width: 40%;
+      float: left;
+      .icon-weight-c {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 2.5rem;
+        background-color: #10D6E2;
+        &.up-bg{
+          background: #F65261;
+        }
+        &.low-bg{
+          background: #5DA2C5;
+        }
+        &.Standard-bg{
+          background: #26A5FD;
+        }
+        .icon-weight {
+          font-size: 1.3rem;
+          line-height: 2.6rem;
+          color: #fff;
+        }
+      }
+    }
+    .record-mmHg {
+      width: 60%;
+      overflow: hidden;
+      >div {
+        float: left;
+        margin-right: .25rem;
+      }
+      .mmHg {
+        height: 2.5rem;
+        font-size: 1rem;
+        color: #212121;
+        display:flex;
+        display: -webkit-flex;
+        align-items:center;
+        span {
+          font-size: .6rem;
+          color: #B3B3B3;
+        }
+        .weight-warning {
+          height: .9rem;
+          width: 4.7rem;
+          background-color: #FF6E00;
+          border-radius: 4px;
+          font-size: .6rem;
+          color: #fff;
+          line-height: .9rem;
+        }
+      }
+    }
+    .record-heart {
+      .record-heart-value {
+        color: #fff;
+        margin-bottom: .2rem;
+        span {
+          font-size: .6rem;
+          display: inline-block;
+          text-align: center;
+          width: 1.6rem;
+          height: .9rem;
+          line-height: .9rem;
+          background-color: #26A5FD;
+          border-radius: 4px;
+          &.up-bg{
+            background: #F65261;
+          }
+          &.low-bg{
+            background: #5DA2C5;
+          }
+          &.Standard-bg{
+            background: #26A5FD;
+          }
+        }
+      }
+      .record-heart-time {
+        font-size: .6rem;
+        color: #C8C8C8;
+      }
+    }
+    &:first-child {
+      margin-top: 0;
+    }
+    .advise {
+      border-top:.05rem solid #F6F6F6;
+      display: none;
+    }
+    .fa-angle-right {
+      transition: all .5s;
+      -webkit-transition: all .5s;
+    }
+    &.pressure-toggle {
+      .advise {
+        display: block;
+        border-top:.05rem solid #F6F6F6;
+      }
+      .fa-angle-right {
+        transform:rotate(90deg);
+        -webkit-transform:rotate(90deg);
+      }
+    }
+  }
+
+  .weight-list-c {
+    margin-top: .4rem;
+    .weight-record-list {
+      position: relative;
+      z-index: 1;
+    }
+    .record-item {
+      overflow: hidden;
+      height: 4rem;
+      width: 100%;
+      padding: .7rem 2rem .8rem .6rem;
+      position: absolute;
+      left: 0;
+      top: 0;
+      background-color: #fff;
+      z-index: 1;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: flex;
+      align-items:center;
+    }
+
+    .fa-angle-right {
+      font-size: 1.2rem;
+      color: #DBDBDB;
+      z-index: 2;
+      position: absolute;
+      right: .75rem;
+      top: 1.3rem;
+    }
+    .record-delete {
+      height: 100%;
+      text-align: center;
+      i {
+        font-size: 20px;
+        display: block;
+        margin-top: .8rem;
+      }
+      span {
+        display: block;
+        font-size: 12px;
+        height: 30px;
+        line-height: 15px;
+        margin-top: .2rem;
+      }
+    }
+  }
+
+  .weight-chart {
+    padding: .5rem;
+    margin-top: .4rem;
+    h2 {
+      font-size: .8rem;
+      padding-bottom: .5rem;
+    }
+    .chart-button-container {
+      width: 100%;
+      white-space: nowrap;
+      overflow: scroll;
+      span {
+        display: inline-block;
+        width: 3.8rem;
+        text-align: center;
+        &:not(:last-child) {
+          padding-right: .4rem;
+        }
+      }
+      button {
+        line-height: 1.3rem;
+        padding: 0;
+        border: 1px solid $borderColor;
+        width: 100%;
+        border-radius: 15px;
+        &.active {
+          background: $mainComponBackGroundColor;
+          border: none;
+          color: white;
+        }
+      }
+    }
+    .chart {
+      min-height: 6rem;
+      
+      .no-result-chart {
+        margin-top: .8rem;
+        position: relative;
+        .title {
+          position: absolute;
+          top: 50%;
+          left: 2.8rem;
+          margin-top: -.5rem;
+          color: #2087D0;
+        }
+      }
+
+      .echarts {
+        max-width: 100%;
+        width: auto;
+        //height: 6rem;
+      }
+    }
+  }
+}
+.advise {
+  margin-top: .4rem;
+  padding: .75rem;
+  h3 {
+    margin-bottom: .25rem;
+  }
+}
+.news {
+  margin-top: .4rem;
+  padding: .5rem;
+  h3 {
+    margin-bottom: .5rem;
+  }
+  .img-container {
+    margin: .25rem .25rem .25rem 0;
+    overflow: hidden;
+    position: relative;
+    img {
+      float: left;
+      width: 35%;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .description {
+      float: right;
+      width: 65%;
+      color: #3C3939;
+      padding-left: .4rem;
+      div {
+        white-space: nowrap;
+        overflow: auto;
+        margin-top: .8rem;
+        min-height: 1.3rem;
+        line-height: 1.3rem;
+        -webkit-overflow-scrolling: touch;
+        &::-webkit-scrollbar {
+          display: none;
+        }
+        span {
+          border: 1px solid #C8C8C8;
+          border-radius: 2px;
+          text-align: center;
+          color: #8E8E8E;
+          padding: .1rem .3rem;
+          margin-right: .2rem;
+          font-size: .6rem;
+        }
+      }
+    }
+  }
+}

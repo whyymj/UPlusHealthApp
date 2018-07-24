@@ -1,0 +1,574 @@
+@import "./variable.scss";
+
+@font-face {
+  font-family: 'icomoon';
+  src:  url('../fonts/icomoon.eot?5gc8gh');
+  src:  url('../fonts/icomoon.eot?5gc8gh#iefix') format('embedded-opentype'),
+  url('../fonts/icomoon.ttf?5gc8gh') format('truetype'),
+  url('../fonts/icomoon.woff?5gc8gh') format('woff'),
+  url('../fonts/icomoon.svg?5gc8gh#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  // speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-water-content:before {
+  content: "\e91a";
+}
+.icon-water-content-c:before {
+  content: "\e91b";
+}
+.icon-body-fat:before {
+  content: "\e91c";
+}
+.icon-oxygen:before {
+  content: "\e91d";
+}
+.icon-mark:before {
+  content: "\e902";
+}
+.icon-right:before {
+  content: "\e903";
+}
+.icon-bmi:before {
+  content: "\e904";
+}
+.icon-caret-up:before {
+  content: "\e905";
+}
+.icon-close:before {
+  content: "\e906";
+}
+.icon-success:before {
+  content: "\e907";
+}
+.icon-protein:before {
+  content: "\e908";
+}
+.icon-back:before {
+  content: "\e909";
+}
+.icon-obesity:before {
+  content: "\e90a";
+}
+.icon-bone-mass:before {
+  content: "\e90b";
+}
+.icon-haier-mobile-terminal:before {
+  content: "\e90c";
+}
+.icon-muscle-rate:before {
+  content: "\e90d";
+}
+.icon-muscle-weight:before {
+  content: "\e90e";
+}
+.icon-basal-metabolism:before {
+  content: "\e90f";
+}
+.icon-home:before {
+  content: "\e910";
+}
+.icon-health-housekeeper:before {
+  content: "\e911";
+}
+.icon-blue:before {
+  content: "\e912";
+}
+.icon-list-view:before {
+  content: "\e913";
+}
+.icon-visceral-fat:before {
+  content: "\e914";
+}
+.icon-lean-body-weight:before {
+  content: "\e915";
+}
+.icon-failed:before {
+  content: "\e916";
+}
+.icon-block-view:before {
+  content: "\e917";
+}
+.icon-systolic-pressure:before {
+  content: "\e918";
+}
+.icon-diastolic-pressure:before {
+  content: "\e919";
+}
+.icon-temperature:before {
+  content: "\e923";
+}
+.icon-body-fat-rate:before {
+  content: "\e926";
+}
+.icon-weight:before {
+  content: "\e927";
+}
+.icon-add-device:before {
+  content: "\e928";
+}
+.icon-ecg:before {
+  content: "\e929";
+}
+.icon-blood-sugar:before {
+  content: "\e92a";
+}
+.icon-pressure:before {
+  content: "\e92b";
+}
+.icon-pressure-device:before {
+  content: "\e92c";
+}
+.icon-caret-right:before {
+  content: "\e939";
+}
+.icon-fat-weight:before {
+  content: "\e93a";
+}
+.icon-recently-add-device:before {
+  content: "\e93b";
+}
+.icon-full-screen:before {
+  content: "\e900";
+}
+.icon-delete:before {
+  content: "\e901";
+}
+
+body {
+  font-family: "PingFangSC", Arial, sans-serif;
+  font-weight: 400;
+  line-height: 1.4;
+  color: $mainFontColor;
+  background: $mainBackgroundColor;
+  font-size: 14px;
+}
+
+button {
+  margin-bottom: 0
+}
+
+.container {
+  padding-left: .75rem;
+  padding-right: .75rem;
+}
+
+button {
+  background: none;
+  border: none;
+}
+
+button:focus {
+  outline: none;
+}
+
+.float-right {
+  float: right;
+}
+
+.float-left {
+  float: left;
+}
+
+.clearfix::after {
+  display: block;
+  content: "";
+  clear: both;
+}
+
+.default-btn {
+  background-color: $mainComponBackGroundColor;
+  color: white;
+}
+
+.has-header {
+  padding-top: 2.2rem;
+}
+.container {
+  padding-bottom: .5rem;
+}
+
+.card-container {
+  border-radius: .1rem;
+  background-color: $cardBackgroundColor;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.hidden {
+  display: none;
+}
+
+h3.title {
+  font-size: .8rem;
+  font-weight: 600;
+}
+
+img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.popup-model {
+  .mint-popup {
+    width: 13.5rem;
+    padding: 2.1rem 0 1.5rem 0;
+    text-align: center;
+    border-radius: 2px;
+    .popup-icon {
+      margin-bottom: .6rem;
+      font-size: 2.1rem;
+      color: #10D3DE;
+      i.failed {
+        color: #FF475D;
+      }
+    }
+    .popup-title {
+      font-size: .9rem;
+      color: #424242;
+      margin-bottom: .4rem;
+    }
+    .popup-msg {
+      font-size: .7rem;
+      color: #5C5C5C;
+      margin-bottom: 1.7rem;
+    }
+    .popup-btn {
+      button {
+        width: 11.3rem;
+        height: 2rem;
+        border-radius: 1.5rem;
+      }
+    }
+  }
+}
+
+//calender
+.page {
+  .background {
+    &.open {
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 2rem;
+      left: 0;
+      background: rgba(0,0,0,.5);
+      z-index: 3;
+    }
+  }
+  .calendar-below {
+    &.open {
+      margin-top: 5.1rem;
+    }
+  }
+
+  .calendar-model {
+    margin: 0 -.75rem;
+    background-color: #fff;
+    position: relative;
+    height: 5rem;
+    overflow: hidden;
+    padding-top: .5rem;
+    transition:height .1s;
+    -moz-transition:height .1s; /* Firefox 4 */
+    -webkit-transition:height .1s; /* Safari and Chrome */
+    -o-transition:height .1s; /* Opera */
+    &.open {
+      height: 284px;
+      position: fixed;
+      width: 100%;
+      z-index: 4;
+      transition:height .1s;
+      -moz-transition:height .1s; /* Firefox 4 */
+      -webkit-transition:height .1s; /* Safari and Chrome */
+      -o-transition:height .1s; /* Opera */
+    }
+    .down-up-icon {
+      width: 100%;
+      height: 26px;
+      line-height: 26px;
+      background-color: #fff;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      text-align: center;
+      i {
+        font-size: 1rem;
+        line-height: 26px;
+      }
+    }
+    .calendar-header {
+      .vux-prev-icon, .vux-next-icon {
+        -webkit-transform: initial;
+        transform: initial;
+        border: 0;
+        height: 11px;
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+      }
+      .vux-prev-icon {
+        top:14px !important;
+      }
+    }
+    td.is-today {
+      color: #26A5FD;
+      span {
+        width: 26px;
+        height: 26px;
+        line-height: 26px;
+        text-align: center;
+        border-radius: 26px;
+        border: 1px solid #26A5FD;
+      }
+    }
+    td.current {
+      color: #fff;
+      span.vux-calendar-each-date {
+        background-color: #26A5FD;
+      }
+    }
+  }
+}
+
+.bluetooth{
+  display: flex;
+  .mint-popup{
+    padding:0;
+    .popup-bluetooth{
+      width:13.5rem;
+      height:11.55rem;
+      padding-top:2.9348rem;
+      .bluetooth-flg{
+        width:2.95rem;
+        height:2.95rem;
+        border-radius: 2.95rem;
+        background: #ffffff;
+        position: absolute;
+        top:-1.475rem;
+        left:5.275rem;
+        div{
+          width:2.1rem;
+          height:2.1rem;
+          border-radius: 2.1rem;
+          background:  #26A5FD;
+          margin-top: .425rem;
+          margin-left: .425rem;
+          display: flex;
+          span{
+            font-size: 1.25rem;
+            color:#FFFFFF;
+            margin: 0 auto;
+            align-self: center;
+          }
+        }
+
+      }
+      .bluetooth-title{
+        position: relative;
+        font-family: PingFangSC-Medium;
+        font-size: .9rem;
+        color: #424242;
+        text-align: center;
+        font-weight: 700;
+      }
+      button{
+        margin-top:2.10105rem;
+        width:11.3rem;
+        height:2rem;
+        background: #26A5FD;
+        border-radius:1.5rem;
+        color:#ffffff;
+        text-align: center;
+      }
+      .bluetooth-cancel{
+        margin-top: 1.03385rem;
+        font-family: PingFangSC-Regular;
+        font-size: .6rem;
+        color: #26A5FD;
+        text-align: center;
+      }
+    }
+
+  }
+}
+.concat{
+  display: flex;
+  .mint-popup{
+    padding:0;
+    height:6.75rem;
+    width:13.5rem;
+    .popup-img{
+      width:2.1rem;
+      height:2.1rem;
+      border-radius: 2.1rem;
+      background: #26A5FD;
+      color:#ffffff;
+      align-self: center;
+      margin: 0 auto;
+      display: flex;
+      i{
+        font-size: 1.25rem;
+        margin: 0 auto;
+        align-self: center;
+      }
+      .popup-size{
+        font-size: .95rem;
+      }
+    }
+    .concat-pad{
+      margin-top:1.50075rem;
+    }
+    .popup-bg{
+      background: #10D3DE;
+      margin-top:1.50075rem;
+    }
+    .popup-tip{
+      font-family: PingFangSC-Regular;
+      font-size: .8rem;
+      color: #333333;
+      text-align: center;
+      margin-top: .6003rem;
+    }
+  }
+
+  .add-new-device, .add-recently-device {
+    width: 4.5rem;
+    height: 4rem;
+    float: left;
+    border: 1px dashed rgba(0,0,0,0.30);
+    margin-top: 1.25rem;
+    margin-left: 1.5rem;
+    text-align: center;
+    padding-top: .6rem;
+    i {
+      color: #26A5FD;
+      font-size: 1.5rem;
+    }
+    span {
+      display: block;
+      color: #212121;
+      font-size: .7rem;
+    }
+  }
+}
+.defeated{
+  display: flex;
+  .mint-popup {
+    width:13.5rem;
+    height:12.25rem;
+    padding: 0;
+    .popup-defeated{
+      padding-top:1.8009rem;
+      .defeated-title{
+        font-family: PingFangSC-Medium;
+        font-size: .9rem;
+        color: #424242;
+        text-align: center;
+        font-weight: 700;
+      }
+      .defeated-tip{
+        margin-top: 1.0005rem;
+        font-family: PingFangSC-Regular;
+        font-size: .7rem;
+        color: #5C5C5C;
+        text-align: center;
+        line-height: 1.1rem;
+      }
+      button{
+        margin-top: 1.5rem;
+        width:11.3rem;
+        height:2rem;
+        background: #26A5FD;
+        border-radius:1.5rem;
+        color:#ffffff;
+        text-align: center;
+      }
+      .bluetooth-cancel{
+        margin-top: 1.0005rem;
+        font-family: PingFangSC-Regular;
+        font-size: .6rem;
+        color: #26A5FD;
+        text-align: center;
+      }
+    }
+  }
+}
+
+.calendar-data {
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 8px;
+  background-color:#26A5FD;;
+  position: absolute;
+  bottom: -3px;
+  left: calc(50% - 4px) ;
+}
+
+.no-advise {
+  margin-top: .4rem;
+  padding: .75rem;
+  height:4.35rem;
+  font-family: PingFangSC-Regular;
+  h3 {
+    font-size: .8rem;
+    color: #3C3939;
+    margin-bottom: .25rem;
+  }
+  p{
+    font-size: .7rem;
+    color: #7BA5C2;
+    opacity: 0.8;
+  }
+}
+//白色背景 适配iPhone X
+.mask-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  z-index: -1;
+}
+
+//日历箭头样式
+.calendar-year, .calendar-month  {
+  > span {
+    &.calendar-header-right-arrow {
+      right: 20px !important;
+      > a {
+        border-top: 5px solid transparent !important;
+        border-left: 5px solid #26A5FD !important;
+        border-bottom: 5px solid transparent !important;
+      }
+    }
+    &:first-child {
+      left: 20px;
+      > a {
+        border-top: 5px solid transparent !important;
+        border-right: 5px solid #26A5FD !important;
+        border-bottom: 5px solid transparent !important;
+      }
+    }
+  }
+}

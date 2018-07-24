@@ -1,0 +1,114 @@
+@import '../../common/css/variable.scss';
+
+.create-character {
+  .white-bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+  }
+  .container {
+    background-color: #fff;
+    padding-bottom: 3rem;
+    .character-head {
+      margin: 5rem 0 3.4rem 0;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: flex;
+      .character-item {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        flex: 1;
+        &:first-child {
+          padding-right: .6rem;
+          text-align: right;
+        }
+        &:last-child {
+          padding-left: .6rem;
+        }
+        img {
+          width: 5.5rem;
+          max-width: 100%;
+        }
+      }
+    }
+    .character-form {
+      padding: 0 1rem;
+      .form-group {
+        width: 100%;
+        margin-bottom: .75rem;
+        label {
+          position: relative;
+          display: flex;
+          span {
+            font-size: .7rem;
+            color: #B3B3B3;
+            width: 15%;
+            display: inline-block;
+            border: 1px solid #E8E8E8;
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+            border-right: none;
+            text-align: center;
+            height: 2rem;
+            margin-top: .25rem;
+            line-height: 1.8rem;
+            margin-right: -1px;
+          }
+          input {
+            margin-top: .25rem;
+            width: 85%;
+            height: 2rem;
+            border: 1px solid #E8E8E8;
+            border-left: none;
+            border-top-right-radius: 4px;
+            border-bottom-right-radius: 4px;
+            border-top-left-radius: 0;
+            border-top-left-radius: 0;
+            font-size: .7rem;
+            padding-left: .3rem;
+            color: #212121;
+            -webkit-flex: 1;
+            -webkit-appearance: none;
+            -webkit-box-flex: 1;
+            flex: 1;
+          }
+          .fa-caret-down {
+            position: absolute;
+            right: .8rem;
+            top: .9rem;
+            font-size: .9rem;
+            color: #26A6FF;
+          }
+        }
+      }
+    }
+  }
+  .footer {
+    width: 100%;
+    height: 2.6rem;
+    position: fixed;
+    bottom: 0;
+    display: flex;
+    button {
+      width: 50%;
+      text-align: center;
+      font-size: .8rem;
+      color: white;
+      &.cancel {
+        background: $secondBackgroundColor;
+        &:active {
+          background: #10ABB4;
+        }
+      }
+      &.confirm {
+        background: $mainComponBackGroundColor;
+        &:active {
+          background: #2087D0;
+        }
+      }
+    }
+  }
+}

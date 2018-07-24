@@ -1,0 +1,106 @@
+@import '../../../common/css/variable.scss';
+.no-search-page{
+  background: #ffffff;
+  .popup-model{
+    display: flex;
+    .mint-popup{
+      padding:0;
+      .popup-no-search{
+        width:13.5rem;
+        height:12.25rem;
+        .no-search-title{
+          padding-top: 1.8009rem;
+          font-family: PingFangSC-Medium;
+          font-size: .9rem;
+          color: #424242;
+          text-align: center;
+          font-weight: 700;
+        }
+        .no-search-tip{
+          margin-top:1rem;
+          font-family: PingFangSC-Regular;
+          font-size: .7rem;
+          color: #5C5C5C;
+          text-align: center;
+          line-height: 1.1rem;
+        }
+        button{
+          margin-top: 2.001rem;
+          width:11.3rem;
+          height:2rem;
+          background: #26A5FD;
+          border-radius:1.5rem;
+          color:#ffffff;
+          text-align: center;
+        }
+      }
+    }
+  }
+  .white-bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    background: #FFFFFF;
+  }
+  .content{
+    padding:4.675rem 0 0 0;
+    .start-tip{
+      font-family: PingFangSC-Regular;
+      font-size: 1.2rem;
+      color: #333333;
+      text-align: center;
+    }
+    .start-tip2{
+      font-family: PingFangSC-Light;
+      font-size: .7rem;
+      color: #5C5C5C;
+      text-align: center;
+      margin:.5rem 0;
+    }
+    .start-tip2>a:link{
+      color:#26A5FD;
+    }
+    .img{
+      display: flex;
+      img{
+        width:8.45rem;
+        height:8.45rem;
+        margin:3rem auto 4.2rem auto;
+      }
+    }
+    .cancel{
+      text-align: center;
+      font-family: PingFangSC-Regular;
+      font-size: .6rem;
+      color: #587C96;
+      border: 1px solid #C4D1DA;
+      border-radius: 30px;
+      width:4.85rem;
+      height:1.45rem;
+      line-height: 1.45rem;
+      margin: 1.6rem auto 3rem auto;
+    }
+  }
+
+  .footer{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    button {
+      width: 100%;
+      height: 2.6rem;
+      text-align: center;
+      font-size: .8rem;
+      color: white;
+      &.start-search {
+        background: $mainComponBackGroundColor;
+        &:active{
+          background: #10ABB4;
+        }
+      }
+    }
+  }
+}

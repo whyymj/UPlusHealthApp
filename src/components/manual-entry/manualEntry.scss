@@ -1,0 +1,270 @@
+@import '../../common/css/variable.scss';
+.manual-container {
+//background-color: $mainBackgroundColor;
+  padding-bottom: 0;
+}
+.manual-entry {
+  background: #fff;
+  .entry-tabs {
+    overflow: hidden;
+    padding-top: 1.25rem;
+    padding-bottom: 1.5rem;
+    background: #fff;
+    margin: 0 -.75rem;
+    position: relative;
+    &:after {
+      content: "";
+      display: block;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: .5rem;
+      background-color: $mainBackgroundColor;
+    }
+    &.hide {
+      display: none;
+    }
+    .tabs{
+      width: 25%;
+      float: left;
+      .tab {
+        margin-bottom: .3rem;
+        i {
+          width: 2.5rem;
+          height: 2.5rem;
+          border-radius: 2.5rem;
+          background-color: #e9f6fe;
+          color: #26A5FD;
+          font-size: 1.35rem;
+          line-height: 2.5rem;
+          display: inline-block;
+          overflow: hidden;
+        }
+        &.active {
+          i {
+            background-color: #26A5FD;
+            color: #fff;
+          }
+
+          & + span {
+            color: $mainComponBackGroundColor;
+          }
+        }
+      }
+    }
+  }
+  .tabs-container {
+    margin-left: -.75rem;
+    margin-right: -.75rem;
+    // margin-top: .5rem;
+    padding-bottom: 2.5rem;
+    position: relative;
+    .entry-tab {
+      margin-bottom: 2.5rem;
+      background: #fff;
+      position: absolute;
+      width: 100%;
+      top: 0;
+      left: 0;
+      visibility: hidden;
+      &.entry-tab-show {
+        visibility: visible;
+        z-index: 2;
+      }
+    }
+  }
+  .picker-container {
+
+    .ruler-wrap {
+      padding-top: 1rem;
+      margin-bottom: .5rem;
+      position: relative;
+      .pressure-unit {
+        position: absolute;
+        left: .75rem;
+      }
+      &:before, &:after {
+        content: '';
+        display: inline-block;
+        height: 8rem;
+        width: 2.5rem;
+        position: absolute;
+        bottom: 0;
+        z-index: 2;
+      }
+      &:before {
+        left: 0;
+        background: -webkit-linear-gradient(left, #fff , rgba(255,255,255, 0));
+        background: linear-gradient(to right, #fff , rgba(255,255,255, 0));
+      }
+      &:after {
+        right: 0;
+        background: -webkit-linear-gradient(right, #fff , rgba(255,255,255, 0));
+        background: linear-gradient(to left, #fff , rgba(255,255,255, 0));
+      }
+      &.pressure-ruler {
+        .swiper-slide {
+          width: 7px;
+        }
+      }
+      .swiper-container {
+        padding-top: 6rem;
+        .swiper-wrapper {
+          height: 3.9rem;
+        }
+        .swiper-slide {
+          height: 3.9rem;
+          color: $mainComponBackGroundColor;
+          .ruler-long, .ruler-short {
+            display: inline-block;
+            background-color: #ddd;
+            max-width: 100%;
+            position: absolute;
+            left: 50%;
+          }
+          .ruler-long {
+            height: 2.6rem;
+            width: 2px;
+            margin-bottom: .3rem;
+          }
+          .ruler-short {
+            height: 2rem;
+            width: 1px;
+          }
+          .ruler-num {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            display: inline-block;
+            text-align: center;
+            min-width: 1.2rem;
+            margin-left: -.6rem;
+          }
+        }
+        .swiper-pagination {
+          top:0;
+          font-size: .9rem;
+          color: $mainComponBackGroundColor;
+          .slt-ruler {
+            font-size: 3.2rem;
+            line-height: 3.2rem;
+          }
+        }
+      }
+      .ruler-pointer {
+        position: absolute;
+        left: 50%;
+        bottom: 2.7rem;
+        width: .4rem;
+        text-align: center;
+        margin-left: -.2rem;
+        z-index: 2;
+        &:before {
+          content: "";
+          display: inline-block;
+          width: .4rem;
+          height: .4rem;
+          border-radius: 50%;
+          background-color: $mainComponBackGroundColor;
+          position: absolute;
+          top: -.4rem;
+          left: 0;
+        }
+        &:after {
+          content: "";
+          display: inline-block;
+          width: .1rem;
+          height: 3.1rem;
+          background-color: $mainComponBackGroundColor;
+        }
+      }
+      .ruler-tips {
+        text-align: center;
+        color: #888;
+        height: 2rem;
+        line-height: 2.5;
+      }
+      &.pressure-ruler{
+        padding-left: .75rem;
+        padding-right: .75rem;
+        &:before, &:after {
+          display: none;
+        }
+        .swiper-container {
+          padding-top: 2rem;
+        }
+        .swiper-pagination {
+          text-align: right;
+          font-size: .7rem;
+          div {
+            display: inline-block;
+          }
+          .slt-ruler {
+            font-size: 1rem;
+            line-height: 1rem;
+            font-weight: bold;
+            margin-right: .4rem;
+          }
+        }
+        .ruler-pointer {
+          bottom: .8rem;
+        }
+      }
+    }
+    .measure-time {
+      border-top: 1px solid #e6e6e6;
+      border-bottom: 1px solid #e6e6e6;
+      padding: 0 .75rem;
+      .measure-row {
+        height: 2.5rem;
+        line-height: 2.5rem;
+        margin-bottom: .4rem;
+        &:not(:last-child) {
+          border-bottom: 1px solid #ddd;
+        }
+        .measure-item {
+          float: left;
+          color: #424242;
+        }
+        .measure-item-slt {
+          float: right;
+          color: #888;
+          input {
+            text-align: right;
+            line-height: 2rem;
+            color: inherit;
+            padding-right: .2rem;
+          }
+          i {
+            font-size: 1.3rem;
+            vertical-align: -.1rem;
+          }
+        }
+      }
+    }
+  }
+  footer {
+    height: 2.5rem;
+    bottom: 0;
+    width: 100%;
+    position: fixed;
+    display: flex;
+    z-index: 10;
+    button {
+      width: 50%;
+      text-align: center;
+      font-size: .8rem;
+      color: white;
+      &.cancel {
+        background: #B8BDC2;
+      }
+      &.confirm {
+        background: $mainComponBackGroundColor;
+        &:active {
+          background: #2087D0;
+        }
+      }
+    }
+  }
+}

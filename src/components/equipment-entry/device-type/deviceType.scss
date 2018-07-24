@@ -1,0 +1,54 @@
+.device-type{
+  .container{
+    padding-bottom: 3rem;
+    padding-top:3rem;
+    .device-content{
+      .device-item{
+        padding:1.125rem .7rem ;
+        margin-bottom:.5rem;
+        width:100%;
+        height:4rem;
+        background: #FFFFFF;
+        border-radius: .1rem;
+        clear:both;
+
+        .left{
+          float: left;
+          display: flex;
+          height:1.57rem;
+          margin: 0 auto;
+          .logo{
+            margin-left:.5rem;
+            width:1.6rem;
+            font-size: 1.6rem;
+            color:#26A5FD;
+            display: flex;
+            span{
+              margin: 0 auto;
+            }
+          }
+          .item{
+            margin-left:1rem;
+            align-self:center;
+            font-family: PingFangSC-Regular;
+            font-size: .8rem;
+            color: #212121;
+            align-self: center;
+          }
+        }
+        .right{
+          float: right;
+          height: 1.75rem;
+          display: flex;
+          i{
+            width:.29rem;
+            height:0.555rem;
+            color:#DBDBDB;
+            font-size:0.65rem;
+            align-self: center;
+          }
+        }
+      }
+    }
+  }
+}

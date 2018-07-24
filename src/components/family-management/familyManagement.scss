@@ -1,0 +1,163 @@
+@import '../../common/css/variable.scss';
+
+.associated-family-v {
+  background: #F6F6F6;
+  .model {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.5);
+    z-index: 11;
+    img {
+      width: 260px;
+      position: absolute;
+      left: 5px;
+    }
+  }
+  .delete-btn {
+    position: fixed;
+    right: .75rem;
+    top: 0;
+    line-height: 2.2rem;
+    color: $mainComponBackGroundColor;
+    z-index: 100;
+  }
+  .container {
+    //height: 33.35rem;
+    //background-color: #fff;
+    .associated-account {
+      i {
+        font-size: 1rem;
+        margin-right: .4rem;
+      }
+    }
+    .space {
+      height: .8rem;
+      border-bottom: 1px solid #E4E4E4;
+      margin: 0 -.75rem;
+      background-color: #fafcfe;
+    }
+    .family-member {
+      padding: .9rem .75rem 0 .75rem;
+      overflow: hidden;
+      background-color: #fff;
+      margin: 0 -.75rem;
+      .family-item {
+        float: left;
+        width: 25%;
+        font-size: .6rem;
+        color: #3C3939;
+        margin-bottom: 1rem;
+        position: relative;
+        .family-img {
+          width: 2.5rem;
+          height: 2.5rem;
+          // border: 1px solid #9cf;
+          border-radius: 50%;
+          margin: 0 auto;
+          img {
+            border-radius: 50%;
+            width: 100%;
+            height: 100%;
+          }
+        }
+        .u-plus {
+          position: absolute;
+          top: 0;
+          right: .6rem;
+          width: 1rem;
+        }
+        .delete-wrap {
+          position: absolute;
+          width: 100%;
+          height: 2.5rem;
+          top: 0;
+          left: 0;
+          .u-minus {
+            position: absolute;
+            top: 0;
+            right: .6rem;
+            width: 1rem;
+          }
+        }
+        .name {
+          margin-top: 5px;
+        }
+      }
+    }
+    .associated-account, .associated-create, .associated-privacy {
+      margin: 0 -.75rem;
+      padding: .8rem .75rem;
+      border-top: 1px solid #E4E4E4;
+      border-bottom: 1px solid #E4E4E4;
+      background-color: #fff;
+      i {
+        color: #060606;
+        &.create {
+          color: #33B5FC;
+          width: 1.1rem;
+          height: 1.1rem;
+          line-height: .9rem;
+          text-align: center;
+          border: 2px solid #33B5FC;
+          border-radius: 50%;
+          margin-right: .3rem;
+        }
+      }
+      span {
+        font-size: .8rem;
+        color: #3C3939;
+        &:last-child {
+          font-size: .7rem;
+          opacity: .5;
+        }
+        &.create {
+          font-size: .8rem;
+          color: #33B5FC;
+          opacity: 1;
+        }
+        &.privacy {
+          font-size: .8rem;
+          opacity: 1;
+        }
+      }
+    }
+    .tips {
+      color: #3C3939;
+      margin-top: 1rem;
+      h2 {
+        font-size: .7rem;
+        margin-bottom: .6rem;
+        font-weight: bold;
+      }
+      p {
+        font-size: .6rem;
+        margin-bottom: .2rem;
+        opacity: .5;
+      }
+    }
+  }
+  footer {
+    height: 2.5rem;
+    bottom: 0;
+    width: 100%;
+    position: fixed;
+    display: flex;
+    z-index: 10;
+    button {
+      width: 100%;
+      text-align: center;
+      font-size: .8rem;
+      color: white;
+      &.cancel {
+        background: #B8BDC2;
+      }
+      &.confirm {
+        background: $mainComponBackGroundColor;
+        &:active {
+          background: #2087D0;
+        }
+      }
+    }
+  }
+}

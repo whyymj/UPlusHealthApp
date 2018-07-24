@@ -1,0 +1,58 @@
+@import '../../common/css/variable.scss';
+
+.associated-family-v {
+  .container {
+    background-color: #fff;
+    .space {
+      height: .8rem;
+      border-bottom: 1px solid #E4E4E4;
+      margin: 0 -.75rem;
+      background-color: #fafcfe;
+    }
+    .results {
+      height: 4rem;
+      border-bottom: 1px solid #E6E7E9;
+      padding: .8rem 0 .3rem 1rem;
+      .message {
+        float: left;
+        margin-top: .6rem;
+        margin-left: .4rem;
+        span {
+          font-size: .8rem;
+          color: #3C3939;
+        }
+      }
+      img {
+        float: left;
+        width: 2.5rem;
+        height: 2.5rem;
+      }
+    }
+  }
+  .footer {
+    width: 100%;
+    height: 2.6rem;
+    position: fixed;
+    bottom: 0;
+    .wait-v {
+      width: 100%;
+      height: 100%;
+      color: #fff;
+      background-color: #C4C4C4;
+      line-height: 2.6rem;
+      font-size: .8rem;
+    }
+  }
+}
+
+.request-send-success {
+  width: 9.35rem;
+  height: 3rem;
+  background: #676767;
+  border-radius: 4px;
+  color: #fff;
+  span {
+    font-size: .9rem;
+    line-height: 2rem;
+  }
+}

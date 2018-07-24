@@ -1,0 +1,176 @@
+@import '../../common/css/variable.scss';
+
+.health-records-list {
+  position: relative;
+  padding-bottom: 3rem;
+  overflow: scroll;
+  .fa-th-large {
+    position: fixed;
+    right: .75rem;
+    top: .7rem;
+    font-size: .9rem;
+    color: #3C3939;
+    z-index: 100;
+  }
+  .container {
+    .character-list {
+      padding: 0 2rem 0 1.5rem;
+      font-size: .9rem;
+      color: #3C3939;
+      position: relative;
+      margin: 0 -.75rem;
+      span{
+        min-width: 2.2rem;
+        height: 2.2rem;
+        margin: .15rem 0;
+        display: inline-block;
+        position: absolute;
+        top:0;
+        z-index: 100;
+      }
+      .left{
+        left: 1.4rem;
+        min-width: 1.5rem;
+        background: -webkit-linear-gradient(to left, rgba(255,255,255,.2),white);
+        background: linear-gradient(to left, rgba(255,255,255,.2),white);
+      }
+      .right{
+        right: 1.8rem;
+        min-width: 1.5rem;
+        background: -webkit-linear-gradient(to right, rgba(255,255,255,.2),white);
+        background: linear-gradient(to right, rgba(255,255,255,.2),white);
+      }
+      &.overflowH{
+        overflow: hidden;
+      }
+      .tab-list {
+        width: 100%;
+        height: 2.25rem;
+        text-align: center;
+        overflow-x: auto;
+        overflow-y: hidden;
+        position: relative;
+        -webkit-overflow-scrolling: touch;
+        &::-webkit-scrollbar {
+          display: none;
+        }
+      }
+      .list {
+        white-space:nowrap;
+        li {
+          min-width: 1.6rem;
+          display: inline-block;
+          font-size: .8rem;
+          padding: .5rem 0;
+          margin: 0 1rem;
+          &.active {
+            color: #26A6FF;
+            opacity: 1;
+            font-weight: bold;
+            border-bottom: 3px solid #26A6FF;
+          }
+        }
+      }
+      .icon-home {
+        position: absolute;
+        top: .5rem;
+        right: .6rem;
+        font-size: 1.25rem;
+        // z-index: 101;
+      }
+    }
+    .health-list {
+      position: relative;
+      margin-top: .5rem;
+      >ul {
+        >li {
+          .float-left {
+            width: 20%;
+            padding: .9rem 0 .9rem .9rem;
+            i {
+              display: block;
+              width: 2rem;
+              height: 2rem;
+              text-align: center;
+              line-height: 2rem;
+              border-radius: 2rem;
+              font-size: 1rem;
+              &.red {
+                background-color: #FF475D;
+                color: #fff;
+              }
+              &.orange {
+                background-color: #FF6E00;
+                color: #fff;
+              }
+              &.normal {
+                background-color: #e9f6fe;
+                color: #26A5FD;
+              }
+            }
+          }
+          .float-right {
+            width: 75%;
+            height: 3.8rem;
+            font-size: .7rem;
+            color: #212121;
+            border-bottom: 1px solid rgba(151,151,151,0.15);
+            margin-right: 5%;
+            padding-right: 1.25rem;
+            position: relative;
+            .title {
+              float: left;
+              margin-top: 1.5rem;
+            }
+            .num {
+              float: right;
+              margin-top: 1.3rem;
+              font-size: .9rem;
+              color: #212121;
+              .unit{
+                font-size: 12px;
+                color: #B3B3B3;
+              }
+            }
+            .fa-angle-right {
+              position: absolute;
+              right: 0;
+              top: 1.2rem;
+              color: #DBDBDB;
+              font-size: 1.3rem;
+              z-index: 2;
+            }
+          }
+          &:last-child {
+            .float-right {
+              border-bottom: none;
+            }
+          }
+        }
+      }
+    }
+  }
+  .footer {
+    width: 100%;
+    height: 2.6rem;
+    position: fixed;
+    bottom: 0;
+    overflow: hidden;
+    z-index: 2;
+    .entry {
+      width: 100%;
+      height: 100%;
+      color: #fff;
+      background-color: #26A6FF;
+      line-height: 2.6rem;
+      font-size: .8rem;
+      float: left;
+      &:active {
+        background: #2087D0;
+      }
+    }
+    .edit {
+      background-color: #10D6E2;
+    }
+  }
+}
