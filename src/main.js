@@ -16,6 +16,9 @@ import 'echarts/lib/component/markPoint' // 标记
 // import mint ui
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+Vue.use(ElementUI);
 // import vux
 import { InlineCalendar, Loading } from 'vux'
 

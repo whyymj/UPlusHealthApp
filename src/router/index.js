@@ -35,7 +35,9 @@ const chooseDevice = resolve => require(['@/components/equipment-entry/choose-de
 const searchDevice = resolve => require(['@/components/equipment-entry/search-device/searchDevice.vue'], resolve)
 const noSearchDevice = resolve => require(['@/components/equipment-entry/no-search-device/noSearchDevice.vue'], resolve)
 const startTest = resolve => require(['@/components/equipment-entry/start-test/startTest.vue'], resolve)
-
+const newAddReport = resolve => require(['@/components/new-add-report/newSleepReport.vue'], resolve)
+const sleepTest = resolve => require(['@/components/sleep-test/sleepTest.vue'], resolve)
+const healthArchives = resolve => require(['@/components/health-archives/healthArchives.vue'], resolve)
 const test = resolve => require(['@/components/test.vue'], resolve)
 
 const router = new Router({
@@ -44,206 +46,255 @@ const router = new Router({
     {
       path: '*',
       redirect: '/'
-    },
-    {
+    }, {
       path: '/',
       redirect: 'login'
-    },
-    {
+    }, {
       path: '/test',
       name: 'test',
       component: test
-    },
-    {
+    }, {
       path: '/login',
       name: 'login',
-      meta: { title: '海尔健康' },
+      meta: {
+        title: '海尔健康'
+      },
       component: login
-    },
-    {
+    }, {
       path: '/introduction',
       name: 'introduction',
-      meta: { title: '海尔健康' },
+      meta: {
+        title: '海尔健康'
+      },
       component: introduction
-    },
-    {
+    }, {
       path: '/createCharacter',
       name: 'createCharacter',
-      meta: { title: '健康档案' },
+      meta: {
+        title: '健康档案'
+      },
       component: createCharacter
-    },
-    {
+    }, {
       path: '/createFamily',
       name: 'createFamily',
-      meta: { title: '创建家人' },
+      meta: {
+        title: '创建家人'
+      },
       component: createFamily
-    },
-    {
+    }, {
       path: '/healthRecordsB',
       name: 'healthRecordsB',
-      meta: { title: '健康档案' },
+      meta: {
+        title: '健康档案'
+      },
       component: healthRecordsB
-    },
-    {
+    }, {
       path: '/healthRecordsL',
       name: 'healthRecordsL',
-      meta: { title: '健康档案' },
+      meta: {
+        title: '健康档案'
+      },
       component: healthRecordsL
-    },
-    {
+    }, {
       path: '/addProject',
       name: 'addProject',
-      meta: { title: '添加项目' },
+      meta: {
+        title: '添加项目'
+      },
       component: addProject
-    },
-    {
+    }, {
       path: '/manualEntry/:type?',
       name: 'manualEntry',
-      meta: { title: '手动录入' },
+      meta: {
+        title: '手动录入'
+      },
       component: manualEntry
-    },
-    {
+    }, {
       path: '/familyManagement',
       name: 'familyManagement',
-      meta: { title: '家人管理' },
+      meta: {
+        title: '家人管理'
+      },
       component: familyManagement
-    },
-    {
+    }, {
       path: '/associatedFamilyS',
       name: 'associatedFamilyS',
-      meta: { title: '关联家人' },
+      meta: {
+        title: '关联家人'
+      },
       component: associatedFamilyS
-    },
-    {
+    }, {
       path: '/associatedFamilyR/:phone',
       name: 'associatedFamilyR',
-      meta: { title: '关联家人' },
+      meta: {
+        title: '关联家人'
+      },
       component: associatedFamilyR
-    },
-    {
+    }, {
       path: '/associationRequest/:phone',
       name: 'associationRequest',
-      meta: { title: '关联请求' },
+      meta: {
+        title: '关联请求'
+      },
       component: associationRequest
-    },
-    {
+    }, {
       path: '/associatedFamilyV',
       name: 'associatedFamilyV',
       component: associatedFamilyV
-    },
-    {
+    }, {
       path: '/pressure',
       name: 'pressure',
-      meta: { title: '血压' },
+      meta: {
+        title: '血压'
+      },
       component: pressure
-    },
-    {
+    }, {
       path: '/pressure/history/:date',
       name: 'pressureHistory',
-      meta: { title: '全部数据' },
+      meta: {
+        title: '全部数据'
+      },
       component: pressureHistory
-    },
-    {
+    }, {
       path: '/bloodSugar',
       name: 'bloodSugar',
-      meta: { title: '血糖' },
+      meta: {
+        title: '血糖'
+      },
       component: bloodSugar
-    },
-    {
+    }, {
       path: '/bloodSugar/history/:date',
       name: 'bloodSugarHistory',
-      meta: { title: '全部数据' },
+      meta: {
+        title: '全部数据'
+      },
       component: bloodSugarHistory
-    },
-    {
+    }, {
       path: '/oxygen',
       name: 'oxygen',
-      meta: { title: '血氧' },
+      meta: {
+        title: '血氧'
+      },
       component: oxygen
-    },
-    {
+    }, {
       path: '/oxygen/history/:date',
       name: 'oxygenHistory',
-      meta: { title: '全部数据' },
+      meta: {
+        title: '全部数据'
+      },
       component: oxygenHistory
-    },
-    {
+    }, {
       path: '/ecg',
       name: 'ecg',
-      meta: { title: '心电' },
+      meta: {
+        title: '心电'
+      },
       component: ecg
-    },
-    {
+    }, {
       path: '/ecg/history/:date',
       name: 'ECGHistory',
-      meta: { title: '全部数据' },
+      meta: {
+        title: '全部数据'
+      },
       component: ECGHistory
-    },
-    {
+    }, {
       path: '/temperature',
       name: 'temperature',
-      meta: { title: '体温' },
+      meta: {
+        title: '体温'
+      },
       component: temperature
-    },
-    {
+    }, {
       path: '/temperature/history/:date',
       name: 'temperatureHistory',
-      meta: { title: '全部数据' },
+      meta: {
+        title: '全部数据'
+      },
       component: temperatureHistory
-    },
-    {
+    }, {
       path: '/weight',
       name: 'weight',
-      meta: { title: '体重' },
+      meta: {
+        title: '体重'
+      },
       component: weight
-    },
-    {
+    }, {
       path: '/weight/history/:date',
       name: 'weightHistory',
-      meta: { title: '全部数据' },
+      meta: {
+        title: '全部数据'
+      },
       component: weightHistory
-    },
-    {
+    }, {
       path: '/weightDetail/:weight_id',
       name: 'weightDetail',
-      meta: { title: '体重' },
+      meta: {
+        title: '体重'
+      },
       component: weightDetail
-    },
-    {
+    }, {
       path: '/setTargetWeight',
       name: 'setTargetWeight',
-      meta: { title: '设置目标体重' },
+      meta: {
+        title: '设置目标体重'
+      },
       component: setTargetWeight
-    },
-    {
+    }, {
       path: '/chooseDevice/:index',
       name: 'chooseDevice',
-      meta: { title: '选择设备' },
+      meta: {
+        title: '选择设备'
+      },
       component: chooseDevice
-    },
-    {
+    }, {
       path: '/deviceType',
       name: 'deviceType',
-      meta: { title: '选择设备' },
+      meta: {
+        title: '选择设备'
+      },
       component: deviceType
-    },
-    {
+    }, {
       path: '/searchDevice/:index',
       name: 'searchDevice',
-      meta: { title: '选择设备' },
+      meta: {
+        title: '选择设备'
+      },
       component: searchDevice
-    },
-    {
+    }, {
       path: '/noSearchDevice/:index?',
       name: 'noSearchDevice',
-      meta: { title: '选择设备' },
+      meta: {
+        title: '选择设备'
+      },
       component: noSearchDevice
-    },
-    {
+    }, {
       path: '/startTest',
       name: 'startTest',
-      meta: { title: '健康监测' },
+      meta: {
+        title: '健康监测'
+      },
       component: startTest
+    }, {
+      path: '/newAddReport',
+      name: 'newAddReport',
+      meta: {
+        title: '新增睡眠报告'
+      },
+      component: newAddReport
+    }, {
+      path: '/healthArchives',
+      name: 'healthArchives',
+      meta: {
+        title: '健康档案'
+      },
+      component: healthArchives
+    }, {
+      path: '/sleepTest',
+      name: 'sleepTest',
+      meta: {
+        title: '睡眠详情测试'
+      },
+      component: sleepTest
     }
   ]
 })
