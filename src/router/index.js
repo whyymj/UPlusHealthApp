@@ -45,8 +45,8 @@ const test = resolve => require(['@/components/test.vue'], resolve)
 
 //个人资料
 const userInfo = resolve => require(['@/components/user-info/userInfo.vue'], resolve)
-const allergic = resolve => require(['@/components/user-info/allergic.vue'], resolve)
-const chronicDisease = resolve => require(['@/components/user-info/chronicDisease.vue'], resolve)
+const allergic = resolve => require(['@/components/user-info/allergic/allergic.vue'], resolve)
+const chronicDisease = resolve => require(['@/components/user-info/chronicDisease/chronicDisease.vue'], resolve)
 
 
 const router = new Router({
