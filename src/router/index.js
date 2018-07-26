@@ -37,6 +37,9 @@ const noSearchDevice = resolve => require(['@/components/equipment-entry/no-sear
 const startTest = resolve => require(['@/components/equipment-entry/start-test/startTest.vue'], resolve)
 const newAddReport = resolve => require(['@/components/new-add-report/newSleepReport.vue'], resolve)
 const sleepTest = resolve => require(['@/components/sleep-test/sleepTest.vue'], resolve)
+const sleepManuInput = resolve => require(['@/components/sleep-manu-input/sleepManuInput.vue'], resolve)
+const sleepMusicList = resolve => require(['@/components/sleep-music/sleepMusicList.vue'], resolve)
+const sleepMusicPlayerPanel = resolve => require(['@/components/sleep-music/sleepMusicPlayerPanel.vue'], resolve)
 const healthArchives = resolve => require(['@/components/health-archives/healthArchives.vue'], resolve)
 const test = resolve => require(['@/components/test.vue'], resolve)
 
@@ -292,10 +295,32 @@ const router = new Router({
       path: '/sleepTest',
       name: 'sleepTest',
       meta: {
-        title: '睡眠详情测试'
+        title: '睡眠测试'
       },
       component: sleepTest
+    }, {
+      path: '/sleepManuInput',
+      name: 'sleepManuInput',
+      meta: {
+        title: '手动录入'
+      },
+      component: sleepManuInput
+    }, {
+      path: '/sleepMusicList',
+      name: 'sleepMusicList',
+      meta: {
+        title: '睡眠'
+      },
+      component: sleepMusicList
+    }, {
+      path: '/sleepMusicPlayerPanel',
+      name: 'sleepMusicPlayerPanel',
+      meta: {
+        title: '睡眠音乐'
+      },
+      component: sleepMusicPlayerPanel
     }
+    
   ]
 })
 
