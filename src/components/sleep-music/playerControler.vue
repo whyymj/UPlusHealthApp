@@ -21,7 +21,8 @@
         data() {
             return {
                 wxAudio: '',
-                playing: true
+                playing: true,
+                audio: ''
             }
         },
         methods: {
@@ -34,11 +35,28 @@
                 this.playing = !this.playing;
             },
             back() {
-                console.log( this.wxAudio);
+                var curtime = this.wxAudio.currentT;
+                curtime = curtime - 30 <= 0 ? 0 : curtime - 30;
+                this.wxAudio.wxAudio.currentTime = this.wxAudio.currentT = curtime;
+                this.wxAudio.currentP = curtime / this.wxAudio.durationT;
+                this.wxAudio.dragProgressTo = this.wxAudio.wxAudioDetail.offsetWidth * this.wxAudio.currentP;
+                this.wxAudio.wxAudioCurrent.innerText = this.wxAudio.formartTime(this.wxAudio.wxAudio.currentTime);
+                this.wxAudio.updatePorgress();
+                 this.wxAudio.audioPlay();
             },
-            go() {}
+            go() {
+                var curtime = this.wxAudio.currentT;
+                curtime = curtime + 30 >= this.wxAudio.durationT ? this.wxAudio.durationT : curtime + 30;
+                this.wxAudio.wxAudio.currentTime = this.wxAudio.currentT = curtime;
+                this.wxAudio.currentP = curtime / this.wxAudio.durationT;
+                this.wxAudio.dragProgressTo = this.wxAudio.wxAudioDetail.offsetWidth * this.wxAudio.currentP;
+                this.wxAudio.wxAudioCurrent.innerText = this.wxAudio.formartTime(this.wxAudio.wxAudio.currentTime);
+                this.wxAudio.updatePorgress();
+                 this.wxAudio.audioPlay();
+            }
         },
         mounted() {
+            var that=this;
             this.wxAudio = new Wxaudio({
                 ele: '#textaudio1',
                 title: 'Jar Of Love',
@@ -47,6 +65,11 @@
                 width: '320px'
             });
             this.play();
+            this.audio = this.wxAudio.wxAudio;
+            this.audio.onended=function(){
+                that.playing=true;
+            }
+           
         }
     }
 </script>

@@ -6,6 +6,24 @@
         </div>
         <div class='content'>
             <div class="page page1" v-show='activeSpan==0'>
+                <mycollapse @showDetail='showDater'>
+                    <div slot='main' style='height:4rem;overflow:hidden;padding-top:-4rem;' v-if='!showDateSelect'>
+                        <myDatePicker hidetop='true'></myDatePicker>
+                    </div>
+                    <div slot='slider'>
+                        <myDatePicker></myDatePicker>
+                    </div>
+                </mycollapse>
+                <sleepanalysis :paramslist='paramslist'></sleepanalysis>
+                <datadeviation></datadeviation>
+                <nodata></nodata>
+                <echarts></echarts>
+                <aboutSleep v-for='(item,index) in sleepAboutData' :data='item' :key='index'></aboutSleep>
+                <aboutNews></aboutNews>
+                <div class="buttons">
+                    <div class="manuinput">手动录入</div>
+                    <!-- <div class="equipinput">设备录入</div> -->
+                </div>
             </div>
             <div class="page page2" v-show='activeSpan==1'>
                 <musiclist :musiclist='list'></musiclist>
@@ -20,16 +38,33 @@
 </template>
 
 <script>
+    import mycollapse from "./myCollapse";
+    import myDatePicker from './myDatePicker.vue';
     import musiclist from "./musicList.vue";
     import player from "./player.vue";
+    import sleepanalysis from './sleepAnalysis.vue';
+    import echarts from './echarts.vue';
+    import aboutSleep from './sleepAbout.vue';
+    import aboutNews from './sleepNews.vue';
+    import datadeviation from './dataDeviation.vue';
+    import nodata from './nodata.vue';
     export default {
         name: "sleepMusicList",
         components: {
             musiclist,
-            player
+            player,
+            mycollapse,
+            myDatePicker,
+            sleepanalysis,
+            echarts,
+            aboutSleep,
+            aboutNews,
+            datadeviation,
+            nodata
         },
         data() {
             return {
+                showDateSelect: false,
                 activeName: "",
                 list: [{
                         name: "腹式呼吸练习1",
@@ -81,26 +116,83 @@
                         musicurl: ""
                     }
                 ],
-                activeSpan: 1
+                activeSpan: 0,
+                paramslist: [{
+                    title: '睡眠效率',
+                    detail: '',
+                    params: [{
+                        data: 90,
+                        unit: '%'
+                    }]
+                }, {
+                    title: '入睡速度（分）',
+                    detail: '',
+                    params: [{
+                        data: 10,
+                        unit: '分钟'
+                    }]
+                }, {
+                    title: '当日作息',
+                    detail: '123',
+                    params: [{
+                        data: '23:32',
+                        unit: '-'
+                    }, {
+                        data: '06:56',
+                        unit: ''
+                    }]
+                }, {
+                    title: '入睡速度（分）',
+                    detail: '',
+                    params: [{
+                        data: 6,
+                        unit: '小时'
+                    }, {
+                        data: 7,
+                        unit: '分钟'
+                    }]
+                }],
+                sleepAboutData: [{
+                    title: '睡眠测试(本服务由寝安睡眠提供)',
+                    content: '睡眠小测试，了解自己的睡眠问题。',
+                    src: "/static/sleepMusicList/exm1.jpg",
+                    link: '测一测',
+                    ilnkurl: ''
+                }, {
+                    title: '睡眠百科（本服务由寝安睡眠提供',
+                    content: '睡眠小百科，睡眠知识全收录。',
+                    src: "/static/sleepMusicList/exm2.jpg",
+                    link: '立刻围观',
+                    ilnkurl: ''
+                }]
             };
         },
         methods: {
             handleClick() {},
             clickSpan(index) {
                 this.activeSpan = index;
+            },
+            showDater(bool) {
+                var that = this;
+                if (bool) {
+                    that.showDateSelect = bool;
+                } else {
+                    setTimeout(function() {
+                        that.showDateSelect = bool;
+                    }, 400)
+                }
             }
         }
     };
 </script>
 
 <style lang='scss'>
+.page1{
+    padding-bottom:3rem;
+}
     .sleepMusic {
-        position: fixed;
-        top: 0;
-        left: 0;
         background: #fff;
         width: 100%;
-        height: 100%;
         .tabbars {
             width: 100%;
             height: 3rem;
@@ -138,6 +230,32 @@
                 left: 0;
                 right: 0;
                 overflow: auto;
+                .buttons {
+                    width: 100%;
+                    height: 2rem;
+                    position: fixed;
+                    bottom:0;
+                    margin: 1rem auto 0;
+                    .manuinput,
+                    .equipinput {
+                        width: 100%;
+                        height: 100%;
+                        position: absolute;
+                        top: 0;
+                        font-size: 0.7rem;
+                        font-family: 'PingFangSC-Semibold';
+                        color: rgba(255, 255, 255, 1);
+                        text-align: center;
+                        box-sizing: border-box;
+                        line-height: 2rem;
+                        text-align: center;
+                        background: rgba(16, 214, 226, 1);
+                    }
+                    .equipinput {
+                        right: 0;
+                        background: rgba(38, 166, 255, 1);
+                    }
+                }
             }
         }
         .tips {

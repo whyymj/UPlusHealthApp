@@ -24,6 +24,7 @@
     "lodash": "^4.17.10",
     "lz-string": "^1.4.4",
     "mint-ui": "^2.2.13",
+    "moment": "^2.22.2",
     "ocrad.js": "0.0.1",
     "photoclip": "^3.3.6",
     "swiper": "^4.3.3",
