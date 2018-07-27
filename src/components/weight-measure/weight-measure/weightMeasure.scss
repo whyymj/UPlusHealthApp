@@ -1,0 +1,42 @@
+.all{
+  width: 18.75rem;
+  background-image: url("../../../assets/beijing1.png");
+  background-size: 18.75rem 30.15rem;
+  .top{
+    text-align: center;
+    height:1.1rem;
+    font-size:0.8rem;
+    font-family:PingFangSC-Regular;
+    color:rgba(15,59,110,1);
+    line-height:1.1rem;
+    padding-top: 1.7rem;
+  }
+  .top1{
+    margin-left: 6.2rem;
+    margin-top: 7.35rem;
+    height:4.9rem;
+    font-size:3.5rem;
+    font-family:PingFangSC-Regular;
+    color:#FFFFFF;
+    line-height:4.9rem;
+  }
+  .top2{    margin-left: 8.4rem;
+    margin-top: 0.4rem;
+    height:1.4rem;
+    font-size:1rem;
+    font-family:PingFangSC-Medium;
+    color:#FFFFFF;
+    line-height:1.4rem;}
+  .top3{    width: 8rem;
+    height: 2rem;
+    margin-left: 5.4rem;
+    margin-top: 10.8rem;
+    font-size:0.8rem;
+    font-family:PingFangSC-Regular;
+    color:rgba(255,255,255,1);
+    line-height:2rem;
+    background:rgba(34,131,226,1);
+    box-shadow:0rem 0.4rem 0.8rem 0rem rgba(34,131,226,0.4);
+    border-radius:1.23rem;
+    text-align: center;}
+}

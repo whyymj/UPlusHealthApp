@@ -43,6 +43,20 @@ const sleepMusicPlayerPanel = resolve => require(['@/components/sleep-music/slee
 const healthArchives = resolve => require(['@/components/health-archives/healthArchives.vue'], resolve)
 const test = resolve => require(['@/components/test.vue'], resolve)
 
+//个人资料
+const userInfo = resolve => require(['@/components/user-info/userInfo.vue'], resolve)
+const allergic = resolve => require(['@/components/user-info/allergic/allergic.vue'], resolve)
+const chronicDisease = resolve => require(['@/components/user-info/chronicDisease/chronicDisease.vue'], resolve)
+
+const healthEntryMy= resolve => require(['@/components/health-entry/health-entry-my/healthEntryMy.vue'], resolve)
+const healthEntryFamily = resolve => require(['@/components/health-entry/health-entry-family/healthEntryFamily.vue'], resolve)
+const sleepCyclopedia = resolve => require(['@/components/sleep-cyclopedia/sleepCyclopedia.vue'], resolve)
+const errorMessage = resolve => require(['@/components/error-message/errorMessage.vue'], resolve)
+const weightMeasure = resolve => require(['@/components/weight-measure/weight-measure/weightMeasure.vue'], resolve)
+
+
+
+
 const router = new Router({
   mode: 'history',
   routes: [
@@ -319,8 +333,61 @@ const router = new Router({
         title: '睡眠音乐'
       },
       component: sleepMusicPlayerPanel
-    }
-    
+    },
+    {
+      path: '/userInfo',
+      name: 'userInfo',
+      meta: {
+        title: '个人资料'
+      },
+      component: userInfo
+    },
+    {
+      path: '/allergic',
+      name: 'allergic',
+      meta: {
+        title: '过敏史'
+      },
+      component: allergic
+    },
+    {
+      path: '/chronicDisease',
+      name: 'chronicDisease',
+      meta: {
+        title: '慢病史'
+      },
+      component: chronicDisease
+    },
+    {
+      path: '/sleepCyclopedia',
+      name: 'sleepCyclopedia',
+      meta: { title: '睡眠百科' },
+      component: sleepCyclopedia
+    },
+    {
+      path: '/healthEntryMy',
+      name: 'healthEntryMy',
+      meta: { title: '健康档案入口创建角色' },
+      component: healthEntryMy
+    },
+    {
+      path: '/healthEntryFamily',
+      name: 'healthEntryFamily',
+      meta: { title: '健康档案入口创建家人' },
+      component: healthEntryFamily
+    },
+    {
+      path: '/errorMessage',
+      name: 'errorMessage',
+      meta: { title: '错误信息' },
+      component: errorMessage
+    },
+    {
+      path: '/weightMeasure',
+      name: 'weightMeasure',
+      meta: { title: '渐轻入口' },
+      component: weightMeasure
+    },
   ]
 })
 
