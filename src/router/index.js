@@ -48,6 +48,14 @@ const userInfo = resolve => require(['@/components/user-info/userInfo.vue'], res
 const allergic = resolve => require(['@/components/user-info/allergic/allergic.vue'], resolve)
 const chronicDisease = resolve => require(['@/components/user-info/chronicDisease/chronicDisease.vue'], resolve)
 
+const healthEntryMy= resolve => require(['@/components/health-entry/health-entry-my/healthEntryMy.vue'], resolve)
+const healthEntryFamily = resolve => require(['@/components/health-entry/health-entry-family/healthEntryFamily.vue'], resolve)
+const sleepCyclopedia = resolve => require(['@/components/sleep-cyclopedia/sleepCyclopedia.vue'], resolve)
+const errorMessage = resolve => require(['@/components/error-message/errorMessage.vue'], resolve)
+const weightMeasure = resolve => require(['@/components/weight-measure/weight-measure/weightMeasure.vue'], resolve)
+
+
+
 
 const router = new Router({
   mode: 'history',
@@ -349,6 +357,36 @@ const router = new Router({
         title: '慢病史'
       },
       component: chronicDisease
+    },
+    {
+      path: '/sleepCyclopedia',
+      name: 'sleepCyclopedia',
+      meta: { title: '睡眠百科' },
+      component: sleepCyclopedia
+    },
+    {
+      path: '/healthEntryMy',
+      name: 'healthEntryMy',
+      meta: { title: '健康档案入口创建角色' },
+      component: healthEntryMy
+    },
+    {
+      path: '/healthEntryFamily',
+      name: 'healthEntryFamily',
+      meta: { title: '健康档案入口创建家人' },
+      component: healthEntryFamily
+    },
+    {
+      path: '/errorMessage',
+      name: 'errorMessage',
+      meta: { title: '错误信息' },
+      component: errorMessage
+    },
+    {
+      path: '/weightMeasure',
+      name: 'weightMeasure',
+      meta: { title: '渐轻入口' },
+      component: weightMeasure
     },
   ]
 })
