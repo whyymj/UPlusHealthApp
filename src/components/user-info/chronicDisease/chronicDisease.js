@@ -14,6 +14,12 @@ export default{
     },
     getAllergic(){
       this.list = datas.allergicData;
+    },
+    save(){
+      //调用接口保存过敏史数据
+
+      //返回主页面
+      this.$router.replace({path: '/userInfo'})
     }
   },
   mounted(){

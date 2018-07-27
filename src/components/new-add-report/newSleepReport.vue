@@ -14,8 +14,8 @@
                     <span>优化健康的同时，帮您规避健康隐形风险</span>
                     <img src="/static/newAddReport/new-disease-tag.png" alt="">
                     <div class="button">
-                        <span class='span1'>补全慢病信息</span>
-                        <span class='span2'>跳过</span>
+                        <span class='span1' @click="jump(1)">补全慢病信息</span>
+                        <span class='span2' @click="jump(2)">跳过</span>
                     </div>
                 </div>
             </mt-swipe-item>
@@ -40,7 +40,14 @@
         methods: {
             handleChange(index) {
                 this.pageindex = index;
+            },
+          jump(type){
+            if(type==1){
+              this.$router.replace({path: '/userInfo'})
+            }else{
+              this.$router.replace({path: '/healthArchives'})
             }
+          }
         }
     }
 </script>
