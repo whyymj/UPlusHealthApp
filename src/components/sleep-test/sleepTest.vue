@@ -1,23 +1,75 @@
 <template>
     <div>
-        <h1>睡眠状况测试</h1>
-        <bar></bar>
-        <list></list>
+        <h1>睡眠状况测试-匹兹堡睡眠质量指数<img src="/static/sleepMusicList/img6.png" alt=""></h1>
+        <list :list='questions'></list>
     </div>
 </template>
 
 <script>
-    import bar from './progressBar';
-    import list from './questionsList';
+    import list from './turnQuestions.vue';
     export default {
         name: 'sleepTest',
         components: {
-            bar,
             list
+        },
+        data() {
+            return {
+                questions: [{
+                    title: '题1',
+                    options: [1, 2, 3, 4, 5]
+                }, {
+                    title: '题2',
+                    options: [1, 2, 3, 4, 5]
+                }, {
+                    title: '题3',
+                    options: [1, 2, 3, 4, 5]
+                }, {
+                    title: '题4',
+                    options: [1, 2, 3, 4, 5]
+                }, {
+                    title: '题5',
+                    options: [1, 2, 3, 4, 5]
+                }, {
+                    title: '题6',
+                    options: [1, 2, 3, 4, 5]
+                }, {
+                    title: '题7',
+                    options: [1, 2, 3, 4, 5]
+                }, {
+                    title: '题8',
+                    options: [1, 2, 3, 4, 5]
+                }, {
+                    title: '题9',
+                    options: [1, 2, 3, 4, 5]
+                }, {
+                    title: '题10',
+                    options: [1, 2, 3, 4, 5]
+                }, ]
+            }
+        },
+        mounted() {
+            console.log('>>>>>',this.$route.query.test);
         }
     }
 </script>
 
-<style scoped>
-
+<style lang='scss' scoped>
+    h1 {
+        font-size: 0.75rem;
+        font-family: 'PingFangSC-Regular';
+        color: rgba(51, 51, 51, 1);
+        text-align: center;
+        font-weight: 600;
+        background: #fff;
+        line-height: 3rem;
+        position: relative;
+        vertical-align: middle;
+        img {
+            width: 0.75rem;
+            height: 0.75rem;
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0 0.2rem
+        }
+    }
 </style>

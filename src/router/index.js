@@ -41,6 +41,8 @@ const sleepManuInput = resolve => require(['@/components/sleep-manu-input/sleepM
 const sleepMusicList = resolve => require(['@/components/sleep-music/sleepMusicList.vue'], resolve)
 const sleepMusicPlayerPanel = resolve => require(['@/components/sleep-music/sleepMusicPlayerPanel.vue'], resolve)
 const healthArchives = resolve => require(['@/components/health-archives/healthArchives.vue'], resolve)
+const enterToTest = resolve => require(['@/components/sleep-test/enterToTest.vue'], resolve)
+const sleepTestResult = resolve => require(['@/components/sleep-test/testResult.vue'], resolve)
 const test = resolve => require(['@/components/test.vue'], resolve)
 
 //个人资料
@@ -387,7 +389,18 @@ const router = new Router({
       name: 'weightMeasure',
       meta: { title: '渐轻入口' },
       component: weightMeasure
-    },
+    },{
+      path: '/enterToTest',
+      name: 'enterToTest',
+      meta: { title: '睡眠测试' },
+      component: enterToTest
+    },{
+      path: '/sleepTestResult',
+      name: 'sleepTestResult',
+      meta: { title: '睡眠测试' },
+      component: sleepTestResult
+    }
+    
   ]
 })
 
