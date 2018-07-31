@@ -1,7 +1,6 @@
 <template>
   <div class="userInfo">
     <div>
-
       <div @click="showActionSheet()">
         <mt-cell class="headerImg" title="头像" is-link>
           <img id="img" src="#"/>

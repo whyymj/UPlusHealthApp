@@ -1,6 +1,6 @@
 <template>
-    <div class="page">
-        <div class="body">
+    <div class="healthEntryMy">
+        <div class="healthEntryMybody">
             <div class="body_1">
                 <div class="body_11">
                     <div class="body_11_txt" >基本信息</div>
@@ -80,7 +80,7 @@
                 </div>
             </div>
         </div>
-        <div class="bottom">
+        <div class="healthEntryMybottom">
             <div class="bottom_text">完成</div>
         </div>
     </div>

@@ -1,5 +1,5 @@
  <template>
-     <div class="page">
+     <div class="healthEntryFamily">
          <div class="body">
              <div class="body_1">
                  <div class="body_11">

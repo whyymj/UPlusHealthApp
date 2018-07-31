@@ -1,6 +1,7 @@
-.page{
+@import '../../../common/css/variable.scss';
+.healthEntryMy{
   width: 18.75rem;
-  .body{
+  .healthEntryMybody{
     .body_1{
       .body_11{
         height: 10.5rem;
@@ -192,7 +193,7 @@
       }
     }
   }
-  .bottom{
+  .healthEntryMybottom{
     width:18.75rem;
     height:2.6rem;
     background:rgba(38,166,255,1);

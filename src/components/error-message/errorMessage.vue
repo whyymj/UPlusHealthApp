@@ -1,5 +1,5 @@
 <template>
-    <div class="page">
+    <div class="errorMessage">
         <div class="top"></div>
         <div class="body_1">遇到问题了......</div>
         <div class="body_2">很努力也没有加载出来呢，等下再尝试吧</div>

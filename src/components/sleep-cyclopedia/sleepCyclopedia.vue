@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div class="sleepCyclopedia">
       <div class="top">
           <ul class="top_ul">
               <li class="top_li">入门</li>

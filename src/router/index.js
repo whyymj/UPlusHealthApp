@@ -44,6 +44,7 @@ const healthArchives = resolve => require(['@/components/health-archives/healthA
 const enterToTest = resolve => require(['@/components/sleep-test/enterToTest.vue'], resolve)
 const sleepTestResult = resolve => require(['@/components/sleep-test/testResult.vue'], resolve)
 const test = resolve => require(['@/components/test.vue'], resolve)
+const test1 = resolve => require(['@/components/test1.vue'], resolve)
 
 //个人资料
 const userInfo = resolve => require(['@/components/user-info/userInfo.vue'], resolve)
@@ -399,8 +400,13 @@ const router = new Router({
       name: 'sleepTestResult',
       meta: { title: '睡眠测试' },
       component: sleepTestResult
-    }
-    
+    },{
+      path: '/test1',
+      name: 'test1',
+      meta: { title: 'camera测试' },
+      component: test1
+    },
+
   ]
 })
 
