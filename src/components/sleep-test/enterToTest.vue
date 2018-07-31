@@ -28,7 +28,8 @@
                     detail: '失眠严重程度值数量表',
                     meta: '1',
                     time: '',
-                    result: ''
+                    result: '',
+                    status: 0//0未答题，>0答一半，
                 }, {
                     title: '睡眠状况测试',
                     detail: '失眠严重程度值数量表',
@@ -41,7 +42,7 @@
                     meta: '3',
                     time: '',
                     result: ''
-                },{
+                }, {
                     title: '严重程度测试',
                     detail: '失眠严重程度值数量表',
                     meta: '4',
@@ -60,8 +61,80 @@
                     time: '2017-05-12 12:35',
                     result: '中度夜晚型'
                 }],
-                sickList: [],
-                spiritList: []
+                sickList: [{
+                    title: '严重程度测试',
+                    detail: '失眠严重程度值数量表',
+                    meta: '1',
+                    time: '',
+                    result: ''
+                }, {
+                    title: '睡眠状况测试',
+                    detail: '失眠严重程度值数量表',
+                    meta: '2',
+                    time: '',
+                    result: ''
+                }, {
+                    title: '睡眠习惯测试',
+                    detail: '失眠严重程度值数量表',
+                    meta: '3',
+                    time: '',
+                    result: ''
+                }, {
+                    title: '严重程度测试',
+                    detail: '失眠严重程度值数量表',
+                    meta: '4',
+                    time: '',
+                    result: ''
+                }, {
+                    title: '睡眠状况测试',
+                    detail: '失眠严重程度值数量表',
+                    meta: '5',
+                    time: '2017-05-12 12:35',
+                    result: '未完成'
+                }, {
+                    title: '睡眠习惯测试',
+                    detail: '失眠严重程度值数量表',
+                    meta: '6',
+                    time: '2017-05-12 12:35',
+                    result: '中度夜晚型'
+                }],
+                spiritList: [{
+                    title: '严重程度测试',
+                    detail: '失眠严重程度值数量表',
+                    meta: '1',
+                    time: '',
+                    result: ''
+                }, {
+                    title: '睡眠状况测试',
+                    detail: '失眠严重程度值数量表',
+                    meta: '2',
+                    time: '',
+                    result: ''
+                }, {
+                    title: '睡眠习惯测试',
+                    detail: '失眠严重程度值数量表',
+                    meta: '3',
+                    time: '',
+                    result: ''
+                }, {
+                    title: '严重程度测试',
+                    detail: '失眠严重程度值数量表',
+                    meta: '4',
+                    time: '',
+                    result: ''
+                }, {
+                    title: '睡眠状况测试',
+                    detail: '失眠严重程度值数量表',
+                    meta: '5',
+                    time: '2017-05-12 12:35',
+                    result: '未完成'
+                }, {
+                    title: '睡眠习惯测试',
+                    detail: '失眠严重程度值数量表',
+                    meta: '6',
+                    time: '2017-05-12 12:35',
+                    result: '中度夜晚型'
+                }],
             };
         },
         methods: {

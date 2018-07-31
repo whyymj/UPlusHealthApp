@@ -143,6 +143,7 @@
         },
         mounted() {
             myreq();
+            this.$axois.get('/api/user/getHealthPro')
             this.showdata = this.list[0]
             this.pagenum = this.list.length;
         }

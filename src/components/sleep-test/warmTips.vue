@@ -1,7 +1,7 @@
 <template>
     <div class='warmTips'>
         <h1>温馨建议</h1>
-        <mt-swipe :show-indicators="false" auto="5000">
+        <mt-swipe :show-indicators="false" :auto="auto">
             <mt-swipe-item v-for='(item,index) in list' :key='index'>
                 <div class="container">
                     <div v-for='(val,key) in item' :key='key' :class="{left:key==0,right:key==1}">
@@ -20,6 +20,7 @@
         props: ['tips'],
         data() {
             return {
+                auto:5000,
                 list: []
             }
         },

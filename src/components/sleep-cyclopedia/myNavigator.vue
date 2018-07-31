@@ -1,9 +1,9 @@
 <template>
-    <div style='height:2rem;width:13rem;margin:0.4rem auto 0;'>
+    <div style='height:2rem;width:17rem;margin:0.4rem auto 0;'>
         <swiper :options="option" ref="mySwiper">
             <!-- slides -->
             <swiper-slide v-for="(item,index) in navigateList" :key='index'>
-                <div style='height:2rem;width:100%;' @click='turnto(index)'>
+                <div style='height:2rem;width:100%;text-align:center' @click='turnto(index)'>
                     <span :class='{active:active==index}'>{{item.relation_name}}</span></div>
             </swiper-slide>
         </swiper>
@@ -48,7 +48,7 @@
                     setWrapperSize: true,
                     slidesPerView: 5,
                     spaceBetween: 20,
-                    centeredSlides: true,
+                    // centeredSlides: true,
                     // autoHeight: true,
                     // paginationType:"bullets",
                     paginationClickable: true,
@@ -93,7 +93,7 @@
         line-height: 2rem;
         font-size: 0.75rem;
         font-family: PingFangSC-Regular;
-        color: rgba(102, 102, 102, 1);
+       color:rgba(102,102,102,1);
     }
     .active {
         border-bottom: 0.1rem solid rgba(38, 165, 253, 1);

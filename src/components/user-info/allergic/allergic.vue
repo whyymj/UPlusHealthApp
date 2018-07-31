@@ -3,26 +3,24 @@
     <div class="isAllergic">
       <div class="isAllergic_text">你是否有过敏史?</div>
       <div class="isAllergic_switch">
-        <mt-switch :switch-value="allergicValue" @change="handleChange">
-        </mt-switch>
+        <el-switch v-model="allergyHistory">
+        </el-switch>
       </div>
     </div>
-
     <div class="line"></div>
-
     <div class="choose">
       <div class="chooseItems">请选择过敏源（可多选）:</div>
-        <div v-for="item in list" :list="list" :key="item.key" :class="item.active?'items_div_active':'items_div'">
-          <span :class="item.active?'items_text_active':'items_text'">{{item.name}}</span>
-        </div>
+      <tagslist :tags='allergylist' name='allergy' @choose='chooseAllergy'></tagslist>
     </div>
     <footer class="footer">
-      <button class="confirm" @click="save()">{{editText}}</button>
+      <button class="confirm" @click="save">保存</button>
     </footer>
   </div>
 </template>
 
-<script type="text/javascript" src="./allergic.js"></script>
+<script type="text/javascript" src="./allergic.js">
+
+</script>
 
 <style lang="scss">
   @import "./allergic.scss";

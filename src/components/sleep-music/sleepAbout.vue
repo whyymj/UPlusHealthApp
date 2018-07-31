@@ -3,13 +3,19 @@
         <h3>{{data.title}}</h3>
         <h6>{{data.content}}</h6>
         <img :src="data.src" alt="">
-        <a :href="data.linkurl">{{data.link}}</a>
+        <a @click="turnTo(data.linkurl)">{{data.link}}</a>
     </div>
 </template>
 
 <script>
     export default {
-        props: ['data']
+        props: ['data'],
+        methods:{
+            turnTo(url){
+                
+                this.$router.push(url);
+            }
+        }
     }
 </script>
 

@@ -5,8 +5,8 @@
         <analysis></analysis>
         <warmTips :tips='tips'></warmTips>
         <div class="button">
-            <div class="retry">重新测试</div>
-            <div class="save">保存结果</div>
+            <div class="retry" :class='{saved:hadSaved}' @click='reTest'>重新测试</div>
+            <div class="save" @click='save' v-if='!hadSaved'>保存结果</div>
         </div>
     </div>
 </template>
@@ -16,6 +16,14 @@
     import analysis from './analysis';
     import warmTips from './warmTips.vue'
     export default {
+        methods: {
+            save() {
+                this.hadSaved = true
+            },
+            reTest(){
+                this.$router.push('/sleepTest?from=retest')
+            }
+        },
         components: {
             score,
             analysis,
@@ -23,6 +31,7 @@
         },
         data() {
             return {
+                hadSaved: false,
                 testScore: 12,
                 tips: [{
                     title: "身体扫描",
@@ -79,6 +88,9 @@
         .save {
             right: 0;
             background: #26A6FF;
+        }
+        div.saved {
+            width: 100%;
         }
     }
 </style>

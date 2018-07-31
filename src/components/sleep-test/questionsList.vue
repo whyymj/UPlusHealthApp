@@ -5,19 +5,24 @@
             <tr v-for='(item,index) in list.options' :key='index' :style="{background:index%2==0?'#fff':'rgba(250,250,250,1)'}">
                 <td class="lefttd">{{item}}</td>
                 <td class='righttd'>
-                    <p>
+                    <p @click='closeReStartButton'>
                         <el-radio v-model="radio" :label="index"></el-radio>
                     </p>
                 </td>
             </tr>
         </table>
-      
     </div>
 </template>
 
 <script>
+    import bus from '../../assets/healthSleep/bus.js'
     export default {
         props: ['list', 'id'],
+        methods: {
+            closeReStartButton() {
+                bus.$emit('closeReInitButton');
+            }
+        },
         data() {
             return {
                 radio: '',
@@ -34,7 +39,9 @@
                 })
             }
         },
-        mounted() {}
+        mounted() {
+            this.radio = this.list.default;
+        }
     }
 </script>
 
@@ -106,5 +113,4 @@
             }
         }
     }
- 
 </style>

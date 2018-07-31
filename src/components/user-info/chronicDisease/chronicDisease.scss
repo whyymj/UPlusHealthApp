@@ -4,7 +4,7 @@
   width: 18.75rem;
   background: #F6F6F6;
   .isChronicDisease {
-    height: 3.8rem;
+    height: 3rem;
     width: 100%;
     vertical-align: middle;
     background: #FFFFFF;
@@ -41,8 +41,9 @@
   }
 
   .choose {
-    height: 7.6rem;
     background: #FFFFFF;
+    position: relative;
+
     .chooseItems {
       width: 7.8rem;
       height: 0.85rem;
@@ -51,7 +52,6 @@
       color: rgba(153, 153, 153, 1);
       line-height: 0.85rem;
       margin: 0rem 11rem 0 1rem;
-      padding: 1rem 0;
     }
     .items_div {
       display: inline-block;

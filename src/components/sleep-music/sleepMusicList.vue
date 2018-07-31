@@ -18,6 +18,7 @@
                 <datadeviation></datadeviation>
                 <nodata></nodata>
                 <echarts></echarts>
+                <!-- 睡眠百科 -->
                 <aboutSleep v-for='(item,index) in sleepAboutData' :data='item' :key='index'></aboutSleep>
                 <aboutNews></aboutNews>
                 <div class="buttons">
@@ -157,13 +158,13 @@
                     content: '睡眠小测试，了解自己的睡眠问题。',
                     src: "/static/sleepMusicList/exm1.jpg",
                     link: '测一测',
-                    ilnkurl: ''
+                    linkurl: '/sleepTest'
                 }, {
                     title: '睡眠百科（本服务由寝安睡眠提供',
                     content: '睡眠小百科，睡眠知识全收录。',
                     src: "/static/sleepMusicList/exm2.jpg",
                     link: '立刻围观',
-                    ilnkurl: ''
+                    linkurl: '/sleepCyclopedia'
                 }]
             };
         },

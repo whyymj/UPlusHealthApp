@@ -2,6 +2,11 @@
   width: 18.75rem;
   //height: 42.75rem;
   background-color: #F6F6F6;
+position: fixed;
+top:0;
+bottom:0;
+left:0;
+right:0;
   .top{
     width: 18.75rem;
     height: 2.05rem;
@@ -59,7 +64,7 @@
   .bottom{
     width: 18.75rem;
     height: 1.65rem;
-    position: absolute;top:41.1rem;
+    position: absolute;bottom:0;
     text-align: center;
     .img1{
       height: 0.8rem;

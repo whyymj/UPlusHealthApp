@@ -47,9 +47,9 @@
         <span>无</span>
       </mt-cell>
     </div>
-    <div class="div_magin">
+    <!-- <div class="div_magin">
       <mt-cell title="隐私设置" is-link/>
-    </div>
+    </div> -->
 
     <!--上传头像-->
     <div>
