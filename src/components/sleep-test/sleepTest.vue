@@ -1,7 +1,8 @@
 <template>
     <div>
         <h1>睡眠状况测试-匹兹堡睡眠质量指数<img src="/static/sleepMusicList/img6.png" alt=""></h1>
-        <list :list='questions'></list>
+        <list :list='questions' @turnQestion='turnQestion'></list>
+        <div class="submit" v-if='canSubmit'>提交测试</div>
     </div>
 </template>
 
@@ -12,8 +13,18 @@
         components: {
             list
         },
+        methods: {
+            turnQestion(index) {
+                if (index == this.questions.length ) {
+                    this.canSubmit = true;
+                } else {
+                    this.canSubmit = false;
+                }
+            }
+        },
         data() {
             return {
+                canSubmit: false,
                 questions: [{
                     title: '题1',
                     options: [1, 2, 3, 4, 5]
@@ -48,7 +59,7 @@
             }
         },
         mounted() {
-            console.log('>>>>>',this.$route.query.test);
+            console.log('>>>>>', this.$route.query.test);
         }
     }
 </script>
@@ -71,5 +82,18 @@
             vertical-align: middle;
             margin: 0 0.2rem
         }
+    }
+    .submit {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 3rem;
+        background: rgba(38, 166, 255, 1);
+        font-size: 0.8rem;
+        font-family: 'PingFangSC-Regular';
+        color: rgba(255, 255, 255, 1);
+        text-align: center;
+        line-height: 3rem;
     }
 </style>

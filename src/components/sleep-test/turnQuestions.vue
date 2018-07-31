@@ -1,6 +1,6 @@
 <template>
     <div class='turnQuestions'>
-        <bar :totalnum='totalnum' :curnum='curnum'></bar>
+        <bar :totalnum='totalnum' :curnum='curnum' ></bar>
         <el-carousel indicator-position='none' :autoplay='autoplay' arrow='never' ref='carousel'>
             <el-carousel-item v-for="(item,index) in list" :key="index">
                 <questionlist :list='item' :id='index' @selectQuestion='getOptions'></questionlist>
@@ -23,25 +23,40 @@
         data() {
             return {
                 autoplay: false,
-                totalnum: 0,
-                curnum: 0,
+                totalnum: 1,
+                curnum: 1,
                 cacheOptions: {}
+            }
+        },
+        watch: {
+            list() {
+                this.totalnum = this.list.length;
+                if (this.totalnum > 0) {
+                    this.curnum = 1;
+                } else {
+                    this.curnum = 0;
+                }
             }
         },
         methods: {
             prev() {
                 this.$refs.carousel.prev();
                 this.curnum = this.curnum - 1;
+                this.$emit('turnQestion', this.curnum);
             },
             next() {
                 this.$refs.carousel.next();
                 this.curnum = this.curnum + 1;
+                this.$emit('turnQestion', this.curnum);
             },
             getOptions(data) {
                 var that = this;
                 that.cacheOptions[data.questnum] = data.option;
-                localStorage.UPlusHealthCache = that.cacheOptions;
-                console.log(localStorage);
+                localStorage.UPlusHealthCache = {
+                    member_id: "",
+                    questions: that.cacheOptions,
+                    testTime: ""
+                };
             }
         },
         mounted() {

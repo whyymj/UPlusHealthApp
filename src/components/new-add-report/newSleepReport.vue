@@ -43,9 +43,9 @@
             },
           jump(type){
             if(type==1){
-              this.$router.replace({path: '/userInfo'})
+              this.$router.push({path: '/userInfo'})
             }else{
-              this.$router.replace({path: '/healthArchives'})
+              this.$router.push({path: '/healthArchives'})
             }
           }
         }

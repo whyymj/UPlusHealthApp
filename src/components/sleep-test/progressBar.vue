@@ -18,6 +18,8 @@
             },
             totalnum() {
                 this.total = this.totalnum;
+                 this.cur = this.curnum;
+                this.per = this.cur / this.total * 100;
             }
         },
         data() {

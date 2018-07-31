@@ -11,6 +11,7 @@
                 </td>
             </tr>
         </table>
+      
     </div>
 </template>
 
@@ -73,8 +74,8 @@
                     font-size: 1rem;
                     box-sizing: border-box;
                     label {
-                        width: 1rem;
-                        height: 1rem;
+                        width: 1.2rem;
+                        height: 1.1rem;
                         position: absolute;
                         top: 0;
                         left: 0;
@@ -89,8 +90,8 @@
                             position: absolute;
                             top: 0;
                             left: 0;
-                            width: 1rem;
-                            height: 1rem;
+                            width: 1.1rem;
+                            height: 1.1rem;
                             bottom: 0;
                             right: 0;
                         }
@@ -105,4 +106,5 @@
             }
         }
     }
+ 
 </style>
