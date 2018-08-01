@@ -164,7 +164,7 @@ module.exports = {
                 obj.msg = '密码不能为空'
                 break
             default:
-                obj.msg = ''
+                obj.msg = obj.msg
                 break
         }
         console.log(`this is main.js: ${obj.openId}`)
