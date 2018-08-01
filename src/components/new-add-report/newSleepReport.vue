@@ -34,7 +34,7 @@
         data() {
             return {
                 pagenum: 2,
-                pageindex: 1
+                pageindex: 0
             }
         },
         methods: {
@@ -43,7 +43,7 @@
             },
           jump(type){
             if(type==1){
-              this.$router.push({path: '/userInfo'})
+              this.$router.push({path: '/healthEntryMy'})
             }else{
               this.$router.push({path: '/healthArchives'})
             }

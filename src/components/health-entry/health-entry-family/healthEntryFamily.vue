@@ -4,26 +4,31 @@
             <div class="body_1">
                 <div class="body_11">
                     <div class="body_11_txt">基本信息</div>
-                    <div class="body_110">
-                        <img class="img1" src="../../../assets/male-head.svg" alt="">
-                        <img class="img2" src="../../../assets/female-head-selected.svg" alt="">
-                    </div>
+                    <!-- <div class="body_110">
+                                    <img class="img1" src="../../../assets/male-head.svg" alt="">
+                                    <img class="img2" src="../../../assets/female-head-selected.svg" alt="">
+                                </div> -->
                 </div>
                 <div class="body_12">
                     <div class="body_121">
+                        <span class="body_1211">性别</span>
+                        <span class="body_1212">&middot;</span>
+                        <span class="body_1213"><span>{{sex}}</span>&nbsp&nbsp<i class="el-icon-arrow-right" style='color:#DADADA;'></i></span>
+                    </div>
+                    <div class="body_121">
                         <span class="body_1211">生日</span>
                         <span class="body_1212">&middot;</span>
-                        <span class="body_1213">{{birthday}}</span>
+                        <span class="body_1213"><span>{{birthday}}</span>&nbsp&nbsp<i class="el-icon-arrow-right" style='color:#DADADA;'></i></span>
                     </div>
                     <div class="body_121">
                         <span class="body_1211">身高</span>
                         <span class="body_1212">&middot;</span>
-                        <span class="body_1213">{{tall}}</span>
+                        <span class="body_1213"><span>{{tall}}</span>&nbsp&nbsp<i class="el-icon-arrow-right" style='color:#DADADA;'></i></span>
                     </div>
                     <div class="body_121">
                         <span class="body_1211">体重</span>
                         <span class="body_1212">&middot;</span>
-                        <span class="body_1213">{{weight}}</span>
+                        <span class="body_1213"><span>{{weight}}</span>&nbsp&nbsp<i class="el-icon-arrow-right" style='color:#DADADA;'></i></span>
                     </div>
                     <div class="body_122">
                         <div class="body_1221">
@@ -41,7 +46,7 @@
                         </el-switch>
                     </div>
                 </div>
-                <div class="body_122"  v-show='chronDiseaseHistory'>
+                <div class="body_122" v-show='chronDiseaseHistory'>
                     <div class="body_1221 body_231">请选择慢病标签&nbsp;&nbsp;&nbsp;(可多选)：</div>
                 </div>
                 <tagslist :tags='chromiclist' name='chronic' @choose='chooseChromic' v-show='chronDiseaseHistory'></tagslist>
@@ -71,13 +76,14 @@
         },
         data() {
             return {
+                sex: '男',
                 chronDiseaseHistory: true, //慢病史
                 allergyHistory: true, //过敏史
                 birthday: '1992年02月16日', //生日
                 tall: '166厘米', //身高
                 weight: "58.5公斤", //体重
-                chromicListResult:[],
-                allergyListResult:[],
+                chromicListResult: [],
+                allergyListResult: [],
                 chromiclist: [{
                     name: '心脏病',
                     selected: false

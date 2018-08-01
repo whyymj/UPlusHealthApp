@@ -51,8 +51,8 @@ const userInfo = resolve => require(['@/components/user-info/userInfo.vue'], res
 const allergic = resolve => require(['@/components/user-info/allergic/allergic.vue'], resolve)
 const chronicDisease = resolve => require(['@/components/user-info/chronicDisease/chronicDisease.vue'], resolve)
 
-const healthEntryMy= resolve => require(['@/components/health-entry/health-entry-my/healthEntryMy.vue'], resolve)
-const healthEntryFamily = resolve => require(['@/components/health-entry/health-entry-family/healthEntryFamily.vue'], resolve)
+const healthEntryFamily = resolve => require(['@/components/health-entry/health-entry-my/healthEntryMy.vue'], resolve)
+const healthEntryMy = resolve => require(['@/components/health-entry/health-entry-family/healthEntryFamily.vue'], resolve)
 const sleepCyclopedia = resolve => require(['@/components/sleep-cyclopedia/sleepCyclopedia.vue'], resolve)
 const errorMessage = resolve => require(['@/components/error-message/errorMessage.vue'], resolve)
 const weightMeasure = resolve => require(['@/components/weight-measure/weight-measure/weightMeasure.vue'], resolve)
