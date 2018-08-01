@@ -1,0 +1,22 @@
+{
+    "status": "0",
+    "data": {
+        "member_id": "58",
+        "login_code": 15153125386,
+        "relation": "1",
+        "relation_name": "爸爸",
+        "height": 170,
+        "weight": 65,
+        "birthday": "1966-11-27",
+        "head_pic": "http://healthapp.haier.net/image/father.png",
+        "sex": "male",
+        "create_date": "2018-04-12 10:34:57",
+        "nick_name": "爸爸",
+        "target_weight": 65,
+        "is_first_set_tw": 1,
+        "age": 52
+    },
+    "code": "C0000",
+    "msg": "成功",
+    "openId": "3f739e8a8ce343c4af15b925f8baeb74"
+}
