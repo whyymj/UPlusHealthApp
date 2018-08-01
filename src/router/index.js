@@ -56,7 +56,7 @@ const healthEntryFamily = resolve => require(['@/components/health-entry/health-
 const sleepCyclopedia = resolve => require(['@/components/sleep-cyclopedia/sleepCyclopedia.vue'], resolve)
 const errorMessage = resolve => require(['@/components/error-message/errorMessage.vue'], resolve)
 const weightMeasure = resolve => require(['@/components/weight-measure/weight-measure/weightMeasure.vue'], resolve)
-
+const serverError=resolve => require(['@/components/error-message/serverError.vue'], resolve)
 
 
 
@@ -384,6 +384,11 @@ const router = new Router({
       name: 'errorMessage',
       meta: { title: '错误信息' },
       component: errorMessage
+    },{
+      path: '/serverError',
+      name: 'serverError',
+      meta: { title: '服务器出错了' },
+      component: serverError
     },
     {
       path: '/weightMeasure',

@@ -1,12 +1,13 @@
 <template>
-    <div style='height:2rem;width:13rem;margin:0.4rem auto 0;'>
-        <swiper :options="option" ref="mySwiper">
+    <div style='height:2rem;width:17rem;margin:0.4rem auto 0;'>
+        <swiper :options="option" ref="mySwiper" >
             <!-- slides -->
             <swiper-slide v-for="(item,index) in navigateList" :key='index'>
                 <div style='height:2rem;width:100%;' @click='turnto(index)'>
                     <span :class='{active:active==index}'>{{item.relation_name}}</span></div>
             </swiper-slide>
         </swiper>
+        
     </div>
 </template>
 <script>

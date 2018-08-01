@@ -11,6 +11,9 @@
     export default {
         components: {
             myaudio
+        },
+        mounted(){
+            console.log('>>>',this.$route);
         }
     }
 </script>

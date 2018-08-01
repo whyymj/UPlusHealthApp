@@ -50,7 +50,7 @@
         width: 11rem;
         margin: auto;
         position: relative;
-        height: 11rem;
+        height: 12rem;
         .body {
             width: 100%;
             overflow: hidden;

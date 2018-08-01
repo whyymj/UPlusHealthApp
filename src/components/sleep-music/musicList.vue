@@ -2,8 +2,8 @@
     <div class='musiclist'>
         <div class="row" v-for='(item,index) in musiclist' :key='index' @click='play(index)'>
             <div class="img">
-                <img src="/static/sleepMusicList/img1.png" alt="" class="tab" v-if='playindex==index'>
-                <span class="tab" v-else>{{index+1}}</span>
+                <!-- <img src="/static/sleepMusicList/img1.png" alt="" class="tab" v-if='playindex==index'> -->
+                <span class="tab">{{index+1}}</span>
             </div>
             <div class="content">
                 <div class="title">{{item.name}}</div>
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import bus from './evetbus.js';
+    import bus from './evetbus.js';
     export default {
         props: ['musiclist'],
         methods: {
@@ -28,7 +28,13 @@ import bus from './evetbus.js';
             },
             play(index) {
                 this.playindex = index;
-                bus.$emit('playing',this.musiclist[index])
+                bus.$emit('playing', this.musiclist[index]);
+                this.$router.push({
+                    path:'/sleepMusicPlayerPanel',
+                    query:{
+                        index:index
+                    }
+                });
             }
         },
         data() {

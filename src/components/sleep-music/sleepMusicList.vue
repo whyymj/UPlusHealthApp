@@ -28,7 +28,7 @@
             </div>
             <div class="page page2" v-show='activeSpan==1'>
                 <musiclist :musiclist='list'></musiclist>
-                <player></player>
+                <!-- <player></player> -->
                 <div class="tips">
                     <h6><img src="/static/sleepMusicList/img3.png" alt="">
                         <span>以上服务由寝安提供</span></h6>
@@ -188,9 +188,38 @@
 </script>
 
 <style lang='scss'>
-.page1{
-    padding-bottom:3rem;
-}
+    .page1 {
+        padding-bottom: 3rem;
+    }
+    .page2 {
+        position: fixed;
+        top: 3rem;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: #fff;
+        overflow: auto;
+        .tips {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            height: 2rem;
+            border-top:1px solid #F5F5F5;
+            h6 {
+                width: 100%;
+                height: 100%;
+                line-height: 2rem;
+                text-align: center;
+                vertical-align: middle;
+                img,
+                span {
+                    vertical-align: middle;
+                }
+            }
+        }
+    }
     .sleepMusic {
         background: #fff;
         width: 100%;
@@ -235,7 +264,7 @@
                     width: 100%;
                     height: 2rem;
                     position: fixed;
-                    bottom:0;
+                    bottom: 0;
                     margin: 1rem auto 0;
                     .manuinput,
                     .equipinput {
@@ -256,29 +285,6 @@
                         right: 0;
                         background: rgba(38, 166, 255, 1);
                     }
-                }
-            }
-        }
-        .tips {
-            position: relative;
-            left: 50%;
-            overflow: hidden;
-            height: 1rem;
-            transform: translate(-50%, 0);
-            margin-top: 0.5rem;
-            h6 {
-                position: absolute;
-                left: 50%;
-                transform: translate(-50%, 0);
-                line-height: 1rem;
-                text-align: center;
-                vertical-align: middle;
-                img,
-                span {
-                    float: left;
-                    height: 1rem;
-                    line-height: 1rem;
-                    margin-right: 0.2rem;
                 }
             }
         }

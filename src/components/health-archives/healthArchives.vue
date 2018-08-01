@@ -66,7 +66,7 @@
                     </div>
                 </mt-swipe-item>
             </mt-swipe>
-            <img class='img' src="/static/healthArchives/index6.gif" alt="">
+            <p class='floatButton'><img class='img' src="/static/healthArchives/index8.png" alt=""></p>
         </div>
         <paginator :pagenum='pagenum' :pageindex='pageindex'></paginator>
     </div>
@@ -154,6 +154,26 @@
     .healthArchives {
         .tabs {
             position: relative;
+            .floatButton {
+                position: fixed;
+                width: 2.5rem;
+                height: 2.5rem;
+                background: rgba(34, 131, 226, 1);
+                box-shadow: 0rem 0.4rem 0.8rem 0rem rgba(34, 131, 226, 0.32);
+                right:1rem;
+                bottom:2rem;
+                border-radius: 50%;
+                .img{
+width:1.5rem;
+height:1.5rem;
+position: absolute;
+top:0;
+left:0;
+right:0;
+bottom: 0;
+margin:auto;
+                }
+            }
             .navigations {
                 width: 100%;
                 height: 2rem;
@@ -178,13 +198,6 @@
             }
             .el-tabs__item {
                 display: inline-block;
-            }
-            .img {
-                position: absolute;
-                top: 0.6rem;
-                right: 1rem;
-                width: 1.06rem;
-                height: 1.1rem;
             }
         }
         .imgContainer {

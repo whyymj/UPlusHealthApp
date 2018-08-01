@@ -1,6 +1,7 @@
 .errorMessage{
   width: 18.75rem;
   position: fixed;
+  overflow: auto;
   top:0;
   left:0;
   right:0;bottom:0;
@@ -8,9 +9,7 @@
   .top{
     height:17.95rem;
     width: 18.75rem;
-    background-image: url("../../assets/err1.png");
-    background-size: 18.9rem 18.75rem;
-    background-repeat:no-repeat;
+position: relative;
   }
   .body_1{
     margin-top: 2.85rem;

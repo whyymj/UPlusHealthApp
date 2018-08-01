@@ -16,23 +16,23 @@
         data() {
             return {
                 items: [{
-                        title: "Jason Oner",
-                        url: "https://cdn.vuetifyjs.com/images/lists/1.jpg",
+                        title: "上床",
+                        url: "/static/sleep-manue-input/img1.png",
                         content: "12:30"
                     },
                     {
-                        title: "Ranee Carlson",
-                        avatar: "https://cdn.vuetifyjs.com/images/lists/2.jpg",
+                        title: "睡着",
+                        url: "/static/sleep-manue-input/img2.png",
                         content: "12:30"
                     },
                     {
-                        title: "Cindy Baker",
-                        avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg",
+                        title: "睡醒",
+                        url: "/static/sleep-manue-input/img3.png",
                         content: "12:30"
                     },
                     {
-                        title: "Ali Connors",
-                        avatar: "https://cdn.vuetifyjs.com/images/lists/4.jpg",
+                        title: "起床",
+                        url: "/static/sleep-manue-input/img4.png",
                         content: "12:30"
                     }
                 ]

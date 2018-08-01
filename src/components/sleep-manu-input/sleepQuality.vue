@@ -4,9 +4,10 @@
         <h2>睡眠质量</h2>
         <div class='row'>
             <ul>
-                <li v-for='(item,index) in imgs' :key='index'>
-                    <img :src="item.url" alt="">
-                    <h6>{{item.title}}</h6>
+                <li v-for='(item,index) in imgs' :key='index' @click='chooseQuality(index)'>
+                    <img :src="item.url" alt="" v-if='sleepQuality[index]!=0'>
+                    <img :src="item.url_null" alt="" v-else>
+                    <h6 :style='{color:sleepQuality[index]!=0?"rgba(50, 182, 230, 1)":"rgba(153,153,153,1)"}'>{{item.title}}</h6>
                 </li>
             </ul>
             <h2>睡眠影响因素</h2>
@@ -14,63 +15,102 @@
         <div class='row row2'>
             <h6>若没有请忽略此项</h6>
             <ul style='height:12rem;'>
-                <li v-for='(item,index) in imgs2' :key='index' style='width:25%;height:5rem;'>
-                    <img :src="item.url" alt="">
-                    <h6>{{item.title}}</h6>
+                <li v-for='(item,index) in imgs2' :key='index' style='width:25%;height:5rem;' @click='chooseFactor(index)'>
+                    <img :src="item.url" alt="" v-if='sleepFactor[index]!=0'>
+                    <img :src="item.url_null" alt="" v-else>
+                    <h6 :style='{color:sleepFactor[index]!=0?"rgba(50, 182, 230, 1)":"rgba(153,153,153,1)"}'>{{item.title}}</h6>
                 </li>
             </ul>
         </div>
         <div class="button">保存</div>
-        
     </div>
 </template>
 
 <script>
     export default {
         props: ['list'],
+        methods: {
+            chooseQuality(index) {
+                this.sleepQuality = this.sleepQuality.map(function(item) {
+                    return 0;
+                })
+                this.sleepQuality.splice(index, 1, this.sleepQuality[index] == 0 ? 1 : 0)
+            },
+            chooseFactor(index) {
+                this.sleepFactor.splice(index, 1, this.sleepFactor[index] == 0 ? 1 : 0)
+            }
+        },
         data() {
             return {
                 imgs: [{
                     url: '/static/sleep-manue-input/img9.png',
-                    title: '十分差'
+                    url_null: '/static/sleep-manue-input/img9_null.png',
+                    title: '十分差',
+                    level: 1
                 }, {
                     url: '/static/sleep-manue-input/img10.png',
-                    title: '较差'
+                    url_null: '/static/sleep-manue-input/img10_null.png',
+                    title: '较差',
+                    level: 2
                 }, {
                     url: '/static/sleep-manue-input/img11.png',
-                    title: '正常'
+                    url_null: '/static/sleep-manue-input/img11_null.png',
+                    title: '正常',
+                    level: 3
                 }, {
                     url: '/static/sleep-manue-input/img12.png',
-                    title: '比较好'
+                    url_null: '/static/sleep-manue-input/img12_null.png',
+                    title: '比较好',
+                    level: 4
                 }, {
                     url: '/static/sleep-manue-input/img13.png',
-                    title: '超级棒'
+                    url_null: '/static/sleep-manue-input/img13_null.png',
+                    title: '超级棒',
+                    level: 5
                 }],
                 imgs2: [{
                     url: '/static/sleep-manue-input/img9.png',
-                    title: '十分差'
+                    url_null: '/static/sleep-manue-input/img9_null.png',
+                    title: '十分差',
+                    level: 1
                 }, {
                     url: '/static/sleep-manue-input/img10.png',
-                    title: '较差'
+                    url_null: '/static/sleep-manue-input/img10_null.png',
+                    title: '较差',
+                    level: 2
                 }, {
                     url: '/static/sleep-manue-input/img11.png',
-                    title: '正常'
+                    url_null: '/static/sleep-manue-input/img11_null.png',
+                    title: '正常',
+                    level: 3
                 }, {
                     url: '/static/sleep-manue-input/img12.png',
-                    title: '比较好'
+                    url_null: '/static/sleep-manue-input/img12_null.png',
+                    title: '比较好',
+                    level: 4
                 }, {
                     url: '/static/sleep-manue-input/img13.png',
-                    title: '超级棒'
+                    url_null: '/static/sleep-manue-input/img13_null.png',
+                    title: '超级棒',
+                    level: 5
                 }, {
                     url: '/static/sleep-manue-input/img10.png',
-                    title: '较差'
+                    url_null: '/static/sleep-manue-input/img10_null.png',
+                    title: '较差',
+                    level: 6
                 }, {
                     url: '/static/sleep-manue-input/img11.png',
-                    title: '正常'
+                    url_null: '/static/sleep-manue-input/img11_null.png',
+                    title: '正常',
+                    level: 7
                 }, {
                     url: '/static/sleep-manue-input/img12.png',
-                    title: '比较好'
-                }]
+                    url_null: '/static/sleep-manue-input/img12_null.png',
+                    title: '比较好',
+                    level: 8
+                }],
+                sleepQuality: [0, 0, 0, 0, 0],
+                sleepFactor: [0, 0, 0, 0, 0, 0, 0, 0]
             }
         },
     }

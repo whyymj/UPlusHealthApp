@@ -55,9 +55,9 @@
             border-bottom: 1px solid rgba(245, 245, 245, 1);
             margin: auto;
             img {
-                width: 2rem;
-                height: 2rem;
-                margin-top: 0.5rem;
+                width: 1.5rem;
+                height: 1.5rem;
+                margin: 0.7rem 0 0 0.5rem;
             }
             span {
                 position: absolute;
