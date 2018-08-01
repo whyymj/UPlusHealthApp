@@ -254,14 +254,14 @@ export default {
             } else {
               Toast({
                 message: result.data.msg,
-                className: 'no-results',
+                className: 'wrong-results',
                 duration: 2000
               })
             }
           } catch (err) {
             Toast({
               message: '网络有问题!',
-              className: 'no-results',
+              className: 'wrong-results',
               duration: 2000
             })
             console.log('err: ', err)
@@ -283,14 +283,14 @@ export default {
             } else {
               Toast({
                 message: result.data.msg,
-                className: 'no-results',
+                className: 'wrong-results',
                 duration: 2000
               })
             }
           } catch (err) {
             Toast({
               message: '网络有问题!',
-              className: 'no-results',
+              className: 'wrong-results',
               duration: 2000
             })
             console.log('err: ', err)
@@ -310,14 +310,14 @@ export default {
             } else {
               Toast({
                 message: result.data.msg,
-                className: 'no-results',
+                className: 'wrong-results',
                 duration: 2000
               })
             }
           } catch (err) {
             Toast({
               message: '网络有问题!',
-              className: 'no-results',
+              className: 'wrong-results',
               duration: 2000
             })
             console.log('err: ', err)
@@ -337,14 +337,14 @@ export default {
             } else {
               Toast({
                 message: result.data.msg,
-                className: 'no-results',
+                className: 'wrong-results',
                 duration: 2000
               })
             }
           } catch (err) {
             Toast({
               message: '网络有问题!',
-              className: 'no-results',
+              className: 'wrong-results',
               duration: 2000
             })
             console.log('err: ', err)

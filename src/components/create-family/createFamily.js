@@ -172,7 +172,6 @@ export default {
         } catch (err) {
           Toast({
             message: '网络有问题!',
-            className: 'no-results',
             duration: 2000
           })
           console.log('Whoops: ', err)
