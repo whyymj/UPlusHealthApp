@@ -13,4 +13,10 @@ module.exports = {
         }
         return arr
     })(), // 0 - 100
+    sex:(()=>{
+      const arr = new Array();
+      arr.push("男");
+      arr.push("女");
+      return arr;
+    })()
 }

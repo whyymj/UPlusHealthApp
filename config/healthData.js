@@ -1,0 +1,53 @@
+export default{
+  data:[{
+    "categoryType.identifier": "HKCategoryTypeIdentifierSleepAnalysis",
+    "endDate": "2018-07-24T08:22:04+08:00",
+    "startDate": "2018-07-24T00:06:28+08:00",
+    "UUID": "C97F643D-411D-44F5-A7E3-C6C31BBDFAE2",
+    "sourceBundleId": "com.boohee.sleep",
+    "value": 1,
+    "sourceName": "萤火虫睡眠",
+    "metadata": {},
+    "categoryType.description": "HKCategoryTypeIdentifierSleepAnalysis"
+  }, {
+    "categoryType.identifier": "HKCategoryTypeIdentifierSleepAnalysis",
+    "endDate": "2018-07-25T18:15:34+08:00",
+    "startDate": "2018-07-25T14:02:08+08:00",
+    "UUID": "EA1DC171-C27A-4A87-8BB7-FBF3DFC35F9E",
+    "sourceBundleId": "com.boohee.sleep",
+    "value": 1,
+    "sourceName": "萤火虫睡眠",
+    "metadata": {},
+    "categoryType.description": "HKCategoryTypeIdentifierSleepAnalysis"
+  }, {
+    "categoryType.identifier": "HKCategoryTypeIdentifierSleepAnalysis",
+    "endDate": "2018-07-26T04:35:27+08:00",
+    "startDate": "2018-07-26T00:21:00+08:00",
+    "UUID": "50BA09C8-8BDC-4250-9101-A55F9BE87A5A",
+    "sourceBundleId": "com.boohee.sleep",
+    "value": 1,
+    "sourceName": "萤火虫睡眠",
+    "metadata": {},
+    "categoryType.description": "HKCategoryTypeIdentifierSleepAnalysis"
+  }, {
+    "categoryType.identifier": "HKCategoryTypeIdentifierSleepAnalysis",
+    "endDate": "2018-07-28T07:32:44+08:00",
+    "startDate": "2018-07-28T00:50:38+08:00",
+    "UUID": "22A5757F-88DE-4E76-973B-A4EA904AB502",
+    "sourceBundleId": "com.boohee.sleep",
+    "value": 1,
+    "sourceName": "萤火虫睡眠",
+    "metadata": {},
+    "categoryType.description": "HKCategoryTypeIdentifierSleepAnalysis"
+  }, {
+    "categoryType.identifier": "HKCategoryTypeIdentifierSleepAnalysis",
+    "endDate": "2018-07-30T07:47:15+08:00",
+    "startDate": "2018-07-30T00:26:01+08:00",
+    "UUID": "07169030-4EED-4490-9046-CE631752D1DC",
+    "sourceBundleId": "com.boohee.sleep",
+    "value": 1,
+    "sourceName": "萤火虫睡眠",
+    "metadata": {},
+    "categoryType.description": "HKCategoryTypeIdentifierSleepAnalysis"
+  }]
+}

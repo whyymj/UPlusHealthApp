@@ -1,0 +1,43 @@
+.errorMessage{
+  width: 18.75rem;
+  position: fixed;
+  overflow: auto;
+  top:0;
+  left:0;
+  right:0;bottom:0;
+  background-color: #FFFFFF;
+  .top{
+    height:17.95rem;
+    width: 18.75rem;
+position: relative;
+  }
+  .body_1{
+    margin-top: 2.85rem;
+    margin-left: 1.85rem;
+    height:1.65rem;
+    font-size:1.2rem;
+    font-family:PingFangSC-Medium;
+    color:#2283E2;
+    line-height:1.65rem;
+  }
+  .body_2{
+    margin-left: 1.85rem;
+    margin-top: 0.4rem;
+    height:1.1rem;
+    font-size:0.8rem;
+    font-family:PingFangSC-Regular;
+    color:#2283E2;
+    line-height:1.1rem;
+  }
+  .bottom{
+    margin-top: 6.45rem;
+    width: 18.75rem;
+    height: 2.6rem;
+    font-size:0.8rem;
+    font-family:PingFangSC-Regular;
+    color:#FFFFFF;
+    line-height:2.6rem;
+    text-align: center;
+    background-color: #26A6FF;
+  }
+}
