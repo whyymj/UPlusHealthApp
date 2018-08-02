@@ -110,10 +110,11 @@
 		  		</span>
           </div>
           <div class="chart">
-            <e-chart
+            <chart
               ref="oxygen"
               :options="oxygenChartsOption"
-              :autoResize="true"></e-chart>
+              :autoResize="true">
+            </chart>
 
             <!--no data-->
             <div ref="noOxygen" class="no-result-chart" style="display: none">

@@ -257,7 +257,7 @@ export default {
             return _[0].split(' ')[0]
           }) : result.data.data
           console.log('args: ', result)
-          this.$refs.temperature.$children[0] && this.$refs.temperature.$children[0].clear()
+          // this.$refs.temperature.$children[0] && this.$refs.temperature.$children[0].clear()
           if (s.length === 0) {
             // TODO: no record
             if (args === 'seven') {
@@ -265,14 +265,16 @@ export default {
               this.$refs.temperature.$el.style.display = 'none'
             } else {
               if (this.$refs.noTemperature.style.display === 'none') {
-                this.$refs.temperature.$children[0].mergeOptions(args === 'seven' ? this.getLastSevenChart([], []) : this.getChartsOption(d))
+                this.temperatureChartsOption = args === 'seven' ? this.getLastSevenChart([], []) : this.getChartsOption(d)
+                // this.$refs.temperature.$children[0].mergeOptions(args === 'seven' ? this.getLastSevenChart([], []) : this.getChartsOption(d))
               } else {
                 this.$refs.noTemperature.style.display = 'block'
                 this.$refs.temperature.$el.style.display = 'none'
               }
             }
           } else {
-            this.$refs.temperature.$children[0] && this.$refs.temperature.$children[0].mergeOptions(args === 'seven' ? this.getLastSevenChart(d, s) : this.getChartsOption(d))
+            this.temperatureChartsOption = args === 'seven' ? this.getLastSevenChart(d, s) : this.getChartsOption(d)
+            // this.$refs.temperature.$children[0] && this.$refs.temperature.$children[0].mergeOptions(args === 'seven' ? this.getLastSevenChart(d, s) : this.getChartsOption(d))
           }
           if (this.$refs.temperature.$children.length !== 0) {
             this.$refs.temperature.$children[0].chart._api.getZr().on('mouseup', () => {

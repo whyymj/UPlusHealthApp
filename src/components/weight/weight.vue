@@ -115,10 +115,11 @@
             <span>最近七次数据</span>
           </div> -->
           <div class="chart">
-            <e-chart
+            <chart
               ref="weight"
               :options="weightChartsOption"
-              :autoResize="true"></e-chart>
+              :autoResize="true">
+            </chart>
 
             <!--no data-->
             <div ref="noWeight" class="no-result-chart" style="display: none">

@@ -115,10 +115,11 @@
 		  		</span>
           </div>
           <div class="chart">
-            <e-chart
+            <chart
               ref="pressure"
               :options="pressureChartsOption"
-              :autoResize="true"></e-chart>
+              :autoResize="true">
+            </chart>
 
             <!--no data-->
             <div ref="noPressure" class="no-result-chart" style="display: none">

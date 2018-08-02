@@ -184,7 +184,7 @@ export default {
               this.ecgRecordData = result.data.data
             }
             this.ecgLevel = this.ecgRecordData[0].suggestion.level
-            this.getECGDetail()
+            this.getECGDetail(this.ecgRecordData[0].cardiogram.cardiogram_id)
           }
           this.initNews()
         }
@@ -208,7 +208,8 @@ export default {
             return +n
           })
           let dataArray = LZString.decompressFromUint8Array(num)
-          this.$refs.ecg.$children[0].mergeOptions(this.getChartsOption(JSON.parse(dataArray)))
+          this.ecgChartsOption = this.getChartsOption(JSON.parse(dataArray))
+          // this.$refs.ecg.$children[0].mergeOptions(this.getChartsOption(JSON.parse(dataArray)))
         }
       } catch (err) {
         console.log(err)
