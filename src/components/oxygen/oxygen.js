@@ -258,7 +258,7 @@ export default {
           let d = args === 'seven' ? result.data.data.map((_, i) => {
             return _[0].split(' ')[0]
           }) : result.data.data
-          this.$refs.oxygen.$children[0] && this.$refs.oxygen.$children[0].clear()
+          // this.$refs.oxygen.$children[0] && this.$refs.oxygen.$children[0].clear()
           if (d.length === 0 && s.length === 0) {
             // TODO: no record
             if (args === 'seven') {
@@ -266,13 +266,15 @@ export default {
               this.$refs.oxygen.$el.style.display = 'none'
             } else {
               if (this.$refs.noOxygen.style.display === 'none') {
-                this.$refs.oxygen.$children[0].mergeOptions(args === 'seven' ? this.getLastSevenChart([], []) : this.getChartsOption(d))
+                this.oxygenChartsOption = args === 'seven' ? this.getLastSevenChart([], []) : this.getChartsOption(d)
+                // this.$refs.oxygen.$children[0].mergeOptions(args === 'seven' ? this.getLastSevenChart([], []) : this.getChartsOption(d))
               }
             }
           } else {
             this.$refs.noOxygen.style.display = 'none'
             this.$refs.oxygen.$el.style.display = 'block'
-            this.$refs.oxygen.$children[0] && this.$refs.oxygen.$children[0].mergeOptions(args === 'seven' ? this.getLastSevenChart(d, s) : this.getChartsOption(d))
+            this.oxygenChartsOption = args === 'seven' ? this.getLastSevenChart(d, s) : this.getChartsOption(d)
+            // this.$refs.oxygen.$children[0] && this.$refs.oxygen.$children[0].mergeOptions(args === 'seven' ? this.getLastSevenChart(d, s) : this.getChartsOption(d))
           }
           if (this.$refs.oxygen.$children.length !== 0) {
             this.$refs.oxygen.$children[0].chart._api.getZr().on('mouseup', () => {

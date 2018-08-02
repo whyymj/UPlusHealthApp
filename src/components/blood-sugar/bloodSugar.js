@@ -264,7 +264,6 @@ export default {
           let d = args === 'seven' ? result.data.data.map((_, i) => {
             return _[0].split(' ')[0]
           }) : result.data.data
-          this.$refs.sugar.$children[0] && this.$refs.sugar.$children[0].clear()
           if (d.length === 0 && s.length === 0) {
             // TODO: no record
             if (args === 'seven') {
@@ -272,13 +271,15 @@ export default {
               this.$refs.sugar.$el.style.display = 'none'
             } else {
               if (this.$refs.noSugar.style.display === 'none') {
-                this.$refs.sugar.$children[0].mergeOptions(args === 'seven' ? this.getLastSevenChart([], []) : this.getChartsOption([]))
+                this.sugarChartsOption = args === 'seven' ? this.getLastSevenChart([], []) : this.getChartsOption([])
               }
             }
           } else {
-            this.$refs.noSugar.style.display = 'none'
-            this.$refs.sugar.$el.style.display = 'block'
-            this.$refs.sugar.$children[0] && this.$refs.sugar.$children[0].mergeOptions(args === 'seven' ? this.getLastSevenChart(d, s) : this.getChartsOption(d))
+            this.$nextTick(() => {
+              this.$refs.noSugar.style.display = 'none'
+              this.$refs.sugar.$el.style.display = 'block'
+              this.sugarChartsOption = args === 'seven' ? this.getLastSevenChart(d, s) : this.getChartsOption(d)
+            })
           }
           if (this.$refs.sugar.$children.length !== 0) {
             this.$refs.sugar.$children[0].chart._api.getZr().on('mouseup', () => {
@@ -385,8 +386,8 @@ export default {
             }
           },
           boundaryGap: [0, '50%'],
-          min: 0,
-          max: 15,
+          // min: 0,
+          // max: 15,
           minInterval: 5,
           maxIntervaL: 5,
           axisLine: {

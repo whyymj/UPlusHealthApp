@@ -113,10 +113,11 @@
             </span>
           </div>
           <div class="chart">
-            <e-chart
+            <chart
               ref="temperature"
               :options="temperatureChartsOption"
-              :autoResize="true"></e-chart>
+              :autoResize="true">
+            </chart>
 
               <!--no data-->
             <div ref="noTemperature" class="no-result-chart" style="display: none">

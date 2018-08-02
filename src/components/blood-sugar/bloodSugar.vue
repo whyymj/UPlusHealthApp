@@ -115,10 +115,11 @@
 		  		</span>
           </div>
           <div class="chart">
-            <e-chart
+            <chart
               ref="sugar"
               :options="sugarChartsOption"
-              :autoResize="true"></e-chart>
+              :autoResize="true">
+            </chart>
 
             <!--no data-->
             <div ref="noSugar" class="no-result-chart" style="display: none">

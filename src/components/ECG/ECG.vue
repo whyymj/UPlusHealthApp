@@ -99,10 +99,11 @@
         <div class="card-container ecg-chart">
           <h2>ECG</h2>
           <div class="chart">
-            <e-chart
+            <chart
               ref="ecg"
               :options="ecgChartsOption"
-              :autoResize="true"></e-chart>
+              :autoResize="true">
+            </chart>
 
             <!--no data-->
             <div ref="noEcg" class="no-result-chart" style="display: none">

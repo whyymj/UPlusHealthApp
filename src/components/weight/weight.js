@@ -154,7 +154,7 @@ export default {
           } else {
             this.$refs.noWeight.style.display = 'none'
             this.$refs.weight.$el.style.display = 'block'
-            this.$refs.weight.$children[0] && this.$refs.weight.$children[0].clear()
+            // this.$refs.weight.$children[0] && this.$refs.weight.$children[0].clear()
             let d = result.data.data.map(_ => {
               return _.create_date
             })
@@ -236,8 +236,8 @@ export default {
                 })
                 break
             }
+            this.weightChartsOption = this.getChartsOption(d, type, this.selectedRecordOption)
             if (this.$refs.weight.$children.length !== 0) {
-              this.$refs.weight.$children[0].mergeOptions(this.getChartsOption(d, type, this.selectedRecordOption))
               this.$refs.weight.$children[0].chart._api.getZr().on('mouseup', () => {
                 this.$refs.weight.$children[0].chart._api.dispatchAction({
                   type: 'hideTip'
@@ -279,6 +279,7 @@ export default {
       window._weight_selected_date = val
       this.weightDate = val
       this.initList()
+      this.chartOption()
       document.getElementById('calendarTop').classList.remove('open')
       document.getElementById('calendarBg').classList.remove('open')
       document.getElementById('calendarBelow').classList.remove('open')

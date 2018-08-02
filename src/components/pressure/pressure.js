@@ -262,20 +262,22 @@ export default {
             return _.split(' ')[0]
           })
           let t = result.data.data.time_list
-          this.$refs.pressure.$children[0] && this.$refs.pressure.$children[0].clear()
+          // this.$refs.pressure.$children[0] && this.$refs.pressure.$children[0].clear()
           if (d.length === 0 && s.length === 0) {
             if (args === 'seven') {
               this.$refs.noPressure.style.display = 'block'
               this.$refs.pressure.$el.style.display = 'none'
             } else {
               if (this.$refs.noPressure.style.display === 'none') {
-                this.$refs.pressure.$children[0].mergeOptions(this.getChartsOption([], [], [], []))
+                this.pressureChartsOption = this.getChartsOption([], [], [], [])
+                // this.$refs.pressure.$children[0].mergeOptions(this.getChartsOption([], [], [], []))
               }
             }
           } else {
             this.$refs.noPressure.style.display = 'none'
             this.$refs.pressure.$el.style.display = 'block'
-            this.$refs.pressure.$children[0] && this.$refs.pressure.$children[0].mergeOptions(this.getChartsOption(d, s, c, t))
+            this.pressureChartsOption = this.getChartsOption(d, s, c, t)
+            // this.$refs.pressure.$children[0] && this.$refs.pressure.$children[0].mergeOptions(this.getChartsOption(d, s, c, t))
           }
           if (this.$refs.pressure.$children.length !== 0) {
             this.$refs.pressure.$children[0].chart._api.getZr().on('mouseup', () => {
