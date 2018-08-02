@@ -20,8 +20,8 @@
     data(){
       return {
         popupVisible: false,
-        startDate: new Date(new Date().getTime() - 1 * 24 * 60 * 60 * 1000),
-        endDate: new Date,
+        startDate: new Date(new Date().getTime() - 4 * 24 * 60 * 60 * 1000+456*60*1000),
+        endDate: new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000+335*60*1000),
       }
     },
     methods: {
@@ -38,7 +38,6 @@
         resolve('data:image/jpeg;base64,' + imageData)
       },
       onFail(message){
-        reject(message)
         alert(message)
       },
       //打开苹果健康权限
@@ -50,8 +49,6 @@
       },
       //保存信息
       saveSleepInfo(){
-          alert("进入保存信息方法")
-        alert("window方式调用")
         let _this = this;
         window.plugins.healthkit.monitorSampleType({
           'sampleType': 'HKCategoryTypeIdentifierSleepAnalysis'
@@ -63,15 +60,15 @@
       getSleepInfo(value1){
         alert("开始时间："+this.startDate);
         alert("结束时间："+this.endDate);
-        alert("sampleType："+value1);
         window.plugins.healthkit.querySampleType({
           'startDate': this.startDate, // 开始时间
           'endDate': this.endDate, // now 结束时间
           'sampleType': 'HKCategoryTypeIdentifierSleepAnalysis',
-          'limit': 1,
+          'limit': 10,
           'ascending': 'T',
         }, function (value) {
           alert("text+++++" + JSON.stringify(value));
+          console.log(value);
         })
       }
     },
