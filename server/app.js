@@ -12,6 +12,7 @@ const oxygen = require('./oxygen/index')
 const sugar = require('./sugar/index')
 const temperature = require('./temperature/index')
 const news = require('./news/index')
+const sleep =require('./sleep/index')
 const app = express()
 
 const PORT = 8088 || process.env.PORT
@@ -67,6 +68,9 @@ app.use(sugar)
 app.use(temperature)
 // 资讯业务
 app.use(news)
+//睡眠业务
+app.use(sleep)
+
 app.use(express.static(path.resolve(__dirname, '../dist')))
 app.get('*', (req, res) => {
   const html = fs.readFileSync(path.resolve(__dirname, '../dist/index.html'), 'utf-8')

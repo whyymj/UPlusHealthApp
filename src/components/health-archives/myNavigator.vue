@@ -1,13 +1,12 @@
 <template>
-    <div style='height:2rem;width:17rem;margin:0.4rem auto 0;'>
-        <swiper :options="option" ref="mySwiper" >
+    <div class='wh_navigator' style='height:2rem;width:17rem;margin:0.4rem auto 0;'>
+        <swiper :options="option" ref="mySwiper">
             <!-- slides -->
             <swiper-slide v-for="(item,index) in navigateList" :key='index'>
-                <div style='height:2rem;width:100%;' @click='turnto(index)'>
-                    <span :class='{active:active==index}'>{{item.relation_name}}</span></div>
+                <div style='height:2rem;width:100%;text-align:center' @click='turnto(index)'>
+                    <span :class='{active:active==index}' style='text-align:center'>{{item.relation_name}}</span></div>
             </swiper-slide>
         </swiper>
-        
     </div>
 </template>
 <script>
@@ -24,13 +23,19 @@
                 this.$emit('clickNav', index)
             }
         },
-        props: ['navigateList'],
+        props: ['navigateList', 'initnum'],
         computed: {
             swiperOption() {
                 if (this.navigateList.length > 5) {
                     this.option.loop = true;
                 }
                 return this.option;
+            }
+        },
+        watch: {
+            initnum() {
+                this.active = this.initnum || 0;
+                this.swiper.slideTo(this.initnum || 0, 1000, false)
             }
         },
         data() {
@@ -45,6 +50,7 @@
                     // direction : 'vertical',
                     // effect: "coverflow",
                     // loop : true,
+                    initialSlide: 0,
                     grabCursor: true,
                     setWrapperSize: true,
                     slidesPerView: 5,
@@ -81,23 +87,26 @@
             }
         },
         mounted() {
-            this.swiper.slideTo(0, 1000, false)
+            this.active = this.initnum || 0;
+            this.swiper.slideTo(this.initnum || 0, 1000, false)
         }
     }
 </script>
 <style lang='scss'scoped>
-    span {
-        display: inline-block;
-        margin: auto;
-        height: 100%;
-        text-align: center;
-        line-height: 2rem;
-        font-size: 0.75rem;
-        font-family: PingFangSC-Regular;
-        color: rgba(102, 102, 102, 1);
-    }
-    .active {
-        border-bottom: 0.1rem solid rgba(38, 165, 253, 1);
-        color: rgba(38, 165, 253, 1);
+    .wh_navigator {
+        span {
+            display: inline-block;
+            margin: auto;
+            height: 100%;
+            text-align: center;
+            line-height: 2rem;
+            font-size: 0.75rem;
+            font-family: PingFangSC-Regular;
+            color: rgba(102, 102, 102, 1);
+        }
+        .active {
+            border-bottom: 0.1rem solid rgba(38, 165, 253, 1);
+            color: rgba(38, 165, 253, 1);
+        }
     }
 </style>

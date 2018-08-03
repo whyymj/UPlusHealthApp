@@ -14,7 +14,9 @@ const setTargetWeight = resolve => require(['@/components/set-target-weight/setT
 const introduction = resolve => require(['@/components/introduction/introduction.vue'], resolve)
 const createCharacter = resolve => require(['@/components/create-character/createCharacter.vue'], resolve)
 const createFamily = resolve => require(['@/components/create-family/createFamily.vue'], resolve)
-const healthRecordsB = resolve => require(['@/components/health-records-body/healthRecordsB.vue'], resolve)
+// const healthRecordsB = resolve => require(['@/components/health-records-body/healthRecordsB.vue'], resolve)
+
+const healthRecordsB = resolve => require(['@/components/health-archives/healthArchives.vue'], resolve)
 const healthRecordsL = resolve => require(['@/components/health-records-list/healthRecordsL.vue'], resolve)
 const addProject = resolve => require(['@/components/add-project/addProject.vue'], resolve)
 const manualEntry = resolve => require(['@/components/manual-entry/manualEntry.vue'], resolve)
@@ -58,29 +60,30 @@ const errorMessage = resolve => require(['@/components/error-message/errorMessag
 const weightMeasure = resolve => require(['@/components/weight-measure/weight-measure/weightMeasure.vue'], resolve)
 const serverError=resolve => require(['@/components/error-message/serverError.vue'], resolve)
 
-
+const editFamily=resolve => require(['@/components/user-info/editFamily.vue'], resolve)
 
 const router = new Router({
   mode: 'history',
   routes: [
+    // {
+    //   path: '*',
+    //   redirect: '/'
+    // }, {
+    //   path: '/',
+    //   redirect: 'login'
+    // }, {
+    //   path: '/test',
+    //   name: 'test',
+    //   component: test
+    // }, {
+    //   path: '/login',
+    //   name: 'login',
+    //   meta: {
+    //     title: '海尔健康'
+    //   },
+    //   component: login
+    // }, 
     {
-      path: '*',
-      redirect: '/'
-    }, {
-      path: '/',
-      redirect: 'login'
-    }, {
-      path: '/test',
-      name: 'test',
-      component: test
-    }, {
-      path: '/login',
-      name: 'login',
-      meta: {
-        title: '海尔健康'
-      },
-      component: login
-    }, {
       path: '/introduction',
       name: 'introduction',
       meta: {
@@ -115,21 +118,24 @@ const router = new Router({
         title: '健康档案'
       },
       component: healthRecordsL
-    }, {
-      path: '/addProject',
-      name: 'addProject',
-      meta: {
-        title: '添加项目'
-      },
-      component: addProject
-    }, {
+    }, 
+    // {
+    //   path: '/addProject',
+    //   name: 'addProject',
+    //   meta: {
+    //     title: '添加项目'
+    //   },
+    //   component: addProject
+    // }, 
+    {
       path: '/manualEntry/:type?',
       name: 'manualEntry',
       meta: {
         title: '手动录入'
       },
       component: manualEntry
-    }, {
+    }, 
+    {
       path: '/familyManagement',
       name: 'familyManagement',
       meta: {
@@ -150,7 +156,8 @@ const router = new Router({
         title: '关联家人'
       },
       component: associatedFamilyR
-    }, {
+    }, 
+    {
       path: '/associationRequest/:phone',
       name: 'associationRequest',
       meta: {
@@ -410,8 +417,13 @@ const router = new Router({
       name: 'test1',
       meta: { title: 'camera测试' },
       component: test1
+    },{
+      path: '/editFamily',
+      name: 'editFamily',
+      meta: { title: '修改家人资料' },
+      component: editFamily
     },
-
+    
   ]
 })
 

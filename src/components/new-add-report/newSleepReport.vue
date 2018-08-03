@@ -45,7 +45,7 @@
             if(type==1){
               this.$router.push({path: '/healthEntryMy'})
             }else{
-              this.$router.push({path: '/healthArchives'})
+              this.$router.push({path: '/healthRecordsB'})
             }
           }
         }

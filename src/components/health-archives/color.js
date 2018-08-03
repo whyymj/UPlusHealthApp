@@ -12,7 +12,7 @@ const sugar = { //血糖
         level: 1,
         status: '偏低',
         bg: '#5DA2C5',
-        tips: '您的血糖偏低，建议就医检查',
+        tips: '血糖偏低，请注意',
         unit:"mmol/L",
         icon:"icon-blood-sugar",
         color:'#fff'
@@ -21,7 +21,7 @@ const sugar = { //血糖
         level: 2,
         status: '正常',
         bg: '#26A5FD',
-        tips: '您的血糖正常',
+        tips: '血糖正常',
         unit:"mmol/L",
         icon:"icon-blood-sugar",
         color:'#fff'
@@ -30,7 +30,7 @@ const sugar = { //血糖
         level: 3,
         status: '稍高',
         bg: '#FF7E10',
-        tips: '您的血糖稍高，建议控制饮食',
+        tips: '血糖稍高，请注意',
         unit:"mmol/L",
         icon:"icon-blood-sugar",
         color:'#fff'
@@ -39,7 +39,7 @@ const sugar = { //血糖
         level: 4,
         status: '偏高',
         bg: '#F65261',
-        tips: '您的血糖偏高，建议就医检查',
+        tips: '血糖偏高，请注意',
         unit:"mmol/L",
         icon:"icon-blood-sugar",
         color:'#fff'
@@ -59,7 +59,7 @@ const sleep = { //睡眠
         level: 1,
         status: '偏少',
         bg: '#5DA2C5',
-        tips: '您的睡眠偏少',
+        tips: '睡眠偏少',
         unit:"小时",
         icon:"icon-blood-sugar",
         color:'#fff'
@@ -68,7 +68,7 @@ const sleep = { //睡眠
         level: 2,
         status: '正常',
         bg: '#26A5FD',
-        tips: '您的睡眠正常',
+        tips: '睡眠正常',
         unit:"小时",
         icon:"icon-blood-sugar",
         color:'#fff'
@@ -77,7 +77,7 @@ const sleep = { //睡眠
         level: 3,
         status: '偏多',
         bg: '#FF7E10',
-        tips: '您的睡眠偏多',
+        tips: '睡眠偏多',
         unit:"小时",
         icon:"icon-blood-sugar",
         color:'#fff'
@@ -97,7 +97,7 @@ const temperature = { //体温
         level: 1,
         status: '偏低',
         bg: '#5DA2C5',
-        tips: '您的体温偏低，建议就医检查',
+        tips: '体温偏低，请注意',
         unit:"℃",
         icon:"icon-temperature",
         color:'#fff'
@@ -106,7 +106,7 @@ const temperature = { //体温
         level: 2,
         status: '正常',
         bg: '#26A5FD',
-        tips: '您的体温正常',
+        tips: '体温正常',
         unit:"℃",
         icon:"icon-temperature",
         color:'#fff'
@@ -115,7 +115,7 @@ const temperature = { //体温
         level: 3,
         status: '偏高',
         bg: '#F65261',
-        tips: '您的体温偏高，建议就医检查',
+        tips: '体温偏高，请注意',
         unit:"℃",
         icon:"icon-temperature",
         color:'#fff'
@@ -135,7 +135,7 @@ const heartEle = { //心电
         level: 1,
         status: '正常',
         bg: '#26A5FD',
-        tips: '您的心电正常',
+        tips: '心电正常',
         unit:"/min",
         icon:"icon-ecg",
         color:'#fff'
@@ -144,7 +144,7 @@ const heartEle = { //心电
         level: 2,
         status: '异常',
         bg: '#FF7E10',
-        tips: '您的心电异常，建议就医检查',
+        tips: '心电异常，请注意',
         unit:"/min",
         icon:"icon-ecg",
         color:'#fff'
@@ -165,7 +165,7 @@ const oxy = { //血氧
         level: 1,
         status: '偏低',
         bg: '#5DA2C5',
-        tips: '您的血氧偏低，建议就医检查',
+        tips: '血氧偏低，请注意',
         unit:"%",
         icon:'icon-oxygen',
         color:'#fff'
@@ -183,7 +183,7 @@ const oxy = { //血氧
         level: 3,
         status: '偏高',
         bg: '#F65261',
-        tips: '您的血氧偏高，建议就医检查',
+        tips: '血氧偏高，请注意',
         unit:"%",
         icon:'icon-oxygen',
         color:'#fff'
@@ -203,7 +203,7 @@ const pressure = { //血压
         level: 1,
         status: '低压',
         bg: '#5DA2C5',
-        tips: '您的血压偏低，建议就医检查',
+        tips: '血压偏低，请注意',
         unit:"mmHg",
         icon:'icon-pressure',
         color:'#fff'
@@ -212,7 +212,7 @@ const pressure = { //血压
         level: 2,
         status: '正常',
         bg: '#26A5FD',
-        tips: '您的血压正常',
+        tips: '血压正常',
         unit:"mmHg",
         icon:'icon-pressure',
         color:'#fff'
@@ -221,7 +221,7 @@ const pressure = { //血压
         level: 3,
         status: '高压',
         bg: '#F65261',
-        tips: '您的血压偏高，建议就医检查',
+        tips: '血压偏高，请注意',
         unit:"mmHg",
         icon:'icon-pressure',
         color:'#fff'
@@ -241,7 +241,7 @@ const weight = { //体重
         level: 1,
         status: '偏瘦',
         bg: '#5DA2C5',
-        tips: '您的体重偏轻，可以适当增加营养',
+        tips: '体重偏轻',
         unit:"KG",
         icon:'icon-weight',
         color:'#fff'
@@ -250,7 +250,7 @@ const weight = { //体重
         level: 2,
         status: '正常',
         bg: '#26A5FD',
-        tips: '您的体重正常，请保持',
+        tips: '体重正常',
         unit:"KG",
         icon:'icon-weight',
         color:'#fff'
@@ -259,7 +259,7 @@ const weight = { //体重
         level: 3,
         status: '偏胖',
         bg: '#FF7E10',
-        tips: '您的体重偏胖，请注意控制体重',
+        tips: '体重偏胖，请注意',
         unit:"KG",
         icon:'icon-weight',
         color:'#fff'
@@ -268,7 +268,7 @@ const weight = { //体重
         level: 4,
         status: '肥胖',
         bg: '#F65261',
-        tips: '您的体重过高，请注意控制体重',
+        tips: '体重过高，请注意',
         unit:"KG",
         icon:'icon-weight',
         color:'#fff'
