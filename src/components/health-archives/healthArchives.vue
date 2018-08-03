@@ -1,22 +1,27 @@
 <template>
     <div class='healthArchives' style='background:#fff; height:100;position:fixed;height:100%;top:0;left:0;width:100%;'>
         <div class="tabs">
+            <!-- 导航条 -->
             <mynav :navigateList='memberlist' :initnum='initnum' @clickNav='clickNav'></mynav>
-            <mt-swipe :auto="0" :show-indicators="false" @change="handleChange" :continuous='false'>
+            <mt-swipe :auto="0" :show-indicators="false" @change="handleChange" :continuous='false' ref='swipe'>
+                <!-- 第一页 -->
                 <mt-swipe-item>
                     <div class=''>
                         <ul class='imgContainer'>
+                            <!-- 左侧的一列 -->
                             <li class="col1">
                                 <div class='row' v-for='(item,index) in showdata[0]' :key='index'>
                                     <imgbox :meta='item' position='left'></imgbox>
                                 </div>
                             </li>
+                            <!-- 中间人体图 -->
                             <li class="col2">
                                 <img src="/static/healthArchives/bg-human.png" alt="" v-if='maleShow'>
                                 <img src="/static/healthArchives/bg-woman.png" alt="" v-else>
                                 <span v-for='(item,index) in showdata[0]' :key='index+"1"' :style='blink(item)' :class='setClass(item)' @click='scalebox(item)'></span>
                                 <span v-for='(item,index) in showdata[1]' :key='index+"2"' :style='blink(item)' :class='setClass(item)' @click='scalebox(item)'></span>
                             </li>
+                            <!-- 右侧一列 -->
                             <li class="col3">
                                 <div class='row' v-for='(item,index) in showdata[1]' :key='index'>
                                     <imgbox :meta='item' position='right'></imgbox>
@@ -25,6 +30,7 @@
                         </ul>
                     </div>
                 </mt-swipe-item>
+                <!-- 第二页 -->
                 <mt-swipe-item>
                     <div class="">
                         <ul class='imgContainer'>
@@ -67,9 +73,6 @@
             mynav
         },
         watch: {
-            list() {
-                this.activeName = this.list[0].name
-            },
             healthProResult() {
                 this.showdata = _.chunk(this.healthProResult, 3)
             }
@@ -78,7 +81,7 @@
             return {
                 initnum: 0, //初始页
                 maleShow: true,
-                pagenum: 0,
+                pagenum: 2,
                 memberID: '',
                 pageindex: 0,
                 activeName: '',
@@ -131,21 +134,21 @@
                 ],
                 myinfo: [{
                     "member_id": "",
-                    "login_code": 15153125386,
-                    "relation": "1",
+                    "login_code": '',
+                    "relation": "",
                     "relation_name": "我",
-                    "height": 170,
-                    "weight": 65,
-                    "birthday": "1966-11-27",
-                    "head_pic": "http://healthapp.haier.net/image/father.png",
+                    "height": 0,
+                    "weight": 0,
+                    "birthday": "",
+                    "head_pic": "",
                     "sex": "male",
-                    "create_date": "2018-04-12 10:34:57",
-                    "nick_name": "爸爸",
-                    "target_weight": 65,
-                    "is_first_set_tw": 1,
-                    "age": 52
+                    "create_date": "",
+                    "nick_name": "",
+                    "target_weight": 0,
+                    "is_first_set_tw": 0,
+                    "age": 0
                 }],
-                memberlist: [{
+                memberlist: [{ //成员列表,测试数据
                         "member_id": "",
                         "login_code": 15153125386,
                         "relation": "1",
@@ -156,7 +159,7 @@
                         "head_pic": "http://healthapp.haier.net/image/father.png",
                         "sex": "male",
                         "create_date": "2018-04-12 10:34:57",
-                        "nick_name": "爸爸",
+                        "nick_name": "",
                         "target_weight": 65,
                         "is_first_set_tw": 1,
                         "age": 52
@@ -195,6 +198,7 @@
                 ]
             };
         },
+        computed: {},
         methods: {
             scalebox(item) {
                 bus.$emit('scalebox', item.moudle_name)
@@ -211,44 +215,110 @@
                 if (item.moudle_name == '体重') {
                     return {
                         "weight-circle-female": that.maleShow,
-                        "weight-circle": !that.maleShow
+                        "weight-circle": !that.maleShow,
+                        'normal': item.level <= 2,
+                        'danger': item.level > 2
                     }
                 } else if (item.moudle_name == '血糖') {
                     return {
                         "sugar-circle": that.maleShow,
-                        "sugar-circle-female": !that.maleShow
+                        "sugar-circle-female": !that.maleShow,
+                        'normal': item.level <= 2,
+                        'danger': item.level > 2
                     }
                 } else if (item.moudle_name == '体温') {
                     return {
                         "temperature-circle": that.maleShow,
-                        "temperature-circle-female": !that.maleShow
+                        "temperature-circle-female": !that.maleShow,
+                        'normal': item.level <= 2,
+                        'danger': item.level > 2
                     }
                 } else if (item.moudle_name == '血压') {
                     return {
                         "pressure-circle": that.maleShow,
-                        "pressure-circle-female": !that.maleShow
+                        "pressure-circle-female": !that.maleShow,
+                        'normal': item.level <= 2,
+                        'danger': item.level > 2
                     }
                 } else if (item.moudle_name == '心电') {
+                    console.log();
                     return {
                         "ecg-circle": that.maleShow,
-                        "ecg-circle-female": !that.maleShow
+                        "ecg-circle-female": !that.maleShow,
+                        'normal': item.level <= 2,
+                        'danger': item.level > 2
                     }
                 } else if (item.moudle_name == '血氧') {
                     return {
                         "oxygen-circle": that.maleShow,
-                        "oxygen-circle-female": !that.maleShow
+                        "oxygen-circle-female": !that.maleShow,
+                        'normal': item.level <= 2,
+                        'danger': item.level > 2
                     }
                 } else if (item.moudle_name == '睡眠') {
                     return {
                         "sleep-circle": that.maleShow,
-                        "sleep-circle-female": !that.maleShow
+                        "sleep-circle-female": !that.maleShow,
+                        'normal': item.level < 2,
+                        'danger': item.level >= 2
                     }
                 }
             },
-            handleChange() {},
-            clickNav(index) {
+            handleChange(index) {
                 this.pageindex = index;
-                this.showdata = this.list[index];
+            },
+            clickNav(index) {
+                if (this.pageindex != 0) {
+                    this.$refs.swipe.prev();
+                    this.pageindex = 0;
+                }
+                this.healthProResult = [{ //请求到的健康参数
+                        "value": "",
+                        "moudle_name": "血压",
+                        "moudle_name_en": "bloodpressure",
+                        "level": "0"
+                    },
+                    {
+                        "value": "",
+                        "moudle_name": "睡眠",
+                        "moudle_name_en": "sleep",
+                        "level": "0"
+                    },
+                    {
+                        "value": "",
+                        "moudle_name": "体温",
+                        "moudle_name_en": "temperature",
+                        "level": "0"
+                    },
+                    {
+                        "value": "",
+                        "moudle_name": "血氧",
+                        "moudle_name_en": "basal_metabolic",
+                        "level": "0"
+                    },
+                    {
+                        "moudle_name_en": "",
+                        "value": "", //value值为"0"时表示此健康模块暂无健康数据
+                        "moudle_name": "心电",
+                        "moudle_name_en": "",
+                        "level": "0"
+                    },
+                    {
+                        "moudle_name_en": "",
+                        "value": "", //value值为"0"时表示此健康模块暂无健康数据
+                        "moudle_name": "体重",
+                        "moudle_name_en": "",
+                        "level": "0"
+                    },
+                    {
+                        "moudle_name_en": "",
+                        "value": "", //value值为"0"时表示此健康模块暂无健康数据
+                        "moudle_name": "血糖",
+                        "moudle_name_en": "",
+                        "level": "0"
+                    }
+                ]
+                this.showdata = _.chunk(this.healthProResult, 3);
                 Indicator.open({
                     text: '加载中...',
                     spinnerType: 'fading-circle'
@@ -404,7 +474,7 @@
             },
             async getUserInfo() {
                 try {
-                    const result = await axios.post('/api/user/info', {
+                    const result = await this.$axios.post('/api/user/info', {
                         phone: ''
                     })
                     result.data.data.relation_name = '我';
@@ -412,7 +482,7 @@
                     this.myinfo = [result.data.data];
                     if (result.data.code === 'C0000') {
                         this.initList();
-                        this.$refs.footer.style.display = 'block'
+                        // this.$refs.footer.style.display = 'block'
                         if (result.data.data.sex === 'male') {
                             this.BGSVGIMG = {
                                 src: require('../../assets/BG-human.svg')
@@ -431,10 +501,10 @@
             },
             async getMemberInfo() {
                 try {
-                    const result = await axios.get(`/api/member?member_id=${window._member_id}`)
+                    const result = await this.$axios.get(`/api/member?member_id=${window._member_id}`)
                     if (result.data.code === 'C0000') {
                         this.initList();
-                        this.$refs.footer.style.display = 'block'
+                        // this.$refs.footer.style.display = 'block'
                         if (result.data.data.sex === 'male') {
                             this.BGSVGIMG = {
                                 src: require('../../assets/BG-human.svg')
@@ -454,11 +524,10 @@
             async getFamilyList() {
                 try {
                     var that = this;
-                    const result = await axios.get('/api/family')
+                    const result = await this.$axios.get('/api/family')
                     if (result.data.code === 'C0000') {
                         this.createdList = result.data.data[0];
                         this.memberlist = myinfo.concat(this.createdList);
-                        this.pagenum = this.memberlist.length;
                         if (window._member_id === '') {
                             this.pageindex = this.initnum = 0;
                         } else {
@@ -477,7 +546,7 @@
             async initList() { //获取成员的健康指标列表
                 try {
                     this.healthProResult = [];
-                    const result = await axios.get(`/api/health/result?member_id=${window._member_id}`)
+                    const result = await this.$axios.get(`/api/health/result?member_id=${window._member_id}`)
                     if (result.data.code === 'C0000') {
                         console.log(result)
                         this.healthProResult = result.data.data.healthProResult
@@ -500,7 +569,7 @@
                     case '体重':
                         if (window._member_id === '') { // user
                             try {
-                                const result = await axios.post('/api/user/info', {
+                                const result = await this.$axios.post('/api/user/info', {
                                     phone: ''
                                 })
                                 if (result.data.code === 'C0000') {
@@ -604,7 +673,6 @@
         },
         mounted() {
             var that = this;
-            this.pagenum = this.memberlist.length;
             this.showdata = _.chunk(this.healthProResult, 3);
             if (window._member_id === '') {
                 this.pageindex = this.initnum = 0;
@@ -623,7 +691,7 @@
                 }
                 if (obj.code !== '') {
                     try {
-                        const result = await axios.post('/api/info', obj)
+                        const result = await this.$axios.post('/api/info', obj)
                         if (result.data.data.user_flag === 'Y') { // new user
                             this.$router.replace({
                                 path: '/introduction'
@@ -650,11 +718,11 @@
                     this.getFamilyList()
                 }
             })()
-            this.$nextTick(function() {
-                let winH = document.documentElement.clientHeight || document.body.clientHeight;
-                let pageTag = document.querySelector('.health-records')
-                pageTag.style.minHeight = winH + 'px'
-            })
+            // this.$nextTick(function() {
+            //     let winH = document.documentElement.clientHeight || document.body.clientHeight;
+            //     let pageTag = document.querySelector('.health-records')
+            //     pageTag.style.minHeight = winH + 'px'
+            // })
         },
     }
 </script>
@@ -692,7 +760,7 @@
             }
             .mint-swipe {
                 overflow: hidden;
-                height: 25rem;
+                height: 28rem;
             }
             .el-tabs__nav-wrap::after {
                 background: #fff;
@@ -750,74 +818,66 @@
         .weight-circle {
             top: 17.5rem;
             left: 3.5rem;
+        }
+        .normal {
+            animation: s-normal-animation 2s linear infinite;
+        }
+        .danger {
             animation: s-red-animation 2s linear infinite;
         }
         .weight-circle-female {
             top: 17rem;
             left: 3.5rem;
-            animation: s-red-animation 2s linear infinite;
         }
         .sugar-circle {
             top: 11rem;
             left: 0.2rem;
-            animation: s-red-animation 2s linear infinite;
         }
         .sugar-circle-female {
             top: 10.5rem;
             left: 0.5rem;
-            animation: s-red-animation 2s linear infinite;
         }
         .temperature-circle {
             top: 5.5rem;
             left: 1.2rem;
-            animation: s-red-animation 2s linear infinite;
         }
         .temperature-circle-female {
             top: 4.6rem;
             left: 1.2rem;
-            animation: s-red-animation 2s linear infinite;
         }
         .pressure-circle {
             top: 9rem;
             left: 5.6rem;
-            animation: s-red-animation 2s linear infinite;
         }
         .pressure-circle-female {
             top: 9rem;
             left: 5.5rem;
-            animation: s-red-animation 2s linear infinite;
         }
         .ecg-circle {
             top: 4.5rem;
             left: 4rem;
-            animation: s-red-animation 2s linear infinite;
         }
         .ecg-circle-female {
             top: 4.5rem;
             left: 4rem;
-            animation: s-red-animation 2s linear infinite;
         }
         .oxygen-circle {
             top: 14rem;
             left: 2rem;
-            animation: s-red-animation 2s linear infinite;
         }
         .oxygen-circle-female {
             top: 14rem;
             left: 2rem;
-            animation: s-red-animation 2s linear infinite;
         }
         .sleep-circle {
             top: 0.5rem;
             left: 50%;
             transform: translate(-50%, 0);
-            animation: s-red-animation 2s linear infinite;
         }
         .sleep-circle-female {
             top: 0.5rem;
             left: 50%;
             transform: translate(-50%, 0);
-            animation: s-red-animation 2s linear infinite;
         }
     }
     @keyframes s-red-animation {

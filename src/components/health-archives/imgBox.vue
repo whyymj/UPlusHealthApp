@@ -40,6 +40,16 @@
                 return this.meta.value != '' ? 'block' : 'none'
             }
         },
+        watch: {
+            meta() {
+                var obj = colorJudger(this.meta.moudle_name, this.meta.level);
+                this.tips = obj.tips;
+                this.color = obj.color;
+                this.bgcolor = obj.bg;
+                this.unit = obj.unit;
+                this.icon = obj.icon;
+            }
+        },
         mounted() {
             var that = this;
             bus.$on('scalebox', function(name) {
@@ -61,7 +71,6 @@
 </script>
 
 <style scoped lang='scss'>
-
     i {
         font-size: 1rem;
         line-height: 1.6rem;
@@ -138,7 +147,7 @@
     }
     @keyframes scaleBox {
         0% {
-            -webkit-transform: scale(1)  translateX(0);
+            -webkit-transform: scale(1) translateX(0);
             transform: scale(1) translateX(0);
         }
         20% {
