@@ -64,8 +64,8 @@
                 :class="['record-item']">
                 <div class="record-mmHg">
                   <div :class="['icon-pressure-c', 'text-center', {'Standard-bg': item.suggestion.level === '1'},
-                          {'up-bg': item.suggestion.level === '2' || item.suggestion.level === '3'},
-                          {'low-bg': item.suggestion.level === '-2' || item.suggestion.level === '-3'}]">
+                          {'up-bg': item.suggestion.level === '2' || item.suggestion.level === '-2'},
+                          {'low-bg': item.suggestion.level === '3' || item.suggestion.level === '-3'}]">
                     <i class="icon-pressure"></i>
                   </div>
                   <div class="mmHg">
@@ -73,8 +73,8 @@
                       {{item.bloodPressure.systolic_pressure}}/{{item.bloodPressure.diastolic_pressure}} <span>mmHg</span>
                       <div
                         :class="[{'Standard-bg': item.suggestion.level === '1'},
-                          {'up-bg': item.suggestion.level === '2' || item.suggestion.level === '3'},
-                          {'low-bg': item.suggestion.level === '-2' || item.suggestion.level === '-3'},'pressure-warning', 'text-center', {'hidden': item.suggestion.level === '1'}]">
+                          {'up-bg': item.suggestion.level === '2' || item.suggestion.level === '-2'},
+                          {'low-bg': item.suggestion.level === '3' || item.suggestion.level === '-3'},'pressure-warning', 'text-center', {'hidden': item.suggestion.level === '1'}]">
                         {{item.bloodPressure.status}}
                       </div>
                     </div>
@@ -85,7 +85,7 @@
                     <span>心率</span><span>{{item.bloodPressure.heart_rate}}</span>
                   </div>
                   <div class="record-heart-time">
-                    <span>测量时间</span><span>{{item.bloodPressure.create_date.split(' ')[1]}}</span>
+                    <span>测量时间</span><span>{{item.bloodPressure.create_date.split(' ')[1].slice(0, -3)}}</span>
                   </div>
                 </div>
                 <i class="fa fa-angle-right"></i>

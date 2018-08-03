@@ -644,5 +644,5 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "./healthRecordsB.scss";
+  // @import "./healthRecordsB.scss";
 </style>

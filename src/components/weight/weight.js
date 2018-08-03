@@ -370,12 +370,20 @@ export default {
               let res = params[0].name + '<br/>'
               for (let i = 0, length = params.length; i < length; i++) {
                 params[i].value = params[i].value === '' ? '--' : params[i].value
-                res += params[i].seriesName + ': ' + params[i].value + '<br/>'
+                if (this.selectedRecordOption === 'BMI') { // 控制显示单位
+                  res += params[i].seriesName + ': ' + params[i].value + '<br/>'
+                } else {
+                  res += params[i].seriesName + ': ' + params[i].value + 'kg<br/>'
+                }
               }
               return res
             } else {
               let s = params.name + '<br/>'
-              s += params.seriesName + ': ' + params.value
+              if (this.selectedRecordOption === 'BMI') { // 显示单位
+                s += params.seriesName + ': ' + params.value
+              } else {
+                s += params.seriesName + ': ' + params.value + 'kg'
+              }
               return s
             }
           },

@@ -63,8 +63,8 @@
                 :class="['record-item']">
                 <div class="record-mmHg">
                   <div :class="['icon-sugar-c', 'text-center',{'Standard-bg': item.suggestion.level === '1'},
-                          {'up-bg': item.suggestion.level === '2' || item.suggestion.level === '3'},
-                          {'low-bg': item.suggestion.level === '-2' || item.suggestion.level === '-3'}]">
+                          {'up-bg': item.suggestion.level === '2' || item.suggestion.level === '-2'},
+                          {'low-bg': item.suggestion.level === '3' || item.suggestion.level === '-3'}]">
                     <i class="icon-blood-sugar"></i>
                   </div>
                   <div class="mmHg">
@@ -76,13 +76,13 @@
                 <div class="record-heart text-right">
                   <div class="record-heart-value">
                     <span :class="[{'Standard-bg': item.suggestion.level === '1'},
-                          {'up-bg': item.suggestion.level === '2' || item.suggestion.level === '3'},
-                          {'low-bg': item.suggestion.level === '-2' || item.suggestion.level === '-3'}]">
+                          {'up-bg': item.suggestion.level === '2' || item.suggestion.level === '-2'},
+                          {'low-bg': item.suggestion.level === '3' || item.suggestion.level === '-3'}]">
                       {{item.suggestion.symptom}}
                     </span>
                   </div>
                   <div class="record-heart-time">
-                    <span>测量时间</span><span>{{item.bloodSugar.create_date.split(' ')[1]}}</span>
+                    <span>测量时间</span><span>{{item.bloodSugar.create_date.split(' ')[1].slice(0, -3)}}</span>
                   </div>
                   <div class="record-heart-time">
                     <span>{{item.bloodSugar.time_point}}</span>
