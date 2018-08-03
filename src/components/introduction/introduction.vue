@@ -34,7 +34,8 @@
     },
     methods: {
       createArchives() {
-        this.$router.push({path: '/createCharacter'});
+        // this.$router.push({path: '/createCharacter'});
+         this.$router.push({path: '/healthEntryMy'});
       }
     }
   }

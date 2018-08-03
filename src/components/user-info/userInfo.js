@@ -1,35 +1,42 @@
 import webConfig from '../../../config/web.config'
 import {MessageBox} from 'mint-ui'
-export default{
-  name: 'userInfo',
-  data(){
+// import new from './../../assets/healthSleep/bus';
+export default {
+  name : 'userInfo',
+  data() {
     return {
       // action sheet 选项内容
-      headerAction: [{
-        name: "拍照",
-        method: this.getCamera // 调用methods中的函数
-      }, {
-        name: "从相册中选择",
-        method: this.getLibrary // 调用methods中的函数
-      },],
+      headerAction: [
+        {
+          name: "拍照",
+          method: this.getCamera // 调用methods中的函数
+        }, {
+          name: "从相册中选择",
+          method: this.getLibrary // 调用methods中的函数
+        }
+      ],
       // action sheet 默认不显示，为false。操作sheetVisible可以控制显示与隐藏
       sheetVisible: false,
       pickerVisible: false,
       dateSlots: [],
       valuePicker: null,
       pickerIndex: null,
-      nickName: "nick",//昵称
-      sex: "男",//性别
+      nickName: "nick", //昵称
+      sex: "男", //性别
       startDate: new Date('1920-01-01'),
       endDate: new Date(),
-      defaultBirthday: "1980-1-1",//默认生日
-      birthday: "1980-1-1",//生日
-      heightValue: "181cm",//身高
-      weightValue: "75kg",//体重
-      targetWeightValue: "74kg",//目标体重
+      defaultBirthday: "1980-1-1", //默认生日
+      birthday: "1980-1-1", //生日
+      heightValue: "181cm", //身高
+      weightValue: "75kg", //体重
+      targetWeightValue: "74kg", //目标体重
     }
   },
-  methods: {
+  mounted(){
+    this.getUserInfo();
+  },
+
+  methods : {
     showActionSheet: function () {
       // 打开action sheet
       this.sheetVisible = true;
@@ -37,33 +44,41 @@ export default{
     showNickName: function () {
       let message = "请输入昵称";
       let title = "";
-      let options = {inputPlaceholder: '请输入昵称'};
-      MessageBox.prompt(message, title, options).then(({value})=> {
-        if (value) {
-          //调用昵称保存接口
-          this.nickName = value;
-        } else {
+      let options = {
+        inputPlaceholder: '请输入昵称'
+      };
+      MessageBox
+        .prompt(message, title, options)
+        .then(({value}) => {
+          if (value) {
+            //调用昵称保存接口
+            this.nickName = value;
+          } else {}
 
-        }
-
-      });
+        });
     },
-    formatDate (date) {
+    formatDate(date) {
       const y = date.getFullYear();
       let m = date.getMonth() + 1
-      m = m < 10 ? '0' + m : m
+      m = m < 10
+        ? '0' + m
+        : m
       let d = date.getDate()
-      d = d < 10 ? ('0' + d) : d
+      d = d < 10
+        ? ('0' + d)
+        : d
       return y + '-' + m + '-' + d
     },
-    openBirthDay (picker) {
-      this.$refs[picker].open();
+    openBirthDay(picker) {
+      this
+        .$refs[picker]
+        .open();
     },
-    handleChangeBD (value) {
+    handleChangeBD(value) {
       this.birthday = this.formatDate(value);
       //调用生日保存接口
     },
-    openPicker (index) {
+    openPicker(index) {
       this.pickerVisible = true;
       this.dateSlots = [
         {
@@ -77,32 +92,64 @@ export default{
       switch (index) {
         case 1:
           this.dateSlots[0].values = webConfig.height;
-          this.dateSlots[0].defaultIndex = this.heightValue ? webConfig.height.indexOf(this.heightValue) : webConfig.height.indexOf('178cm');
-          this.valuePicker = this.heightValue ? this.heightValue : '178cm';
+          this.dateSlots[0].defaultIndex = this.heightValue
+            ? webConfig
+              .height
+              .indexOf(this.heightValue)
+            : webConfig
+              .height
+              .indexOf('178cm');
+          this.valuePicker = this.heightValue
+            ? this.heightValue
+            : '178cm';
           break
         case 2:
           this.dateSlots[0].values = webConfig.weight;
-          this.dateSlots[0].defaultIndex = this.weightValue ? webConfig.weight.indexOf(this.weightValue) : webConfig.weight.indexOf('80kg');
-          this.valuePicker = this.weightValue ? this.weightValue : '80kg';
+          this.dateSlots[0].defaultIndex = this.weightValue
+            ? webConfig
+              .weight
+              .indexOf(this.weightValue)
+            : webConfig
+              .weight
+              .indexOf('80kg');
+          this.valuePicker = this.weightValue
+            ? this.weightValue
+            : '80kg';
           break
         case 3:
           this.dateSlots[0].values = webConfig.weight;
-          this.dateSlots[0].defaultIndex = this.weightValue ? webConfig.weight.indexOf(this.targetWeightValue) : webConfig.weight.indexOf('80kg');
-          this.valuePicker = this.targetWeightValue ? this.targetWeightValue : '80kg';
+          this.dateSlots[0].defaultIndex = this.weightValue
+            ? webConfig
+              .weight
+              .indexOf(this.targetWeightValue)
+            : webConfig
+              .weight
+              .indexOf('80kg');
+          this.valuePicker = this.targetWeightValue
+            ? this.targetWeightValue
+            : '80kg';
           break;
         case 4:
           this.dateSlots[0].values = webConfig.sex;
-          this.dateSlots[0].defaultIndex = this.sex ? webConfig.weight.indexOf(this.sex) : webConfig.sex.indexOf('男');
-          this.valuePicker = this.sex ? this.sex : '男';
+          this.dateSlots[0].defaultIndex = this.sex
+            ? webConfig
+              .weight
+              .indexOf(this.sex)
+            : webConfig
+              .sex
+              .indexOf('男');
+          this.valuePicker = this.sex
+            ? this.sex
+            : '男';
           break;
       }
       this.pickerIndex = index;
     },
-    onChange (picker, values) {
+    onChange(picker, values) {
       this.valuePicker = values[0]
     },
     // 确认选择数据并显示
-    confirm () {
+    confirm() {
       switch (this.pickerIndex) {
         case 1:
           this.heightValue = this.valuePicker;
@@ -130,8 +177,25 @@ export default{
     getLibrary: function () {
       console.log("打开相册")
     },
-    closeActionSheet: function () {
-
+    closeActionSheet: function () {},
+    async getUserInfo() {
+      try {
+        var that = this;
+        const result = await axios.post('/api/user/info', {phone: ''})
+        var data=result.data.data;
+        if (result.data.code === 'C0000') {
+          this.nickName = data.nick_name; //昵称
+          this.sex = data.sex=='female'?'女':"男"; //性别
+          this.endDate = new Date();
+          this.defaultBirthday = '1980年01月01日'; //默认生日
+          this.birthday =new Date(data.birthday); //生日
+          this.heightValue = data.height+'cm';//身高
+          this.weightValue = data.weight+"kg";//体重
+          this.targetWeightValue = data.target_weight+"kg"; //目标体重
+        }
+      } catch (err) {
+        console.log(err)
+      }
     }
-  },
+  }
 }
