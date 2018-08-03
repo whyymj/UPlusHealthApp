@@ -154,7 +154,6 @@ export default {
           } else {
             this.$refs.noWeight.style.display = 'none'
             this.$refs.weight.$el.style.display = 'block'
-            // this.$refs.weight.$children[0] && this.$refs.weight.$children[0].clear()
             let d = result.data.data.map(_ => {
               return _.create_date
             })
