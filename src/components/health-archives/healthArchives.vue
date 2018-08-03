@@ -603,7 +603,7 @@
             }
         },
         mounted() {
-            var that=this;
+            var that = this;
             this.pagenum = this.memberlist.length;
             this.showdata = _.chunk(this.healthProResult, 3);
             if (window._member_id === '') {
@@ -611,7 +611,7 @@
             } else {
                 this.memberlist.map(function(item, index) {
                     if (item.member_id == window._member_id) {
-                        console.log('num:::::',index);
+                        console.log('num:::::', index);
                         that.initnum = that.pageindex = index;
                     }
                 })
@@ -747,78 +747,78 @@
                 width: 100%;
             }
         }
-    }
-    .weight-circle {
-        top: 17.5rem;
-        left: 3.5rem;
-        animation: s-red-animation 2s linear infinite;
-    }
-    .weight-circle-female {
-        top: 17rem;
-        left: 3.5rem;
-        animation: s-red-animation 2s linear infinite;
-    }
-    .sugar-circle {
-        top: 11rem;
-        left: 0.2rem;
-        animation: s-red-animation 2s linear infinite;
-    }
-    .sugar-circle-female {
-        top: 10.5rem;
-        left: 0.5rem;
-        animation: s-red-animation 2s linear infinite;
-    }
-    .temperature-circle {
-        top: 5.5rem;
-        left: 1.2rem;
-        animation: s-red-animation 2s linear infinite;
-    }
-    .temperature-circle-female {
-        top: 4.6rem;
-        left: 1.2rem;
-        animation: s-red-animation 2s linear infinite;
-    }
-    .pressure-circle {
-        top: 9rem;
-        left: 5.6rem;
-        animation: s-red-animation 2s linear infinite;
-    }
-    .pressure-circle-female {
-        top: 9rem;
-        left: 5.5rem;
-        animation: s-red-animation 2s linear infinite;
-    }
-    .ecg-circle {
-        top: 4.5rem;
-        left: 4rem;
-        animation: s-red-animation 2s linear infinite;
-    }
-    .ecg-circle-female {
-        top: 4.5rem;
-        left: 4rem;
-        animation: s-red-animation 2s linear infinite;
-    }
-    .oxygen-circle {
-        top: 14rem;
-        left: 2rem;
-        animation: s-red-animation 2s linear infinite;
-    }
-    .oxygen-circle-female {
-        top: 14rem;
-        left: 2rem;
-        animation: s-red-animation 2s linear infinite;
-    }
-    .sleep-circle {
-        top: 0.5rem;
-        left: 50%;
-        transform: translate(-50%, 0);
-        animation: s-red-animation 2s linear infinite;
-    }
-    .sleep-circle-female {
-        top: 0.5rem;
-        left: 50%;
-        transform: translate(-50%, 0);
-        animation: s-red-animation 2s linear infinite;
+        .weight-circle {
+            top: 17.5rem;
+            left: 3.5rem;
+            animation: s-red-animation 2s linear infinite;
+        }
+        .weight-circle-female {
+            top: 17rem;
+            left: 3.5rem;
+            animation: s-red-animation 2s linear infinite;
+        }
+        .sugar-circle {
+            top: 11rem;
+            left: 0.2rem;
+            animation: s-red-animation 2s linear infinite;
+        }
+        .sugar-circle-female {
+            top: 10.5rem;
+            left: 0.5rem;
+            animation: s-red-animation 2s linear infinite;
+        }
+        .temperature-circle {
+            top: 5.5rem;
+            left: 1.2rem;
+            animation: s-red-animation 2s linear infinite;
+        }
+        .temperature-circle-female {
+            top: 4.6rem;
+            left: 1.2rem;
+            animation: s-red-animation 2s linear infinite;
+        }
+        .pressure-circle {
+            top: 9rem;
+            left: 5.6rem;
+            animation: s-red-animation 2s linear infinite;
+        }
+        .pressure-circle-female {
+            top: 9rem;
+            left: 5.5rem;
+            animation: s-red-animation 2s linear infinite;
+        }
+        .ecg-circle {
+            top: 4.5rem;
+            left: 4rem;
+            animation: s-red-animation 2s linear infinite;
+        }
+        .ecg-circle-female {
+            top: 4.5rem;
+            left: 4rem;
+            animation: s-red-animation 2s linear infinite;
+        }
+        .oxygen-circle {
+            top: 14rem;
+            left: 2rem;
+            animation: s-red-animation 2s linear infinite;
+        }
+        .oxygen-circle-female {
+            top: 14rem;
+            left: 2rem;
+            animation: s-red-animation 2s linear infinite;
+        }
+        .sleep-circle {
+            top: 0.5rem;
+            left: 50%;
+            transform: translate(-50%, 0);
+            animation: s-red-animation 2s linear infinite;
+        }
+        .sleep-circle-female {
+            top: 0.5rem;
+            left: 50%;
+            transform: translate(-50%, 0);
+            animation: s-red-animation 2s linear infinite;
+        }
     }
     @keyframes s-red-animation {
         0% {

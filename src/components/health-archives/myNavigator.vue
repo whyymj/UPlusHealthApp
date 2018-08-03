@@ -1,5 +1,5 @@
 <template>
-    <div style='height:2rem;width:17rem;margin:0.4rem auto 0;'>
+    <div class='wh_navigator' style='height:2rem;width:17rem;margin:0.4rem auto 0;'>
         <swiper :options="option" ref="mySwiper">
             <!-- slides -->
             <swiper-slide v-for="(item,index) in navigateList" :key='index'>
@@ -93,18 +93,20 @@
     }
 </script>
 <style lang='scss'scoped>
-    span {
-        display: inline-block;
-        margin: auto;
-        height: 100%;
-        text-align: center;
-        line-height: 2rem;
-        font-size: 0.75rem;
-        font-family: PingFangSC-Regular;
-        color: rgba(102, 102, 102, 1);
-    }
-    .active {
-        border-bottom: 0.1rem solid rgba(38, 165, 253, 1);
-        color: rgba(38, 165, 253, 1);
+    .wh_navigator {
+        span {
+            display: inline-block;
+            margin: auto;
+            height: 100%;
+            text-align: center;
+            line-height: 2rem;
+            font-size: 0.75rem;
+            font-family: PingFangSC-Regular;
+            color: rgba(102, 102, 102, 1);
+        }
+        .active {
+            border-bottom: 0.1rem solid rgba(38, 165, 253, 1);
+            color: rgba(38, 165, 253, 1);
+        }
     }
 </style>

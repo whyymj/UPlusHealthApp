@@ -1,5 +1,5 @@
 <template>
-    <div style='width:100%; height:100%;position:relative;padding:1rem 0;'>
+    <div style='width:100%; height:100%;position:relative;padding:1rem 0;' class='wh_imgbox'>
         <p class='shadow' :class='{active:activebox}' :style="{background:bgcolor}"></p>
         <p class="tips-r" :class='{active:activebox}' v-if="position=='right'">{{tips}}</p>
         <p class="tips" :class='{active:activebox}' v-else>{{tips}}</p>
@@ -61,6 +61,7 @@
 </script>
 
 <style scoped lang='scss'>
+
     i {
         font-size: 1rem;
         line-height: 1.6rem;

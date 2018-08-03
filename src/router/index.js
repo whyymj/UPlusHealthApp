@@ -65,24 +65,25 @@ const editFamily=resolve => require(['@/components/user-info/editFamily.vue'], r
 const router = new Router({
   mode: 'history',
   routes: [
+    // {
+    //   path: '*',
+    //   redirect: '/'
+    // }, {
+    //   path: '/',
+    //   redirect: 'login'
+    // }, {
+    //   path: '/test',
+    //   name: 'test',
+    //   component: test
+    // }, {
+    //   path: '/login',
+    //   name: 'login',
+    //   meta: {
+    //     title: '海尔健康'
+    //   },
+    //   component: login
+    // }, 
     {
-      path: '*',
-      redirect: '/'
-    }, {
-      path: '/',
-      redirect: 'login'
-    }, {
-      path: '/test',
-      name: 'test',
-      component: test
-    }, {
-      path: '/login',
-      name: 'login',
-      meta: {
-        title: '海尔健康'
-      },
-      component: login
-    }, {
       path: '/introduction',
       name: 'introduction',
       meta: {
@@ -117,21 +118,24 @@ const router = new Router({
         title: '健康档案'
       },
       component: healthRecordsL
-    }, {
-      path: '/addProject',
-      name: 'addProject',
-      meta: {
-        title: '添加项目'
-      },
-      component: addProject
-    }, {
+    }, 
+    // {
+    //   path: '/addProject',
+    //   name: 'addProject',
+    //   meta: {
+    //     title: '添加项目'
+    //   },
+    //   component: addProject
+    // }, 
+    {
       path: '/manualEntry/:type?',
       name: 'manualEntry',
       meta: {
         title: '手动录入'
       },
       component: manualEntry
-    }, {
+    }, 
+    {
       path: '/familyManagement',
       name: 'familyManagement',
       meta: {
@@ -152,7 +156,8 @@ const router = new Router({
         title: '关联家人'
       },
       component: associatedFamilyR
-    }, {
+    }, 
+    {
       path: '/associationRequest/:phone',
       name: 'associationRequest',
       meta: {
