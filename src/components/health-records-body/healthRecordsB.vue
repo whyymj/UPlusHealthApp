@@ -97,8 +97,8 @@
           <div v-else-if="item.moudle_name === '血氧'">
             <div :class="[{'body': true}, {'oxygen-circle empty': item.level === ''},
                           {'oxygen-circle normal': item.level === '1'},
-                          {'oxygen-circle orange s-red-animate': item.level === '-2'},
-                          {'oxygen-circle red s-red-animate': item.level === '-3'}]"
+                          {'oxygen-circle orange s-red-animate': item.level === '2'},
+                          {'oxygen-circle red s-red-animate': item.level === '3'}]"
                           @click="twinkleBubble($event, item, index)">
             </div>
           </div>
