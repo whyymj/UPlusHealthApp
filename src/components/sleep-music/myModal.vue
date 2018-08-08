@@ -16,6 +16,11 @@
 <script>
     export default {
         props: ['showmodal'],
+        watch:{
+            showmodal(){
+                console.log('showmodal',this.showmodal);
+            }
+        },
         data() {
             return {}
         },

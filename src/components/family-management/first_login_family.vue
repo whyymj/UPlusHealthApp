@@ -1,6 +1,6 @@
 <template>
-    <div class='first_login_sleepmusic' v-if='show===true||show==="true"'>
-        <img src="/static/sleepMusicList/firstlogin_sleepmusic.png" alt="">
+    <div class='first_login_family' v-if='show===true||show==="true"'>
+        <img src="/static/sleepMusicList/firstlogin_familymanage.png" alt="">
         <div class="button" @click='close'></div>
     </div>
 </template>
@@ -16,17 +16,16 @@
             close() {
                 this.show = false;
                 this.$emit('firstlogin')
-                window.localStorage.UPlusApp_firstLogin_sleepMusicList = false;
             }
         },
         mounted() {
-            this.show = window.localStorage.UPlusApp_firstLogin_sleepMusicList;
+            this.show = window.localStorage.UPlusApp_firstLogin_family === undefined || window.localStorage.UPlusApp_firstLogin_family === "undefined" || window.localStorage.UPlusApp_firstLogin_family === "true" || window.localStorage.UPlusApp_firstLogin_family === true;
         }
     }
 </script>
 
 <style lang='scss' scoped>
-    .first_login_sleepmusic {
+    .first_login_family {
         width: 100%;
         height: 100%;
         position: fixed;

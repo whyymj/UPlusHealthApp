@@ -1,7 +1,7 @@
 <template>
     <div class='playerController'>
         <div id="textaudio1" style="margin-top: 60px"></div>
-        <h2>腹式呼吸练习（初级）</h2>
+        <h2>{{level}}</h2>
         <div class="control">
             <img src="/static/musicPlayer/left.png" alt="" class='left' @click='back'>
             <img src="/static/musicPlayer/play.png" alt="" class='play' v-if='playing' @click='play'>
@@ -17,12 +17,27 @@
         clearInterval
     } from 'timers';
     export default {
-        components: {},
+        computed: {
+            level() {
+                var title = this.params.name;
+                var level = '';
+                if (this.params.level == 1) {
+                    level = '初级'
+                } else if (this.params.level == 2) {
+                    level = '中级'
+                } else if (this.params.level == 3) {
+                    level = '高级'
+                }
+                return title + "(" + level + ")"
+            }
+        },
+        props: ['music'],
         data() {
             return {
                 wxAudio: '',
                 playing: true,
-                audio: ''
+                audio: '',
+                params: ''
             }
         },
         methods: {
@@ -42,7 +57,7 @@
                 this.wxAudio.dragProgressTo = this.wxAudio.wxAudioDetail.offsetWidth * this.wxAudio.currentP;
                 this.wxAudio.wxAudioCurrent.innerText = this.wxAudio.formartTime(this.wxAudio.wxAudio.currentTime);
                 this.wxAudio.updatePorgress();
-                 this.wxAudio.audioPlay();
+                this.wxAudio.audioPlay();
             },
             go() {
                 var curtime = this.wxAudio.currentT;
@@ -52,24 +67,25 @@
                 this.wxAudio.dragProgressTo = this.wxAudio.wxAudioDetail.offsetWidth * this.wxAudio.currentP;
                 this.wxAudio.wxAudioCurrent.innerText = this.wxAudio.formartTime(this.wxAudio.wxAudio.currentTime);
                 this.wxAudio.updatePorgress();
-                 this.wxAudio.audioPlay();
+                this.wxAudio.audioPlay();
             }
         },
         mounted() {
-            var that=this;
+            this.params = this.$route.query;
+            console.log(this.params);
+            var that = this;
             this.wxAudio = new Wxaudio({
                 ele: '#textaudio1',
                 title: 'Jar Of Love',
                 disc: 'Break Me Up',
-                src: 'http://jq22.qiniudn.com/ocean_drive_01.mp3',
+                src: that.params.musicurl,
                 width: '320px'
             });
             this.play();
             this.audio = this.wxAudio.wxAudio;
-            this.audio.onended=function(){
-                that.playing=true;
+            this.audio.onended = function() {
+                that.playing = true;
             }
-           
         }
     }
 </script>

@@ -1,12 +1,12 @@
 <template>
     <div class='turnQuestions' refs='sleepTestList'>
-        <bar :totalnum='totalnum' :curnum='curnum' v-if='totalnum>0'></bar>
+        <bar :totalnum='totalnum' :curnum='curnum+1' v-if='totalnum>0'></bar>
         <el-carousel class='carousels' indicator-position='none' :autoplay='autoplay' arrow='never' ref='carousel' :initial-index='initialindex' v-if='totalnum>0'>
             <el-carousel-item v-for="(item,index) in showlist" :key="index" style='height:20rem'>
                 <questionlist :list='item' :id='index' @selectQuestion='getOptions'></questionlist>
             </el-carousel-item>
         </el-carousel>
-        <div class="prevbutton" @click='prev' v-if='curnum>1'><i class="el-icon-back"></i>上一题</div>
+        <div class="prevbutton" @click='prev' v-if='curnum>0'><i class="el-icon-back"></i>上一题</div>
         <!-- <div class="nextbutton" @click='next' v-if='curnum<totalnum'>下一题</div> -->
         <div class='reInit' @click='reInit' v-if='reStart'>重新开始</div>
     </div>
@@ -33,8 +33,8 @@
                 doubleclick: false,
                 reStart: false,
                 autoplay: false,
-                totalnum: 1,
-                curnum: 1,
+                totalnum: 0,
+                curnum: 0,
                 cacheOptions: {},
                 showlist: [],
                 initialindex: 0,
@@ -43,15 +43,13 @@
             }
         },
         watch: {
+            initialindex() {
+                console.log(this.initialindex, 'initialindex');
+            },
             list() {
                 var that = this;
                 this.showlist = this.list;
                 this.totalnum = this.list.length;
-                if (this.totalnum > 0) {
-                    this.curnum = 1;
-                } else {
-                    this.curnum = 0;
-                }
                 var lasttestnum = 0;
                 this.list.map(function(item, index) {
                     that.cacheOptions[index] = {
@@ -67,18 +65,28 @@
                         that.cacheOptions[index].option = option;
                     })
                 });
-                this.curnum = lasttestnum;
+                this.curnum = lasttestnum == this.list.length - 1 ? 0 : lasttestnum; //是否已经全部测试完毕
                 if (this.curnum > 0) {
                     this.reStart = true;
+                } else {
+                    this.showlist = this.showlist.map(function(item, index) {
+                        var newitem = item;
+                        newitem.options = item.options.map(function(val, key) {
+                            var newval = val;
+                            newval.checked = false;
+                            return newval;
+                        })
+                        return newitem;
+                    })
                 }
-                this.initialindex = this.curnum >= 0 ? this.curnum : 0;
+                this.initialindex = this.curnum;
             }
         },
         methods: {
             reInit() {
                 this.showlist = [];
                 this.reStart = false;
-                this.curnum = 1;
+                this.curnum = 0;
                 this.initialindex = 0;
                 this.cacheOptions = {};
                 var that = this;
@@ -108,7 +116,7 @@
                 this.$emit('turnQestion', this.curnum);
             },
             next() {
-                if (this.curnum < this.list.length) {
+                if (this.curnum < this.list.length - 1) {
                     this.$refs.carousel.next();
                     this.curnum++;
                 }
@@ -120,7 +128,8 @@
                     option: data.option,
                     lineId: that.list[data.questnum].lineId
                 };
-                if (!that.doubleclick) {
+                var tmp = data.option.length >= 0;
+                if (!that.doubleclick && tmp) {
                     this.$axios.post('', { //实时保存结果
                         templateId: that.params.templateId,
                         tuId: that.params.tuId,
@@ -128,41 +137,52 @@
                     }).then(function() {})
                     that.doubleclick = true;
                     this.bar = setTimeout(function() {
-                        that.doubleclick = false
+                        that.doubleclick = false;
                     }, 300);
-                    this.next();
                 }
             }
         },
         mounted() {
             this.params = this.$route.query;
-            var swiper = this.$refs.carousel.onSlideChangeEnd;
             var that = this;
-            this.showlist = this.list;
-            if (this.totalnum > 0) {
-                this.curnum = 1;
-            } else {
-                this.curnum = 0;
+            document.getElementsByClassName('turnQuestions')[0].onclick = function(e) {
+                if (e.target.className === 'el-radio__original') {
+                    that.next()
+                }
             }
-            var lasttestnum = 0;
-            if (this.list) {
+            if (this.list && this.list.length) {
+                this.showlist = this.list;
+                this.totalnum = this.list.length;
+                var lasttestnum = 0;
                 this.list.map(function(item, index) {
                     that.cacheOptions[index] = {
                         option: [],
                         lineId: item.lineId
                     };
-                    var option = [];
-                    if (val.checked === true || val.checked === 'true') {
-                        lasttestnum = index;
-                        option.push(key);
-                    }
-                    that.cacheOptions[index].option = option;
+                    item.options.map(function(val, key) {
+                        var option = [];
+                        if (val.checked === true || val.checked === 'true') {
+                            lasttestnum = index;
+                            option.push(key);
+                        }
+                        that.cacheOptions[index].option = option;
+                    })
                 });
-                this.curnum = lasttestnum;
-            }
-            this.totalnum = this.list.length;
-            if (this.curnum > 0) {
-                this.reStart = true;
+                this.curnum = lasttestnum == this.list.length - 1 ? 0 : lasttestnum; //是否已经全部测试完毕
+                if (this.curnum > 0) {
+                    this.reStart = true;
+                } else {
+                    this.showlist = this.showlist.map(function(item, index) {
+                        var newitem = item;
+                        newitem.options = item.options.map(function(val, key) {
+                            var newval = val;
+                            newval.checked = false;
+                            return newval;
+                        })
+                        return newitem;
+                    })
+                }
+                this.initialindex = this.curnum;
             }
             bus.$on('closeReInitButton', function() {
                 that.reStart = false;
@@ -204,7 +224,7 @@
 <style lang='scss'>
     .turnQuestions {
         position: absolute;
-        top: 3rem;
+        top: 2.95rem;
         width: 100%;
         background: #fff;
         bottom: 0;

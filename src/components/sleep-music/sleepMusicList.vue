@@ -37,14 +37,13 @@
                 </div>
             </div>
         </div>
-        <el-dialog title="关联Apple Health" :visible.sync="dialogVisible" width="80%" v-if='showDialog'>
+        <el-dialog title="关联Apple Health" :visible.sync="dialogVisible" width="80%">
             <span>是否同意关联苹果健康数据？</span>
             <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="saveSleepInfo">确 定</el-button>
-        </span>
+                            <el-button @click="dialogVisible = false">取 消</el-button>
+                            <el-button type="primary" @click="saveSleepInfo">确 定</el-button>
+                            </span>
         </el-dialog>
-        <firstlogin @firstlogin='firstloginmusiclist'></firstlogin>
     </div>
 </template>
 
@@ -59,7 +58,6 @@
     import aboutSleep from './sleepAbout.vue';
     import aboutNews from './sleepNews.vue';
     import datadeviation from './dataDeviation.vue';
-    import firstlogin from './first_login_sleepmusiclist.vue'
     import nodata from './nodata.vue';
     export default {
         name: "sleepMusicList",
@@ -74,7 +72,6 @@
             datadeviation,
             nodata,
             mycollapse2,
-            firstlogin,
             iosdatashower
         },
         data() {
@@ -86,7 +83,6 @@
                 iosshowdata: '',
                 todayManuInputData: false, //今天是否手动录入数据
                 dialogVisible: false, //是否需要提示获取权限
-                showDialog: false, //是否引导页已经关闭
                 sleepnewslist: [],
                 showDateSelect: false,
                 activeName: "",
@@ -110,52 +106,12 @@
             };
         },
         methods: {
-            getAppleHealthData() { //例子数据，获取苹果健康数据
-                var data = this.appleHealthData || [{
+            getAppleHealthData(val) { //例子数据，获取苹果健康数据
+                var data = this.appleHealthData = val || [{
                     "categoryType.identifier": "HKCategoryTypeIdentifierSleepAnalysis",
-                    "endDate": "2018-07-24T08:22:04+08:00",
-                    "startDate": "2018-07-24T00:06:28+08:00",
+                    "endDate": "2018-08-08T08:22:04+08:00",
+                    "startDate": "2018-08-08T00:06:28+08:00",
                     "UUID": "C97F643D-411D-44F5-A7E3-C6C31BBDFAE2",
-                    "sourceBundleId": "com.boohee.sleep",
-                    "value": 1,
-                    "sourceName": "萤火虫睡眠",
-                    "metadata": {},
-                    "categoryType.description": "HKCategoryTypeIdentifierSleepAnalysis"
-                }, {
-                    "categoryType.identifier": "HKCategoryTypeIdentifierSleepAnalysis",
-                    "endDate": "2018-07-25T18:15:34+08:00",
-                    "startDate": "2018-07-25T14:02:08+08:00",
-                    "UUID": "EA1DC171-C27A-4A87-8BB7-FBF3DFC35F9E",
-                    "sourceBundleId": "com.boohee.sleep",
-                    "value": 1,
-                    "sourceName": "萤火虫睡眠",
-                    "metadata": {},
-                    "categoryType.description": "HKCategoryTypeIdentifierSleepAnalysis"
-                }, {
-                    "categoryType.identifier": "HKCategoryTypeIdentifierSleepAnalysis",
-                    "endDate": "2018-07-26T04:35:27+08:00",
-                    "startDate": "2018-07-26T00:21:00+08:00",
-                    "UUID": "50BA09C8-8BDC-4250-9101-A55F9BE87A5A",
-                    "sourceBundleId": "com.boohee.sleep",
-                    "value": 1,
-                    "sourceName": "萤火虫睡眠",
-                    "metadata": {},
-                    "categoryType.description": "HKCategoryTypeIdentifierSleepAnalysis"
-                }, {
-                    "categoryType.identifier": "HKCategoryTypeIdentifierSleepAnalysis",
-                    "endDate": "2018-07-28T07:32:44+08:00",
-                    "startDate": "2018-07-28T00:50:38+08:00",
-                    "UUID": "22A5757F-88DE-4E76-973B-A4EA904AB502",
-                    "sourceBundleId": "com.boohee.sleep",
-                    "value": 1,
-                    "sourceName": "萤火虫睡眠",
-                    "metadata": {},
-                    "categoryType.description": "HKCategoryTypeIdentifierSleepAnalysis"
-                }, {
-                    "categoryType.identifier": "HKCategoryTypeIdentifierSleepAnalysis",
-                    "endDate": "2018-07-30T07:47:15+08:00",
-                    "startDate": "2018-07-30T00:26:01+08:00",
-                    "UUID": "07169030-4EED-4490-9046-CE631752D1DC",
                     "sourceBundleId": "com.boohee.sleep",
                     "value": 1,
                     "sourceName": "萤火虫睡眠",
@@ -167,25 +123,24 @@
                 var year = today.getFullYear(),
                     month = today.getMonth() + 1,
                     date = today.getDate(),
-                    datestr = year + '-' + month > 9 ? month : '0' + '-' + date > 9 ? date : '0' + date;
+                    datestr = year + '-' + (month > 9 ? month : '0' + month) + '-' + (date > 9 ? date : '0' + date);
                 this.iosshowdata = data.filter(function(item) {
                     var endtime = item.endDate.split('T')[0];
                     return endtime === datestr
-                })[0]
-                console.log('this.iosshowdata', this.iosshowdata);
-            },
-            firstloginmusiclist() {
-                this.showDialog = true
+                })[0];
             },
             //保存信息
             saveSleepInfo() {
+                this.dialogVisible = false;
                 window.localStorage.UPlusApp_getAppleHealthData = true;
                 let _this = this;
-                window.plugins.healthkit.monitorSampleType({
-                    'sampleType': 'HKCategoryTypeIdentifierSleepAnalysis'
-                }, function(value) {
-                    _this.getSleepInfo();
-                })
+                if (window.plugins && window.plugins.healthkit) {
+                    window.plugins.healthkit.monitorSampleType({
+                        'sampleType': 'HKCategoryTypeIdentifierSleepAnalysis'
+                    }, (value) => {
+                        _this.getSleepInfo();
+                    })
+                }
             },
             //获取苹果健康数据信息
             getSleepInfo(value1) {
@@ -193,17 +148,19 @@
                 var startDate = 0,
                     endDate = new Date(),
                     limit = 10;
-                this.dialogVisible = false
-                window.plugins.healthkit.querySampleType({
-                    'startDate': startDate, // 开始时间
-                    'endDate': endDate, // now 结束时间
-                    'sampleType': 'HKCategoryTypeIdentifierSleepAnalysis',
-                    'limit': limit,
-                    'ascending': 'T',
-                }, function(value) {
-                    that.appleHealthData = value; //获取苹果健康数据
-                    that.getAppleHealthData();
-                })
+                // this.dialogVisible = false;
+                if (window.plugins && window.plugins.healthkit) {
+                    window.plugins.healthkit.querySampleType({
+                        'startDate': startDate, // 开始时间
+                        'endDate': endDate, // now 结束时间
+                        'sampleType': 'HKCategoryTypeIdentifierSleepAnalysis',
+                        'limit': limit,
+                        'ascending': 'T',
+                    }, function(value) {
+                        that.appleHealthData = value; //获取苹果健康数据
+                        that.getAppleHealthData(value);
+                    })
+                }
             },
             toManuInput() {
                 this.$router.push({
@@ -228,16 +185,17 @@
             }
         },
         mounted() {
-            window.localStorage.UPlusApp_firstLogin_sleepMusicList = undefined; //测试用的
+            // window.localStorage.UPlusApp_firstLogin_sleepMusicList = undefined; //测试用的+++++++s+
+            window.localStorage.UPlusApp_getAppleHealthData = false; //测试用的+++++++s+
             if (window.localStorage.UPlusApp_getAppleHealthData === true || window.localStorage.UPlusApp_getAppleHealthData === 'true') {
-                this.saveSleepInfo(); //获取苹果健康数据
+                this.saveSleepInfo(); //获取苹果健康数据 
+                this.getSleepInfo(); //获取今天的苹果健康数据
+                this.getAppleHealthData(); //获取今天的苹果健康数据,测试用的++++++
             }
-            this.getAppleHealthData(); //获取今天的苹果健康数据
-            if (window.localStorage.wh_fromPage == 'music') {
+            if (window.localStorage.wh_fromPage == 'music') { //是否直接进入音乐页面
                 this.activeSpan = 1;
             }
-            this.showDialog = false; //控制引导页面的显示隐藏，由引导页first_login_sleepmusic.vue控制
-            if (window.localStorage.UPlusApp_firstLogin_sleepMusicList === undefined) { //第一次登陆
+            if (window.localStorage.UPlusApp_firstLogin_sleepMusicList === undefined || window.localStorage.UPlusApp_firstLogin_sleepMusicList === 'undefined') { //第一次登陆
                 window.localStorage.UPlusApp_firstLogin_sleepMusicList = true;
                 window.localStorage.UPlusApp_getAppleHealthData = false;
             }
@@ -248,14 +206,14 @@
             if (isAndroid) { //判断是否是苹果机
                 this.dialogVisible = false;
             } else if (isIOS) {
-                if (window.localStorage.UPlusApp_firstLogin_sleepMusicList === true || window.localStorage.UPlusApp_firstLogin_sleepMusicList === "true") { //是否第一次进入
+                if ((window.localStorage.UPlusApp_firstLogin_sleepMusicList === true || window.localStorage.UPlusApp_firstLogin_sleepMusicList === "true") && window.plugins && window.plugins.healthkit) { //是否第一次进入,是否有applehealth 数据
                     this.dialogVisible = true;
                 } else {
                     this.dialogVisible = false;
                 }
             }
             var that = this;
-            this.$axios.get('/api/getSleepPractice').then(function(res) {}).catch(function() {
+            this.$axios.get('/api/getSleepPractice').then(function(res) {}).catch(function() { //获取音乐列表
                 that.$axios.get('/static/testData/getSleepPractice.json').then(function(res) {
                     if (res.data.code == 'C0000') {
                         that.list = res.data.data.map(function(item) {
@@ -324,15 +282,16 @@
                         }
                     }
                 })
-            }) //获取用户最近一条测量记录
-            this.$axios.get('/api/getSleepInfo', {
-                size: 5
+            }) 
+            this.$axios.get('/api/getSleepInfo', {//获取睡眠资讯
+                size: 7
             }).then(function(res) {}).catch(function(res) {
                 that.$axios.get('/static/testData/getSleepInfo.json').then(function(res) {
                     console.log('aboutnews', res);
                     that.sleepnewslist = res.data;
                 });
             })
+            window.localStorage.UPlusApp_firstLogin_sleepMusicList = false;//非首次登陆
         }
     };
 </script>

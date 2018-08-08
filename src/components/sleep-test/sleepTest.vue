@@ -24,7 +24,7 @@
             },
             turnQestion(index) {
                 this.startnum = index;
-                if (index >= this.questions.length) {
+                if (index >= this.questions.length - 1) {
                     this.canSubmit = true;
                 } else {
                     this.canSubmit = false;
@@ -41,7 +41,6 @@
             var params = this.$route.query;
             var that = this;
             this.$axios.get('/api/setUserTemplate').then(function(res) {}).catch(function(res) {
-               
                 that.$axios.get('/static/testData/setUserTemplate.json').then(function(res) {
                     if (params.status === 0 || params.status === '0') { //中途退出
                         let instance = Toast({
@@ -95,7 +94,7 @@
     }
     .submit {
         position: fixed;
-        z-index:1000;
+        z-index: 1000;
         bottom: 0;
         left: 0;
         width: 100%;

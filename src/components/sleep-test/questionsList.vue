@@ -20,7 +20,7 @@
         props: ['list', 'id'],
         methods: {
             closeReInit() {
-                  bus.$emit('closeReInitButton');
+                bus.$emit('closeReInitButton');
             }
         },
         data() {
@@ -38,7 +38,6 @@
                     questnum: that.id,
                     option: [that.radio]
                 })
-             
             },
             list() {
                 var that = this;
@@ -51,12 +50,13 @@
         },
         mounted() {
             var that = this;
-            console.log('/////', this.list);
-            this.list.options.map(function(item, index) {
-                if (item.checked === true || item.checked === 'true') {
-                    that.radio = index
-                }
-            });
+            if (this.list && this.list.options) {
+                this.list.options.map(function(item, index) {
+                    if (item.checked === true || item.checked === 'true') {
+                        that.radio = index
+                    }
+                });
+            }
         }
     }
 </script>

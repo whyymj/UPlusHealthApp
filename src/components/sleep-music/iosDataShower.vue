@@ -1,24 +1,21 @@
 <template>
     <div class='analysis'>
-     
-        <mycollapse  :havedata='havedata'>
+        <mycollapse :havedata='havedata'>
             <div class="showdata" style='height:6rem;'>
                 <div class="imgbox">
                     <img src="/static/sleepMusicList/img5.png" alt="">
                 </div>
                 <div class="title">睡眠时长</div>
-                <div class="time"><span>{{Math.floor(sleepTimeLang/60)}}</span>小时<span>{{sleepTimeLang%60}}</span>分</div>
+                <div class="time"><span>{{sleepHours}}</span>小时<span>{{sleepMinutes}}</span>分</div>
                 <div class='verticalline'></div>
                 <h6>当日作息</h6>
                 <img src="/static/sleepMusicList/img6.png" alt="" @click='showdetail("当日作息即当日上床歇息至起床时间")' class='onlyone'>
                 <p>
-                    <span>23:32<span>-</span></span> <span>8:32<span></span></span>
+                    <span>{{sleepStart}}<span>-</span></span> <span>{{sleepEnd}}<span></span></span>
                 </p>
                 <div class='supplement' @click='toManuInput'>补全记录</div>
             </div>
         </mycollapse>
-       
-      
         <showmodal :showmodal='show' @closemodal='closemodal'>
             <div class='modalContent'>{{tips}}</div>
         </showmodal>
@@ -74,6 +71,36 @@
             }
         },
         computed: {
+            sleepHours() {
+                var lang = 0;
+                if (typeof this.showdata == 'object' && this.showdata.endDate) {
+                    var end = this.showdata.endDate.replace('T', ' ');
+                    var start = this.showdata.startDate.replace('T', ' ');
+                    lang = new Date(end) - new Date(start);
+                }
+                return Math.floor(lang / 3600000)
+            },
+            sleepMinutes() {
+                if (typeof this.showdata == 'object' && this.showdata.endDate) {
+                    var end = this.showdata.endDate.replace('T', ' ');
+                    var start = this.showdata.startDate.replace('T', ' ');
+                    var lang = new Date(end) - new Date(start);
+                    return Math.floor(lang / 1000 / 60 % 60)
+                }
+            },
+            sleepStart() {
+                if (this.showdata) {
+                    var start = this.showdata.startDate.split('T')[1].split(':');
+                    return start[0] + ':' + start[1]
+                }
+            },
+            sleepEnd() {
+                var end = ['00', '00']
+                if (this.showdata) {
+                    end = this.showdata.endDate.split('T')[1].split(':');
+                }
+                return end[0] + ':' + end[1]
+            },
             sleepQuality() {
                 var quality = ''
                 if (this.level == 1) {
@@ -112,10 +139,14 @@
                     that.deleteThis()
                 }
             };
-            if (this.paramslist.length == 0) {
-                this.haveDetail = false;
+            if (this.paramslist) {
+                if (this.paramslist.length == 0) {
+                    this.haveDetail = false;
+                } else {
+                    this.haveDetail = true;
+                }
             } else {
-                this.haveDetail = true;
+                this.haveDetail = false;
             }
         },
         methods: {
@@ -142,6 +173,7 @@
             showdetail(tip) {
                 this.tips = tip;
                 this.show = true;
+                console.log(tip);
             },
             closemodal() {
                 this.show = false;

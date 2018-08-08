@@ -51,6 +51,7 @@
             <p class='floatButton' @click="goFamilyManage"><img class='img' src="/static/healthArchives/index8.png" alt=""></p>
         </div>
         <paginator :pagenum='pagenum' :pageindex='pageindex'></paginator>
+        <firstLogin @firstlogin='first_login'></firstLogin>
     </div>
 </template>
 
@@ -66,11 +67,13 @@
     import {
         Indicator
     } from 'mint-ui';
+    import firstLogin from './first_login_sleepreport.vue';
     export default {
         components: {
             imgbox,
             paginator,
-            mynav
+            mynav,
+            firstLogin
         },
         watch: {
             healthProResult() {
@@ -200,6 +203,9 @@
         },
         computed: {},
         methods: {
+            first_login() {
+                window.localStorage.UPlusApp_firstLogin_sleepReport = false;
+            },
             scalebox(item) {
                 bus.$emit('scalebox', item.moudle_name)
             },
@@ -564,7 +570,6 @@
                     Indicator.close();
                 }
             },
-           
             goRecordsList() {
                 this.$router.push({
                     path: '/healthRecordsL'
@@ -587,6 +592,9 @@
             }
         },
         mounted() {
+            if (window.localStorage.UPlusApp_firstLogin_sleepReport == undefined || window.localStorage.UPlusApp_firstLogin_sleepReport == "undefined") { //判断是否首次登陆
+                window.localStorage.UPlusApp_firstLogin_sleepReport = true; //在首次登录组件里改变
+            } 
             var that = this;
             this.showdata = _.chunk(this.healthProResult, 3);
             if (window._member_id === '') {

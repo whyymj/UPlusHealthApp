@@ -2,8 +2,8 @@
   <div class="page associated-family-v">
     <!--first enter-->
     <!-- <div class="model" v-show="isModel" @click="isModel = !isModel">
-              <img id="tips" src="../../assets/family-manage-model.png" alt="">
-            </div> -->
+                                      <img id="tips" src="../../assets/family-manage-model.png" alt="">
+                                    </div> -->
     <!---->
     <!-- <h-header title="家人管理"></h-header> -->
     <!-- <a class="delete-btn" @click="showDelete">{{editText}}</a> -->
@@ -28,45 +28,54 @@
         </div>
         <!-- associate -->
         <!-- <div class="family-item text-center" v-for="(item, index) in associatedList" :key="index">
-                    <div class="family-img">
-                      <img :src="item.associated_pic" alt="family-img">
-                    </div>
-                    <div class="name">{{item.associated_name}}</div>
-                    <img class="u-plus" src="../../assets/u-plus.png" alt="">
-                  </div> -->
+                                            <div class="family-img">
+                                              <img :src="item.associated_pic" alt="family-img">
+                                            </div>
+                                            <div class="name">{{item.associated_name}}</div>
+                                            <img class="u-plus" src="../../assets/u-plus.png" alt="">
+                                          </div> -->
       </div>
       <!-- <div class="associated-account" @click="openAssociate()">
-                <i class="fa fa-chain" id="associate-icon"></i> <span class="">关联家人</span> <span>（已有U+账号）</span>
-              </div> -->
+                                        <i class="fa fa-chain" id="associate-icon"></i> <span class="">关联家人</span> <span>（已有U+账号）</span>
+                                      </div> -->
+      <div class="associated-create add-friends " @click="openCreate()">
+        <img class="addFriends" src='/static/familyManage/link.png'>
+        <span class="add" id='addf'>添加好友<i>（已有U+账号）</i></span>
+      </div>
       <div class="associated-create" @click="openCreate()">
         <i class="create fa fa-plus"></i> <span class="create">创建家人</span>
       </div>
       <div class="space"></div>
       <!-- <div class="associated-privacy">
-                <span class="privacy">隐私设置</span>
-              </div> -->
+                                        <span class="privacy">隐私设置</span>
+                                      </div> -->
       <div class="tips">
         <h2>提示</h2>
         <!-- <p>
-                  1、关联亲友为单向关联，只有关联您的用户才有权限查看您的健康数据。
-                </p> -->
+                                          1、关联亲友为单向关联，只有关联您的用户才有权限查看您的健康数据。
+                                        </p> -->
         <p>
           1、点击编辑，进入编辑模式，误删家人情况下只要不点保存设置，即删除操作未完成。
         </p>
       </div>
     </div>
     <!-- <footer class="footer">
-          <button class="confirm" @click="showDelete()">{{editText}}</button>
-        </footer> -->
+                                  <button class="confirm" @click="showDelete()">{{editText}}</button>
+                                </footer> -->
+    <firstLogin @firstlogin='first_login'></firstLogin>
   </div>
 </template>
 
 <script type="text/javascript">
   import axios from 'axios'
+  import firstLogin from './first_login_family.vue';
   import {
     MessageBox
   } from 'mint-ui'
   export default {
+    components: {
+      firstLogin
+    },
     name: 'family-management',
     data() {
       return {
@@ -116,6 +125,9 @@
       // init family list && window.localStorage.getItem('newUser')
       this.getFamilyList()
       this.initUserInfo()
+      if (window.localStorage.UPlusApp_firstLogin_family === undefined || window.localStorage.UPlusApp_firstLogin_family === "undefined") {
+        window.localStorage.UPlusApp_firstLogin_family = true;
+      }
       // this.$nextTick(function () {
       //   document.getElementById('tips').style.top = (document.getElementById('associate-icon').offsetTop -17) + 'px';
       //   if (!window.localStorage.getItem('fEntry')) {
@@ -127,6 +139,9 @@
       // })
     },
     methods: {
+      first_login() {
+        window.localStorage.UPlusApp_firstLogin_family = false;
+      },
       async initUserInfo() {
         try {
           const result = await axios.post('/api/user/info', {
@@ -209,4 +224,24 @@
 
 <style lang="scss">
   @import "./familyManagement.scss";
+  .associated-family-v {
+    .add-friends {
+      .addFriends {
+        width: 1rem;
+        height: 1rem;
+        vertical-align: middle;
+        margin-right: 0.4rem;
+      }
+      #addf {
+        font-size: 0.8rem;
+        font-family: 'PingFangSC-Regular';
+        color: #000;
+        i {
+          font-size: 0.7rem;
+          font-family: PingFangSC-Regular;
+          color: rgba(60, 57, 57, 1);
+        }
+      }
+    }
+  }
 </style>
