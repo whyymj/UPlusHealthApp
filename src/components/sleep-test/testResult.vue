@@ -27,7 +27,7 @@
         mounted() {
             var params = this.$route.query;
             var that = this;
-            this.$axios.get('/api/getSleepPractice', {
+            this.$axios.get('/api/getUserTemplateAnalysis', {//获取用户睡眠量表分析数据
                 tuId: params.tuId
             }).then(function(res) {}).catch(function(res) {
                 that.$axios.get('/static/testData/testResult.json', {
