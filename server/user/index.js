@@ -69,6 +69,9 @@ router.post('/api/user', (req, res, next) => {
     height: req.body.height,
     weight: req.body.weight,
     sex: req.body.sex,
+    nick_name: req.body.nick_name,
+    disease: req.body.disease,
+    allergy: req.body.allergy,
     birthday: req.body.birthday
   })
 

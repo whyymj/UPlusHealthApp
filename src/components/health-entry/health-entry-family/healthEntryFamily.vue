@@ -70,7 +70,7 @@
             </div>
         </div>
         <div class="bottom">
-            <div class="bottom_text">完成</div>
+            <div class="bottom_text" @click="save">完成</div>
         </div>
         <!-- 生日选择 -->
         <mt-popup v-model="birthday_picker" position="bottom">
@@ -123,6 +123,7 @@
 </template>
 <script>
     import tagslist from "./tagsList";
+    import axios from "axios"
     export default {
         components: {
             tagslist
@@ -188,7 +189,7 @@
                     },
                     {
                         name: "糖尿病",
-                        selected: true
+                        selected: false
                     },
                     {
                         name: "关节炎",
@@ -196,7 +197,7 @@
                     },
                     {
                         name: "高血压",
-                        selected: true
+                        selected: false
                     },
                     {
                         name: "偏头痛",
@@ -229,7 +230,7 @@
                     },
                     {
                         name: "豆类",
-                        selected: true
+                        selected: false
                     },
                     {
                         name: "芝麻",
@@ -400,10 +401,23 @@
                 this.birthdayarr[2] = values[0];
             },
             chooseChromic(data) {
-                console.log(data);
+
+                var dataSelected=[]
+                for(var i = 0;i<data.tags.length;i++){
+                	if(data.tags[i].selected==true){
+                		dataSelected.push(data.tags[i].name)
+                	}
+                }
+                this.chromicListResult =dataSelected
             },
             chooseAllergy(data) {
-                console.log(data);
+                var dataSelected1=[]
+                for(var j = 0;j<data.tags.length;j++){
+                	if(data.tags[j].selected==true){
+                		dataSelected1.push(data.tags[j].name)
+                	}
+                }
+                this.allergyListResult =dataSelected1
             },
             choose_nick_name() {
                 this.nick_name_pop = !this.nick_name_pop;
@@ -418,6 +432,24 @@
                 //         done();
                 //     })
                 //     .catch(_ => {});
+            },
+            save(){
+            	let saveData = {
+            		height: this.tall,
+				    weight: this.weight,
+				    sex: this.sex,
+				    birthday: this.birthday,
+				    nick_name: this.input_nick_name,
+				    disease: this.chromicListResult[0]?this.chromicListResult.join(","):"",
+				    allergy: this.allergyListResult[0]?this.allergyListResult.join(','):'',	
+            	}
+            	axios.post('/api/user',saveData)
+				.then(function(res) {
+					console.log(res);
+				})
+				.catch(function(err) {
+					console.log(err);
+				})
             }
         }
     };
