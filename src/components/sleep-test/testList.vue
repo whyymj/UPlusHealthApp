@@ -2,7 +2,7 @@
     <div class='testList'>
         <ul>
             <li v-for='(item,index) in testList' :key='index'>
-                <div @click='turnToTest'>
+                <div @click='turnToTest(item)'>
                     <h2>{{item.title}}</h2>
                     <i class='el-icon-arrow-right'></i>
                     <h6>{{item.detail}}</h6>
@@ -23,13 +23,11 @@
             return {}
         },
         methods: {
-            turnToTest() {
+            turnToTest(item) {
                 var that = this;
                 this.$router.push({
                     path: '/sleepTest',
-                    query: {
-                        test:11|| that.testList.meta
-                    }
+                    query: item.meta
                 });
             }
         }

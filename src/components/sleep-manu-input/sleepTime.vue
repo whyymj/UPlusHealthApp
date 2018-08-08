@@ -17,7 +17,7 @@
         data() {
             return {
                 index: 0,
-                mylist: []
+                pickerValue: ''
             }
         },
         methods: {
@@ -26,10 +26,11 @@
                 this.$refs.picker.open();
             },
             confirm(data) {
-                this.list[this.index].content = data
+                this.list[this.index].content = data;
                 this.list = this.list;
+                this.$emit('getSleepTimes', this.list);
             }
-        },
+        }
     }
 </script>
 

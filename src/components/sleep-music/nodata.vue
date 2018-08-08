@@ -2,9 +2,21 @@
     <div class='dataDeviation' v-if='show'>
         <h6>暂无数据</h6>
         <span class="el-icon-close" @click='close'></span>
-        <p>连接 Apple Health,同步睡眠数据。</p>
-        <div class="button" @click='changeRecord'>立即设置</div>
-        
+        <p v-if='isIos'>连接 Apple Health,同步睡眠数据。</p>
+        <p v-else>还没有数据，快去添加吧。</p>
+        <div class="button" @click='changeRecord'>{{isIos?"立即设置":"立即添加"}}</div>
+        <modal :showmodal='changeNow' @closemodal='closemodal'>
+            <div class='recordbox'>
+                <div class='imgbox'>
+                    <img src="/static/sleepMusicList/img7.png" class='img1' alt="">
+                    <img src="/static/sleepMusicList/img10.png" class='img2' alt="">
+                    <img src="/static/sleepMusicList/img8.png" class='img3' alt="">
+                </div>
+                <div class="body">
+                    <div class='p'>连接<i> Apple Health </i>后，会将它的睡眠数据同步至<i> 优家App </i>睡眠报告。如果要调整它们之间的共享数据设置，请打开手机上的<i>Health</i><i>(健康)</i><i>应用 </i>，点击<i> 数据来源 </i>，找到优家App,启用或禁用共享权限。</div>
+                </div>
+            </div>
+        </modal>
     </div>
 </template>
 
@@ -13,12 +25,17 @@
     export default {
         data() {
             return {
+                isIos: true,
                 show: true,
                 changeNow: false
             }
         },
         components: {
             modal
+        },
+        mounted() {
+            var u = navigator.userAgent
+            this.isIos = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
         },
         methods: {
             close() {
@@ -28,7 +45,11 @@
                 this.changeNow = false;
             },
             changeRecord() {
-                this.changeNow = true;
+                if (this.isIos) {
+                    this.changeNow = true;
+                } else {
+                    this.$router.push('/sleepManuInput');
+                }
             }
         }
     }
@@ -107,10 +128,10 @@
             bottom: 1rem;
             font-size: 0.7rem;
             font-family: 'PingFangSC-Regular';
-            background:rgba(38,166,255,1);
+            background: rgba(38, 166, 255, 1);
             line-height: 1rem;
             text-align: center;
-            color:#fff;
+            color: #fff;
             border-radius: 0.5rem;
         }
     }

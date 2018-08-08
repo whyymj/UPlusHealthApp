@@ -1,13 +1,15 @@
 <template>
     <div class='analysis'>
         <h2>分析结果</h2>
-        <span class="result">中度夜晚型</span>
-        <p class="detail">您的睡眠问题已经对生活有家到家了发空间发宽带缴费卡，点击标的积分爱打飞机</p>
+        <span class="result">{{analysis.title}}</span>
+        <p class="detail">{{analysis.detail}}</p>
     </div>
 </template>
 
 <script>
-    export default {}
+    export default {
+        props:['analysis']
+    }
 </script>
 
 <style lang='scss' scoped>

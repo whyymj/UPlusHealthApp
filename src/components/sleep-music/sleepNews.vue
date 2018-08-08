@@ -1,29 +1,32 @@
 <template>
     <div class='aboutNews'>
         <h3>相关资讯</h3>
-        <div class='newsbox'>
-            <img src="/static/sleepMusicList/exm3.jpg" alt="">
-            <div class="title">（这世界）那些不睡觉的传说，还是留给真正的天才吧！</div>
-            <ul class='keywords'>
-                <li>健康</li>
-                <li>体重</li>
-                <li>睡眠</li>
-            </ul>
+        <div class='newsbox' v-for='(item,index) in newslist' :key='index' @click='toUrl(item.gotoUrl)'>
+            <img :src="item.attachmentPath||'/static/sleepMusicList/exm3.jpg'" alt="">
+            <div class="title">{{item.postTitle}}</div>
+           
         </div>
     </div>
 </template>
 
 <script>
-    export default {}
+    export default {
+        props: ['newslist'],
+        methods: {
+            toUrl(url) {
+               window.location.href=url;
+            }
+        }
+    }
 </script>
 
 <style lang='scss' scoped>
     .aboutNews {
         width: 17rem;
-        height: 7.5rem;
         margin: 0.5rem auto 2rem;
         background: #fff;
         margin: 0.5rem auto 0;
+        border-bottom: 1px solid white;
         h3 {
             font-size: 0.8rem;
             font-family: 'PingFangSC-Medium';
@@ -35,7 +38,7 @@
             height: 4rem;
             width: 15rem;
             position: relative;
-            margin: auto;
+            margin: 0 auto 0.6rem;
             img {
                 width: 5.1rem;
                 height: 4rem;
@@ -48,7 +51,7 @@
                 position: absolute;
                 left: 6rem;
                 font-weight: 600;
-                width: 10rem;
+                width: 9.3rem;
             }
             .keywords {
                 position: absolute;

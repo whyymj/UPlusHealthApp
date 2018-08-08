@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div style='overflow:hidden;' v-if="hidetop!='true'">
+    <div class='wh_datepicker'>
+        <div style='overflow:hidden;padding-top:0.5rem;' v-if="hidetop!='true'">
             <div class='selector' style='padding:0 2% 0 3%;'>
                 <el-select v-model="year" placeholder="请选择" @change='getYear'>
                     <el-option v-for="item in years" :key="item.value" :label="item.label" :value="item.value">
@@ -94,7 +94,7 @@
             this.month = date.getMonth() + 1;
             this.date = date.getDate();
             this.today = "" + this.year + "-" + this.month + "-" + this.date;
-            this.datepicker = caldate(2018, 7);
+            this.datepicker = caldate(2018, this.month);
             for (var i = 0; i < 12; i++) {
                 this.months.push({
                     value: i + 1,
@@ -113,81 +113,87 @@
 </script>
 
 <style lang='scss'>
-    .ic__header,
-    .ic__next,
-    .ic__prev,
-    .ic__month-select,
-    .ic__year-select {
-        background: #fff;
-        text-align: center;
-    }
-    .selector {
-        width: 50%;
-        box-sizing: border-box;
-        float: left;
-    }
-    .el-select {
-        width: 100%;
-    }
-    #calendar {
-        width: 100%;
-        height: 12rem;
-        td {
-            position: relative;
-            text-align: center;
-            line-height: 2rem;
-            font-size: 0.7rem;
-            width: 14%;
-            font-family: "PingFangSC-Semibold";
-            color: rgba(33, 33, 33, 1);
-            font-weight: 600;
-        }
-        .havedata {
-            position: absolute;
-            width: 0.4rem;
-            height: 0.4rem;
-            background: rgba(38, 165, 253, 1);
-            border-radius: 50%;
-            box-shadow: 0 0 0.2rem rgba(38, 165, 253, 1);
-            bottom: 0.1rem;
-            left: 0;
-            right: 0;
-            margin: auto;
-            z-index: 100;
-        }
-        .today {
+    .wh_datepicker {
+        .ic__header,
+        .ic__next,
+        .ic__prev,
+        .ic__month-select,
+        .ic__year-select {
             background: #fff;
-            position: absolute;
-            width: 2rem;
-            height: 2rem;
-            box-sizing: border-box;
-            border: 1px solid rgba(38, 165, 253, 1);
-            color: rgba(38, 165, 253, 1);
             text-align: center;
-            font-size: 0.7rem;
-            font-family: "PingFangSC-Regular";
-            line-height: 2rem;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            margin: auto;
-            border-radius: 50%;
         }
-        .active {
-            position: absolute;
+        .selector {
+            width: 50%;
             box-sizing: border-box;
-            width: 2rem;
-            height: 2rem;
-            background: rgba(38, 165, 253, 1);
-            text-align: center;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            margin: auto;
-            border-radius: 50%;
-            color: #fff;
+            float: left;
+        }
+        .el-select {
+            width: 100%;
+        }
+        #calendar {
+            width: 100%;
+            height: 12rem;
+            td {
+                position: relative;
+                text-align: center;
+                line-height: 2rem;
+                font-size: 0.7rem;
+                width: 14%;
+                font-family: "PingFangSC-Semibold";
+                color: rgba(33, 33, 33, 1);
+                font-weight: 600;
+            }
+            .havedata {
+                position: absolute;
+                width: 0.4rem;
+                height: 0.4rem;
+                background: rgba(38, 165, 253, 1);
+                border-radius: 50%;
+                box-shadow: 0 0 0.2rem rgba(38, 165, 253, 1);
+                bottom: 0.1rem;
+                left: 0;
+                right: 0;
+                margin: auto;
+                z-index: 100;
+            }
+            .today {
+                background: #fff;
+                position: absolute;
+                width: 2rem;
+                height: 2rem;
+                box-sizing: border-box;
+                border: 1px solid rgba(38, 165, 253, 1);
+                color: rgba(38, 165, 253, 1);
+                text-align: center;
+                font-size: 0.7rem;
+                font-family: "PingFangSC-Regular";
+                line-height: 2rem;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                margin: auto;
+                border-radius: 50%;
+            }
+            .active {
+                position: absolute;
+                box-sizing: border-box;
+                width: 2rem;
+                height: 2rem;
+                background: rgba(38, 165, 253, 1);
+                text-align: center;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                margin: auto;
+                border-radius: 50%;
+                color: #fff;
+            }
+        }
+        .el-input{
+            height:2rem;
+            line-height: 2rem;
         }
     }
 </style>

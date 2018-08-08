@@ -3,9 +3,9 @@
         <h1>{{list.title}}</h1>
         <table>
             <tr v-for='(item,index) in list.options' :key='index' :style="{background:index%2==0?'#fff':'rgba(250,250,250,1)'}">
-                <td class="lefttd">{{item}}</td>
+                <td class="lefttd">{{item.lab}}</td>
                 <td class='righttd'>
-                    <p @click='closeReStartButton'>
+                    <p @click='closeReInit'>
                         <el-radio v-model="radio" :label="index"></el-radio>
                     </p>
                 </td>
@@ -19,12 +19,13 @@
     export default {
         props: ['list', 'id'],
         methods: {
-            closeReStartButton() {
-                bus.$emit('closeReInitButton');
+            closeReInit() {
+                  bus.$emit('closeReInitButton');
             }
         },
         data() {
             return {
+                doubleclick: 0,
                 radio: '',
                 value: '',
                 bgcolor: 'background:rgba(250,250,250,1);'
@@ -35,12 +36,27 @@
                 var that = this;
                 this.$emit('selectQuestion', {
                     questnum: that.id,
-                    option: that.radio
+                    option: [that.radio]
                 })
+             
+            },
+            list() {
+                var that = this;
+                this.list.options.map(function(item, index) {
+                    if (item.checked === true || item.checked === 'true') {
+                        that.radio = index
+                    }
+                });
             }
         },
         mounted() {
-            this.radio = this.list.default;
+            var that = this;
+            console.log('/////', this.list);
+            this.list.options.map(function(item, index) {
+                if (item.checked === true || item.checked === 'true') {
+                    that.radio = index
+                }
+            });
         }
     }
 </script>
@@ -60,7 +76,6 @@
         table {
             width: 100%;
             td {
-                width: 50%;
                 height: 2rem;
                 line-height: 2rem;
                 position: relative;
@@ -107,6 +122,7 @@
             }
             .lefttd {
                 text-align: left;
+                width: 80%;
             }
             .righttd {
                 text-align: right;

@@ -1,14 +1,8 @@
 <template>
     <div class='enterToTest'>
         <el-tabs v-model="activeName" @tab-click="handleClick">
-            <el-tab-pane label="睡眠评估" name="first">
-                <testlist :testList='sleepList'></testlist>
-            </el-tab-pane>
-            <el-tab-pane label="相关疾病" name="second">
-                <testlist :testList='sickList'></testlist>
-            </el-tab-pane>
-            <el-tab-pane label="精神状况" name="third">
-                <testlist :testList='spiritList'></testlist>
+            <el-tab-pane :label="item" :name="'title'+index" v-for='(item,index) in titlelist' :key='index'>
+                <testlist :testList='showlist'></testlist>
             </el-tab-pane>
         </el-tabs>
     </div>
@@ -22,125 +16,52 @@
         },
         data() {
             return {
-                activeName: 'first',
-                sleepList: [{
-                    title: '严重程度测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '1',
-                    time: '',
-                    result: '',
-                    status: 0//0未答题，>0答一半，
-                }, {
-                    title: '睡眠状况测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '2',
-                    time: '',
-                    result: ''
-                }, {
-                    title: '睡眠习惯测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '3',
-                    time: '',
-                    result: ''
-                }, {
-                    title: '严重程度测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '4',
-                    time: '',
-                    result: ''
-                }, {
-                    title: '睡眠状况测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '5',
-                    time: '2017-05-12 12:35',
-                    result: '未完成'
-                }, {
-                    title: '睡眠习惯测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '6',
-                    time: '2017-05-12 12:35',
-                    result: '中度夜晚型'
-                }],
-                sickList: [{
-                    title: '严重程度测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '1',
-                    time: '',
-                    result: ''
-                }, {
-                    title: '睡眠状况测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '2',
-                    time: '',
-                    result: ''
-                }, {
-                    title: '睡眠习惯测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '3',
-                    time: '',
-                    result: ''
-                }, {
-                    title: '严重程度测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '4',
-                    time: '',
-                    result: ''
-                }, {
-                    title: '睡眠状况测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '5',
-                    time: '2017-05-12 12:35',
-                    result: '未完成'
-                }, {
-                    title: '睡眠习惯测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '6',
-                    time: '2017-05-12 12:35',
-                    result: '中度夜晚型'
-                }],
-                spiritList: [{
-                    title: '严重程度测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '1',
-                    time: '',
-                    result: ''
-                }, {
-                    title: '睡眠状况测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '2',
-                    time: '',
-                    result: ''
-                }, {
-                    title: '睡眠习惯测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '3',
-                    time: '',
-                    result: ''
-                }, {
-                    title: '严重程度测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '4',
-                    time: '',
-                    result: ''
-                }, {
-                    title: '睡眠状况测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '5',
-                    time: '2017-05-12 12:35',
-                    result: '未完成'
-                }, {
-                    title: '睡眠习惯测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '6',
-                    time: '2017-05-12 12:35',
-                    result: '中度夜晚型'
-                }],
+                activeName: 'title0',
+                titlelist: [],
+                questionslist: {},
+                showlist: []
             };
         },
         methods: {
             handleClick(tab, event) {
-                console.log(tab, event);
+                this.getTemplateList(this.titlelist[tab.index]);
+            },
+            getTemplateList(title) {
+                var that = this;
+                if (!that.questionslist[title]) {
+                    this.$axios.get('/api/getTemplateList', {
+                        templateTerm: title
+                    }).then(function(res) {}).catch(function() {
+                        that.$axios.get('/static/testData/getTemplateList.json').then(function(res) {
+                            if (res.data.code == 'C0000') {
+                                that.showlist = that.questionslist[title] = res.data.data.map(function(item, index) {
+                                    return {
+                                        title: item.templateTitle + ' : ' + title,
+                                        detail: item.templateSubTitle,
+                                        meta: item,
+                                        time: item.createTime,
+                                        result: item.status === null ? '' : item.status == '0' ? '未完成' : item.status == '1' ? '已完成' : "未知",
+                                        status: item.status //null未答题，0答一半，1完成
+                                    }
+                                });
+                            }
+                        })
+                    });
+                } else {
+                    this.showlist = that.questionslist[title];
+                }
             }
+        },
+        mounted() {
+            var that = this;
+            this.$axios.get('/api/getTemplateTerms').then(function(res) {}).catch(function() {
+                that.$axios.get('/static/testData/getTemplateTerms.json').then(function(res) {
+                    if (res.data.code == 'C0000') {
+                        that.titlelist = res.data.data;
+                        that.getTemplateList(that.titlelist[0])
+                    }
+                })
+            });
         }
     }
 </script>

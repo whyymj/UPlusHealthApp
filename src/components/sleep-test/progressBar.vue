@@ -18,7 +18,7 @@
             },
             totalnum() {
                 this.total = this.totalnum;
-                 this.cur = this.curnum;
+                this.cur = this.curnum;
                 this.per = this.cur / this.total * 100;
             }
         },
@@ -47,13 +47,14 @@
     .el-progress-bar__outer {
         margin: auto;
     }
-    .el-progress--without-text .el-progress-bar  {
+    .el-progress--without-text .el-progress-bar {
         padding-left: 25px;
         padding-right: 25px;
     }
     .mybar {
         position: relative;
         height: 2.5rem;
+        background: #fff;
         .timer {
             font-size: 0.6rem;
             font-family: 'PingFangSC-Regular';

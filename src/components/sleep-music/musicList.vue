@@ -1,6 +1,6 @@
 <template>
     <div class='musiclist'>
-        <div class="row" v-for='(item,index) in musiclist' :key='index' @click='play(index)'>
+        <div class="row" v-for='(item,index) in musiclist' :key='index' @click='play(index,item)'>
             <div class="img">
                 <!-- <img src="/static/sleepMusicList/img1.png" alt="" class="tab" v-if='playindex==index'> -->
                 <span class="tab">{{index+1}}</span>
@@ -22,18 +22,18 @@
             level(index) {
                 if (index == 0) {
                     return '初级'
-                } else {
+                } else if (index == 1) {
                     return '中级'
+                } else {
+                    return '高级'
                 }
             },
-            play(index) {
+            play(index, item) {
                 this.playindex = index;
                 bus.$emit('playing', this.musiclist[index]);
                 this.$router.push({
-                    path:'/sleepMusicPlayerPanel',
-                    query:{
-                        index:index
-                    }
+                    path: '/sleepMusicPlayerPanel',
+                    query: item
                 });
             }
         },

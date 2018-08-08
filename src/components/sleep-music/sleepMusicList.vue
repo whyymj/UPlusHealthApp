@@ -6,23 +6,25 @@
         </div>
         <div class='content'>
             <div class="page page1" v-show='activeSpan==0'>
-                <mycollapse @showDetail='showDater'>
-                    <div slot='main' style='height:4rem;overflow:hidden;padding-top:-4rem;' v-if='!showDateSelect'>
-                        <myDatePicker hidetop='true'></myDatePicker>
-                    </div>
-                    <div slot='slider'>
+                <mycollapse2 animateT='500'>
+                    <div>
                         <myDatePicker></myDatePicker>
                     </div>
-                </mycollapse>
-                <sleepanalysis :paramslist='paramslist'></sleepanalysis>
-                <datadeviation></datadeviation>
-                <nodata></nodata>
+                </mycollapse2>
+                <!-- 有手动录入的数据就显示今天录入的 -->
+                <sleepanalysis :sleepTimeLang='sleepTimeLang' :paramslist='paramslist' :detailAnalysis='detailAnalysis' :level='sleepQuality' v-if='todayManuInputData'></sleepanalysis>
+                <!-- 如果无手动录入就显示从apple health获取的数据 -->
+                <iosdatashower :showdata='iosshowdata' v-if='!todayManuInputData&&appleHealthData!=""'></iosdatashower>
+                <!-- 如果有数据偏差就显示 -->
+                <datadeviation v-if='dataDeviat'></datadeviation>
+                <!-- 如果没有手动录入的数据并且无苹果健康数据就显示 -->
+                <nodata v-if='!todayManuInputData&&appleHealthData===""'></nodata>
                 <echarts></echarts>
                 <!-- 睡眠百科 -->
                 <aboutSleep v-for='(item,index) in sleepAboutData' :data='item' :key='index'></aboutSleep>
-                <aboutNews></aboutNews>
+                <aboutNews :newslist='sleepnewslist'></aboutNews>
                 <div class="buttons">
-                    <div class="manuinput">手动录入</div>
+                    <div class="manuinput" @click='toManuInput'>手动录入</div>
                     <!-- <div class="equipinput">设备录入</div> -->
                 </div>
             </div>
@@ -35,130 +37,69 @@
                 </div>
             </div>
         </div>
+        <el-dialog title="关联Apple Health" :visible.sync="dialogVisible" width="80%" v-if='showDialog'>
+            <span>是否同意关联苹果健康数据？</span>
+            <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="saveSleepInfo">确 定</el-button>
+        </span>
+        </el-dialog>
+        <firstlogin @firstlogin='firstloginmusiclist'></firstlogin>
     </div>
 </template>
 
 <script>
-    import mycollapse from "./myCollapse";
     import myDatePicker from './myDatePicker.vue';
+    import mycollapse2 from './mycollapse2.vue';
     import musiclist from "./musicList.vue";
     import player from "./player.vue";
     import sleepanalysis from './sleepAnalysis.vue';
+    import iosdatashower from './iosDataShower.vue';
     import echarts from './echarts.vue';
     import aboutSleep from './sleepAbout.vue';
     import aboutNews from './sleepNews.vue';
     import datadeviation from './dataDeviation.vue';
+    import firstlogin from './first_login_sleepmusiclist.vue'
     import nodata from './nodata.vue';
     export default {
         name: "sleepMusicList",
         components: {
             musiclist,
             player,
-            mycollapse,
             myDatePicker,
             sleepanalysis,
             echarts,
             aboutSleep,
             aboutNews,
             datadeviation,
-            nodata
+            nodata,
+            mycollapse2,
+            firstlogin,
+            iosdatashower
         },
         data() {
             return {
+                dataDeviat: false, //数据存在偏差
+                sleepQuality: 0,
+                sleepTimeLang: "",
+                appleHealthData: '', //从苹果健康获取的数据
+                iosshowdata: '',
+                todayManuInputData: false, //今天是否手动录入数据
+                dialogVisible: false, //是否需要提示获取权限
+                showDialog: false, //是否引导页已经关闭
+                sleepnewslist: [],
                 showDateSelect: false,
                 activeName: "",
-                list: [{
-                        name: "腹式呼吸练习1",
-                        time: 10,
-                        level: 0,
-                        imgurl: "/static/sleepMusicList/img2.png",
-                        musicurl: ""
-                    },
-                    {
-                        name: "腹式呼吸练习2",
-                        time: 10,
-                        level: 0,
-                        imgurl: "/static/sleepMusicList/img2.png",
-                        musicurl: ""
-                    },
-                    {
-                        name: "腹式呼吸练习3",
-                        time: 10,
-                        level: 1,
-                        imgurl: "/static/sleepMusicList/img2.png",
-                        musicurl: ""
-                    },
-                    {
-                        name: "腹式呼吸练习4",
-                        time: 10,
-                        level: 2,
-                        imgurl: "/static/sleepMusicList/img2.png",
-                        musicurl: ""
-                    },
-                    {
-                        name: "腹式呼吸练习5",
-                        time: 10,
-                        level: 0,
-                        imgurl: "/static/sleepMusicList/img2.png",
-                        musicurl: ""
-                    },
-                    {
-                        name: "腹式呼吸练习6",
-                        time: 10,
-                        level: 0,
-                        imgurl: "/static/sleepMusicList/img2.png",
-                        musicurl: ""
-                    },
-                    {
-                        name: "腹式呼吸练习7",
-                        time: 10,
-                        level: 0,
-                        imgurl: "/static/sleepMusicList/img2.png",
-                        musicurl: ""
-                    }
-                ],
+                detailAnalysis: "",
+                list: [],
                 activeSpan: 0,
-                paramslist: [{
-                    title: '睡眠效率',
-                    detail: '',
-                    params: [{
-                        data: 90,
-                        unit: '%'
-                    }]
-                }, {
-                    title: '入睡速度（分）',
-                    detail: '',
-                    params: [{
-                        data: 10,
-                        unit: '分钟'
-                    }]
-                }, {
-                    title: '当日作息',
-                    detail: '123',
-                    params: [{
-                        data: '23:32',
-                        unit: '-'
-                    }, {
-                        data: '06:56',
-                        unit: ''
-                    }]
-                }, {
-                    title: '入睡速度（分）',
-                    detail: '',
-                    params: [{
-                        data: 6,
-                        unit: '小时'
-                    }, {
-                        data: 7,
-                        unit: '分钟'
-                    }]
-                }],
+                paramslist: [],
                 sleepAboutData: [{
                     title: '睡眠测试(本服务由寝安睡眠提供)',
                     content: '睡眠小测试，了解自己的睡眠问题。',
                     src: "/static/sleepMusicList/exm1.jpg",
                     link: '测一测',
-                    linkurl: '/sleepTest'
+                    linkurl: '/enterToTest'
                 }, {
                     title: '睡眠百科（本服务由寝安睡眠提供',
                     content: '睡眠小百科，睡眠知识全收录。',
@@ -169,8 +110,110 @@
             };
         },
         methods: {
+            getAppleHealthData() { //例子数据，获取苹果健康数据
+                var data = this.appleHealthData || [{
+                    "categoryType.identifier": "HKCategoryTypeIdentifierSleepAnalysis",
+                    "endDate": "2018-07-24T08:22:04+08:00",
+                    "startDate": "2018-07-24T00:06:28+08:00",
+                    "UUID": "C97F643D-411D-44F5-A7E3-C6C31BBDFAE2",
+                    "sourceBundleId": "com.boohee.sleep",
+                    "value": 1,
+                    "sourceName": "萤火虫睡眠",
+                    "metadata": {},
+                    "categoryType.description": "HKCategoryTypeIdentifierSleepAnalysis"
+                }, {
+                    "categoryType.identifier": "HKCategoryTypeIdentifierSleepAnalysis",
+                    "endDate": "2018-07-25T18:15:34+08:00",
+                    "startDate": "2018-07-25T14:02:08+08:00",
+                    "UUID": "EA1DC171-C27A-4A87-8BB7-FBF3DFC35F9E",
+                    "sourceBundleId": "com.boohee.sleep",
+                    "value": 1,
+                    "sourceName": "萤火虫睡眠",
+                    "metadata": {},
+                    "categoryType.description": "HKCategoryTypeIdentifierSleepAnalysis"
+                }, {
+                    "categoryType.identifier": "HKCategoryTypeIdentifierSleepAnalysis",
+                    "endDate": "2018-07-26T04:35:27+08:00",
+                    "startDate": "2018-07-26T00:21:00+08:00",
+                    "UUID": "50BA09C8-8BDC-4250-9101-A55F9BE87A5A",
+                    "sourceBundleId": "com.boohee.sleep",
+                    "value": 1,
+                    "sourceName": "萤火虫睡眠",
+                    "metadata": {},
+                    "categoryType.description": "HKCategoryTypeIdentifierSleepAnalysis"
+                }, {
+                    "categoryType.identifier": "HKCategoryTypeIdentifierSleepAnalysis",
+                    "endDate": "2018-07-28T07:32:44+08:00",
+                    "startDate": "2018-07-28T00:50:38+08:00",
+                    "UUID": "22A5757F-88DE-4E76-973B-A4EA904AB502",
+                    "sourceBundleId": "com.boohee.sleep",
+                    "value": 1,
+                    "sourceName": "萤火虫睡眠",
+                    "metadata": {},
+                    "categoryType.description": "HKCategoryTypeIdentifierSleepAnalysis"
+                }, {
+                    "categoryType.identifier": "HKCategoryTypeIdentifierSleepAnalysis",
+                    "endDate": "2018-07-30T07:47:15+08:00",
+                    "startDate": "2018-07-30T00:26:01+08:00",
+                    "UUID": "07169030-4EED-4490-9046-CE631752D1DC",
+                    "sourceBundleId": "com.boohee.sleep",
+                    "value": 1,
+                    "sourceName": "萤火虫睡眠",
+                    "metadata": {},
+                    "categoryType.description": "HKCategoryTypeIdentifierSleepAnalysis"
+                }];
+                var today = new Date(),
+                    todaydata = '';
+                var year = today.getFullYear(),
+                    month = today.getMonth() + 1,
+                    date = today.getDate(),
+                    datestr = year + '-' + month > 9 ? month : '0' + '-' + date > 9 ? date : '0' + date;
+                this.iosshowdata = data.filter(function(item) {
+                    var endtime = item.endDate.split('T')[0];
+                    return endtime === datestr
+                })[0]
+                console.log('this.iosshowdata', this.iosshowdata);
+            },
+            firstloginmusiclist() {
+                this.showDialog = true
+            },
+            //保存信息
+            saveSleepInfo() {
+                window.localStorage.UPlusApp_getAppleHealthData = true;
+                let _this = this;
+                window.plugins.healthkit.monitorSampleType({
+                    'sampleType': 'HKCategoryTypeIdentifierSleepAnalysis'
+                }, function(value) {
+                    _this.getSleepInfo();
+                })
+            },
+            //获取苹果健康数据信息
+            getSleepInfo(value1) {
+                var that = this;
+                var startDate = 0,
+                    endDate = new Date(),
+                    limit = 10;
+                this.dialogVisible = false
+                window.plugins.healthkit.querySampleType({
+                    'startDate': startDate, // 开始时间
+                    'endDate': endDate, // now 结束时间
+                    'sampleType': 'HKCategoryTypeIdentifierSleepAnalysis',
+                    'limit': limit,
+                    'ascending': 'T',
+                }, function(value) {
+                    that.appleHealthData = value; //获取苹果健康数据
+                    that.getAppleHealthData();
+                })
+            },
+            toManuInput() {
+                this.$router.push({
+                    path: '/sleepManuInput',
+                    query: {}
+                });
+            },
             handleClick() {},
             clickSpan(index) {
+                window.localStorage.wh_fromPage = (index == 1) ? 'music' : ''; //用来记录是否是从音乐播放页面跳过来的
                 this.activeSpan = index;
             },
             showDater(bool) {
@@ -183,6 +226,113 @@
                     }, 400)
                 }
             }
+        },
+        mounted() {
+            window.localStorage.UPlusApp_firstLogin_sleepMusicList = undefined; //测试用的
+            if (window.localStorage.UPlusApp_getAppleHealthData === true || window.localStorage.UPlusApp_getAppleHealthData === 'true') {
+                this.saveSleepInfo(); //获取苹果健康数据
+            }
+            this.getAppleHealthData(); //获取今天的苹果健康数据
+            if (window.localStorage.wh_fromPage == 'music') {
+                this.activeSpan = 1;
+            }
+            this.showDialog = false; //控制引导页面的显示隐藏，由引导页first_login_sleepmusic.vue控制
+            if (window.localStorage.UPlusApp_firstLogin_sleepMusicList === undefined) { //第一次登陆
+                window.localStorage.UPlusApp_firstLogin_sleepMusicList = true;
+                window.localStorage.UPlusApp_getAppleHealthData = false;
+            }
+            var u = navigator.userAgent,
+                app = navigator.appVersion;
+            var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //g
+            var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+            if (isAndroid) { //判断是否是苹果机
+                this.dialogVisible = false;
+            } else if (isIOS) {
+                if (window.localStorage.UPlusApp_firstLogin_sleepMusicList === true || window.localStorage.UPlusApp_firstLogin_sleepMusicList === "true") { //是否第一次进入
+                    this.dialogVisible = true;
+                } else {
+                    this.dialogVisible = false;
+                }
+            }
+            var that = this;
+            this.$axios.get('/api/getSleepPractice').then(function(res) {}).catch(function() {
+                that.$axios.get('/static/testData/getSleepPractice.json').then(function(res) {
+                    if (res.data.code == 'C0000') {
+                        that.list = res.data.data.map(function(item) {
+                            return {
+                                name: item.lineTitle,
+                                time: 10,
+                                level: item.resourceType - 1,
+                                imgurl: item.imgUrl,
+                                musicurl: item.audioUrl
+                            }
+                        })
+                        console.log(that.list)
+                    }
+                }).catch(function() {});
+            });
+            this.$axios.get('/api/getLast').then(function(res) {}).catch(function(res) { //获取用户最近一条测量记录,判断今天是否有记录信息
+                that.$axios.get('/static/testData/getLast.json').then(function(res) {
+                    if (res.data.code === 'C0000') {
+                        var data = res.data.data;
+                        var createTime = data.create_date.split(' ')[0].split('-');
+                        var today = new Date();
+                        if (today.getFullYear() == createTime[0] && today.getMonth() + 1 == createTime[1] * 1 && today.getDate() == createTime[2]) {
+                            that.todayManuInputData = true;
+                            that.paramslist = [{
+                                title: '当日作息',
+                                detail: '当日作息即当日上床歇息至起床时间',
+                                params: [{
+                                    data: data.sleepTime,
+                                    unit: '-'
+                                }, {
+                                    data: data.wakeTime,
+                                    unit: ''
+                                }]
+                            }, {
+                                title: '卧床时长',
+                                detail: '',
+                                params: [{
+                                    data: Math.floor(data.bedTimeLang / 60),
+                                    unit: '小时'
+                                }, {
+                                    data: data.bedTimeLang % 60,
+                                    unit: '分钟'
+                                }]
+                            }, {
+                                title: '睡眠效率',
+                                detail: '',
+                                params: [{
+                                    data: data.sleepEfficiency,
+                                    unit: '%'
+                                }]
+                            }, {
+                                title: '入睡速度（分）',
+                                detail: '',
+                                params: [{
+                                    data: data.sleepingtime,
+                                    unit: '分钟'
+                                }]
+                            }];
+                            that.detailAnalysis = data.sleepAnalysis;
+                            that.sleepTimeLang = data.sleepTimeLang;
+                            that.sleepQuality = data.quality;
+                        } else {
+                            that.paramslist = [];
+                            that.detailAnalysis = "";
+                            that.todayManuInputData = false;
+                        }
+                    }
+                })
+            }) //获取用户最近一条测量记录
+            this.$axios.get('/api/getSleepInfo', {
+                size: 5
+            }).then(function(res) {}).catch(function(res) {
+                that.$axios.get('/static/testData/getSleepInfo.json').then(function(res) {
+                    console.log('aboutnews', res);
+                    that.sleepnewslist = res.data;
+                });
+            })
         }
     };
 </script>
@@ -206,7 +356,7 @@
             width: 100%;
             overflow: hidden;
             height: 2rem;
-            border-top:1px solid #F5F5F5;
+            border-top: 1px solid #F5F5F5;
             h6 {
                 width: 100%;
                 height: 100%;

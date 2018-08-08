@@ -1,34 +1,24 @@
 <template>
     <div class='analysis'>
-        <mycollapse :havedata='havedata'>
-            <div class="showdata" @click='scalemenu'>
+     
+        <mycollapse  :havedata='havedata'>
+            <div class="showdata" style='height:6rem;'>
                 <div class="imgbox">
                     <img src="/static/sleepMusicList/img5.png" alt="">
                 </div>
                 <div class="title">睡眠时长</div>
                 <div class="time"><span>{{Math.floor(sleepTimeLang/60)}}</span>小时<span>{{sleepTimeLang%60}}</span>分</div>
-                <div class="level">{{sleepQuality}}
-                </div><i class="el-icon-arrow-down rightarrow " v-if='rotateArr'></i><i class="el-icon-arrow-right rightarrow" v-else></i>
+                <div class='verticalline'></div>
+                <h6>当日作息</h6>
+                <img src="/static/sleepMusicList/img6.png" alt="" @click='showdetail("当日作息即当日上床歇息至起床时间")' class='onlyone'>
+                <p>
+                    <span>23:32<span>-</span></span> <span>8:32<span></span></span>
+                </p>
+                <div class='supplement' @click='toManuInput'>补全记录</div>
             </div>
         </mycollapse>
-        <mymenu animateT='500'>
-            <ul class='blocks'>
-                <li v-for='(item,index) in paramslist' :key='index' :style="{float:index%2==1?'right':'left','border-right':index%2==0?'1px solid #F8F8F8':'none','border-top':(index==2||index==3)?'1px solid #F8F8F8':'none'}">
-                    <h6>{{item.title}}</h6>
-                    <img src="/static/sleepMusicList/img6.png" alt="" v-if='item.detail!=""' @click='showdetail(item.detail)'>
-                    <p>
-                        <span v-for='(val,key) in item.params' :key='key'>{{val.data}}<span>{{val.unit}}</span></span>
-                    </p>
-                </li>
-            </ul>
-        </mymenu>
-        <div class="sleepAnalysis" v-if='detailAnalysis!=""'>
-            <h1>睡眠分析</h1>
-            <div class="detail">
-                <p v-for='(item,index) in contArr' :key='index'>{{item}}
-                </p>
-            </div>
-        </div>
+       
+      
         <showmodal :showmodal='show' @closemodal='closemodal'>
             <div class='modalContent'>{{tips}}</div>
         </showmodal>
@@ -49,7 +39,7 @@
             mymenu,
             mycollapse
         },
-        props: ['paramslist', 'detailAnalysis', 'sleepTimeLang', 'level'],
+        props: ['showdata'],
         data() {
             return {
                 isIos: true, //是否是ios机
@@ -57,6 +47,7 @@
                 roting: false,
                 havedata: true, //控制刪除模块按钮的显示
                 show: false,
+                haveDetail: false,
                 tips: '',
                 option: {
                     slidesPerView: 'auto',
@@ -103,6 +94,14 @@
             }
         },
         watch: {
+            paramslist() {
+                console.log('this.paramslist.length ', this.paramslist.length);
+                if (this.paramslist.length == 0) {
+                    this.haveDetail = false;
+                } else {
+                    this.haveDetail = true;
+                }
+            }
         },
         mounted() {
             var u = navigator.userAgent
@@ -113,6 +112,11 @@
                     that.deleteThis()
                 }
             };
+            if (this.paramslist.length == 0) {
+                this.haveDetail = false;
+            } else {
+                this.haveDetail = true;
+            }
         },
         methods: {
             scalemenu() {

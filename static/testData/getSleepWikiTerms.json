@@ -1,0 +1,33 @@
+{
+    "status": "0",
+    "code": "C0000",
+    "msg": "成功",
+    "openId": "c190706c3013460daee2c75983006cec",
+    "data": [
+        {
+            "termsId": "7",
+            "name": "CBTI",
+            "slug": "CBTI"
+        },
+        {
+            "termsId": "4",
+            "name": "入门",
+            "slug": "入门"
+        },
+        {
+            "termsId": "5",
+            "name": "深入",
+            "slug": "深入"
+        },
+        {
+            "termsId": "6",
+            "name": "疾病",
+            "slug": "疾病"
+        },
+        {
+            "termsId": "8",
+            "name": "药物",
+            "slug": "药物"
+        }
+    ]
+}

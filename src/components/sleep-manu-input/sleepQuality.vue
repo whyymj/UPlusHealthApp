@@ -22,22 +22,31 @@
                 </li>
             </ul>
         </div>
-        <div class="button">保存</div>
     </div>
 </template>
 
 <script>
     export default {
         props: ['list'],
+      
         methods: {
             chooseQuality(index) {
                 this.sleepQuality = this.sleepQuality.map(function(item) {
                     return 0;
                 })
-                this.sleepQuality.splice(index, 1, this.sleepQuality[index] == 0 ? 1 : 0)
+                this.sleepQuality.splice(index, 1, 1);
+                this.$emit('chooseQuality', index);
             },
             chooseFactor(index) {
-                this.sleepFactor.splice(index, 1, this.sleepFactor[index] == 0 ? 1 : 0)
+                var that = this;
+                this.sleepFactor.splice(index, 1, this.sleepFactor[index] == 0 ? 1 : 0);
+                this.$emit('chooseFactor', this.sleepFactor.map(function(item, index) {
+                    if (item) {
+                        return that.imgs2[index].title;
+                    }
+                }).filter(function(item) {
+                    return item
+                }).join(';'));
             }
         },
         data() {
@@ -69,44 +78,44 @@
                     level: 5
                 }],
                 imgs2: [{
-                    url: '/static/sleep-manue-input/img9.png',
-                    url_null: '/static/sleep-manue-input/img9_null.png',
-                    title: '十分差',
+                    url: '/static/sleep-manue-input/img5.png',
+                    url_null: '/static/sleep-manue-input/img5_null.png',
+                    title: '光亮',
                     level: 1
                 }, {
-                    url: '/static/sleep-manue-input/img10.png',
-                    url_null: '/static/sleep-manue-input/img10_null.png',
-                    title: '较差',
+                    url: '/static/sleep-manue-input/img15.png',
+                    url_null: '/static/sleep-manue-input/img15_null.png',
+                    title: '噪音',
                     level: 2
                 }, {
-                    url: '/static/sleep-manue-input/img11.png',
-                    url_null: '/static/sleep-manue-input/img11_null.png',
-                    title: '正常',
+                    url: '/static/sleep-manue-input/img16.png',
+                    url_null: '/static/sleep-manue-input/img16_null.png',
+                    title: '温度',
                     level: 3
                 }, {
-                    url: '/static/sleep-manue-input/img12.png',
-                    url_null: '/static/sleep-manue-input/img12_null.png',
-                    title: '比较好',
+                    url: '/static/sleep-manue-input/img6.png',
+                    url_null: '/static/sleep-manue-input/img6_null.png',
+                    title: '不适',
                     level: 4
                 }, {
-                    url: '/static/sleep-manue-input/img13.png',
-                    url_null: '/static/sleep-manue-input/img13_null.png',
-                    title: '超级棒',
+                    url: '/static/sleep-manue-input/img7.png',
+                    url_null: '/static/sleep-manue-input/img7_null.png',
+                    title: '压力',
                     level: 5
                 }, {
-                    url: '/static/sleep-manue-input/img10.png',
-                    url_null: '/static/sleep-manue-input/img10_null.png',
-                    title: '较差',
+                    url: '/static/sleep-manue-input/img14.png',
+                    url_null: '/static/sleep-manue-input/img14_null.png',
+                    title: '认床',
                     level: 6
                 }, {
-                    url: '/static/sleep-manue-input/img11.png',
-                    url_null: '/static/sleep-manue-input/img11_null.png',
-                    title: '正常',
+                    url: '/static/sleep-manue-input/img8.png',
+                    url_null: '/static/sleep-manue-input/img8_null.png',
+                    title: '床伴',
                     level: 7
                 }, {
-                    url: '/static/sleep-manue-input/img12.png',
-                    url_null: '/static/sleep-manue-input/img12_null.png',
-                    title: '比较好',
+                    url: '/static/sleep-manue-input/img17.png',
+                    url_null: '/static/sleep-manue-input/img17_null.png',
+                    title: '饱餐',
                     level: 8
                 }],
                 sleepQuality: [0, 0, 0, 0, 0],
@@ -174,16 +183,6 @@
                 font-family: 'PingFangSC-Regular';
                 color: rgba(153, 153, 153, 1);
             }
-        }
-        .button {
-            width: 100%;
-            height: 3rem;
-            background: #26A6FF;
-            line-height: 3rem;
-            font-size: 0.8rem;
-            font-family: 'PingFangSC-Regular';
-            color: rgba(255, 255, 255, 1);
-            text-align: center;
         }
     }
 </style>
