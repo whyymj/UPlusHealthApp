@@ -13,10 +13,10 @@
 
     音频测试：
     <div>
-      <button type="button" @click='playMedia()' id="play">播放</button>
-      <button type="button" @click='pauseMedia()' id="pause">暂定</button>
-      <button type="button" @click='releaseMedia()' id="release">停止</button>
-      <button type="button" @click='stopMedia()' id="stop">释放</button>
+      <button type="button" id="play">播放</button>
+      <button type="button" id="pause">暂定</button>
+      <button type="button" id="release">停止</button>
+      <button type="button" id="stop">释放</button>
     </div>
 
     <div id="audio_current"></div>
@@ -92,6 +92,9 @@
       },
       getId(id) {
         return document.getElementById(id);
+      },
+      onDeviceReady(){
+
       },
       mediaSuccess() {
         console.log("Media成功")

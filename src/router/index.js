@@ -47,6 +47,7 @@ const enterToTest = resolve => require(['@/components/sleep-test/enterToTest.vue
 const sleepTestResult = resolve => require(['@/components/sleep-test/testResult.vue'], resolve)
 const test = resolve => require(['@/components/test.vue'], resolve)
 const test1 = resolve => require(['@/components/test1.vue'], resolve)
+const test2 = resolve => require(['@/components/test2.vue'], resolve)
 
 //个人资料
 const userInfo = resolve => require(['@/components/user-info/userInfo.vue'], resolve)
@@ -82,7 +83,7 @@ const router = new Router({
     //     title: '海尔健康'
     //   },
     //   component: login
-    // }, 
+    // },
     {
       path: '/introduction',
       name: 'introduction',
@@ -118,7 +119,7 @@ const router = new Router({
         title: '健康档案'
       },
       component: healthRecordsL
-    }, 
+    },
     // {
     //   path: '/addProject',
     //   name: 'addProject',
@@ -126,7 +127,7 @@ const router = new Router({
     //     title: '添加项目'
     //   },
     //   component: addProject
-    // }, 
+    // },
     {
       path: '/manualEntry/:type?',
       name: 'manualEntry',
@@ -134,7 +135,7 @@ const router = new Router({
         title: '手动录入'
       },
       component: manualEntry
-    }, 
+    },
     {
       path: '/familyManagement',
       name: 'familyManagement',
@@ -156,7 +157,7 @@ const router = new Router({
         title: '关联家人'
       },
       component: associatedFamilyR
-    }, 
+    },
     {
       path: '/associationRequest/:phone',
       name: 'associationRequest',
@@ -422,8 +423,13 @@ const router = new Router({
       name: 'editFamily',
       meta: { title: '修改家人资料' },
       component: editFamily
+    },{
+      path: '/test2',
+      name: 'test2',
+      meta: { title: '音频播放测试' },
+      component: test2
     },
-    
+
   ]
 })
 
