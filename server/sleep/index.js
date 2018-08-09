@@ -409,7 +409,7 @@ router.post('/api/getSleepPractice', (req, res, next) => {
     _req.end()
   })
 // 获取用户睡眠量表分析数据
-router.post('/api/getUserSleepPractice', (req, res, next) => {
+router.post('/api/getUserTemplateAnalysis', (req, res, next) => {
     const postData = querystring.stringify({
       member_id: req.body.member_id,
       tuId: req.body.tuId,
@@ -418,7 +418,7 @@ router.post('/api/getUserSleepPractice', (req, res, next) => {
     const options = {
       host: config.host,
       port: config.port,
-      path: `${config.path}/sleep/getSleepPractice`,
+      path: `${config.path}/sleep/getUserTemplateAnalysis`,
       method: 'POST',
       headers: Object.assign(config.headers, {
         openId: req.session.token,
