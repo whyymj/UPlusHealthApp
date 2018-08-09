@@ -120,7 +120,10 @@ router.post('/api/user/update', (req, res, next) => {
     weight: req.body.weight,
     sex: req.body.sex,
     birthday: req.body.birthday,
-    target_weight: req.body.target_weight
+    target_weight: req.body.target_weight,
+    nick_name: req.body.nick_name,
+    head_pic: req.body.head_pic,
+    allergy: req.body.allergy
   })
 
   const options = {
