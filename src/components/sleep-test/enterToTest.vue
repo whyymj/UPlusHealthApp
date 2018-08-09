@@ -36,7 +36,7 @@
                             if (res.data.code == 'C0000') {
                                 that.showlist = that.questionslist[title] = res.data.data.map(function(item, index) {
                                     return {
-                                        title: item.templateTitle + ' : ' + title,
+                                        title: item.templateTitle ,
                                         detail: item.templateSubTitle,
                                         meta: item,
                                         time: item.createTime,

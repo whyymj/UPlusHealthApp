@@ -27,8 +27,26 @@
 
 <script>
     export default {
-        props: ['list'],
-      
+        props: ['list', 'quality', 'factors'],
+        watch: {
+            quality() {
+                if (this.quality) {
+                    this.sleepQuality.splice(this.quality, 1, 1);
+                }
+            },
+            factors() {
+                if (this.factors) {
+                    var that = this;
+                    var arr = this.factors.split(';');
+                    var tmp = that.imgs2.map(function(item) {
+                        return item.title
+                    })
+                    arr.map(function(item) {
+                        that.sleepFactor.splice(tmp.indexOf(item), 1, 1)
+                    })
+                }
+            }
+        },
         methods: {
             chooseQuality(index) {
                 this.sleepQuality = this.sleepQuality.map(function(item) {

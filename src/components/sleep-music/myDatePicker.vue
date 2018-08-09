@@ -28,7 +28,7 @@
             </thead>
             <tbody class='body'>
                 <tr v-for='(item,index) in datepicker' :key='index'>
-                    <td v-for='(val,key) in item' :key='key' @click='selectdate(index,key)'><span class='havedata' v-if='hasRecord(val)'></span><span class='today' :class='{active:activeTd(index,key)}' v-if='isToday(val)'>今天</span><span :class='{active:activeTd(index,key)}' :style="{opacity:opacity(val)}">{{val.date}}</span></td>
+                    <td v-for='(val,key) in item' :key='key' @click='selectdate(index,key,val)'><span class='havedata' v-if='haveDataDays.indexOf(hasRecord(val))!=-1'></span><span class='today' :class='{active:activeTd(index,key)}' v-if='isToday(val)'>今天</span><span :class='{active:activeTd(index,key)}' :style="{opacity:opacity(val)}">{{val.date}}</span></td>
                 </tr>
             </tbody>
         </table>
@@ -41,6 +41,7 @@
         props: ['hidetop'],
         data() {
             return {
+                haveDataDays: [],
                 month: "",
                 year: "",
                 date: "",
@@ -62,13 +63,17 @@
                 return false;
             },
             hasRecord(item) {
-                return true;
+                var that = this;
+                var str = '';
+                str = item.year + '-' + (item.month > 9 ? item.month : ('0' + item.month)) + '-' + (item.date > 9 ? item.date : '0' + item.date);
+                return str
             },
             update() {
                 this.datepicker = caldate(this.year, this.month);
             },
-            selectdate(index, key) {
+            selectdate(index, key, val) {
                 this.selected = [index, key];
+                this.$emit('checkDateData',val);
             },
             getYear(data) {
                 this.year = data;
@@ -90,6 +95,7 @@
         },
         mounted() {
             var date = new Date();
+            var that = this;
             this.year = date.getFullYear();
             this.month = date.getMonth() + 1;
             this.date = date.getDate();
@@ -108,6 +114,13 @@
                     label: i + 1 + "年"
                 });
             }
+            this.$axios.get('/api/getExistDateList').then(function() {}).catch(function() {
+                that.$axios.get('/static/testData/getExistDateList.json').then(function(res) {
+                    if (res.data.code == 'C0000') {
+                        that.haveDataDays = res.data.data.date_list;
+                    }
+                })
+            })
         }
     };
 </script>
@@ -191,8 +204,8 @@
                 color: #fff;
             }
         }
-        .el-input{
-            height:2rem;
+        .el-input {
+            height: 2rem;
             line-height: 2rem;
         }
     }

@@ -13,7 +13,7 @@
                 <p>
                     <span>{{sleepStart}}<span>-</span></span> <span>{{sleepEnd}}<span></span></span>
                 </p>
-                <div class='supplement' @click='toManuInput'>补全记录</div>
+                <div class='supplement' @click='toManuInput' v-if='sleepid!==""'>补全记录</div>
             </div>
         </mycollapse>
         <showmodal :showmodal='show' @closemodal='closemodal'>
@@ -36,7 +36,7 @@
             mymenu,
             mycollapse
         },
-        props: ['showdata'],
+        props: ['showdata', 'sleepid'],
         data() {
             return {
                 isIos: true, //是否是ios机
@@ -165,15 +165,17 @@
                 console.log('delete mr');
             },
             toManuInput() {
+                var that = this;
                 this.$router.push({
                     path: '/sleepManuInput',
-                    query: {}
+                    query: {
+                        sleepid: that.sleepid
+                    }
                 });
             },
             showdetail(tip) {
                 this.tips = tip;
                 this.show = true;
-                console.log(tip);
             },
             closemodal() {
                 this.show = false;

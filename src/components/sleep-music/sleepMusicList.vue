@@ -8,13 +8,13 @@
             <div class="page page1" v-show='activeSpan==0'>
                 <mycollapse2 animateT='500'>
                     <div>
-                        <myDatePicker></myDatePicker>
+                        <myDatePicker @checkDateData='checkDateData'></myDatePicker>
                     </div>
                 </mycollapse2>
                 <!-- 有手动录入的数据就显示今天录入的 -->
                 <sleepanalysis :sleepTimeLang='sleepTimeLang' :paramslist='paramslist' :detailAnalysis='detailAnalysis' :level='sleepQuality' v-if='todayManuInputData'></sleepanalysis>
                 <!-- 如果无手动录入就显示从apple health获取的数据 -->
-                <iosdatashower :showdata='iosshowdata' v-if='!todayManuInputData&&appleHealthData!=""'></iosdatashower>
+                <iosdatashower :showdata='iosshowdata' :sleepid='sleep_id' v-if='!todayManuInputData&&appleHealthData!=""'></iosdatashower>
                 <!-- 如果有数据偏差就显示 -->
                 <datadeviation v-if='dataDeviat'></datadeviation>
                 <!-- 如果没有手动录入的数据并且无苹果健康数据就显示 -->
@@ -40,9 +40,10 @@
         <el-dialog title="关联Apple Health" :visible.sync="dialogVisible" width="80%">
             <span>是否同意关联苹果健康数据？</span>
             <span slot="footer" class="dialog-footer">
-                            <el-button @click="dialogVisible = false">取 消</el-button>
-                            <el-button type="primary" @click="saveSleepInfo">确 定</el-button>
-                            </span>
+                                    
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="saveSleepInfo">确 定</el-button>
+            </span>
         </el-dialog>
         <bigechart @showbig='showbig' v-if='showBigEcharts'></bigechart>
     </div>
@@ -74,11 +75,14 @@
             datadeviation,
             nodata,
             mycollapse2,
-            iosdatashower,bigechart
+            iosdatashower,
+            bigechart
         },
         data() {
             return {
-                showBigEcharts:false,
+                isios: false,
+                sleep_id: '',
+                showBigEcharts: false,
                 dataDeviat: false, //数据存在偏差
                 sleepQuality: 0,
                 sleepTimeLang: "",
@@ -109,13 +113,19 @@
             };
         },
         methods: {
-            showbig(){
-                this.showBigEcharts=!this.showBigEcharts;
+            checkDateData(val) {//查询当天的数据
+                this.appleHealthData = '';
+                var check = val.year + '/' + (val.month > 9 ? val.month : '0' + val.month) + '/' + (val.date > 9 ? val.date : '0' + val.date)
+                this.saveSleepInfo(check);
+            },
+            showbig() {
+                this.showBigEcharts = !this.showBigEcharts;
             },
             getAppleHealthData(val) { //例子数据，获取苹果健康数据
+                var that = this;
                 var data = this.appleHealthData = val || [{
                     "categoryType.identifier": "HKCategoryTypeIdentifierSleepAnalysis",
-                    "endDate": "2018-08-08T08:22:04+08:00",
+                    "endDate": "2018-08-09T08:22:04+08:00",
                     "startDate": "2018-08-08T00:06:28+08:00",
                     "UUID": "C97F643D-411D-44F5-A7E3-C6C31BBDFAE2",
                     "sourceBundleId": "com.boohee.sleep",
@@ -134,26 +144,50 @@
                     var endtime = item.endDate.split('T')[0];
                     return endtime === datestr
                 })[0];
+                if (this.iosshowdata) { //如果有数据就上传后台
+                    that.$axios.post('/api/insertByIphone', {
+                        sleepTime: that.iosshowdata.startDate.replace('T', ' ').split('+')[0],
+                        wakeTime: that.iosshowdata.endDate.replace('T', ' ').split('+')[0]
+                    }).then(function(res) {
+                        if (res.data.code == 'C0000') {
+                            that.sleep_id = res.data.data.sleep_id
+                        }
+                    }).catch(function() {
+                        that.sleep_id = '111'
+                    });
+                }
+            },
+            //打开苹果健康权限
+            getHealth() {
+                let supportedTypes = ['HKCategoryTypeIdentifierSleepAnalysis'];
+                window.plugins.healthkit.requestAuthorization({
+                    readTypes: supportedTypes,
+                });
             },
             //保存信息
-            saveSleepInfo() {
+            saveSleepInfo(check) {
                 this.dialogVisible = false;
                 window.localStorage.UPlusApp_getAppleHealthData = true;
                 let _this = this;
                 if (window.plugins && window.plugins.healthkit) {
+                    this.getHealth(); //打开权限
                     window.plugins.healthkit.monitorSampleType({
                         'sampleType': 'HKCategoryTypeIdentifierSleepAnalysis'
                     }, (value) => {
-                        _this.getSleepInfo();
+                        _this.getSleepInfo(check);
                     })
                 }
             },
             //获取苹果健康数据信息
-            getSleepInfo(value1) {
+            getSleepInfo(check) {
                 var that = this;
                 var startDate = 0,
                     endDate = new Date(),
                     limit = 10;
+                if (check) {
+                    startDate = this.isios ? new Date(check + 'T' + '00:00') : new Date(check + ' 00:00');
+                    endDate = this.isios ? new Date(check + 'T' + '23:59:59') : new Date(check + ' 23:59:59');
+                }
                 // this.dialogVisible = false;
                 if (window.plugins && window.plugins.healthkit) {
                     window.plugins.healthkit.querySampleType({
@@ -163,7 +197,6 @@
                         'limit': limit,
                         'ascending': 'T',
                     }, function(value) {
-                        that.appleHealthData = value; //获取苹果健康数据
                         that.getAppleHealthData(value);
                     })
                 }
@@ -191,12 +224,24 @@
             }
         },
         mounted() {
-            // window.localStorage.UPlusApp_firstLogin_sleepMusicList = undefined; //测试用的+++++++s+
-            window.localStorage.UPlusApp_getAppleHealthData = false; //测试用的+++++++s+
-            if (window.localStorage.UPlusApp_getAppleHealthData === true || window.localStorage.UPlusApp_getAppleHealthData === 'true') {
+            window.localStorage.UPlusApp_getAppleHealthData = false; //测试用的+++++++s++++++++++++++++
+            window.localStorage.UPlusApp_firstLogin_sleepMusicList = undefined;
+            window.plugins = {
+                healthkit: {
+                    requestAuthorization: function() {},
+                    monitorSampleType: function(x, y) {
+                        y()
+                    },
+                    querySampleType(x, y) {
+                        y()
+                    }
+                }
+            }
+            //测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++
+            if (window.localStorage.UPlusApp_getAppleHealthData === true || window.localStorage.UPlusApp_getAppleHealthData === 'true') { //是否已经获取apple health 权限
                 this.saveSleepInfo(); //获取苹果健康数据 
-                this.getSleepInfo(); //获取今天的苹果健康数据
-                this.getAppleHealthData(); //获取今天的苹果健康数据,测试用的++++++
+                // this.getSleepInfo(); //获取今天的苹果健康数据
+                this.getAppleHealthData(); //获取今天的苹果健康数据,测试用的+++++++++++++++++++++++++++++
             }
             if (window.localStorage.wh_fromPage == 'music') { //是否直接进入音乐页面
                 this.activeSpan = 1;
@@ -209,6 +254,7 @@
                 app = navigator.appVersion;
             var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //g
             var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+            this.isios = isIOS;
             if (isAndroid) { //判断是否是苹果机
                 this.dialogVisible = false;
             } else if (isIOS) {
@@ -288,8 +334,8 @@
                         }
                     }
                 })
-            }) 
-            this.$axios.get('/api/getSleepInfo', {//获取睡眠资讯
+            })
+            this.$axios.get('/api/getSleepInfo', { //获取睡眠资讯
                 size: 7
             }).then(function(res) {}).catch(function(res) {
                 that.$axios.get('/static/testData/getSleepInfo.json').then(function(res) {
@@ -297,7 +343,7 @@
                     that.sleepnewslist = res.data;
                 });
             })
-            window.localStorage.UPlusApp_firstLogin_sleepMusicList = false;//非首次登陆
+            window.localStorage.UPlusApp_firstLogin_sleepMusicList = false; //非首次登陆
         }
     };
 </script>
