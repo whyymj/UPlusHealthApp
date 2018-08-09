@@ -19,7 +19,7 @@
                 <datadeviation v-if='dataDeviat'></datadeviation>
                 <!-- 如果没有手动录入的数据并且无苹果健康数据就显示 -->
                 <nodata v-if='!todayManuInputData&&appleHealthData===""'></nodata>
-                <echarts></echarts>
+                <echarts @showbig='showbig'></echarts>
                 <!-- 睡眠百科 -->
                 <aboutSleep v-for='(item,index) in sleepAboutData' :data='item' :key='index'></aboutSleep>
                 <aboutNews :newslist='sleepnewslist'></aboutNews>
@@ -44,6 +44,7 @@
                             <el-button type="primary" @click="saveSleepInfo">确 定</el-button>
                             </span>
         </el-dialog>
+        <bigechart @showbig='showbig' v-if='showBigEcharts'></bigechart>
     </div>
 </template>
 
@@ -59,6 +60,7 @@
     import aboutNews from './sleepNews.vue';
     import datadeviation from './dataDeviation.vue';
     import nodata from './nodata.vue';
+    import bigechart from './bigEcharts.vue';
     export default {
         name: "sleepMusicList",
         components: {
@@ -72,10 +74,11 @@
             datadeviation,
             nodata,
             mycollapse2,
-            iosdatashower
+            iosdatashower,bigechart
         },
         data() {
             return {
+                showBigEcharts:false,
                 dataDeviat: false, //数据存在偏差
                 sleepQuality: 0,
                 sleepTimeLang: "",
@@ -106,6 +109,9 @@
             };
         },
         methods: {
+            showbig(){
+                this.showBigEcharts=!this.showBigEcharts;
+            },
             getAppleHealthData(val) { //例子数据，获取苹果健康数据
                 var data = this.appleHealthData = val || [{
                     "categoryType.identifier": "HKCategoryTypeIdentifierSleepAnalysis",

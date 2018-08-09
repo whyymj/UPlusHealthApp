@@ -60,7 +60,7 @@
         top: 0;
         left: 0;
         background: rgba(0, 0, 0, 0.5);
-        z-index: 1000;
+        z-index: 10000;
         .close {
             width: 2rem;
             height: 2rem;

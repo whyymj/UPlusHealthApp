@@ -4,7 +4,7 @@
         <div class="button week" :class="{active:active==1}" @click='getdata(1)'>周</div>
         <div class="button month" :class="{active:active==2}" @click='getdata(2)'>月</div>
         <div class="button year" :class="{active:active==3}" @click='getdata(3)'>年</div>
-        <div id='main' ref='echarts'>
+        <div id='main2' ref='echarts'>
         </div>
         <div class="legend">
             <span class='point sleepStartTime'></span>
@@ -20,7 +20,7 @@
     export default {
         methods: {
             scaleEcharts() {
-                this.$emit('showbig')
+              this.$emit('showbig')
             },
             dealtime(time) { //将时间字符串化为小数
                 if (time) {
@@ -50,7 +50,6 @@
                 return arr;
             },
             getdata(index) {
-                this.myChart.showLoading();
                 this.sleepstarttimes = [];
                 this.sleependtimes = [];
                 this.sleeplengthtimes = [];
@@ -161,7 +160,6 @@
                             monthlength[i - 1] = tmp.length;
                         }
                     }();
-                    window.sleep_xaxis_arr = dateArray;
                     for (var i = 1; i <= 12; i++) {
                         monthlimit[i - 1] = 0;
                         for (var j = 0; j < i; j++) {
@@ -227,7 +225,6 @@
                             });
                             that.setOptions();
                             that.myChart.setOption(that.option);
-                            that.myChart.hideLoading();
                         }
                     });
                 })
@@ -255,7 +252,6 @@
                             });
                             that.setOptions();
                             that.myChart.setOption(that.option);
-                            that.myChart.hideLoading();
                         }
                     });
                 })
@@ -283,7 +279,6 @@
                             });
                             that.setOptions();
                             that.myChart.setOption(that.option);
-                            that.myChart.hideLoading();
                         }
                     });
                 })
@@ -311,7 +306,6 @@
                             });
                             that.setOptions();
                             that.myChart.setOption(that.option);
-                            that.myChart.hideLoading();
                         }
                     });
                 })
@@ -364,12 +358,6 @@
                 sleeplengthtimes: [],
                 active: 0,
                 option: {
-                    title: {
-                        top: 15,
-                        left: 18,
-                        text: '趋势图',
-                        sublink: 'http://e.weibo.com/1341556070/Aj1J2x5a5'
-                    },
                     tooltip: {
                         trigger: 'axis',
                         backgroundColor: "#26A5FD",
@@ -396,7 +384,7 @@
                             startM = Math.round((params[0].data - startH) * 60);
                             endH = Math.floor(params[3].data) - 24;
                             endM = Math.round((params[3].data - 24 - endH) * 60);
-                            if (window.sleep_charts_active == 0) {
+                          if (window.sleep_charts_active == 0) {
                                 time = window.sleep_xaxis_arr[params[0].axisValue];
                             } else if (window.sleep_charts_active == 2) {
                                 time = params[0].axisValueLabel;
@@ -418,10 +406,10 @@
                         },
                     },
                     grid: {
-                        left: '1%',
-                        right: '6%',
-                        bottom: '15%',
-                        top: '25%',
+                        left: '4%',
+                        right: '4%',
+                        bottom: '13%',
+                        top: '13%',
                         containLabel: true
                     },
                     xAxis: {
@@ -546,25 +534,24 @@
             var that = this;
             var echarts = require('echarts');
             // 基于准备好的dom，初始化echarts实例
-            this.myChart = echarts.init(document.getElementById('main'));
+            this.myChart = echarts.init(document.getElementById('main2'));
             // 绘制图表
             this.active = 0;
             window.sleep_charts_active = 0;
-
             this.nearestSeven();
-            this.myChart.showLoading();
         }
     }
 </script>
 
 <style lang='scss' scoped>
     .echarts {
-        width: 17rem;
-        height: 17rem;
+        width: 100%;
+        height: 100%;
         background: #fff;
-        position: relative;
-        margin: auto;
-        margin-top: 0.5rem;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 100000;
         .button {
             z-index: 1000;
             position: absolute;
@@ -575,23 +562,23 @@
             font-size: 0.6rem;
             text-align: center;
             line-height: 1.25rem;
-            top: 2.4rem;
+            top: 1.0rem;
             &.active {
                 color: #26a6ff;
                 border: 1px solid #26a6ff;
             }
         }
         .nearest {
-            left: 0.4rem;
+            left: 0.5rem;
         }
         .week {
-            left: 4.5rem;
+            left: 5.1rem;
         }
         .month {
-            left: 8.64rem;
+            left: 9.8rem;
         }
         .year {
-            right: 0.4rem;
+            right: 0.5rem;
         }
         .legend {
             height: 1.8rem;
@@ -632,15 +619,24 @@
                 right: 4.5rem;
             }
         }
-        #main {
-            width: 17rem;
-            height: 17rem;
+        #main2 {
+            width: 30rem;
+            height: 21rem;
+            background: #fff;
+            position: absolute;
+            transform: rotate(90deg);
+            left: -5.5rem;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            margin: auto;
+            transform-origin: 50% 50%;
         }
         .scale {
             width: 1rem;
             height: 1rem;
             position: absolute;
-            top: 0.5rem;
+            bottom: 0.5rem;
             right: 0.5rem;
         }
     }

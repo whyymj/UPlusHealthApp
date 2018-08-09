@@ -71,7 +71,7 @@
             }
             .img1 {
                 left: 0;
-                width: 2rem;
+                width: 3rem;
                 height: 3rem;
             }
             .img2 {
@@ -83,7 +83,7 @@
             }
             .img3 {
                 right: 0;
-                width: 2rem;
+                width: 3rem;
                 height: 3rem;
             }
         }
