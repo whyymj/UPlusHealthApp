@@ -1,0 +1,22 @@
+{
+    "status": "0",
+    "code": "C0000",
+    "msg": "成功",
+    "openId": "75d53d268ef74bb6a2d41c2842b35f90",
+    "data": {
+        "sleep_id": "5",
+        "user_id": "15153125386",
+        "create_date": "2018-07-07 12:30",
+        "startTime": "22:15",
+        "sleepTime": "22:30",
+        "wakeTime": "6:50",
+        "getupTime": "7:30",
+        "quality": "3",
+        "influence": null,
+        "sleepEfficiency": "89",
+        "sleepingtime": "15",
+        "sleepTimeLang": "500",
+        "bedTimeLang": "525",
+        "sleepAnalysis": "您08月03日晚的睡眠效率为:89% ,超过85%，睡眠质量较高。<br />寝安建议您更完整的记录睡眠日记，补充白天状态的记录，以便我们为您提供更准确的睡眠分析。<br />"
+    }
+}

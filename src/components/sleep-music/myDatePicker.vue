@@ -73,7 +73,7 @@
             },
             selectdate(index, key, val) {
                 this.selected = [index, key];
-                this.$emit('checkDateData',val);
+                this.$emit('checkDateData', val);
             },
             getYear(data) {
                 this.year = data;

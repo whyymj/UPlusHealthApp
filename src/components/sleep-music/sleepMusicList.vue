@@ -37,14 +37,14 @@
                 </div>
             </div>
         </div>
-        <el-dialog title="关联Apple Health" :visible.sync="dialogVisible" width="80%">
+        <!-- <el-dialog title="关联Apple Health" :visible.sync="dialogVisible" width="80%">
             <span>是否同意关联苹果健康数据？</span>
             <span slot="footer" class="dialog-footer">
-                                    
-            <el-button @click="dialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="saveSleepInfo">确 定</el-button>
-            </span>
-        </el-dialog>
+                                                                                
+    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="saveSleepInfo">确 定</el-button>
+    </span>
+        </el-dialog> -->
         <bigechart @showbig='showbig' v-if='showBigEcharts'></bigechart>
     </div>
 </template>
@@ -89,7 +89,7 @@
                 appleHealthData: '', //从苹果健康获取的数据
                 iosshowdata: '',
                 todayManuInputData: false, //今天是否手动录入数据
-                dialogVisible: false, //是否需要提示获取权限
+                // dialogVisible: false, //是否需要提示获取权限
                 sleepnewslist: [],
                 showDateSelect: false,
                 activeName: "",
@@ -113,10 +113,68 @@
             };
         },
         methods: {
-            checkDateData(val) {//查询当天的数据
+            checkDateData(val) { //查询当天的数据
+                var that = this;
                 this.appleHealthData = '';
-                var check = val.year + '/' + (val.month > 9 ? val.month : '0' + val.month) + '/' + (val.date > 9 ? val.date : '0' + val.date)
-                this.saveSleepInfo(check);
+                var check = val.year + '/' + (val.month > 9 ? val.month : '0' + val.month) + '/' + (val.date > 9 ? val.date : '0' + val.date);
+                if (window.localStorage.UPlusApp_getAppleHealthData === true || window.localStorage.UPlusApp_getAppleHealthData === 'true') { //是否已经获取apple health 权限
+                    this.saveSleepInfo(check);
+                }
+                this.$axios.get('/api/getSomeDay').then(function(res) {}).catch(function(res) { //获取用户最近一条测量记录,判断今天是否有记录信息
+                    that.$axios.get('/static/testData/checkSomeDay.json').then(function(res) {
+                        if (res.data.code === 'C0000') {
+                            var data = res.data.data;
+                            var createTime = data.create_date.split(' ')[0].split('-');
+                            var today = new Date();
+                            if (today.getFullYear() == createTime[0] && today.getMonth() + 1 == createTime[1] * 1 && today.getDate() == createTime[2]) {
+                                that.todayManuInputData = true;
+                                that.paramslist = [{
+                                    title: '当日作息',
+                                    detail: '当日作息即当日上床歇息至起床时间',
+                                    params: [{
+                                        data: data.sleepTime,
+                                        unit: '-'
+                                    }, {
+                                        data: data.wakeTime,
+                                        unit: ''
+                                    }]
+                                }, {
+                                    title: '卧床时长',
+                                    detail: '',
+                                    params: [{
+                                        data: Math.floor(data.bedTimeLang / 60),
+                                        unit: '小时'
+                                    }, {
+                                        data: data.bedTimeLang % 60,
+                                        unit: '分钟'
+                                    }]
+                                }, {
+                                    title: '睡眠效率',
+                                    detail: '',
+                                    params: [{
+                                        data: data.sleepEfficiency,
+                                        unit: '%'
+                                    }]
+                                }, {
+                                    title: '入睡速度（分）',
+                                    detail: '',
+                                    params: [{
+                                        data: data.sleepingtime,
+                                        unit: '分钟'
+                                    }]
+                                }];
+                                that.detailAnalysis = data.sleepAnalysis;
+                                that.sleepTimeLang = data.sleepTimeLang;
+                                that.sleepQuality = data.quality;
+                                console.log('hehe', that.detailAnalysis, that.sleepTimeLang, that.sleepQuality)
+                            } else {
+                                that.paramslist = [];
+                                that.detailAnalysis = "";
+                                that.todayManuInputData = false;
+                            }
+                        }
+                    })
+                })
             },
             showbig() {
                 this.showBigEcharts = !this.showBigEcharts;
@@ -166,7 +224,7 @@
             },
             //保存信息
             saveSleepInfo(check) {
-                this.dialogVisible = false;
+                // this.dialogVisible = false;
                 window.localStorage.UPlusApp_getAppleHealthData = true;
                 let _this = this;
                 if (window.plugins && window.plugins.healthkit) {
@@ -238,32 +296,35 @@
                 }
             }
             //测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++
-            if (window.localStorage.UPlusApp_getAppleHealthData === true || window.localStorage.UPlusApp_getAppleHealthData === 'true') { //是否已经获取apple health 权限
-                this.saveSleepInfo(); //获取苹果健康数据 
-                // this.getSleepInfo(); //获取今天的苹果健康数据
-                this.getAppleHealthData(); //获取今天的苹果健康数据,测试用的+++++++++++++++++++++++++++++
-            }
+            this.getHealth(); //获取权限
+            // if (window.localStorage.UPlusApp_getAppleHealthData === true || window.localStorage.UPlusApp_getAppleHealthData === 'true') { //是否已经获取apple health 权限
+            var today = new Date();
+            var month = today.getMonth() + 1;
+            var date = today.getDate();
+            var str = today.getFullYear() + '/' + (month > 9 ? month : '0' + month) + '/' + (date > 9 ? date : '0' + date);
+            this.saveSleepInfo(str); //获取苹果健康数据 
+            // }
             if (window.localStorage.wh_fromPage == 'music') { //是否直接进入音乐页面
                 this.activeSpan = 1;
             }
             if (window.localStorage.UPlusApp_firstLogin_sleepMusicList === undefined || window.localStorage.UPlusApp_firstLogin_sleepMusicList === 'undefined') { //第一次登陆
                 window.localStorage.UPlusApp_firstLogin_sleepMusicList = true;
-                window.localStorage.UPlusApp_getAppleHealthData = false;
+                // window.localStorage.UPlusApp_getAppleHealthData = false;
             }
             var u = navigator.userAgent,
                 app = navigator.appVersion;
             var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //g
             var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
             this.isios = isIOS;
-            if (isAndroid) { //判断是否是苹果机
-                this.dialogVisible = false;
-            } else if (isIOS) {
-                if ((window.localStorage.UPlusApp_firstLogin_sleepMusicList === true || window.localStorage.UPlusApp_firstLogin_sleepMusicList === "true") && window.plugins && window.plugins.healthkit) { //是否第一次进入,是否有applehealth 数据
-                    this.dialogVisible = true;
-                } else {
-                    this.dialogVisible = false;
-                }
-            }
+            // if (isAndroid) { //判断是否是苹果机
+            //     this.dialogVisible = false;
+            // } else if (isIOS) {
+            //     if ((window.localStorage.UPlusApp_firstLogin_sleepMusicList === true || window.localStorage.UPlusApp_firstLogin_sleepMusicList === "true") && window.plugins && window.plugins.healthkit) { //是否第一次进入,是否有applehealth 数据
+            //         this.dialogVisible = true;
+            //     } else {
+            //         this.dialogVisible = false;
+            //     }
+            // }
             var that = this;
             this.$axios.get('/api/getSleepPractice').then(function(res) {}).catch(function() { //获取音乐列表
                 that.$axios.get('/static/testData/getSleepPractice.json').then(function(res) {
