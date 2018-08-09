@@ -11,7 +11,7 @@
       </div>
 
     </div>
-    <audio id="audio_id" preload="none" crossorigin="anonumous" src="https://huiai.sleepeazz.com/vod/QinanSleepTrining_01.mp3">
+    <audio id="audio_id" preload="none" crossorigin="anonumous" src="https://huiai.sleepeazz.com/vod/QinanSleepTraining_02.mp3">
     </audio>
     <div id="audio_current"></div>
     <div id="audio_duration"></div>
@@ -21,7 +21,7 @@
 <script>
   export default {
     name: "test1",
-    srcUrl:"https://huiai.sleepeazz.com/vod/QinanSleepTrining_01.mp3",
+    srcUrl:"https://huiai.sleepeazz.com/vod/QinanSleepTraining_02.mp3",
     data() {
       return {
         app: {
@@ -136,8 +136,8 @@
 
             this.$$("play").onclick = function () {
               playAudio();
-              getCurrent();
-              getDuration();
+//              getCurrent();
+//              getDuration();
             }
             this.$$("pause").onclick = function () {
               pauseAudio();
