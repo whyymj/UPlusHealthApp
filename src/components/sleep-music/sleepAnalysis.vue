@@ -127,7 +127,7 @@
                 }
             },
             deleteThis() {
-                console.log('delete mr');
+               this.$emit('deleteThis')
             },
             toManuInput() {
                 this.$router.push({

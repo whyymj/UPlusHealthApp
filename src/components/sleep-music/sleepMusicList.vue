@@ -12,13 +12,13 @@
                     </div>
                 </mycollapse2>
                 <!-- 有手动录入的数据就显示今天录入的 -->
-                <sleepanalysis :sleepTimeLang='sleepTimeLang' :paramslist='paramslist' :detailAnalysis='detailAnalysis' :level='sleepQuality' v-if='todayManuInputData'></sleepanalysis>
-                <!-- 如果无手动录入就显示从apple health获取的数据 -->
-                <iosdatashower :showdata='iosshowdata' :sleepid='sleep_id' v-if='!todayManuInputData&&appleHealthData!=""'></iosdatashower>
+                <sleepanalysis :sleepTimeLang='sleepTimeLang' :paramslist='paramslist' :detailAnalysis='detailAnalysis' @deleteThis='deleteThis' :level='sleepQuality' v-if='todayManuInputData'></sleepanalysis>
+                <!-- 如果无手动录入，且有苹果健康数据就显示从apple health获取的数据 -->
+                <iosdatashower :showdata='iosshowdata' :sleepid='sleep_id' v-if='!todayManuInputData&&iosshowdata!=""'></iosdatashower>
                 <!-- 如果有数据偏差就显示 -->
                 <datadeviation v-if='dataDeviat'></datadeviation>
-                <!-- 如果没有手动录入的数据并且无苹果健康数据就显示 -->
-                <nodata v-if='!todayManuInputData&&appleHealthData===""'></nodata>
+                <!-- 如果没有手动录入的数据并且无苹果健康数据就显示 ,根据有无权限判断显示内容以及跳转路径-->
+                <nodata v-if='!todayManuInputData&&iosshowdata===""' :haveAuthor='haveAuthor'></nodata>
                 <echarts @showbig='showbig'></echarts>
                 <!-- 睡眠百科 -->
                 <aboutSleep v-for='(item,index) in sleepAboutData' :data='item' :key='index'></aboutSleep>
@@ -38,13 +38,13 @@
             </div>
         </div>
         <!-- <el-dialog title="关联Apple Health" :visible.sync="dialogVisible" width="80%">
-            <span>是否同意关联苹果健康数据？</span>
-            <span slot="footer" class="dialog-footer">
-                                                                                
-    <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="saveSleepInfo">确 定</el-button>
-    </span>
-        </el-dialog> -->
+                <span>是否同意关联苹果健康数据？</span>
+                <span slot="footer" class="dialog-footer">
+                                                                                    
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="saveSleepInfo">确 定</el-button>
+        </span>
+            </el-dialog> -->
         <bigechart @showbig='showbig' v-if='showBigEcharts'></bigechart>
     </div>
 </template>
@@ -62,6 +62,9 @@
     import datadeviation from './dataDeviation.vue';
     import nodata from './nodata.vue';
     import bigechart from './bigEcharts.vue';
+    import {
+        Loading
+    } from 'element-ui';
     export default {
         name: "sleepMusicList",
         components: {
@@ -76,12 +79,16 @@
             nodata,
             mycollapse2,
             iosdatashower,
+            Loading,
             bigechart
         },
         data() {
             return {
+                loadingmodal: '',
+                haveAuthor: false, //是否有权限
                 isios: false,
-                sleep_id: '',
+                sleep_id: '', //上传苹果健康数据获取的
+                sleepid: '', //查询当天的数据获取的
                 showBigEcharts: false,
                 dataDeviat: false, //数据存在偏差
                 sleepQuality: 0,
@@ -113,65 +120,91 @@
             };
         },
         methods: {
+            deleteThis() {
+                var that = this;
+                this.$axios.post('/api/delete', {
+                    sleep_id: that.sleep_id
+                }).then(function(res) {
+                    if (res.data.code == 'C0000') {
+                        that.paramslist = [];
+                        that.detailAnalysis = "";
+                        that.todayManuInputData = false;
+                    }
+                }).catch(function() {
+                    that.paramslist = [];
+                    that.detailAnalysis = "";
+                    that.todayManuInputData = false;
+                    that.sleepid = '';
+                })
+            },
             checkDateData(val) { //查询当天的数据
+                this.loadingmodal = Loading.service({
+                    fullscreen: true,
+                    background: 'rgba(0, 0, 0, 0.7)',
+                    lock: true,
+                    text: 'Loading',
+                    spinner: 'el-icon-loading',
+                });
                 var that = this;
                 this.appleHealthData = '';
                 var check = val.year + '/' + (val.month > 9 ? val.month : '0' + val.month) + '/' + (val.date > 9 ? val.date : '0' + val.date);
-                if (window.localStorage.UPlusApp_getAppleHealthData === true || window.localStorage.UPlusApp_getAppleHealthData === 'true') { //是否已经获取apple health 权限
-                    this.saveSleepInfo(check);
-                }
-                this.$axios.get('/api/getSomeDay').then(function(res) {}).catch(function(res) { //获取用户最近一条测量记录,判断今天是否有记录信息
+                // if (window.localStorage.UPlusApp_getAppleHealthData === true || window.localStorage.UPlusApp_getAppleHealthData === 'true') { //是否已经获取apple health 权限
+                this.saveSleepInfo(check);
+                // }
+                this.$axios.get('/api/getByDay', {
+                    Date: val.year + '-' + (val.month > 9 ? val.month : '0' + val.month) + '-' + (val.date > 9 ? val.date : '0' + val.date)
+                }).then(function(res) {
+                    that.loadingmodal.close()
+                }).catch(function(res) { //获取用户最近一条测量记录,判断今天是否有记录信息
+                    that.loadingmodal.close()
                     that.$axios.get('/static/testData/checkSomeDay.json').then(function(res) {
                         if (res.data.code === 'C0000') {
                             var data = res.data.data;
-                            var createTime = data.create_date.split(' ')[0].split('-');
-                            var today = new Date();
-                            if (today.getFullYear() == createTime[0] && today.getMonth() + 1 == createTime[1] * 1 && today.getDate() == createTime[2]) {
-                                that.todayManuInputData = true;
-                                that.paramslist = [{
-                                    title: '当日作息',
-                                    detail: '当日作息即当日上床歇息至起床时间',
-                                    params: [{
-                                        data: data.sleepTime,
-                                        unit: '-'
-                                    }, {
-                                        data: data.wakeTime,
-                                        unit: ''
-                                    }]
+                            that.todayManuInputData = true;
+                            that.paramslist = [{
+                                title: '当日作息',
+                                detail: '当日作息即当日上床歇息至起床时间',
+                                params: [{
+                                    data: data.sleepTime,
+                                    unit: '-'
                                 }, {
-                                    title: '卧床时长',
-                                    detail: '',
-                                    params: [{
-                                        data: Math.floor(data.bedTimeLang / 60),
-                                        unit: '小时'
-                                    }, {
-                                        data: data.bedTimeLang % 60,
-                                        unit: '分钟'
-                                    }]
+                                    data: data.wakeTime,
+                                    unit: ''
+                                }]
+                            }, {
+                                title: '卧床时长',
+                                detail: '',
+                                params: [{
+                                    data: Math.floor(data.bedTimeLang / 60),
+                                    unit: '小时'
                                 }, {
-                                    title: '睡眠效率',
-                                    detail: '',
-                                    params: [{
-                                        data: data.sleepEfficiency,
-                                        unit: '%'
-                                    }]
-                                }, {
-                                    title: '入睡速度（分）',
-                                    detail: '',
-                                    params: [{
-                                        data: data.sleepingtime,
-                                        unit: '分钟'
-                                    }]
-                                }];
-                                that.detailAnalysis = data.sleepAnalysis;
-                                that.sleepTimeLang = data.sleepTimeLang;
-                                that.sleepQuality = data.quality;
-                                console.log('hehe', that.detailAnalysis, that.sleepTimeLang, that.sleepQuality)
-                            } else {
-                                that.paramslist = [];
-                                that.detailAnalysis = "";
-                                that.todayManuInputData = false;
-                            }
+                                    data: data.bedTimeLang % 60,
+                                    unit: '分钟'
+                                }]
+                            }, {
+                                title: '睡眠效率',
+                                detail: '',
+                                params: [{
+                                    data: data.sleepEfficiency,
+                                    unit: '%'
+                                }]
+                            }, {
+                                title: '入睡速度（分）',
+                                detail: '',
+                                params: [{
+                                    data: data.sleepingtime,
+                                    unit: '分钟'
+                                }]
+                            }];
+                            that.detailAnalysis = data.sleepAnalysis;
+                            that.sleepTimeLang = data.sleepTimeLang;
+                            that.sleepQuality = data.quality;
+                            that.sleepid = data.sleep_id;
+                        } else {
+                            that.paramslist = [];
+                            that.detailAnalysis = "";
+                            that.todayManuInputData = false;
+                            that.sleepid = '';
                         }
                     })
                 })
@@ -179,12 +212,12 @@
             showbig() {
                 this.showBigEcharts = !this.showBigEcharts;
             },
-            getAppleHealthData(val) { //例子数据，获取苹果健康数据
+            getAppleHealthData(val, check) { //例子数据，获取苹果健康数据
                 var that = this;
                 var data = this.appleHealthData = val || [{
                     "categoryType.identifier": "HKCategoryTypeIdentifierSleepAnalysis",
-                    "endDate": "2018-08-09T08:22:04+08:00",
-                    "startDate": "2018-08-08T00:06:28+08:00",
+                    "endDate": "2018-08-10T08:22:04+08:00",
+                    "startDate": "2018-08-09T22:21:28+08:00",
                     "UUID": "C97F643D-411D-44F5-A7E3-C6C31BBDFAE2",
                     "sourceBundleId": "com.boohee.sleep",
                     "value": 1,
@@ -194,6 +227,9 @@
                 }];
                 var today = new Date(),
                     todaydata = '';
+                if (check) { //查询某天的数据
+                    today = new Date(check)
+                }
                 var year = today.getFullYear(),
                     month = today.getMonth() + 1,
                     date = today.getDate(),
@@ -201,7 +237,7 @@
                 this.iosshowdata = data.filter(function(item) {
                     var endtime = item.endDate.split('T')[0];
                     return endtime === datestr
-                })[0];
+                })[0] || '';
                 if (this.iosshowdata) { //如果有数据就上传后台
                     that.$axios.post('/api/insertByIphone', {
                         sleepTime: that.iosshowdata.startDate.replace('T', ' ').split('+')[0],
@@ -225,10 +261,9 @@
             //保存信息
             saveSleepInfo(check) {
                 // this.dialogVisible = false;
-                window.localStorage.UPlusApp_getAppleHealthData = true;
+                // window.localStorage.UPlusApp_getAppleHealthData = true;
                 let _this = this;
                 if (window.plugins && window.plugins.healthkit) {
-                    this.getHealth(); //打开权限
                     window.plugins.healthkit.monitorSampleType({
                         'sampleType': 'HKCategoryTypeIdentifierSleepAnalysis'
                     }, (value) => {
@@ -255,7 +290,18 @@
                         'limit': limit,
                         'ascending': 'T',
                     }, function(value) {
-                        that.getAppleHealthData(value);
+                        that.getAppleHealthData(value, check);
+                    })
+                    window.plugins.healthkit.querySampleType({ //判断是否有权限
+                        'startDate': 0, // 开始时间
+                        'endDate': endDate, // now 结束时间
+                        'sampleType': 'HKCategoryTypeIdentifierSleepAnalysis',
+                        'limit': limit,
+                        'ascending': 'T',
+                    }, function(value) {
+                        if (value && value.length && typeof value == 'object') {
+                            that.haveAuthor = true;
+                        }
                     })
                 }
             },
@@ -297,6 +343,13 @@
             }
             //测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++
             this.getHealth(); //获取权限
+            this.loadingmodal = Loading.service({
+                fullscreen: true,
+                background: 'rgba(0, 0, 0, 0.7)',
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+            });
             // if (window.localStorage.UPlusApp_getAppleHealthData === true || window.localStorage.UPlusApp_getAppleHealthData === 'true') { //是否已经获取apple health 权限
             var today = new Date();
             var month = today.getMonth() + 1;
@@ -338,12 +391,14 @@
                                 musicurl: item.audioUrl
                             }
                         })
-                        console.log(that.list)
                     }
                 }).catch(function() {});
             });
-            this.$axios.get('/api/getLast').then(function(res) {}).catch(function(res) { //获取用户最近一条测量记录,判断今天是否有记录信息
+            this.$axios.get('/api/getLast').then(function(res) {
+                that.loadingmodal.close();
+            }).catch(function(res) { //获取用户最近一条测量记录,判断今天是否有记录信息
                 that.$axios.get('/static/testData/getLast.json').then(function(res) {
+                    that.loadingmodal.close();
                     if (res.data.code === 'C0000') {
                         var data = res.data.data;
                         var createTime = data.create_date.split(' ')[0].split('-');
@@ -388,11 +443,18 @@
                             that.detailAnalysis = data.sleepAnalysis;
                             that.sleepTimeLang = data.sleepTimeLang;
                             that.sleepQuality = data.quality;
+                            that.sleepid = data.sleep_id;
                         } else {
                             that.paramslist = [];
                             that.detailAnalysis = "";
                             that.todayManuInputData = false;
+                            that.sleepid = '';
                         }
+                    } else {
+                        that.paramslist = [];
+                        that.detailAnalysis = "";
+                        that.todayManuInputData = false;
+                        that.sleepid = '';
                     }
                 })
             })

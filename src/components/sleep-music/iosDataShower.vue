@@ -16,7 +16,7 @@
                 <div class='supplement' @click='toManuInput' v-if='sleepid!==""'>补全记录</div>
             </div>
         </mycollapse>
-        <showmodal :showmodal='show' @closemodal='closemodal'>
+        <showmodal :showmodal='show' @closemodal='closemodal' >
             <div class='modalContent'>{{tips}}</div>
         </showmodal>
     </div>
@@ -42,7 +42,7 @@
                 isIos: true, //是否是ios机
                 rotateArr: false,
                 roting: false,
-                havedata: true, //控制刪除模块按钮的显示
+                havedata: false, //控制刪除模块按钮的显示
                 show: false,
                 haveDetail: false,
                 tips: '',
@@ -150,6 +150,7 @@
             }
         },
         methods: {
+          
             scalemenu() {
                 var that = this;
                 if (!this.roting) {
@@ -162,7 +163,7 @@
                 }
             },
             deleteThis() {
-                console.log('delete mr');
+                this.$emit('deleteThis');
             },
             toManuInput() {
                 var that = this;

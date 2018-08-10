@@ -2,7 +2,7 @@
     <div class='dataDeviation' v-if='show'>
         <h6>暂无数据</h6>
         <span class="el-icon-close" @click='close'></span>
-        <p v-if='isIos'>连接 Apple Health,同步睡眠数据。</p>
+        <p v-if='isIos&&!haveAuthor'>连接 Apple Health,同步睡眠数据。</p>
         <p v-else>还没有数据，快去添加吧。</p>
         <div class="button" @click='changeRecord'>{{isIos?"立即设置":"立即添加"}}</div>
         <modal :showmodal='changeNow' @closemodal='closemodal'>
@@ -33,6 +33,7 @@
         components: {
             modal
         },
+        props:['haveAuthor'],
         mounted() {
             var u = navigator.userAgent
             this.isIos = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
@@ -45,7 +46,7 @@
                 this.changeNow = false;
             },
             changeRecord() {
-                if (this.isIos) {
+                if (this.isIos&&!this.haveAuthor) {
                     this.changeNow = true;
                 } else {
                     this.$router.push('/sleepManuInput');

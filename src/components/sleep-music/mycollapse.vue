@@ -30,9 +30,7 @@
         },
         props: ['havedata'],
         methods: {
-            deleteThis() {
-                this.$emit('deleteThis');
-            }
+          
         },
         data() {
             return {
