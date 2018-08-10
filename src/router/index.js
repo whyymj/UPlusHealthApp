@@ -14,7 +14,8 @@ const setTargetWeight = resolve => require(['@/components/set-target-weight/setT
 const introduction = resolve => require(['@/components/introduction/introduction.vue'], resolve)
 const createCharacter = resolve => require(['@/components/create-character/createCharacter.vue'], resolve)
 const createFamily = resolve => require(['@/components/create-family/createFamily.vue'], resolve)
-// const healthRecordsB = resolve => require(['@/components/health-records-body/healthRecordsB.vue'], resolve)
+// const healthRecordsB = resolve =>
+// require(['@/components/health-records-body/healthRecordsB.vue'], resolve)
 
 const healthRecordsB = resolve => require(['@/components/health-archives/healthArchives.vue'], resolve)
 const healthRecordsL = resolve => require(['@/components/health-records-list/healthRecordsL.vue'], resolve)
@@ -48,7 +49,7 @@ const sleepTestResult = resolve => require(['@/components/sleep-test/testResult.
 const test = resolve => require(['@/components/test.vue'], resolve)
 const test1 = resolve => require(['@/components/test1.vue'], resolve)
 const test2 = resolve => require(['@/components/test2.vue'], resolve)
-
+const getSleepWiki = resolve => require(['@/components/sleep-cyclopedia/content.vue'], resolve)
 //个人资料
 const userInfo = resolve => require(['@/components/user-info/userInfo.vue'], resolve)
 const allergic = resolve => require(['@/components/user-info/allergic/allergic.vue'], resolve)
@@ -59,31 +60,16 @@ const healthEntryMy = resolve => require(['@/components/health-entry/health-entr
 const sleepCyclopedia = resolve => require(['@/components/sleep-cyclopedia/sleepCyclopedia.vue'], resolve)
 const errorMessage = resolve => require(['@/components/error-message/errorMessage.vue'], resolve)
 const weightMeasure = resolve => require(['@/components/weight-measure/weight-measure/weightMeasure.vue'], resolve)
-const serverError=resolve => require(['@/components/error-message/serverError.vue'], resolve)
+const serverError = resolve => require(['@/components/error-message/serverError.vue'], resolve)
 
-const editFamily=resolve => require(['@/components/user-info/editFamily.vue'], resolve)
+const editFamily = resolve => require(['@/components/user-info/editFamily.vue'], resolve)
 
 const router = new Router({
   mode: 'history',
   routes: [
-    // {
-    //   path: '*',
-    //   redirect: '/'
-    // }, {
-    //   path: '/',
-    //   redirect: 'login'
-    // }, {
-    //   path: '/test',
-    //   name: 'test',
-    //   component: test
-    // }, {
-    //   path: '/login',
-    //   name: 'login',
-    //   meta: {
-    //     title: '海尔健康'
-    //   },
-    //   component: login
-    // },
+    // {   path: '*',   redirect: '/' }, {   path: '/',   redirect: 'login' }, {
+    // path: '/test',   name: 'test',   component: test }, {   path: '/login',
+    // name: 'login',   meta: {     title: '海尔健康'   },   component: login },
     {
       path: '/introduction',
       name: 'introduction',
@@ -120,14 +106,8 @@ const router = new Router({
       },
       component: healthRecordsL
     },
-    // {
-    //   path: '/addProject',
-    //   name: 'addProject',
-    //   meta: {
-    //     title: '添加项目'
-    //   },
-    //   component: addProject
-    // },
+    // {   path: '/addProject',   name: 'addProject',   meta: {     title: '添加项目'
+    // },   component: addProject },
     {
       path: '/manualEntry/:type?',
       name: 'manualEntry',
@@ -135,8 +115,7 @@ const router = new Router({
         title: '手动录入'
       },
       component: manualEntry
-    },
-    {
+    }, {
       path: '/familyManagement',
       name: 'familyManagement',
       meta: {
@@ -157,8 +136,7 @@ const router = new Router({
         title: '关联家人'
       },
       component: associatedFamilyR
-    },
-    {
+    }, {
       path: '/associationRequest/:phone',
       name: 'associationRequest',
       meta: {
@@ -344,92 +322,112 @@ const router = new Router({
         title: '睡眠音乐'
       },
       component: sleepMusicPlayerPanel
-    },
-    {
+    }, {
       path: '/userInfo',
       name: 'userInfo',
       meta: {
         title: '个人资料'
       },
       component: userInfo
-    },
-    {
+    }, {
       path: '/allergic',
       name: 'allergic',
       meta: {
         title: '过敏史'
       },
       component: allergic
-    },
-    {
+    }, {
       path: '/chronicDisease',
       name: 'chronicDisease',
       meta: {
         title: '慢病史'
       },
       component: chronicDisease
-    },
-    {
+    }, {
       path: '/sleepCyclopedia',
       name: 'sleepCyclopedia',
-      meta: { title: '睡眠百科' },
+      meta: {
+        title: '睡眠百科'
+      },
       component: sleepCyclopedia
-    },
-    {
+    }, {
+      path: '/getSleepWiki',
+      name: 'getSleepWiki',
+      meta: {
+        title: '睡眠百科'
+      },
+      component: getSleepWiki
+    }, {
       path: '/healthEntryMy',
       name: 'healthEntryMy',
-      meta: { title: '健康档案入口创建角色' },
+      meta: {
+        title: '健康档案入口创建角色'
+      },
       component: healthEntryMy
-    },
-    {
+    }, {
       path: '/healthEntryFamily',
       name: 'healthEntryFamily',
-      meta: { title: '健康档案入口创建家人' },
+      meta: {
+        title: '健康档案入口创建家人'
+      },
       component: healthEntryFamily
-    },
-    {
+    }, {
       path: '/errorMessage',
       name: 'errorMessage',
-      meta: { title: '错误信息' },
+      meta: {
+        title: '错误信息'
+      },
       component: errorMessage
-    },{
+    }, {
       path: '/serverError',
       name: 'serverError',
-      meta: { title: '服务器出错了' },
+      meta: {
+        title: '服务器出错了'
+      },
       component: serverError
-    },
-    {
+    }, {
       path: '/weightMeasure',
       name: 'weightMeasure',
-      meta: { title: '渐轻入口' },
+      meta: {
+        title: '渐轻入口'
+      },
       component: weightMeasure
-    },{
+    }, {
       path: '/enterToTest',
       name: 'enterToTest',
-      meta: { title: '睡眠测试' },
+      meta: {
+        title: '睡眠测试'
+      },
       component: enterToTest
-    },{
+    }, {
       path: '/sleepTestResult',
       name: 'sleepTestResult',
-      meta: { title: '睡眠测试' },
+      meta: {
+        title: '睡眠测试'
+      },
       component: sleepTestResult
-    },{
+    }, {
       path: '/test1',
       name: 'test1',
-      meta: { title: 'camera测试' },
+      meta: {
+        title: 'camera测试'
+      },
       component: test1
-    },{
+    }, {
       path: '/editFamily',
       name: 'editFamily',
-      meta: { title: '修改家人资料' },
+      meta: {
+        title: '修改家人资料'
+      },
       component: editFamily
-    },{
+    }, {
       path: '/test2',
       name: 'test2',
-      meta: { title: '音频播放测试' },
+      meta: {
+        title: '音频播放测试'
+      },
       component: test2
-    },
-
+    }
   ]
 })
 

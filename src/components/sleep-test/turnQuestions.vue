@@ -7,7 +7,6 @@
             </el-carousel-item>
         </el-carousel>
         <div class="prevbutton" @click='prev' v-if='curnum>0'><i class="el-icon-back"></i>上一题</div>
-        <!-- <div class="nextbutton" @click='next' v-if='curnum<totalnum'>下一题</div> -->
         <div class='reInit' @click='reInit' v-if='reStart'>重新开始</div>
     </div>
 </template>
@@ -135,17 +134,19 @@
                 };
                 var tmp = data.option.length >= 0;
                 if (!that.doubleclick && tmp) {
-                    // var result = [];
-                    // var finalstr = ''
-                    // for (var k in that.cacheOptions) {
-                    //     result.push(that.cacheOptions[k].lineId + '&' + that.cacheOptions[k].option.join(','))
-                    // }
-                    // finalstr = result.join('|');
+                    var result = [];
+                    var finalstr = ''
+                    for (var k in that.cacheOptions) {
+                        result.push(that.cacheOptions[k].lineId + '&' + that.cacheOptions[k].option.join(','))
+                    }
+                    finalstr = result.join('|');
                     this.$axios.post('/api/saveUserTemplateByTime', { //实时保存结果
                         templateId: that.params.templateId,
                         tuId: that.params.tuId,
-                        inputVal: '' + that.cacheOptions[data.questnum].lineId + '&' + that.cacheOptions[data.questnum].option.join(',')
-                    }).then(function() {})
+                        inputVal: finalstr
+                    }).then(function(res) {
+
+                    })
                     that.doubleclick = true;
                     this.bar = setTimeout(function() {
                         that.doubleclick = false;
@@ -200,7 +201,6 @@
                 that.reStart = false;
             })
             bus.$on('submitResult', function() { //这里提交答案
-              
                 if (that.cacheOptions['' + (that.totalnum - 1)].option.length > 0) {
                     that.loadingmodal = Loading.service({
                         fullscreen: true,

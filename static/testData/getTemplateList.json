@@ -1,5 +1,5 @@
 {
-    "status": "0",
+    "status": "1",
     "code": "C0000",
     "msg": "成功",
     "openId": "c190706c3013460daee2c75983006cec",
@@ -38,7 +38,7 @@
             "templateTag": "睡眠评估",
             "tuId": null,
             "status": 1,
-            "createTime": null
+            "createTime": "2018-08-01 15:35"
         }
     ]
 }

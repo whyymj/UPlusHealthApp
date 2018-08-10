@@ -27,17 +27,25 @@
         mounted() {
             var params = this.$route.query;
             var that = this;
-            this.$axios.get('/api/getUserTemplateAnalysis', {//获取用户睡眠量表分析数据
+            this.$axios.get('/api/getUserTemplateAnalysis', { //获取用户睡眠量表分析数据
                 tuId: params.tuId
-            }).then(function(res) {}).catch(function(res) {
+            }).then(function(res) {
+                if (res.data.code == 'C0000') {
+                    that.testScore = res.data.data.gradesStr.split('分')[0];
+                    that.analysis = {
+                        title: res.data.data.scoreInfo,
+                        detail: res.data.data.scoreSuggest
+                    }
+                }
+            }).catch(function(res) {
                 that.$axios.get('/static/testData/testResult.json', {
                     tuId: params.tuId
                 }).then(function(res) {
-                    if(res.data.code=='C0000'){
-                        that.testScore=res.data.data.gradesStr.split('分')[0];
-                        that.analysis={
-                            title:res.data.data.scoreInfo,
-                            detail:res.data.data.scoreSuggest
+                    if (res.data.code == 'C0000') {
+                        that.testScore = res.data.data.gradesStr.split('分')[0];
+                        that.analysis = {
+                            title: res.data.data.scoreInfo,
+                            detail: res.data.data.scoreSuggest
                         }
                     }
                     console.log(res)
@@ -51,7 +59,10 @@
         },
         data() {
             return {
-                analysis:{title:'',detail:''},
+                analysis: {
+                    title: '',
+                    detail: ''
+                },
                 hadSaved: false,
                 testScore: 0,
                 tips: [{

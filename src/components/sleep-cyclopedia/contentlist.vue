@@ -1,7 +1,7 @@
 <template>
     <div class='contentlist'>
         <ul>
-            <li v-for='(item,index) in list' :key='index' @click='turnTo(item.link)'>
+            <li v-for='(item,index) in list' :key='index' @click='turnTo(item)'>
                 <img :src="item.img" alt="" class='bgimg'>
                 <h6>{{item.title}}</h6>
                 <span>{{item.type||'图文'}}</span>
@@ -16,7 +16,7 @@
         props: ['list'],
         methods: {
             turnimg(item) {
-                console.log(item)
+                
                 if (item.indexOf('漫画') != -1) {
                     return '/static/sleep_cyclopedia/news.png'
                 } else if (item.indexOf('音频') != -1) {
@@ -28,7 +28,12 @@
                 }
             },
             turnTo(url) {
-                window.location.href = url;
+                console.log('url>>>',url);
+                this.$router.push({
+                    path:'/getSleepWiki',
+                    query:url
+                })
+                // window.location.href = url;
             }
         }
     }

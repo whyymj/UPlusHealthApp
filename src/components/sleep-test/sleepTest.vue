@@ -51,8 +51,29 @@
             });
             var params = this.$route.query;
             var that = this;
-            this.$axios.get('/api/setUserTemplate').then(function(res) {
+            this.$axios.post('/api/setUserTemplate', {
+                templateId: params.templateId,
+                tuId: params.tuId
+            }).then(function(res) {
                 that.loadingmodal.close();
+                if (params.status === 0 || params.status === '0') { //中途退出
+                    let instance = Toast({
+                        message: '正从上次退出位置继续答题',
+                        position: 'bottom',
+                        duration: 2000
+                    });
+                }
+                if (res.data.code === 'C0000') {
+                    that.questions = res.data.data.templateLineList.map(function(item, index) {
+                        return {
+                            title: index + 1 + '. ' + item.lineTitle,
+                            type: item.lineType,
+                            "templateId": item.templateId,
+                            options: item.selectItemList,
+                            "lineId": item.lineId
+                        }
+                    });
+                }
             }).catch(function(res) {
                 that.loadingmodal.close();
                 that.$axios.get('/static/testData/setUserTemplate.json').then(function(res) {

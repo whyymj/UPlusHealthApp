@@ -32,7 +32,7 @@ export default {
                                         .split('|')[0]
                                         .trim();
 
-                                    return {img: item.attachmentPath, type: type, link: item.gotoUrl, title: item.postTitle}
+                                    return {img: item.attachmentPath, type: type, link: item.gotoUrl, title: item.postTitle,postId:item.postId}
                                 }))
                             }
                         })

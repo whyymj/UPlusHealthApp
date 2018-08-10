@@ -26,7 +26,7 @@
             },
             submitResult() {
                 var that = this;
-                if (this.sleepid) {//有sleep_id为修改，否则为添加
+                if (this.sleepid) { //有sleep_id为修改，否则为添加
                     this.$axios.post('/api/updateSleepAnalysis', {
                         sleep_id: that.sleepid,
                         startTime: that.items[0].content,
@@ -35,13 +35,13 @@
                         getupTime: that.items[3].content,
                         quality: that.sleepqualityres,
                         influence: that.sleepfactors
-                    }).then(function() {
+                    }).then(function(res) {
                         that.$router.push('/sleepMusicList');
                     }).catch(function() {
                         that.$router.push('/sleepMusicList');
                     });
                 } else {
-                    this.$axios.post('/api/insert', {
+                    this.$axios.post('/api/sleep/insert', {
                         member_id: "",
                         startTime: that.items[0].content,
                         sleepTime: that.items[1].content,
@@ -49,18 +49,10 @@
                         getupTime: that.items[3].content,
                         quality: that.sleepqualityres,
                         influence: that.sleepfactors
-                    }).then(function() {
+                    }).then(function(res) {
                         that.$router.push('/sleepMusicList');
                     }).catch(function() {
-                        console.log({
-                            member_id: "",
-                            startTime: that.items[0].content,
-                            sleepTime: that.items[1].content,
-                            wakeTime: that.items[2].content,
-                            getupTime: that.items[3].content,
-                            quality: that.sleepqualityres,
-                            influence: that.sleepfactors
-                        });
+                      
                         that.$router.push('/sleepMusicList');
                     });
                 }
@@ -103,7 +95,18 @@
                 this.sleepid = sleepid.sleepid;
                 this.$axios.get('/api/getAnalysisById', {
                     sleep_id: sleepid
-                }).then(function() {}).catch(function() {
+                }).then(function(res) {
+                    var data;
+                    if (res.data.code == 'C0000') {
+                        data = res.data.data;
+                        that.items[0].content = data.startTime;
+                        that.items[1].content = data.sleepTime;
+                        that.items[2].content = data.wakeTime;
+                        that.items[3].content = data.getupTime;
+                        that.sleepqualityres = that.quality = data.quality
+                        that.sleepfactors = that.factors = data.influence;
+                    }
+                }).catch(function() {
                     that.$axios.get('/static/testData/getAnalysisById.json').then(function(res) {
                         var data;
                         if (res.data.code == 'C0000') {

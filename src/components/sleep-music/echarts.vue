@@ -179,7 +179,56 @@
             },
             nearestSeven() { //最近7次
                 var that = this;
-                this.$axios.get('/api/getByLastSeven').then(function() {}).catch(function() {
+                this.$axios.get('/api/getByLastSeven').then(function(res) {
+                    if (res.data.code === 'C0000') {
+                        var list = res.data.data.map(function(item, index) {
+                            var newitem = item;
+                            newitem.date = new Date(item.create_date.replace('-', '/')).getTime();
+                            return newitem;
+                        }).sort(function(a, b) {
+                            return a.date - b.date;
+                        });
+                        var formate = list.map(function(item, index) {
+                            var arr = item.create_date.split('-')
+                            return arr[1] + '月' + arr[2] + '日';
+                        });
+                        that.option.xAxis = {
+                            type: 'category',
+                            splitLine: {
+                                show: true,
+                                lineStyle: {
+                                    type: 'dashed'
+                                }
+                            },
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#ccc'
+                                }
+                            },
+                            splitNumber: list.length,
+                            axisLabel: {
+                                color: '#333',
+                                rotate: -70,
+                                formatter: function(item, index) {
+                                    return formate[index]
+                                }
+                            },
+                            data: ''
+                        }
+                        that.sleeplengthtimes = list.map(function(item, index) {
+                            that.sleepstarttimes.push(that.dealtime(item.sleepTime));
+                            that.sleependtimes.push(that.dealtime(item.wakeTime) + 24);
+                            return (item.sleepTimeLang / 60).toFixed(1);
+                        });
+                        var year = new Date().getFullYear();
+                        window.sleep_xaxis_arr = formate.map(function(item) {
+                            return year + '年' + item;
+                        });
+                        that.setOptions();
+                        that.myChart.setOption(that.option);
+                        that.myChart.hideLoading();
+                    }
+                }).catch(function() {
                     that.$axios.get('/static/testData/getByLastSeven.json').then(function(res) {
                         if (res.data.code === 'C0000') {
                             var list = res.data.data.map(function(item, index) {
@@ -234,7 +283,29 @@
             },
             thisWeek() { //本周
                 var that = this;
-                this.$axios.get('/api/getByWeek').then(function() {}).catch(function() {
+                this.$axios.get('/api/sleep/getByWeek').then(function(res) {
+                    if (res.data.code === 'C0000') {
+                        var list = res.data.data.map(function(item, index) {
+                            var newitem = item;
+                            newitem.date = new Date(item.create_date.replace('-', '/')).getDay() - 1;
+                            if (newitem.date == -1) {
+                                newitem.date = 6;
+                            }
+                            return newitem;
+                        }).sort(function(a, b) {
+                            return a.date - b.date;
+                        });
+                        list = that.fillThisWeekArr(list);
+                        that.sleeplengthtimes = list.map(function(item, index) {
+                            that.sleepstarttimes.push(that.dealtime(item.sleepTime));
+                            that.sleependtimes.push(that.dealtime(item.wakeTime) + 24);
+                            return (item.sleepTimeLang / 60).toFixed(1);
+                        });
+                        that.setOptions();
+                        that.myChart.setOption(that.option);
+                        that.myChart.hideLoading();
+                    }
+                }).catch(function() {
                     that.$axios.get('/static/testData/getByWeek.json').then(function(res) {
                         if (res.data.code === 'C0000') {
                             var list = res.data.data.map(function(item, index) {
@@ -262,7 +333,37 @@
             },
             thisMonth() { //本月
                 var that = this;
-                this.$axios.get('/api/getByWeek').then(function() {}).catch(function() {
+                var date = new Date();
+                var that = this;
+                this.year = date.getFullYear();
+                this.month = date.getMonth() + 1;
+                this.date = date.getDate();
+                this.$axios.get('/api/getExistDateList', {
+                    begin_date: this.year + (this.month > 9 ? this.month : '0' + this.month) + '-01 00:00:00',
+                    end_date: this.year + '-' + (this.month > 9 ? this.month : '0' + this.month) + '-' + (this.date > 9 ? this.date : '0' + this.date) + ' 23:59:59'
+                }).then(function(res) {
+                    if (res.data.code === 'C0000') {
+                        var list = res.data.data.map(function(item, index) {
+                            var newitem = item;
+                            newitem.date = new Date(item.create_date.replace('-', '/')).getDay() - 1;
+                            if (newitem.date == -1) {
+                                newitem.date = 6;
+                            }
+                            return newitem;
+                        }).sort(function(a, b) {
+                            return a.date - b.date;
+                        });
+                        list = that.fillThisWeekArr(list);
+                        that.sleeplengthtimes = list.map(function(item, index) {
+                            that.sleepstarttimes.push(that.dealtime(item.sleepTime));
+                            that.sleependtimes.push(that.dealtime(item.wakeTime) + 24);
+                            return (item.sleepTimeLang / 60).toFixed(1);
+                        });
+                        that.setOptions();
+                        that.myChart.setOption(that.option);
+                        that.myChart.hideLoading();
+                    }
+                }).catch(function() {
                     that.$axios.get('/static/testData/getByWeek.json').then(function(res) {
                         if (res.data.code === 'C0000') {
                             var list = res.data.data.map(function(item, index) {
@@ -290,7 +391,36 @@
             },
             thisYear() { //本年
                 var that = this;
-                this.$axios.get('/api/getByWeek').then(function() {}).catch(function() {
+                var date = new Date();
+                this.year = date.getFullYear();
+                this.month = date.getMonth() + 1;
+                this.date = date.getDate();
+                this.$axios.get('/api/getExistDateList', {
+                    begin_date: this.year + '-01-01 00:00:00',
+                    end_date: this.year + '-' + (this.month > 9 ? this.month : '0' + this.month) + '-' + (this.date > 9 ? this.date : '0' + this.date) + ' 23:59:59'
+                }).then(function(res) {
+                    if (res.data.code === 'C0000') {
+                        var list = res.data.data.map(function(item, index) {
+                            var newitem = item;
+                            newitem.date = new Date(item.create_date.replace('-', '/')).getDay() - 1;
+                            if (newitem.date == -1) {
+                                newitem.date = 6;
+                            }
+                            return newitem;
+                        }).sort(function(a, b) {
+                            return a.date - b.date;
+                        });
+                        list = that.fillThisWeekArr(list);
+                        that.sleeplengthtimes = list.map(function(item, index) {
+                            that.sleepstarttimes.push(that.dealtime(item.sleepTime));
+                            that.sleependtimes.push(that.dealtime(item.wakeTime) + 24);
+                            return (item.sleepTimeLang / 60).toFixed(1);
+                        });
+                        that.setOptions();
+                        that.myChart.setOption(that.option);
+                        that.myChart.hideLoading();
+                    }
+                }).catch(function() {
                     that.$axios.get('/static/testData/getByWeek.json').then(function(res) {
                         if (res.data.code === 'C0000') {
                             var list = res.data.data.map(function(item, index) {
@@ -550,7 +680,6 @@
             // 绘制图表
             this.active = 0;
             window.sleep_charts_active = 0;
-
             this.nearestSeven();
             this.myChart.showLoading();
         }

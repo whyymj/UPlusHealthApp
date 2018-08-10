@@ -366,8 +366,7 @@ router.post('/api/getSleepWiki', (req, res, next) => {
 // 获取助眠练习列表
 router.post('/api/getSleepPractice', (req, res, next) => {
     const postData = querystring.stringify({
-      member_id: req.body.member_id,
-      postId: req.body.postId,
+      member_id: req.body.member_id
     })
   
     const options = {

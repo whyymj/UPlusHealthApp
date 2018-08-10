@@ -114,7 +114,14 @@
                     label: i + 1 + "年"
                 });
             }
-            this.$axios.get('/api/getExistDateList').then(function() {}).catch(function() {
+            this.$axios.get('/api/getExistDateList', { //获取睡眠模块某个时间段有数据记录的时间序列
+                begin_date: '1970-01-01 00:00:00',
+                end_date: this.year + '-' + (this.month > 9 ? this.month : '0' + this.month) + '-' + (this.date > 9 ? this.date : '0' + this.date) + ' 23:59:59'
+            }).then(function(res) {
+                if (res.data.code == 'C0000') {
+                    that.haveDataDays = res.data.data.date_list;
+                }
+            }).catch(function() {
                 that.$axios.get('/static/testData/getExistDateList.json').then(function(res) {
                     if (res.data.code == 'C0000') {
                         that.haveDataDays = res.data.data.date_list;
