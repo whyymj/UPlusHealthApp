@@ -11,7 +11,8 @@
       </div>
 
     </div>
-    <audio id="audio_id" preload="none" crossorigin="anonumous" src="https://huiai.sleepeazz.com/vod/QinanSleepTraining_02.mp3">
+    <audio id="audio_id" preload="none" crossorigin="anonumous"
+           src="https://huiai.sleepeazz.com/vod/QinanSleepTraining_02.mp3">
     </audio>
     <div id="audio_current"></div>
     <div id="audio_duration"></div>
@@ -21,7 +22,6 @@
 <script>
   export default {
     name: "test1",
-    srcUrl:"https://huiai.sleepeazz.com/vod/QinanSleepTraining_02.mp3",
     data() {
       return {
         app: {
@@ -39,7 +39,6 @@
           },
           receivedEvent: function () {
             var src = document.getElementById("audio_id").src;
-            alert("receivedEvent中SRC："+src);
             var my_media = null;
             var mediaTimer = null;
             var timerDur = null;
@@ -49,7 +48,7 @@
             }
 
             function mediaError(err) {
-              alert("Media失败")
+              alert("Media失败："+err)
             }
 
             // 开始或恢复播放一个音频文件
@@ -57,14 +56,12 @@
               alert("进入播放函数")
               if (my_media == null) {
                 // 初始化Media对象
-                alert("playAudio函数中src:"+src)
-                alert("playAudio函数中audio的src:"+document.getElementById("audio_id").src)
+                alert("playAudio函数中audio的src:" + document.getElementById("audio_id").src)
                 my_media = new Media(document.getElementById("audio_id").src, mediaSuccess, mediaError);
               }
               // 播放音频
               alert("即将播放")
               my_media.play();
-              alert("播放开始")
             }
 
             // 暂停播放音频文件
@@ -110,7 +107,7 @@
                     },
                     // error callback
                     function (e) {
-                      alert("Error getting pos=" + e);
+                      alert("getCurrent方法：Error getting pos=" + e);
                     }
                   );
                 }, 1000);
@@ -136,8 +133,8 @@
 
             this.$$("play").onclick = function () {
               playAudio();
-//              getCurrent();
-//              getDuration();
+              getCurrent();
+              getDuration();
             }
             this.$$("pause").onclick = function () {
               pauseAudio();
@@ -155,19 +152,10 @@
 
       }
     },
-    methods: {
-      onInputFileChange(){
-        var file = document.getElementById('file').files[0];
-        var url = URL.createObjectURL(file);
-        url = url.substring(5, url.length);
-        document.getElementById("audio_id").src = url;
-        this.srcUrl = url;
-      }
-    },
+    methods: {},
     mounted() {
       //初始化音频插件
       this.app.initialize();
-      this.srcUrl = document.getElementById("audio_id").src;
     }
 
   }
