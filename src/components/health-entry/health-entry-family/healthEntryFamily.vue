@@ -261,7 +261,7 @@
                 }
             }).catch(function(res) { //慢病标签
                 that.$axios.get('/static/testData/getDiseaseList.json').then(function(res) {
-                      that.loadingmodal.close();
+                    that.loadingmodal.close();
                     if (res.data.code == 'C0000') {
                         that.chromiclist = res.data.data.map(function(item) {
                             return {
@@ -294,7 +294,7 @@
                 })
             }).catch(function(res) { //过敏标签
                 that.$axios.get('/static/testData/getAllergyList.json').then(function(res) {
-                      that.loadingmodal.close();
+                    that.loadingmodal.close();
                     if (res.data.code == 'C0000') {
                         that.allergylist = res.data.data.map(function(item) {
                             return {
@@ -441,6 +441,7 @@
             },
             save() {
                 let saveData = {
+                    relation: 13, //称呼
                     height: this.tall,
                     weight: this.weight,
                     sex: this.sex,
@@ -449,12 +450,16 @@
                     disease: this.chromicListResult[0] ? this.chromicListResult.join(",") : "",
                     allergy: this.allergyListResult[0] ? this.allergyListResult.join(',') : '',
                 }
-                axios.post('/api/user', saveData)
-                    .then(function(res) {})
-                    .catch(function(err) {})
+                //新增家庭成员
+                axios.post('/api/member', saveData)
+                    .then(function(res) {
+                        console.log(res);
+                    })
+                    .catch(function(err) {
+                        console.log(err);
+                    })
             }
-        }
-    };
+        };
 </script>
  
 <style lang="scss">

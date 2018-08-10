@@ -208,8 +208,10 @@ export default {
 		async getUserInfo() {
 			try {
 				var that = this;
+				//根据id获取个人信息
 				const result = await axios.post('/api/user/info', {
-					phone: ''
+//					phone: ''
+					user_id:req.session.loginCode
 				})
 				var data = result.data.data;
 				if(result.data.code === 'C0000') {
@@ -237,10 +239,12 @@ export default {
 				sex: this.sex,
 				birthday: this.birthday,
 				nick_name: this.nickName,
+				headPic:this.headPic,
 				target_weight: this.targetWeightValue,
 				diseas:this.diseas,//慢病
 				allergy:this.allergy,//过敏
 			}
+			//用户信息更改
 			axios.post('/api/user/update', saveData)
 				.then(function(res) {
 					console.log(res);
