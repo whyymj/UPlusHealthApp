@@ -90,7 +90,7 @@
         "lineId": "QASleepQ_103"
       },
       {
-        "lineType": 1,
+        "lineType": 2,
         "templateId": "QASleepQ",
         "dataType": 0,
         "lineTitle": "您的文化程度：",
@@ -107,7 +107,7 @@
             "id": "line_QASleepQ_104_1",
             "name": "line_QASleepQ_104",
             "value": "2",
-            "checked": false,
+            "checked": true,
             "lab": "高中"
           },
           {
@@ -128,7 +128,7 @@
         "lineId": "QASleepQ_104"
       },
       {
-        "lineType": 1,
+        "lineType": 2,
         "templateId": "QASleepQ",
         "dataType": 0,
         "lineTitle": "您的兴趣爱好：",

@@ -10,12 +10,17 @@
 
 <script>
     import testlist from './testList';
+    import {
+        Loading
+    } from 'element-ui';
     export default {
         components: {
-            testlist
+            testlist,
+            Loading
         },
         data() {
             return {
+                loadingmodal: '',
                 activeName: 'title0',
                 titlelist: [],
                 questionslist: {},
@@ -24,6 +29,13 @@
         },
         methods: {
             handleClick(tab, event) {
+                this.loadingmodal = Loading.service({
+                    fullscreen: true,
+                    background: 'rgba(0, 0, 0, 0.7)',
+                    lock: true,
+                    text: 'loading',
+                    spinner: 'el-icon-loading',
+                });
                 this.getTemplateList(this.titlelist[tab.index]);
             },
             getTemplateList(title) {
@@ -31,12 +43,15 @@
                 if (!that.questionslist[title]) {
                     this.$axios.get('/api/getTemplateList', {
                         templateTerm: title
-                    }).then(function(res) {}).catch(function() {
+                    }).then(function(res) {
+                        that.loadingmodal.close();
+                    }).catch(function() {
+                          that.loadingmodal.close();
                         that.$axios.get('/static/testData/getTemplateList.json').then(function(res) {
                             if (res.data.code == 'C0000') {
                                 that.showlist = that.questionslist[title] = res.data.data.map(function(item, index) {
                                     return {
-                                        title: item.templateTitle ,
+                                        title: item.templateTitle,
                                         detail: item.templateSubTitle,
                                         meta: item,
                                         time: item.createTime,
@@ -54,7 +69,17 @@
         },
         mounted() {
             var that = this;
-            this.$axios.get('/api/getTemplateTerms').then(function(res) {}).catch(function() {
+            that.loadingmodal = Loading.service({
+                fullscreen: true,
+                background: 'rgba(0, 0, 0, 0.7)',
+                lock: true,
+                text: 'loading',
+                spinner: 'el-icon-loading',
+            });
+            this.$axios.get('/api/getTemplateTerms').then(function(res) {
+                that.loadingmodal.close();
+            }).catch(function() {
+                that.loadingmodal.close();
                 that.$axios.get('/static/testData/getTemplateTerms.json').then(function(res) {
                     if (res.data.code == 'C0000') {
                         that.titlelist = res.data.data;

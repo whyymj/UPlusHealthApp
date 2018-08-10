@@ -12,14 +12,17 @@
     import {
         Toast
     } from 'mint-ui';
+    import {
+        Loading
+    } from 'element-ui';
     export default {
         name: 'sleepTest',
         components: {
-            list
+            list,
+            Loading
         },
         methods: {
             submitResult() {
-                console.log('bus', bus);
                 bus.$emit('submitResult');
             },
             turnQestion(index) {
@@ -33,14 +36,25 @@
         },
         data() {
             return {
+                loadingmodal: '',
                 canSubmit: false,
                 questions: []
             }
         },
         mounted() {
+            this.loadingmodal = Loading.service({
+                fullscreen: true,
+                background: 'rgba(0, 0, 0, 0.7)',
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+            });
             var params = this.$route.query;
             var that = this;
-            this.$axios.get('/api/setUserTemplate').then(function(res) {}).catch(function(res) {
+            this.$axios.get('/api/setUserTemplate').then(function(res) {
+                that.loadingmodal.close();
+            }).catch(function(res) {
+                that.loadingmodal.close();
                 that.$axios.get('/static/testData/setUserTemplate.json').then(function(res) {
                     if (params.status === 0 || params.status === '0') { //中途退出
                         let instance = Toast({

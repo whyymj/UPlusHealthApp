@@ -3,7 +3,7 @@
         <bar :totalnum='totalnum' :curnum='curnum+1' v-if='totalnum>0'></bar>
         <el-carousel class='carousels' indicator-position='none' :autoplay='autoplay' arrow='never' ref='carousel' :initial-index='initialindex' v-if='totalnum>0'>
             <el-carousel-item v-for="(item,index) in showlist" :key="index" style='height:20rem'>
-                <questionlist :list='item' :id='index' @selectQuestion='getOptions'></questionlist>
+                <questionlist :list='item' :id='index' :total='totalnum' @selectQuestion='getOptions'></questionlist>
             </el-carousel-item>
         </el-carousel>
         <div class="prevbutton" @click='prev' v-if='curnum>0'><i class="el-icon-back"></i>上一题</div>
@@ -20,16 +20,21 @@
         setTimeout
     } from 'timers';
     import {
+        Loading
+    } from 'element-ui';
+    import {
         Toast
     } from 'mint-ui';
     export default {
         props: ['list'],
         components: {
             bar,
-            questionlist
+            questionlist,
+            Loading
         },
         data() {
             return {
+                loadingmodal: '',
                 doubleclick: false,
                 reStart: false,
                 autoplay: false,
@@ -56,14 +61,14 @@
                         option: [],
                         lineId: item.lineId
                     };
+                    var option = [];
                     item.options.map(function(val, key) {
-                        var option = [];
                         if (val.checked === true || val.checked === 'true') {
                             lasttestnum = index;
                             option.push(key);
                         }
-                        that.cacheOptions[index].option = option;
-                    })
+                    });
+                    that.cacheOptions[index].option = option;
                 });
                 this.curnum = lasttestnum == this.list.length - 1 ? 0 : lasttestnum; //是否已经全部测试完毕
                 if (this.curnum > 0) {
@@ -130,7 +135,13 @@
                 };
                 var tmp = data.option.length >= 0;
                 if (!that.doubleclick && tmp) {
-                    this.$axios.post('', { //实时保存结果
+                    // var result = [];
+                    // var finalstr = ''
+                    // for (var k in that.cacheOptions) {
+                    //     result.push(that.cacheOptions[k].lineId + '&' + that.cacheOptions[k].option.join(','))
+                    // }
+                    // finalstr = result.join('|');
+                    this.$axios.post('/api/saveUserTemplateByTime', { //实时保存结果
                         templateId: that.params.templateId,
                         tuId: that.params.tuId,
                         inputVal: '' + that.cacheOptions[data.questnum].lineId + '&' + that.cacheOptions[data.questnum].option.join(',')
@@ -146,7 +157,7 @@
             this.params = this.$route.query;
             var that = this;
             document.getElementsByClassName('turnQuestions')[0].onclick = function(e) {
-                if (e.target.className === 'el-radio__original') {
+                if (e.target.className === 'el-radio__original' || e.target.className === 'nextbut') {
                     that.next()
                 }
             }
@@ -159,14 +170,15 @@
                         option: [],
                         lineId: item.lineId
                     };
+                    var option = [];
                     item.options.map(function(val, key) {
-                        var option = [];
                         if (val.checked === true || val.checked === 'true') {
                             lasttestnum = index;
                             option.push(key);
                         }
-                        that.cacheOptions[index].option = option;
-                    })
+                    });
+                    that.cacheOptions[index].option = option;
+                    console.log('this  option》》》', option, that.cacheOptions);
                 });
                 this.curnum = lasttestnum == this.list.length - 1 ? 0 : lasttestnum; //是否已经全部测试完毕
                 if (this.curnum > 0) {
@@ -188,7 +200,15 @@
                 that.reStart = false;
             })
             bus.$on('submitResult', function() { //这里提交答案
+              
                 if (that.cacheOptions['' + (that.totalnum - 1)].option.length > 0) {
+                    that.loadingmodal = Loading.service({
+                        fullscreen: true,
+                        background: 'rgba(0, 0, 0, 0.7)',
+                        lock: true,
+                        text: 'saving',
+                        spinner: 'el-icon-loading',
+                    });
                     var result = [];
                     var finalstr = ''
                     for (var k in that.cacheOptions) {
@@ -199,11 +219,13 @@
                         tuId: that.params.tuId,
                         inputVal: finalstr
                     }).then(function(res) {
+                        that.loadingmodal.close()
                         that.$router.push({
                             path: '/sleepTestResult',
                             query: that.params
                         });
                     }).catch(function() {
+                        that.loadingmodal.close()
                         that.$router.push({
                             path: '/sleepTestResult',
                             query: that.params
