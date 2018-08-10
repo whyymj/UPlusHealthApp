@@ -54,7 +54,7 @@ const getSleepWiki = resolve => require(['@/components/sleep-cyclopedia/content.
 const userInfo = resolve => require(['@/components/user-info/userInfo.vue'], resolve)
 const allergic = resolve => require(['@/components/user-info/allergic/allergic.vue'], resolve)
 const chronicDisease = resolve => require(['@/components/user-info/chronicDisease/chronicDisease.vue'], resolve)
-//上传头像 
+//上传头像
 const headerImg = resolve => require(['@/components/user-info/headerImg.vue'], resolve)
 //隐私设置 privacySet
 const privacySet = resolve => require(['@/components/user-info/privacySet.vue'], resolve)
@@ -70,10 +70,24 @@ const editFamily = resolve => require(['@/components/user-info/editFamily.vue'],
 const router = new Router({
   mode: 'history',
   routes: [
-    // {   path: '*',   redirect: '/' }, {   path: '/',   redirect: 'login' }, {
-    // path: '/test',   name: 'test',   component: test }, {   path: '/login',
-    // name: 'login',   meta: {     title: '海尔健康'   },   component: login },
     {
+      path: '*',
+      redirect: '/'
+    }, {
+      path: '/',
+      redirect: 'login'
+    }, {
+      path: '/test',
+      name: 'test',
+      component: test
+    }, {
+      path: '/login',
+      name: 'login',
+      meta: {
+        title: '海尔健康'
+      },
+      component: login
+    }, {
       path: '/introduction',
       name: 'introduction',
       meta: {
@@ -108,10 +122,14 @@ const router = new Router({
         title: '健康档案'
       },
       component: healthRecordsL
-    },
-    // {   path: '/addProject',   name: 'addProject',   meta: {     title: '添加项目'
-    // },   component: addProject },
-    {
+    }, {
+      path: '/addProject',
+      name: 'addProject',
+      meta: {
+        title: '添加项目'
+      },
+      component: addProject
+    }, {
       path: '/manualEntry/:type?',
       name: 'manualEntry',
       meta: {
@@ -332,24 +350,21 @@ const router = new Router({
         title: '个人资料'
       },
       component: userInfo
-    },
-    {
+    }, {
       path: '/headerImg',
       name: 'headerImg',
       meta: {
         title: '上传图片'
       },
       component: headerImg
-    },
-    {
+    }, {
       path: '/privacySet',
       name: 'privacySet',
       meta: {
         title: '隐私设置'
       },
       component: privacySet
-    },
-    {
+    }, {
       path: '/allergic',
       name: 'allergic',
       meta: {
