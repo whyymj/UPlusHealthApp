@@ -56,8 +56,19 @@
                                     status: item.status //null未答题，0答一半，1完成
                                 }
                             });
+                        } else {
+                            that.$notify.error({
+                                title: '错误',
+                                message: 'getTemplateList接口无数据',
+                                showClose: false
+                            });
                         }
                     }).catch(function() {
+                        that.$notify.error({
+                            title: '错误',
+                            message: 'getTemplateList接口报错',
+                            showClose: false
+                        });
                         that.loadingmodal.close();
                         that.$axios.get('/static/testData/getTemplateList.json').then(function(res) {
                             if (res.data.code == 'C0000') {

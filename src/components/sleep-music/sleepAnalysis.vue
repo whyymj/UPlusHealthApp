@@ -336,6 +336,7 @@
                 color: rgba(17, 17, 17, 1);
                 font-weight: 600;
                 margin-bottom: 0.5rem;
+                padding: 0;
             }
             .detail {
                 width: 100%;

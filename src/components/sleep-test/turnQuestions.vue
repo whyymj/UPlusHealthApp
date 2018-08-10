@@ -145,7 +145,9 @@
                         tuId: that.params.tuId,
                         inputVal: finalstr
                     }).then(function(res) {
-
+                       
+                    }).catch(function() {
+                       
                     })
                     that.doubleclick = true;
                     this.bar = setTimeout(function() {
@@ -225,6 +227,11 @@
                             query: that.params
                         });
                     }).catch(function() {
+                        that.$notify.error({
+                            title: '错误',
+                            message: 'submitResult接口报错',
+                            showClose: false
+                        });
                         that.loadingmodal.close()
                         that.$router.push({
                             path: '/sleepTestResult',

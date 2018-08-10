@@ -16,7 +16,7 @@
                 <div class='supplement' @click='toManuInput' v-if='sleepid!==""'>补全记录</div>
             </div>
         </mycollapse>
-        <showmodal :showmodal='show' @closemodal='closemodal' >
+        <showmodal :showmodal='show' @closemodal='closemodal'>
             <div class='modalContent'>{{tips}}</div>
         </showmodal>
     </div>
@@ -150,7 +150,6 @@
             }
         },
         methods: {
-          
             scalemenu() {
                 var that = this;
                 if (!this.roting) {
@@ -370,6 +369,7 @@
             box-sizing: border-box;
             padding: 1rem;
             h1 {
+                padding: 0;
                 font-size: 0.8rem;
                 font-family: 'PingFangSC-Medium';
                 color: rgba(17, 17, 17, 1);

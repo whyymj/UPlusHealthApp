@@ -36,8 +36,19 @@
                         title: res.data.data.scoreInfo,
                         detail: res.data.data.scoreSuggest
                     }
+                } else {
+                    that.$notify.error({
+                        title: '错误',
+                        message: 'getUserTemplateAnalysis接口报错',
+                        showClose: false
+                    });
                 }
             }).catch(function(res) {
+                that.$notify.error({
+                    title: '错误',
+                    message: 'getUserTemplateAnalysis接口报错',
+                    showClose: false
+                });
                 that.$axios.get('/static/testData/testResult.json', {
                     tuId: params.tuId
                 }).then(function(res) {

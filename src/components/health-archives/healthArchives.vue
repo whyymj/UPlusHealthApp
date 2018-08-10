@@ -68,6 +68,7 @@
         Indicator
     } from 'mint-ui';
     import firstLogin from './first_login_sleepreport.vue';
+  
     export default {
         components: {
             imgbox,
@@ -594,7 +595,7 @@
         mounted() {
             if (window.localStorage.UPlusApp_firstLogin_sleepReport == undefined || window.localStorage.UPlusApp_firstLogin_sleepReport == "undefined") { //判断是否首次登陆
                 window.localStorage.UPlusApp_firstLogin_sleepReport = true; //在首次登录组件里改变
-            } 
+            }
             var that = this;
             this.showdata = _.chunk(this.healthProResult, 3);
             if (window._member_id === '') {

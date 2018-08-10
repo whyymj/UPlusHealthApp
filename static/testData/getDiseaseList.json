@@ -1,0 +1,104 @@
+{
+    "status": "0",
+    "code": "C0000",
+    "msg": "成功",
+    "openId": "6d5481e46d794fe4aab3544fd975422a",
+    "data": [
+        {
+            "dict_id": "1",
+            "dict_name": "减重",
+            "dict_name_en": null,
+            "dict_type_id": "10008",
+            "status": "1",
+            "note": "慢病标签"
+        },
+        {
+            "dict_id": "2",
+            "dict_name": "肿瘤",
+            "dict_name_en": null,
+            "dict_type_id": "10008",
+            "status": "1",
+            "note": "慢病标签"
+        },
+        {
+            "dict_id": "3",
+            "dict_name": "血糖升高",
+            "dict_name_en": null,
+            "dict_type_id": "10008",
+            "status": "1",
+            "note": "慢病标签"
+        },
+        {
+            "dict_id": "4",
+            "dict_name": "慢性肠胃炎",
+            "dict_name_en": null,
+            "dict_type_id": "10008",
+            "status": "1",
+            "note": "慢病标签"
+        },
+        {
+            "dict_id": "5",
+            "dict_name": "慢性支气管炎",
+            "dict_name_en": null,
+            "dict_type_id": "10008",
+            "status": "1",
+            "note": "慢病标签"
+        },
+        {
+            "dict_id": "6",
+            "dict_name": "血脂升高",
+            "dict_name_en": null,
+            "dict_type_id": "10008",
+            "status": "1",
+            "note": "慢病标签"
+        },
+        {
+            "dict_id": "7",
+            "dict_name": "心脏病",
+            "dict_name_en": null,
+            "dict_type_id": "10008",
+            "status": "1",
+            "note": "慢病标签"
+        },
+        {
+            "dict_id": "8",
+            "dict_name": "痛风",
+            "dict_name_en": null,
+            "dict_type_id": "10008",
+            "status": "1",
+            "note": "慢病标签"
+        },
+        {
+            "dict_id": "9",
+            "dict_name": "健康",
+            "dict_name_en": null,
+            "dict_type_id": "10008",
+            "status": "1",
+            "note": "慢病标签"
+        },
+        {
+            "dict_id": "10",
+            "dict_name": "脂肪肝",
+            "dict_name_en": null,
+            "dict_type_id": "10008",
+            "status": "1",
+            "note": "慢病标签"
+        },
+        {
+            "dict_id": "11",
+            "dict_name": "血压升高",
+            "dict_name_en": null,
+            "dict_type_id": "10008",
+            "status": "1",
+            "note": "慢病标签"
+        },
+        {
+            "dict_id": "12",
+            "dict_name": "其他",
+            "dict_name_en": null,
+            "dict_type_id": "10008",
+            "status": "1",
+            "note": "慢病标签"
+        }
+    ]
+}

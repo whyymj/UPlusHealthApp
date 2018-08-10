@@ -124,10 +124,12 @@
 <script>
     import tagslist from "./tagsList";
     import axios from "axios"
+    import myloading from '../../global/Loading.vue';
     export default {
         components: {
             tagslist
         },
+        mixins: [myloading],
         data() {
             return {
                 weight_picker: false,
@@ -175,75 +177,12 @@
                 chromicListResult: [],
                 allergyListResult: [],
                 tempSex: '男',
-                chromiclist: [{
-                        name: "心脏病",
-                        selected: false
-                    },
-                    {
-                        name: "鼻炎",
-                        selected: false
-                    },
-                    {
-                        name: "痛风",
-                        selected: false
-                    },
-                    {
-                        name: "糖尿病",
-                        selected: false
-                    },
-                    {
-                        name: "关节炎",
-                        selected: false
-                    },
-                    {
-                        name: "高血压",
-                        selected: false
-                    },
-                    {
-                        name: "偏头痛",
-                        selected: false
-                    },
-                    {
-                        name: "低血糖",
-                        selected: false
-                    }
-                ],
-                allergylist: [{
-                        name: "水果",
-                        selected: false
-                    },
-                    {
-                        name: "海鲜",
-                        selected: false
-                    },
-                    {
-                        name: "奶制品",
-                        selected: false
-                    },
-                    {
-                        name: "糖尿病",
-                        selected: false
-                    },
-                    {
-                        name: "坚果类",
-                        selected: false
-                    },
-                    {
-                        name: "豆类",
-                        selected: false
-                    },
-                    {
-                        name: "芝麻",
-                        selected: false
-                    },
-                    {
-                        name: "葵花籽",
-                        selected: false
-                    }
-                ]
+                chromiclist: [], //慢病标签
+                allergylist: [] //过敏标签
             };
         },
         mounted() {
+            var that = this;
             var years = [];
             var months = [];
             var tall = [];
@@ -304,6 +243,74 @@
             this.weight = '';
             this.birthday = ''
             //     console.log(thisYear, thisMonth);
+            this.$axios.post('/api/getDiseaseList').then(function(res) {
+                that.loadingmodal.close();
+                if (res.data.code == 'C0000') {
+                    that.chromiclist = res.data.data.map(function(item) {
+                        return {
+                            name: item.dict_name,
+                            selected: false,
+                            "dict_id": item.dict_id,
+                            "dict_name": item.dict_name,
+                            "dict_name_en": item.dict_name_en,
+                            "dict_type_id": item.dict_type_id,
+                            "status": item.status,
+                            "note": item.note
+                        }
+                    })
+                }
+            }).catch(function(res) { //慢病标签
+                that.$axios.get('/static/testData/getDiseaseList.json').then(function(res) {
+                      that.loadingmodal.close();
+                    if (res.data.code == 'C0000') {
+                        that.chromiclist = res.data.data.map(function(item) {
+                            return {
+                                name: item.dict_name,
+                                selected: false,
+                                "dict_id": item.dict_id,
+                                "dict_name": item.dict_name,
+                                "dict_name_en": item.dict_name_en,
+                                "dict_type_id": item.dict_type_id,
+                                "status": item.status,
+                                "note": item.note
+                            }
+                        })
+                    }
+                })
+            })
+            this.$axios.post('/api/getAllergyList').then(function(res) {
+                that.loadingmodal.close();
+                that.allergylist = res.data.data.map(function(item) {
+                    return {
+                        name: item.dict_name,
+                        selected: false,
+                        "dict_id": item.dict_id,
+                        "dict_name": item.dict_name,
+                        "dict_name_en": item.dict_name_en,
+                        "dict_type_id": item.dict_type_id,
+                        "status": item.status,
+                        "note": item.note
+                    }
+                })
+            }).catch(function(res) { //过敏标签
+                that.$axios.get('/static/testData/getAllergyList.json').then(function(res) {
+                      that.loadingmodal.close();
+                    if (res.data.code == 'C0000') {
+                        that.allergylist = res.data.data.map(function(item) {
+                            return {
+                                name: item.dict_name,
+                                selected: false,
+                                "dict_id": item.dict_id,
+                                "dict_name": item.dict_name,
+                                "dict_name_en": item.dict_name_en,
+                                "dict_type_id": item.dict_type_id,
+                                "status": item.status,
+                                "note": item.note
+                            }
+                        })
+                    }
+                })
+            })
         },
         methods: {
             confirm_sex(sex) {
@@ -401,23 +408,22 @@
                 this.birthdayarr[2] = values[0];
             },
             chooseChromic(data) {
-
-                var dataSelected=[]
-                for(var i = 0;i<data.tags.length;i++){
-                	if(data.tags[i].selected==true){
-                		dataSelected.push(data.tags[i].name)
-                	}
+                var dataSelected = []
+                for (var i = 0; i < data.tags.length; i++) {
+                    if (data.tags[i].selected == true) {
+                        dataSelected.push(data.tags[i].name)
+                    }
                 }
-                this.chromicListResult =dataSelected
+                this.chromicListResult = dataSelected
             },
             chooseAllergy(data) {
-                var dataSelected1=[]
-                for(var j = 0;j<data.tags.length;j++){
-                	if(data.tags[j].selected==true){
-                		dataSelected1.push(data.tags[j].name)
-                	}
+                var dataSelected1 = []
+                for (var j = 0; j < data.tags.length; j++) {
+                    if (data.tags[j].selected == true) {
+                        dataSelected1.push(data.tags[j].name)
+                    }
                 }
-                this.allergyListResult =dataSelected1
+                this.allergyListResult = dataSelected1
             },
             choose_nick_name() {
                 this.nick_name_pop = !this.nick_name_pop;
@@ -433,23 +439,19 @@
                 //     })
                 //     .catch(_ => {});
             },
-            save(){
-            	let saveData = {
-            		height: this.tall,
-				    weight: this.weight,
-				    sex: this.sex,
-				    birthday: this.birthday,
-				    nick_name: this.input_nick_name,
-				    disease: this.chromicListResult[0]?this.chromicListResult.join(","):"",
-				    allergy: this.allergyListResult[0]?this.allergyListResult.join(','):'',	
-            	}
-            	axios.post('/api/user',saveData)
-				.then(function(res) {
-					console.log(res);
-				})
-				.catch(function(err) {
-					console.log(err);
-				})
+            save() {
+                let saveData = {
+                    height: this.tall,
+                    weight: this.weight,
+                    sex: this.sex,
+                    birthday: this.birthday,
+                    nick_name: this.input_nick_name,
+                    disease: this.chromicListResult[0] ? this.chromicListResult.join(",") : "",
+                    allergy: this.allergyListResult[0] ? this.allergyListResult.join(',') : '',
+                }
+                axios.post('/api/user', saveData)
+                    .then(function(res) {})
+                    .catch(function(err) {})
             }
         }
     };
