@@ -93,7 +93,7 @@
             var sleepid = this.$route.query;
             if (sleepid.sleepid) {
                 this.sleepid = sleepid.sleepid;
-                this.$axios.get('/api/getAnalysisById', {
+                this.$axios.post('/api/getAnalysisById', {
                     sleep_id: sleepid
                 }).then(function(res) {
                     var data;

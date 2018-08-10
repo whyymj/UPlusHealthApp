@@ -41,7 +41,7 @@
             getTemplateList(title) {
                 var that = this;
                 if (!that.questionslist[title]) {
-                    this.$axios.get('/api/getTemplateList', {
+                    this.$axios.post('/api/getTemplateList', {
                         templateTerm: title
                     }).then(function(res) {
                         that.loadingmodal.close();
@@ -88,7 +88,7 @@
                 text: 'loading',
                 spinner: 'el-icon-loading',
             });
-            this.$axios.get('/api/getTemplateTerms').then(function(res) {
+            this.$axios.post('/api/getTemplateTerms').then(function(res) {
                 that.loadingmodal.close();
                 if (res.data.code == 'C0000') {
                     that.titlelist = res.data.data;

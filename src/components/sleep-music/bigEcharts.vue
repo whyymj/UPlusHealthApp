@@ -177,7 +177,7 @@
             },
             nearestSeven() { //最近7次
                 var that = this;
-                this.$axios.get('/api/getByLastSeven').then(function(res) {
+                this.$axios.post('/api/getByLastSeven').then(function(res) {
                     if (res.data.code === 'C0000') {
                         var list = res.data.data.map(function(item, index) {
                             var newitem = item;
@@ -279,7 +279,7 @@
             },
             thisWeek() { //本周
                 var that = this;
-                this.$axios.get('/api/sleep/getByWeek').then(function(res) {
+                this.$axios.post('/api/sleep/getByWeek').then(function(res) {
                     if (res.data.code === 'C0000') {
                         var list = res.data.data.map(function(item, index) {
                             var newitem = item;
@@ -332,7 +332,7 @@
                 this.year = date.getFullYear();
                 this.month = date.getMonth() + 1;
                 this.date = date.getDate();
-                this.$axios.get('/api/getExistDateList', {
+                this.$axios.post('/api/getExistDateList', {
                     begin_date: this.year + (this.month > 9 ? this.month : '0' + this.month) + '-01 00:00:00',
                     end_date: this.year + '-' + (this.month > 9 ? this.month : '0' + this.month) + '-' + (this.date > 9 ? this.date : '0' + this.date) + ' 23:59:59'
                 }).then(function(res) {
@@ -387,7 +387,7 @@
                 this.year = date.getFullYear();
                 this.month = date.getMonth() + 1;
                 this.date = date.getDate();
-                this.$axios.get('/api/getExistDateList', {
+                this.$axios.post('/api/getExistDateList', {
                     begin_date: this.year + '-01-01 00:00:00',
                     end_date: this.year + '-' + (this.month > 9 ? this.month : '0' + this.month) + '-' + (this.date > 9 ? this.date : '0' + this.date) + ' 23:59:59'
                 }).then(function(res) {

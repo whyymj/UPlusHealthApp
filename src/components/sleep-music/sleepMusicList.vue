@@ -122,7 +122,7 @@
         methods: {
             deleteThis() {
                 var that = this;
-                this.$axios.post('/api/delete', {
+                this.$axios.post('/api/sleep/delete', {
                     sleep_id: that.sleep_id
                 }).then(function(res) {
                     if (res.data.code == 'C0000') {
@@ -152,7 +152,7 @@
                 // if (window.localStorage.UPlusApp_getAppleHealthData === true || window.localStorage.UPlusApp_getAppleHealthData === 'true') { //是否已经获取apple health 权限
                 this.saveSleepInfo(check);
                 // }
-                this.$axios.get('/api/getByDay', {
+                this.$axios.post('/api/sleep/getByDay', {
                     Date: val.year + '-' + (val.month > 9 ? val.month : '0' + val.month) + '-' + (val.date > 9 ? val.date : '0' + val.date)
                 }).then(function(res) {
                     if (res.data.code === 'C0000') {
@@ -428,7 +428,7 @@
             //     }
             // }
             var that = this;
-            this.$axios.get('/api/getSleepPractice').then(function(res) {
+            this.$axios.post('/api/getSleepPractice').then(function(res) {
                 if (res.data.code == 'C0000') {
                     that.list = res.data.data.map(function(item) {
                         return {
@@ -455,7 +455,7 @@
                     }
                 });
             });
-            this.$axios.get('/api/sleep/getLast').then(function(res) {
+            this.$axios.post('/api/sleep/getLast').then(function(res) {
                 if (res.data.code === 'C0000') {
                     var data = res.data.data;
                     var createTime = data.create_date.split(' ')[0].split('-');
@@ -576,7 +576,7 @@
                     }
                 })
             })
-            this.$axios.get('/api/getSleepInfo', { //获取睡眠资讯
+            this.$axios.post('/api/getSleepInfo', { //获取睡眠资讯
                 size: 7
             }).then(function(res) {
                 that.sleepnewslist = res.data;

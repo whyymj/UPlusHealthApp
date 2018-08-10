@@ -27,7 +27,7 @@
         mounted() {
             var params = this.$route.query;
             var that = this;
-            this.$axios.get('/api/getUserTemplateAnalysis', { //获取用户睡眠量表分析数据
+            this.$axios.post('/api/getUserTemplateAnalysis', { //获取用户睡眠量表分析数据
                 tuId: params.tuId
             }).then(function(res) {
                 if (res.data.code == 'C0000') {
