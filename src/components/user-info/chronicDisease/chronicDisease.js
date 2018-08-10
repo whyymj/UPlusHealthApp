@@ -59,6 +59,7 @@ export default {
 				const result = await axios.post('/api/user/info', {
 					phone: ''
 				})
+				this.allData=result.data.data
 				var diseasdata = result.data.data.diseas;
 				if(result.data.code === 'C0000') {
 					this.diseas = diseasdata //慢病

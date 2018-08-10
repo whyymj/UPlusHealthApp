@@ -1,8 +1,9 @@
 <template>
   <div class="userInfo">
     <div>
-      <div @click="showActionSheet()">
-        <mt-cell class="headerImg" title="头像" is-link>
+      <!--<div @click="showActionSheet()">-->
+      <div>
+        <mt-cell class="headerImg" title="头像" is-link  :to="{ name: 'headerImg' }">
           <img id="img" src="#"/>
         </mt-cell>
       </div>
@@ -47,9 +48,9 @@
         <span>无</span>
       </mt-cell>
     </div>
-    <!-- <div class="div_magin">
-      <mt-cell title="隐私设置" is-link/>
-    </div> -->
+    <div class="div_magin">
+      <mt-cell title="隐私设置" is-link :to="{ name: 'privacySet' }"/>
+    </div>
 
     <!--上传头像-->
     <div>

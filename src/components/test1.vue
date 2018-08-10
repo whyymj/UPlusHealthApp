@@ -4,6 +4,14 @@
     <div>
       <button type="button" @click='getCamera(1)'>相机</button>
       <button type="button" @click='getCamera(0)'>图库</button>
+    	<div>
+        <img @click="upload()" :src="imgUrl" alt="" class="head_img blackImg">
+        <div>
+            <p @click="upload()" class="changehead">点击修改头像</p>
+        </div>
+        <input ref="upload" accept="image/gif,image/jpeg,image/jpg,image/png" @change="show()"
+               style="display:none;position:absolute;" type="file" name="" value="点击修改头像">
+    	</div>
     </div>
 
     苹果健康测试:
@@ -36,6 +44,7 @@
         mediaTimer: null,
         timerDur: null,
         src: "http://music.163.com/#/m/song?id=422960977",
+        imgUrl:""
       }
     },
     methods: {
@@ -50,10 +59,30 @@
       },
       onSuccess(imageData) {
         resolve('data:image/jpeg;base64,' + imageData)
+        alert(imageData)
       },
       onFail(message) {
         alert(message)
       },
+			updata(){
+				alert(this.imgUrl)
+			},
+			upload() {
+        this.$refs.upload.click();
+    	},
+    	show(){
+    		 let Img = this.$refs.upload.files[0];
+    		 let reader = new FileReader();
+	       let self = this;
+	        reader.onload = function (e) {
+	            let ev = e || window.event;
+	            let url = ev.target.result;
+	            self.formData = url;
+	            self.imgUrl = url;
+	        }
+	        reader.readAsDataURL(Img);
+	        
+    	},
       //打开苹果健康权限
       getHealth() {
         let supportedTypes = ['HKCategoryTypeIdentifierSleepAnalysis'];
