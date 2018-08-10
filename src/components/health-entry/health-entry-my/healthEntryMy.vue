@@ -122,7 +122,7 @@
     </div>
 </template>
 <script>
-    import tagslist from "./tagsList";
+    import tagslist from "../health-entry-family/tagsList";
     import axios from "axios"
     export default {
         components: {
@@ -443,7 +443,6 @@
 				    disease: this.chromicListResult[0]?this.chromicListResult.join(","):"",
 				    allergy: this.allergyListResult[0]?this.allergyListResult.join(','):'',	
             	}
-            	debugger
             	axios.post('/api/user',saveData)
 				.then(function(res) {
 					console.log(res);
