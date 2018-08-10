@@ -57,6 +57,7 @@ export default {
 				const result = await axios.post('/api/user/info', {
 					phone: ''
 				})
+				this.allData=result.data.data
 				var allergydata = result.data.data.allergy;
 				if(result.data.code === 'C0000') {
 					this.allergy = allergydata //慢病

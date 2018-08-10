@@ -54,9 +54,12 @@ const getSleepWiki = resolve => require(['@/components/sleep-cyclopedia/content.
 const userInfo = resolve => require(['@/components/user-info/userInfo.vue'], resolve)
 const allergic = resolve => require(['@/components/user-info/allergic/allergic.vue'], resolve)
 const chronicDisease = resolve => require(['@/components/user-info/chronicDisease/chronicDisease.vue'], resolve)
-
-const healthEntryFamily = resolve => require(['@/components/health-entry/health-entry-my/healthEntryMy.vue'], resolve)
-const healthEntryMy = resolve => require(['@/components/health-entry/health-entry-family/healthEntryFamily.vue'], resolve)
+//上传头像 
+const headerImg = resolve => require(['@/components/user-info/headerImg.vue'], resolve)
+//隐私设置 privacySet
+const privacySet = resolve => require(['@/components/user-info/privacySet.vue'], resolve)
+const healthEntryFamily = resolve => require(['@/components/health-entry/health-entry-family/healthEntryFamily.vue'], resolve)
+const healthEntryMy = resolve => require(['@/components/health-entry/health-entry-my/healthEntryMy.vue'], resolve)
 const sleepCyclopedia = resolve => require(['@/components/sleep-cyclopedia/sleepCyclopedia.vue'], resolve)
 const errorMessage = resolve => require(['@/components/error-message/errorMessage.vue'], resolve)
 const weightMeasure = resolve => require(['@/components/weight-measure/weight-measure/weightMeasure.vue'], resolve)
@@ -329,7 +332,24 @@ const router = new Router({
         title: '个人资料'
       },
       component: userInfo
-    }, {
+    },
+    {
+      path: '/headerImg',
+      name: 'headerImg',
+      meta: {
+        title: '上传图片'
+      },
+      component: headerImg
+    },
+    {
+      path: '/privacySet',
+      name: 'privacySet',
+      meta: {
+        title: '隐私设置'
+      },
+      component: privacySet
+    },
+    {
       path: '/allergic',
       name: 'allergic',
       meta: {

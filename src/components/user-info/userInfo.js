@@ -62,11 +62,6 @@ export default {
 
 				});
 		},
-		//跳转页面时携带数据
-		goWay(item) {
-			debugger 
-    	this.$router.push({ path: '/'+item, query: { userInfo:item} });
-		},
 		formatDate(date) {
 			const y = date.getFullYear();
 			let m = date.getMonth() + 1
