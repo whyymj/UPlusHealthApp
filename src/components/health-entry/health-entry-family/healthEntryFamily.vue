@@ -435,6 +435,7 @@
             },
             save(){
             	let saveData = {
+            		relation:13,//称呼
             		height: this.tall,
 				    weight: this.weight,
 				    sex: this.sex,
@@ -443,7 +444,8 @@
 				    disease: this.chromicListResult[0]?this.chromicListResult.join(","):"",
 				    allergy: this.allergyListResult[0]?this.allergyListResult.join(','):'',	
             	}
-            	axios.post('/api/user',saveData)
+            	//新增家庭成员
+            	axios.post('/api/member',saveData)
 				.then(function(res) {
 					console.log(res);
 				})

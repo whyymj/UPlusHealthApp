@@ -257,9 +257,10 @@ router.post('/api/member', (req, res, next) => {
     height: req.body.height,
     weight: req.body.weight,
     birthday: req.body.birthday,
-    relation: req.body.relation
+    relation: req.body.relation,
+    sex: req.body.sex,
+    nick_name: req.body.nick_name,			
   })
-
   const options = {
     host: config.host,
     port: config.port,

@@ -3,8 +3,8 @@
     <div>
       <!--<div @click="showActionSheet()">-->
       <div>
-        <mt-cell class="headerImg" title="头像" is-link  :to="{ name: 'headerImg' }">
-          <img id="img" src="#"/>
+        <mt-cell class="headerImg" title="头像" is-link  :to="{ name: 'headerImg',query:{user:0} }">
+          <img id="img" :src="headPic"/>
         </mt-cell>
       </div>
       <div @click="showNickName()">
@@ -41,10 +41,10 @@
       </div>
     </div>
     <div class="div_magin">
-      <mt-cell title="过敏史" is-link :to="{ name: 'allergic' }">
+      <mt-cell title="过敏史" is-link :to="{ name: 'allergic' ,query:{user:0}}">
         <span>未设置</span>
       </mt-cell>
-      <mt-cell title="慢病史" is-link :to="{ name: 'chronicDisease' }">
+      <mt-cell title="慢病史" is-link :to="{ name: 'chronicDisease' ,query:{user:0}}">
         <span>无</span>
       </mt-cell>
     </div>
