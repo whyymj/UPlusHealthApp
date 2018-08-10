@@ -160,7 +160,15 @@ export default {
 			this.isDeleteShow=false
 		},
 		deleteFamily(){
-			alert("调用删除家人的接口")
+			axios.post('/api/member/delete', {
+				member_id:member_id
+			})
+				.then(function(res) {
+					console.log(res);
+				})
+				.catch(function(err) {
+					console.log(err);
+				})
 		},
 		showActionSheet: function() {
 			// 打开action sheet
@@ -332,7 +340,8 @@ export default {
 			try {
 				var that = this;
 				const result = await axios.post('api/member', {
-					phone: ''
+//					phone: ''
+						member_id:req.session.token
 				})
 				var data = result.data.data;
 				if(result.data.code === 'C0000') {
@@ -364,7 +373,7 @@ export default {
 				diseas:this.diseas,//慢病
 				allergy:this.allergy,//过敏
 			}
-			axios.post('/api/user/update', saveData)
+			axios.post('api/member/info', saveData)
 				.then(function(res) {
 					console.log(res);
 				})
