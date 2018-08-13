@@ -71,9 +71,9 @@
     </div>
 	<!--删除家人-->
 	    <el-dialog :visible.sync="isDeleteShow" :modal-append-to-body='false'>
-            <div class="deletewrap">
+            <div class="deleteFamilywrap">
             	<div class="texttip">删除后档案数据无法恢复，是否确认删除？</div>
-            	<div class="delete" @click="deleteFamily">确认删除</div>
+            	<div class="confirmDeleteFamily" @click="deleteFamily">确认删除</div>
             </div>
             <div class="noDelete" @click="closeDeleteFamily">取消</div>
         </el-dialog>
@@ -170,6 +170,11 @@ export default {
 			})
 				.then(function(res) {
 					console.log(res);
+					this
+						.$router
+						.replace({
+							path: '/familyManagement'
+						})
 				})
 				.catch(function(err) {
 					console.log(err);
@@ -423,7 +428,7 @@ export default {
 	bottom: 0.4rem;
 	text-align: center;
 	}
-	.deletewrap{
+	.deleteFamilywrap{
 		width:17.15rem;
 		margin:0 auto;
 	}
@@ -450,7 +455,7 @@ export default {
 		border-bottom: 1px solid rgba(237,237,237,1);
 		border-radius:0.4rem 0.4rem 0 0;
 	}
-	.delete{
+	.confirmDeleteFamily{
 		background: #FFFFFF;
 		height:2.3rem;
 		font-size:0.75rem;
