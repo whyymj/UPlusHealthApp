@@ -125,6 +125,9 @@
     import tagslist from "./tagsList";
     import axios from "axios"
     import myloading from '../../global/Loading.vue';
+    import {
+        Toast
+    } from 'mint-ui';
     export default {
         components: {
             tagslist
@@ -178,7 +181,8 @@
                 allergyListResult: [],
                 tempSex: '男',
                 chromiclist: [], //慢病标签
-                allergylist: [] //过敏标签
+                allergylist: [], //过敏标签.
+                toast: ''
             };
         },
         mounted() {
@@ -450,14 +454,26 @@
                     disease: this.chromicListResult[0] ? this.chromicListResult.join(",") : "",
                     allergy: this.allergyListResult[0] ? this.allergyListResult.join(',') : '',
                 }
-                //新增家庭成员
-                axios.post('/api/member', saveData)
-                    .then(function(res) {
-                        console.log(res);
-                    })
-                    .catch(function(err) {
-                        console.log(err);
-                    })
+                if (saveData.nick_name && saveData.sex && saveData.birthday && saveData.height && saveData.weight) {
+                    //新增家庭成员
+                    axios.post('/api/member', saveData)
+                        .then(function(res) {
+                            if (res.data && res.data.code == 'C0000') {
+                                this.toast = Toast('保存成功');
+                                setTimeout(() => {
+                                    toast.close();
+                                }, 2000);
+                            }
+                        })
+                        .catch(function(err) {
+                            console.log(err);
+                        })
+                } else {
+                    this.toast = Toast('请先填写完必填信息');
+                    setTimeout(() => {
+                        toast.close();
+                    }, 2000);
+                }
             }
         }
     }
@@ -598,7 +614,7 @@
             background: #fff;
             text-align: center;
             padding: 0;
-            height: 2rem;
+            height: 2rem!important;
             line-height: 2rem;
             .el-dialog__headerbtn {
                 top: 0.6rem;

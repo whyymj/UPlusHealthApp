@@ -38,13 +38,13 @@
             </div>
         </div>
         <!-- <el-dialog title="关联Apple Health" :visible.sync="dialogVisible" width="80%">
-                                        <span>是否同意关联苹果健康数据？</span>
-                                        <span slot="footer" class="dialog-footer">
-                                                                                                            
-                                <el-button @click="dialogVisible = false">取 消</el-button>
-                                <el-button type="primary" @click="saveSleepInfo">确 定</el-button>
-                                </span>
-                                    </el-dialog> -->
+                                            <span>是否同意关联苹果健康数据？</span>
+                                            <span slot="footer" class="dialog-footer">
+                                                                                                                
+                                    <el-button @click="dialogVisible = false">取 消</el-button>
+                                    <el-button type="primary" @click="saveSleepInfo">确 定</el-button>
+                                    </span>
+                                        </el-dialog> -->
         <bigechart @showbig='showbig' v-if='showBigEcharts'></bigechart>
     </div>
 </template>
@@ -96,7 +96,6 @@
                 appleHealthData: '', //从苹果健康获取的数据
                 iosshowdata: '',
                 todayManuInputData: false, //今天是否手动录入数据
-                // dialogVisible: false, //是否需要提示获取权限
                 sleepnewslist: [],
                 showDateSelect: false,
                 activeName: "",
@@ -149,9 +148,7 @@
                 var that = this;
                 this.appleHealthData = '';
                 var check = val.year + '/' + (val.month > 9 ? val.month : '0' + val.month) + '/' + (val.date > 9 ? val.date : '0' + val.date);
-                // if (window.localStorage.UPlusApp_getAppleHealthData === true || window.localStorage.UPlusApp_getAppleHealthData === 'true') { //是否已经获取apple health 权限
                 this.saveSleepInfo(check);
-                // }
                 this.$axios.post('/api/sleep/getByDay', {
                     Date: val.year + '-' + (val.month > 9 ? val.month : '0' + val.month) + '-' + (val.date > 9 ? val.date : '0' + val.date)
                 }).then(function(res) {
@@ -303,14 +300,14 @@
             //打开苹果健康权限
             getHealth() {
                 let supportedTypes = ['HKCategoryTypeIdentifierSleepAnalysis'];
-                window.plugins.healthkit.requestAuthorization({
-                    readTypes: supportedTypes,
-                });
+                if (window.plugins && window.plugins.healthkit) {
+                    window.plugins.healthkit.requestAuthorization({
+                        readTypes: supportedTypes,
+                    });
+                }
             },
             //保存信息
             saveSleepInfo(check) {
-                // this.dialogVisible = false;
-                // window.localStorage.UPlusApp_getAppleHealthData = true;
                 let _this = this;
                 if (window.plugins && window.plugins.healthkit) {
                     window.plugins.healthkit.monitorSampleType({
@@ -399,7 +396,6 @@
                 text: 'Loading',
                 spinner: 'el-icon-loading',
             });
-            // if (window.localStorage.UPlusApp_getAppleHealthData === true || window.localStorage.UPlusApp_getAppleHealthData === 'true') { //是否已经获取apple health 权限
             var today = new Date();
             var month = today.getMonth() + 1;
             var date = today.getDate();
@@ -411,22 +407,12 @@
             }
             if (window.localStorage.UPlusApp_firstLogin_sleepMusicList === undefined || window.localStorage.UPlusApp_firstLogin_sleepMusicList === 'undefined') { //第一次登陆
                 window.localStorage.UPlusApp_firstLogin_sleepMusicList = true;
-                // window.localStorage.UPlusApp_getAppleHealthData = false;
             }
             var u = navigator.userAgent,
                 app = navigator.appVersion;
             var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //g
             var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
             this.isios = isIOS;
-            // if (isAndroid) { //判断是否是苹果机
-            //     this.dialogVisible = false;
-            // } else if (isIOS) {
-            //     if ((window.localStorage.UPlusApp_firstLogin_sleepMusicList === true || window.localStorage.UPlusApp_firstLogin_sleepMusicList === "true") && window.plugins && window.plugins.healthkit) { //是否第一次进入,是否有applehealth 数据
-            //         this.dialogVisible = true;
-            //     } else {
-            //         this.dialogVisible = false;
-            //     }
-            // }
             var that = this;
             this.$axios.post('/api/getSleepPractice').then(function(res) {
                 if (res.data.code == 'C0000') {

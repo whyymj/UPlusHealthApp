@@ -32,7 +32,7 @@ router.post('/api/getTemplateTerms', (req, res, next) => {
         const result = JSON.parse(rawData)
         if (result.openId) {
           req.session.token = result.openId // 设置认证信息
-        }// 设置认证信息
+        } // 设置认证信息
         console.log(`响应中数据: ${JSON.stringify(result)}`)
         res.send(global.handle(result))
       } catch (e) {
@@ -162,7 +162,7 @@ router.post('/api/saveUserTemplate', (req, res, next) => {
         const result = JSON.parse(rawData)
         if (result.openId) {
           req.session.token = result.openId // 设置认证信息
-        }// 设置认证信息
+        } // 设置认证信息
         console.log(`响应中数据: ${JSON.stringify(result)}`)
         res.send(global.handle(result))
       } catch (e) {
@@ -206,7 +206,7 @@ router.post('/api/saveUserTemplateByTime', (req, res, next) => {
         const result = JSON.parse(rawData)
         if (result.openId) {
           req.session.token = result.openId // 设置认证信息
-        }// 设置认证信息
+        } // 设置认证信息
         console.log(`响应中数据: ${JSON.stringify(result)}`)
         res.send(global.handle(result))
       } catch (e) {
@@ -338,7 +338,7 @@ router.post('/api/getSleepWiki', (req, res, next) => {
         const result = JSON.parse(rawData)
         if (result.openId) {
           req.session.token = result.openId // 设置认证信息
-        }// 设置认证信息
+        } // 设置认证信息
         console.log(`响应中数据: ${JSON.stringify(result)}`)
         res.send(global.handle(result))
       } catch (e) {
@@ -426,7 +426,7 @@ router.post('/api/getUserTemplateAnalysis', (req, res, next) => {
         const result = JSON.parse(rawData)
         if (result.openId) {
           req.session.token = result.openId // 设置认证信息
-        }// 设置认证信息
+        } // 设置认证信息
         console.log(`响应中数据: ${JSON.stringify(result)}`)
         res.send(global.handle(result))
       } catch (e) {
@@ -478,7 +478,7 @@ router.post('/api/sleep/insert', (req, res, next) => {
         const result = JSON.parse(rawData)
         if (result.openId) {
           req.session.token = result.openId // 设置认证信息
-        }// 设置认证信息
+        } // 设置认证信息
         console.log(`响应中数据: ${JSON.stringify(result)}`)
         res.send(global.handle(result))
       } catch (e) {
@@ -522,7 +522,7 @@ router.post('/api/sleep/getByWeek', (req, res, next) => {
         const result = JSON.parse(rawData)
         if (result.openId) {
           req.session.token = result.openId // 设置认证信息
-        }// 设置认证信息
+        } // 设置认证信息
         console.log(`响应中数据: ${JSON.stringify(result)}`)
         res.send(global.handle(result))
       } catch (e) {
@@ -566,7 +566,7 @@ router.post('/api/getByLastSeven', (req, res, next) => {
         const result = JSON.parse(rawData)
         if (result.openId) {
           req.session.token = result.openId // 设置认证信息
-        }// 设置认证信息
+        } // 设置认证信息
         console.log(`响应中数据: ${JSON.stringify(result)}`)
         res.send(global.handle(result))
       } catch (e) {
@@ -610,7 +610,7 @@ router.post('/api/sleep/getLast', (req, res, next) => {
         const result = JSON.parse(rawData)
         if (result.openId) {
           req.session.token = result.openId // 设置认证信息
-        }// 设置认证信息
+        } // 设置认证信息
         console.log(`响应中数据: ${JSON.stringify(result)}`)
         res.send(global.handle(result))
       } catch (e) {
@@ -627,7 +627,7 @@ router.post('/api/sleep/getLast', (req, res, next) => {
 })
 // 获取慢病标签
 router.post('/api/getDiseaseList', (req, res, next) => {
-  const postData = querystring.stringify({})
+  const postData = querystring.stringify({openId: req.session.token})
 
   const options = {
     host: config.host,
@@ -744,7 +744,7 @@ router.post('/api/sleeGetExistDateList', (req, res, next) => {
         const result = JSON.parse(rawData)
         if (result.openId) {
           req.session.token = result.openId // 设置认证信息
-        }// 设置认证信息
+        } // 设置认证信息
         console.log(`响应中数据: ${JSON.stringify(result)}`)
         res.send(global.handle(result))
       } catch (e) {
@@ -841,7 +841,7 @@ router.post('/api/updateSleepAnalysis', (req, res, next) => {
         const result = JSON.parse(rawData)
         if (result.openId) {
           req.session.token = result.openId // 设置认证信息
-        }// 设置认证信息
+        } // 设置认证信息
         console.log(`响应中数据: ${JSON.stringify(result)}`)
         res.send(global.handle(result))
       } catch (e) {
@@ -929,7 +929,7 @@ router.post('/api/returnDaySize', (req, res, next) => {
         const result = JSON.parse(rawData)
         if (result.openId) {
           req.session.token = result.openId // 设置认证信息
-        }// 设置认证信息
+        } // 设置认证信息
         console.log(`响应中数据: ${JSON.stringify(result)}`)
         res.send(global.handle(result))
       } catch (e) {
@@ -973,7 +973,7 @@ router.post('/api/sleep/delete', (req, res, next) => {
         const result = JSON.parse(rawData)
         if (result.openId) {
           req.session.token = result.openId // 设置认证信息
-        }// 设置认证信息
+        } // 设置认证信息
         console.log(`响应中数据: ${JSON.stringify(result)}`)
         res.send(global.handle(result))
       } catch (e) {
@@ -1061,7 +1061,7 @@ router.post('/api/getSleepInfo', (req, res, next) => {
         const result = JSON.parse(rawData)
         if (result.openId) {
           req.session.token = result.openId // 设置认证信息
-        }// 设置认证信息
+        } // 设置认证信息
         console.log(`响应中数据: ${JSON.stringify(result)}`)
         res.send(global.handle(result))
       } catch (e) {
@@ -1105,7 +1105,7 @@ router.post('/api/getHealthInfo', (req, res, next) => {
         const result = JSON.parse(rawData)
         if (result.openId) {
           req.session.token = result.openId // 设置认证信息
-        }// 设置认证信息
+        } // 设置认证信息
         console.log(`响应中数据: ${JSON.stringify(result)}`)
         res.send(global.handle(result))
       } catch (e) {

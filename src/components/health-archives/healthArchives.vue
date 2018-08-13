@@ -521,27 +521,74 @@
                 }
             },
             async initList() { //获取成员的健康指标列表
+                var that = this;
                 try {
                     this.healthProResult = [];
                     const result = await this.$axios.get(`/api/health/result?member_id=${window._member_id}`)
                     if (result.data.code === 'C0000') {
-                        console.log(result)
                         this.healthProResult = result.data.data.healthProResult;
                         var hasSleep = false;
                         var len = this.healthProResult.length;
-                        for (var i = 0; i < len; i++) {
-                            if (this.healthProResult.moudle_name == '睡眠') {
-                                hasSleep = true
-                            }
-                        }
-                        if (!hasSleep) {//判斷有没有睡眠
-                            this.healthProResult.push({
+                        var alllist = [{ //请求到的健康参数
+                                "value": "",
+                                "moudle_name": "血压",
+                                "moudle_name_en": "bloodpressure",
+                                "level": "0"
+                            },
+                            {
                                 "value": "",
                                 "moudle_name": "睡眠",
                                 "moudle_name_en": "sleep",
                                 "level": "0"
-                            });
-                        }
+                            },
+                            {
+                                "value": "",
+                                "moudle_name": "体温",
+                                "moudle_name_en": "temperature",
+                                "level": "0"
+                            },
+                            {
+                                "value": "",
+                                "moudle_name": "血氧",
+                                "moudle_name_en": "basal_metabolic",
+                                "level": "0"
+                            },
+                            {
+                                "moudle_name_en": "",
+                                "value": "", //value值为"0"时表示此健康模块暂无健康数据
+                                "moudle_name": "心电",
+                                "moudle_name_en": "",
+                                "level": "0"
+                            },
+                            {
+                                "moudle_name_en": "",
+                                "value": "", //value值为"0"时表示此健康模块暂无健康数据
+                                "moudle_name": "体重",
+                                "moudle_name_en": "",
+                                "level": "0"
+                            },
+                            {
+                                "moudle_name_en": "",
+                                "value": "", //value值为"0"时表示此健康模块暂无健康数据
+                                "moudle_name": "血糖",
+                                "moudle_name_en": "",
+                                "level": "0"
+                            }
+                        ];
+                        var need = [];
+                        alllist.map(function(item) {
+                            hasSleep = false;
+                            for (var i = 0; i < len; i++) {
+                                if (that.healthProResult[i].moudle_name == item.moudle_name) {
+                                    hasSleep = true;
+                                    break;
+                                }
+                            }
+                            if (!hasSleep) { //判斷有没有睡眠
+                                need.push(item);
+                            }
+                        })
+                        that.healthProResult=that.healthProResult.concat(need);
                         // 新用户引导页
                         if (!window.localStorage.getItem('fEntry')) {
                             this.isModel = true;

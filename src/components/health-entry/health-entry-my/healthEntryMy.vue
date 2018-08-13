@@ -597,7 +597,7 @@
             background: #fff;
             text-align: center;
             padding: 0;
-            height: 2rem;
+            height: 2rem!important;
             line-height: 2rem;
             .el-dialog__headerbtn {
                 top: 0.6rem;
