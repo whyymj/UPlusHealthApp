@@ -11,6 +11,7 @@ export default {
 			editText: '保存',
 			chronicHistory: true,
 			diseas: '',
+			memberId:null,
 			allData: {},
 			chromiclist: [{
 				name: '心脏病',
@@ -40,6 +41,7 @@ export default {
 		}
 	},
 	created() {
+		this.memberId = this.$route.params.member_id
 		this.getUserInfo();
 	},
 	methods: {
@@ -59,7 +61,7 @@ export default {
 				//获取慢病标签
 				var getDiseaseList=await axios.post('/api/getDiseaseList', {
 					//phone: ''
-					openId:req.session.loginCode
+					openId:that.memberId
 				})
 				getDiseaseList.data.data.map((item)=>{
 					return item.selected=false
@@ -71,13 +73,11 @@ export default {
 				//获取个人的信息
 				if(location.search.slice(6)==0){
 					 result=await axios.post('/api/user/info', {
-					//phone: ''
-					user_id:req.session.loginCode
+					user_id:''
 					})
 				}else{//获取家庭成员的信息
 					result=await axios.post('/api/member', {
-					//phone: ''
-					member_id:req.session.token
+					member_id:that.memberId
 					})
 				}
 				this.allData=result.data.data

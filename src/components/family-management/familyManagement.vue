@@ -187,12 +187,18 @@
       skipTo(id) {
         window._member_id = id
         if (!id) {
-          this.$router.push({
-            path: `/userInfo`
+					this.$router.push({
+            name:'userInfo',
+            params:{
+            	member_id:id
+            }
           })
-        } else {
-          this.$router.push({
-            path: `/editFamily`
+       } else {
+					this.$router.push({
+            name:'editFamily',
+            params:{
+            	member_id:id
+            }
           })
         }
       },

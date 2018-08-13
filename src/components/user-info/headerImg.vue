@@ -15,11 +15,12 @@
 		data() {
 			return {
 				imgUrl: "",
-				allData: {}
+				allData: {},
+				memberId:null
 			}
 		},
 		created() {
-
+			this.memberId = this.$route.params.member_id
 		},
 		created(){
 			this.getUserInfo()
@@ -29,9 +30,17 @@
 			async getUserInfo() {
 				try {
 					var that = this;
-					const result = await axios.post('/api/user/info', {
-						phone: ''
+				//获取个人的信息
+				if(location.search.slice(6)==0){
+					 result=await axios.post('/api/user/info', {
+					user_id:''
 					})
+				}else{//获取家庭成员的信息
+					result=await axios.post('/api/member', {
+					member_id:that.memberId
+					})
+				}
+					
 					this.allData = result.data.data
 					this.imgUrl = result.data.data.head_pic
 				} catch(err) {
@@ -75,7 +84,6 @@
 				alert(this.imgUrl)
 				let saveData = this.allData
 				saveData.head_pic = this.imgUrl
-				debugger
 				axios.post('/api/user/update', saveData)
 				.then(function(res) {
 					console.log(res);

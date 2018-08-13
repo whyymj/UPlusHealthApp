@@ -3,7 +3,7 @@
     <div>
       <!--<div @click="showActionSheet()">-->
       <div>
-        <mt-cell class="headerImg" title="头像" is-link  :to="{ name: 'headerImg' }">
+        <mt-cell class="headerImg" title="头像" is-link  :to="{ name: 'headerImg',params:{member_id:memberId}}">
           <img id="img" src="#"/>
         </mt-cell>
       </div>
@@ -41,10 +41,10 @@
       </div>
     </div>
     <div class="div_magin">
-      <mt-cell title="过敏史" is-link :to="{ name: 'allergic' }">
+      <mt-cell title="过敏史" is-link :to="{ name: 'allergic',params:{member_id:memberId} }">
         <span>未设置</span>
       </mt-cell>
-      <mt-cell title="慢病史" is-link :to="{ name: 'chronicDisease' }">
+      <mt-cell title="慢病史" is-link :to="{ name: 'chronicDisease' ,params:{member_id:memberId}}">
         <span>无</span>
       </mt-cell>
     </div>
@@ -145,7 +145,11 @@ export default {
 			disease:null,//慢病
 			allergy:null,//过敏
 			isDeleteShow:false,
+			memberId:null
 		}
+	},
+	created(){
+		this.memberId=this.$route.params.member_id 
 	},
 	mounted() {
 		this.getUserInfo();
@@ -161,7 +165,7 @@ export default {
 		},
 		deleteFamily(){
 			axios.post('/api/member/delete', {
-				member_id:member_id
+				member_id:this.memberId
 			})
 				.then(function(res) {
 					console.log(res);
@@ -340,8 +344,7 @@ export default {
 			try {
 				var that = this;
 				const result = await axios.post('api/member', {
-//					phone: ''
-						member_id:req.session.token
+						member_id:that.memberId
 				})
 				var data = result.data.data;
 				if(result.data.code === 'C0000') {
@@ -384,7 +387,7 @@ export default {
 	}
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped="scoped">
   @import "./userInfo.scss";
   .deleteFamily{
   	width:8rem;

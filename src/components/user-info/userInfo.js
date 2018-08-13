@@ -210,8 +210,7 @@ export default {
 				var that = this;
 				//根据id获取个人信息
 				const result = await axios.post('/api/user/info', {
-//					phone: ''
-					user_id:req.session.loginCode
+					user_id:''
 				})
 				var data = result.data.data;
 				if(result.data.code === 'C0000') {
