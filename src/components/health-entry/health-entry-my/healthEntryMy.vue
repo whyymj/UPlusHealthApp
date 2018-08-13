@@ -485,13 +485,13 @@
                 axios.post('/api/user', saveData)
                     .then(function(res) {
                         console.log(res);
-                        // that.$router.push({
-                        //     path: '/familyManagement'
-                        // })
+                        that.$router.push({
+                            path: '/healthArchives'
+                        })
                     })
                     .catch(function(err) {
                         // that.$router.push({
-                        //     path: ''
+                        //     path: '/healthArchives'
                         // })
                     })
             }
