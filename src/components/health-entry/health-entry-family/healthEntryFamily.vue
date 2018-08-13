@@ -459,7 +459,8 @@
                         console.log(err);
                     })
             }
-        };
+        }
+    }
 </script>
  
 <style lang="scss">
