@@ -217,8 +217,8 @@ export default {
 					this.nickName = data.nick_name; //昵称
 					this.sex = data.sex == 'female' ? '女' : "男"; //性别
 					this.endDate = new Date();
-					this.defaultBirthday = '1980年01月01日'; //默认生日
-					this.birthday = new Date(data.birthday); //生日
+					this.defaultBirthday = '1980-01-01'; //默认生日
+					this.birthday = data.birthday; //生日
 					this.heightValue = data.height + 'cm'; //身高
 					this.weightValue = data.weight + "kg"; //体重
 					this.targetWeightValue = data.target_weight + "kg"; //目标体重
