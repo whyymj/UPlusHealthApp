@@ -66,6 +66,12 @@
 				if(singleFalse) {
 					this.isSelect = false
 				}
+				var singleTrue = this.familyData.every(item => {
+					return item.value == true
+				});
+				if(singleTrue) {
+					this.isSelect = true
+				}
 			}
 		}
 	}

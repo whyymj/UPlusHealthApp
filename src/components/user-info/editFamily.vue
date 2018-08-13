@@ -164,8 +164,9 @@ export default {
 			this.isDeleteShow=false
 		},
 		deleteFamily(){
+			var memberID = this.$route.params.member_id
 			axios.post('/api/member/delete', {
-				member_id:this.memberId
+				member_id:memberID
 			})
 				.then(function(res) {
 					console.log(res);
@@ -189,11 +190,13 @@ export default {
 				.then(({
 					value
 				}) => {
-					if(value) {
+					if(value&&value.length<17) {
 						//调用昵称保存接口
 						this.nickName = value;
 						this.save()
-					} else {}
+					} else {
+						MessageBox('提示', '昵称不能超过16个字符');
+					}
 
 				});
 		},
@@ -387,35 +390,41 @@ export default {
 	}
 }
 </script>
-<style lang="scss" scoped="scoped">
+<style type="text/css" scoped="scoped">
+		.el-dialog__header{
+		height: 0;
+	}
+	.el-dialog__headerbtn{
+		display: none;
+	}
+</style>
+<style lang="scss" >
   @import "./userInfo.scss";
   .deleteFamily{
   	width:8rem;
-	height:2rem;
-	background:rgba(255,255,255,1);
-	border-radius:1rem;
-	font-size:0.8rem;
-	font-family:PingFangSC-Regular;
-	color:rgba(102,102,102,1);
-	line-height:2rem;
-	text-align: center;
-	position: fixed;
-	bottom:2rem;
-	left: 5.4rem;
+		height:2rem;
+		background:rgba(255,255,255,1);
+		border-radius:1rem;
+		font-size:0.8rem;
+		font-family:PingFangSC-Regular;
+		color:rgba(102,102,102,1);
+		line-height:2rem;
+		text-align: center;
+		position: fixed;
+		bottom:2rem;
+		left: 5.4rem;
   }
+
 .el-dialog {
 	background: rgba(0, 0, 0, 0);
+	margin:0 auto;
 	width: 95%;
 	position:absolute;
 	bottom: 0.4rem;
 	text-align: center;
-	.el-dialog__header{
-		height: 0;
 	}
 	.deletewrap{
-		background: #FFFFFF;
 		width:17.15rem;
-		border-radius:0.4rem;
 		margin:0 auto;
 	}
 	.noDelete{
@@ -430,10 +439,8 @@ export default {
 		color:rgba(34,131,226,1);
 		margin-top:0.4rem
 	}
-	.el-dialog__headerbtn{
-		display: none;
-	}
 	.texttip{
+		background: #FFFFFF;
 		height:2.3rem;
 		font-size:0.75rem;
 		font-family:PingFangSC-Regular;
@@ -441,14 +448,16 @@ export default {
 		line-height:2.3rem;
 		text-align: center;
 		border-bottom: 1px solid rgba(237,237,237,1);
+		border-radius:0.4rem 0.4rem 0 0;
 	}
 	.delete{
+		background: #FFFFFF;
 		height:2.3rem;
 		font-size:0.75rem;
 		font-family:PingFangSC-Regular;
 		color:rgba(51,51,51,1);
 		line-height:2.3rem;
 		text-align: center;
-	}
-}         
+		border-radius:0 0 0.4rem 0.4rem ;
+	}        
 </style>
