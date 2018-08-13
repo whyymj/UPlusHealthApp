@@ -54,11 +54,14 @@ export default {
 				.then(({
 					value
 				}) => {
-					if(value) {
+					if(value&&value.length<17) {
 						//调用昵称保存接口
+						
 						this.nickName = value;
 						this.save()
-					} else {}
+					} else {
+						MessageBox('提示', '昵称不能超过16个字符');
+					}
 
 				});
 		},

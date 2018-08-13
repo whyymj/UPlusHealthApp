@@ -70,7 +70,7 @@
             </div>
         </div>
         <div class="bottom">
-            <div class="bottom_text" @click="save">完成</div>
+            <input type='button'  :class="{ 'bottom_text':true, 'bottom_text_bg': !isSave}" @click="save" v-bind:disabled="isSave" value="完成">
         </div>
         <!-- 生日选择 -->
         <mt-popup v-model="birthday_picker" position="bottom">
@@ -181,9 +181,46 @@
                 allergyListResult: [],
                 tempSex: '男',
                 chromiclist: [], //慢病标签
-                allergylist: [], //过敏标签.
-                toast: ''
+                allergylist: [], //过敏标签
+				toast:'',
+                isSave:true,//保存标签                
             };
+        },
+        watch:{
+        	input_nick_name(){
+        		console.log(this.input_nick_name)
+        		if(this.birthday&&this.tall&&this.weight&&this.sex&&this.input_nick_name){
+        			this.isSave=false
+        		}else{
+        			this.isSave=true
+        		}
+        	},
+        	birthday(value){
+        		if(this.birthday&&this.tall&&this.weight&&this.sex&&this.input_nick_name){
+        			this.isSave=false
+        		}else{
+        			this.isSave=true
+        		}
+        	},
+        	tall(value){
+        		if(this.birthday&&this.tall&&this.weight&&this.sex&&this.input_nick_name){
+        			this.isSave=false
+        		}else{
+        			this.isSave=true
+        		}
+        	},
+        	weight(value){
+        		if(this.birthday&&this.tall&&this.weight&&this.sex&&this.input_nick_name){
+        			this.isSave=false
+        		}else{
+        			this.isSave=true
+        		}
+        	},
+        	sex(value){
+        		if(this.birthday&&this.tall&&this.weight&&this.sex&&this.input_nick_name){
+        			this.isSave=false
+        		}
+        	}
         },
         mounted() {
             var that = this;
