@@ -57,27 +57,35 @@ export default {
 			try {
 				var that = this;
 				//获取过敏标签
-				var getAllergylist=await axios.post('/api/getAllergyList', {
+				var getAllergylist = await axios.post('/api/getAllergyList', {
 					//phone: ''
-					openId:that.memberId	
+					openId: that.memberId
 				})
-				getAllergylist.data.data.map((item)=>{
-					return item.selected=false
+				that.allergylist = getAllergylist.data.data.map((item) => {
+					return {
+						name: item.dict_name,
+						selected: false,
+						"dict_id": item.dict_id,
+						"dict_name": item.dict_name,
+						"dict_name_en": item.dict_name_en,
+						"dict_type_id": item.dict_type_id,
+						"status": item.status,
+						"note": item.note
+					}
 				})
-				this.allergylist = getAllergylist.data.data
-				
-				let result=null
+
+				let result = null
 				//获取个人的信息
-				if(location.search.slice(6)==0){
-					 result=await axios.post('/api/user/info', {
-					user_id:''
+				if(location.search.slice(6) == 0) {
+					result = await axios.post('/api/user/info', {
+						user_id: ''
 					})
-				}else{//获取家庭成员的信息
-					result=await axios.post('/api/member', {
-					member_id:that.memberId	
+				} else { //获取家庭成员的信息
+					result = await axios.post('/api/member', {
+						member_id: that.memberId
 					})
 				}
-				this.allData=result.data.data
+				this.allData = result.data.data
 				var allergydata = result.data.data.allergy;
 				if(result.data.code === 'C0000') {
 					this.allergy = allergydata
@@ -94,9 +102,7 @@ export default {
 					}
 					this.allergylist = newallergylist
 				}
-				
-				
-				
+
 			} catch(err) {
 				console.log(err)
 			}
@@ -104,23 +110,23 @@ export default {
 		save() {
 			let saveData = this.allData
 			//保存个人
-			if(location.search.slice(6)==0){
+			if(location.search.slice(6) == 0) {
 				axios.post('/api/user/update', saveData)
-				.then(function(res) {
-					console.log(res);
-				})
-				.catch(function(err) {
-					console.log(err);
-				})
-			}else{
+					.then(function(res) {
+						console.log(res);
+					})
+					.catch(function(err) {
+						console.log(err);
+					})
+			} else {
 				//保存家庭成员信息
 				axios.post('/api/member/info', saveData)
-				.then(function(res) {
-					console.log(res);
-				})
-				.catch(function(err) {
-					console.log(err);
-				})
+					.then(function(res) {
+						console.log(res);
+					})
+					.catch(function(err) {
+						console.log(err);
+					})
 			}
 			//调用接口保存过敏史数据 返回主页面
 			this

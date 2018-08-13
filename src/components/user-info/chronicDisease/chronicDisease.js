@@ -63,10 +63,18 @@ export default {
 					//phone: ''
 					openId:that.memberId
 				})
-				getDiseaseList.data.data.map((item)=>{
-					return item.selected=false
+				that.chromiclist=getDiseaseList.data.data.map((item)=>{
+					 return {
+                            name: item.dict_name,
+                            selected: false,
+                            "dict_id": item.dict_id,
+                            "dict_name": item.dict_name,
+                            "dict_name_en": item.dict_name_en,
+                            "dict_type_id": item.dict_type_id,
+                            "status": item.status,
+                            "note": item.note
+                        }
 				})
-				this.chromiclist = getDiseaseList.data.data
 				
 				
 				let result=null
@@ -81,6 +89,7 @@ export default {
 					})
 				}
 				this.allData=result.data.data
+				debugger
 				var diseasdata = result.data.data.diseas;
 				if(result.data.code === 'C0000') {
 					this.diseas = diseasdata //慢病
