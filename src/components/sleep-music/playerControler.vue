@@ -3,10 +3,10 @@
         <div id="textaudio1" style="margin-top: 60px"></div>
         <h2>{{level}}</h2>
         <div class="control">
-            <img src="/static/musicPlayer/left.png" id='backThirtySec' alt="" class='left' @click='back'>
-            <img src="/static/musicPlayer/play.png" alt="" class='play' v-if='playing' @click='play' id="playSleepMusic">
-            <img src="/static/musicPlayer/pause.png" id="pauseSleepMusic" alt="" class='pause' v-else @click='pause'>
-            <img src="/static/musicPlayer/right.png" id='goThirtySec' alt="" class='right' @click='go'>
+            <img src="/static/musicPlayer/left.png" id='backThirtySec' alt="" class='left'>
+            <img src="/static/musicPlayer/play.png" alt="" class='play' v-show='playing' id="playSleepMusic">
+            <img src="/static/musicPlayer/pause.png" id="pauseSleepMusic" alt="" class='pause' v-show='!playing'>
+            <img src="/static/musicPlayer/right.png" id='goThirtySec' alt="" class='right'>
         </div>
     </div>
 </template>
@@ -40,7 +40,8 @@
                 params: '',
                 my_media: '',
                 mediaTimer: '',
-                position: 0
+                position: 0,
+                timerDur: 0
             }
         },
         methods: {
@@ -48,6 +49,7 @@
                 return document.getElementById(id);
             },
             receivedEvent(src) {
+                var that = this;
                 this.my_media = null;
                 this.mediaTimer = null;
                 this.timerDur = null;
@@ -82,19 +84,18 @@
                 // 停止播放音频文件
                 function stopAudio() {
                     if (this.my_media) {}
-                    my_media.stop();
+                    that.my_media.stop();
                 }
                 // 返回在音频文件的当前位置。
                 function getCurrent() {
-                    var that = this;
                     if (!this.mediaTimer) {
                         this.mediaTimer = setInterval(function() {
-                            this.my_media.getCurrentPosition(
+                            that.my_media.getCurrentPosition(
                                 // success callback
                                 function(position) {
                                     if (position > -1) {
                                         that.position = position;
-                                        console.log('position',position);
+                                        console.log('position', position);
                                     }
                                 },
                                 // error callback
@@ -105,56 +106,85 @@
                         }, 1000);
                     }
                 }
+                // 返回一个音频文件的持续时间。
+                function getDuration() {
+                    // Get duration
+                    var counter = 0;
+                    that.timerDur = setInterval(function() {
+                        counter = counter + 100;
+                        if (counter > 2000) {
+                            clearInterval(that.timerDur);
+                        }
+                        var dur = that.my_media.getDuration();
+                        if (dur > 0) {
+                            clearInterval(that.timerDur);
+                        }
+                    }, 100);
+                }
                 this.$$("playSleepMusic").onclick = function() {
+                    console.log('playing')
+                    that.playing = true;
                     playAudio();
                 }
                 this.$$("pauseSleepMusic").onclick = function() {
                     pauseAudio();
+                    that.playing = false;
+                    console.log('pausing')
                 }
                 this.$$("goThirtySec").onclick = function() {
-                    console.log('goThirtySec')
+                    console.log('go 30')
+                    var time = that.position + 30;
+                    time = time > that.timerDur ? that.timerDur : time;
+                    that.position = time;
+                    that.my_media.seekTo(time * 1000);
                 }
                 this.$$("backThirtySec").onclick = function() {
-                    console.log('backThirtySec')
+                    console.log('back 30')
+                    var time = that.position - 30;
+                    time = time < 0 ? 0 : time;
+                    that.position = time;
+                    that.my_media.seekTo(time * 1000);
                 }
             },
-            play() {
-                this.wxAudio.audioPlay();
-                this.playing = !this.playing;
-            },
-            pause() {
-                this.wxAudio.audioPause();
-                this.playing = !this.playing;
-            },
-            back() {
-                var curtime = this.wxAudio.currentT;
-                curtime = curtime - 30 <= 0 ? 0 : curtime - 30;
-                this.wxAudio.wxAudio.currentTime = this.wxAudio.currentT = curtime;
-                this.wxAudio.currentP = curtime / this.wxAudio.durationT;
-                this.wxAudio.dragProgressTo = this.wxAudio.wxAudioDetail.offsetWidth * this.wxAudio.currentP;
-                this.wxAudio.wxAudioCurrent.innerText = this.wxAudio.formartTime(this.wxAudio.wxAudio.currentTime);
-                this.wxAudio.updatePorgress();
-                this.wxAudio.audioPlay();
-            },
-            go() {
-                var curtime = this.wxAudio.currentT;
-                curtime = curtime + 30 >= this.wxAudio.durationT ? this.wxAudio.durationT : curtime + 30;
-                this.wxAudio.wxAudio.currentTime = this.wxAudio.currentT = curtime;
-                this.wxAudio.currentP = curtime / this.wxAudio.durationT;
-                this.wxAudio.dragProgressTo = this.wxAudio.wxAudioDetail.offsetWidth * this.wxAudio.currentP;
-                this.wxAudio.wxAudioCurrent.innerText = this.wxAudio.formartTime(this.wxAudio.wxAudio.currentTime);
-                this.wxAudio.updatePorgress();
-                this.wxAudio.audioPlay();
-            }
+            // play() {
+            //     this.wxAudio.audioPlay();
+            //     this.playing = !this.playing;
+            // },
+            // pause() {
+            //     this.wxAudio.audioPause();
+            //     this.playing = !this.playing;
+            // },
+            // back() {
+            //     var curtime = this.wxAudio.currentT;
+            //     curtime = curtime - 30 <= 0 ? 0 : curtime - 30;
+            //     this.wxAudio.wxAudio.currentTime = this.wxAudio.currentT = curtime;
+            //     this.wxAudio.currentP = curtime / this.wxAudio.durationT;
+            //     this.wxAudio.dragProgressTo = this.wxAudio.wxAudioDetail.offsetWidth * this.wxAudio.currentP;
+            //     this.wxAudio.wxAudioCurrent.innerText = this.wxAudio.formartTime(this.wxAudio.wxAudio.currentTime);
+            //     this.wxAudio.updatePorgress();
+            //     this.wxAudio.audioPlay();
+            // },
+            // go() {
+            //     var curtime = this.wxAudio.currentT;
+            //     curtime = curtime + 30 >= this.wxAudio.durationT ? this.wxAudio.durationT : curtime + 30;
+            //     this.wxAudio.wxAudio.currentTime = this.wxAudio.currentT = curtime;
+            //     this.wxAudio.currentP = curtime / this.wxAudio.durationT;
+            //     this.wxAudio.dragProgressTo = this.wxAudio.wxAudioDetail.offsetWidth * this.wxAudio.currentP;
+            //     this.wxAudio.wxAudioCurrent.innerText = this.wxAudio.formartTime(this.wxAudio.wxAudio.currentTime);
+            //     this.wxAudio.updatePorgress();
+            //     this.wxAudio.audioPlay();
+            // }
         },
         mounted() { //h5实现的方式
             this.params = this.$route.query;
             // console.log(this.params);
             var that = this;
             //初始化音频插件
-            this.receivedEvent(that.params.musicurl);
+            this.$nextTick(function() {
+                that.receivedEvent(that.params.musicurl||"https://huiai.sleepeazz.com/vod/QinanSleepTraining_01.mp3");
+            })
             document.addEventListener('deviceready', function() {
-                that.receivedEvent(that.params.musicurl)
+                that.receivedEvent(that.params.musicurl||"https://huiai.sleepeazz.com/vod/QinanSleepTraining_01.mp3")
             }, false);
             // this.wxAudio = new Wxaudio({
             //     ele: '#textaudio1',

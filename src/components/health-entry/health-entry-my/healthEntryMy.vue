@@ -7,11 +7,11 @@
                 </div>
                 <div class="body_12">
                     <!--<div class="body_121" @click='choose_nick_name'>
-                                                            <span class="body_1211">昵称</span>
-                                                            <span class="body_1212">&middot;</span>
-                                                            <el-input v-model="input_nick_name" placeholder="请输入昵称（不超过16字符）" maxlength=16 @change='input_nick'></el-input>
-                                                            <span class="body_1213"><span></span>&nbsp&nbsp<i class="el-icon-arrow-right" style='color:#DADADA;'></i></span>
-                                                        </div>-->
+                                                                <span class="body_1211">昵称</span>
+                                                                <span class="body_1212">&middot;</span>
+                                                                <el-input v-model="input_nick_name" placeholder="请输入昵称（不超过16字符）" maxlength=16 @change='input_nick'></el-input>
+                                                                <span class="body_1213"><span></span>&nbsp&nbsp<i class="el-icon-arrow-right" style='color:#DADADA;'></i></span>
+                                                            </div>-->
                     <div class="body_121" @click='choose_sex'>
                         <span class="body_1211">性别</span>
                         <span class="body_1212">&middot;</span>
@@ -70,7 +70,7 @@
             </div>
         </div>
         <div class="bottom">
-            <input type='button'  :class="{ 'bottom_text':true, 'bottom_text_bg': !isSave}" @click="save" v-bind:disabled="isSave" value="完成">
+            <input type='button' :class="{ 'bottom_text':true, 'bottom_text_bg': !isSave}" @click="save" v-bind:disabled="isSave" value="完成">
         </div>
         <!-- 生日选择 -->
         <mt-popup v-model="birthday_picker" position="bottom">
@@ -179,38 +179,38 @@
                 tempSex: '男',
                 chromiclist: [], //慢病标签
                 allergylist: [], //过敏标签
-                isSave:true,//保存按钮
+                isSave: true, //保存按钮
             };
         },
-        watch:{
-        	birthday(value){
-        		if(this.birthday&&this.tall&&this.weight&&this.sex){
-        			this.isSave=false
-        		}else{
-        			this.isSave=true
-        		}
-        	},
-        	tall(value){
-        		if(this.birthday&&this.tall&&this.weight&&this.sex){
-        			this.isSave=false
-        		}else{
-        			this.isSave=true
-        		}
-        	},
-        	weight(value){
-        		if(this.birthday&&this.tall&&this.weight&&this.sex){
-        			this.isSave=false
-        		}else{
-        			this.isSave=true
-        		}
-        	},
-        	sex(value){
-        		if(this.birthday&&this.tall&&this.weight&&this.sex){
-        			this.isSave=false
-        		}else{
-        			this.isSave=true
-        		}
-        	}
+        watch: {
+            birthday(value) {
+                if (this.birthday && this.tall && this.weight && this.sex) {
+                    this.isSave = false
+                } else {
+                    this.isSave = true
+                }
+            },
+            tall(value) {
+                if (this.birthday && this.tall && this.weight && this.sex) {
+                    this.isSave = false
+                } else {
+                    this.isSave = true
+                }
+            },
+            weight(value) {
+                if (this.birthday && this.tall && this.weight && this.sex) {
+                    this.isSave = false
+                } else {
+                    this.isSave = true
+                }
+            },
+            sex(value) {
+                if (this.birthday && this.tall && this.weight && this.sex) {
+                    this.isSave = false
+                } else {
+                    this.isSave = true
+                }
+            }
         },
         mounted() {
             var that = this;
@@ -472,11 +472,12 @@
                 //     .catch(_ => {});
             },
             save() {
+                var that = this;
                 let saveData = {
                     height: parseFloat(this.tall),
                     weight: parseFloat(this.weight),
-                    sex: this.sex=='男'?"male":"female",
-                    birthday: this.birthday.replace('年','-').replace('月','-').replace('日',''),
+                    sex: this.sex == '男' ? "male" : "female",
+                    birthday: this.birthday.replace('年', '-').replace('月', '-').replace('日', ''),
                     //				    nick_name: this.input_nick_name,
                     disease: this.chromicListResult[0] ? this.chromicListResult.join(",") : "",
                     allergy: this.allergyListResult[0] ? this.allergyListResult.join(',') : '',
@@ -484,9 +485,14 @@
                 axios.post('/api/user', saveData)
                     .then(function(res) {
                         console.log(res);
+                        // that.$router.push({
+                        //     path: '/familyManagement'
+                        // })
                     })
                     .catch(function(err) {
-                        console.log(err);
+                        // that.$router.push({
+                        //     path: ''
+                        // })
                     })
             }
         }
@@ -505,25 +511,25 @@
             overflow: hidden;
             position: relative;
             /*.input_nick_name {
-                                                    position: absolute;
-                                                    width: 14rem;
-                                                    top: 0;
-                                                    bottom: 0;
-                                                    left: 0;
-                                                    right: 0;
-                                                    margin: auto;
-                                                    height: 2rem;
-                                                    border-radius: 0.2rem;
-                                                    display: block;
-                                                    margin: auto;
-                                                    border: 1px solid #eee;
-                                                    box-sizing: border-box;
-                                                    padding: 0 0.5rem;
-                                                    font-size: 0.7rem;
-                                                    font-family: "PingFangSC-Regular";
-                                                    color: #666;
-                                                    line-height: 2rem;
-                                                }*/
+                                                        position: absolute;
+                                                        width: 14rem;
+                                                        top: 0;
+                                                        bottom: 0;
+                                                        left: 0;
+                                                        right: 0;
+                                                        margin: auto;
+                                                        height: 2rem;
+                                                        border-radius: 0.2rem;
+                                                        display: block;
+                                                        margin: auto;
+                                                        border: 1px solid #eee;
+                                                        box-sizing: border-box;
+                                                        padding: 0 0.5rem;
+                                                        font-size: 0.7rem;
+                                                        font-family: "PingFangSC-Regular";
+                                                        color: #666;
+                                                        line-height: 2rem;
+                                                    }*/
         }
         .sex_radio {
             padding: 0.5rem 5rem;

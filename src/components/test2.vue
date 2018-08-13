@@ -156,6 +156,7 @@
     mounted() {
       //初始化音频插件
       this.app.initialize();
+      
     }
 
   }
