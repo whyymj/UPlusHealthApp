@@ -444,12 +444,13 @@
                 //     .catch(_ => {});
             },
             save() {
+                //				    nick_name: this.input_nick_name,
                 let saveData = {
                     relation: 13, //称呼
-                    height: this.tall,
-                    weight: this.weight,
-                    sex: this.sex,
-                    birthday: this.birthday,
+                    height: parseFloat(this.tall),
+                    weight: parseFloat(this.weight),
+                    sex: this.sex == '男' ? "male" : "female",
+                    birthday: this.birthday.replace('年', '-').replace('月', '-').replace('日', ''),
                     nick_name: this.input_nick_name,
                     disease: this.chromicListResult[0] ? this.chromicListResult.join(",") : "",
                     allergy: this.allergyListResult[0] ? this.allergyListResult.join(',') : '',

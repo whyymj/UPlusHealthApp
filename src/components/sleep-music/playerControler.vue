@@ -3,10 +3,10 @@
         <div id="textaudio1" style="margin-top: 60px"></div>
         <h2>{{level}}</h2>
         <div class="control">
-            <img src="/static/musicPlayer/left.png" alt="" class='left' @click='back'>
-            <img src="/static/musicPlayer/play.png" alt="" class='play' v-if='playing' @click='play' id="play">
-            <img src="/static/musicPlayer/pause.png" id="pause" alt="" class='pause' v-else @click='pause'>
-            <img src="/static/musicPlayer/right.png" alt="" class='right' @click='go'>
+            <img src="/static/musicPlayer/left.png" id='backThirtySec' alt="" class='left' @click='back'>
+            <img src="/static/musicPlayer/play.png" alt="" class='play' v-if='playing' @click='play' id="playSleepMusic">
+            <img src="/static/musicPlayer/pause.png" id="pauseSleepMusic" alt="" class='pause' v-else @click='pause'>
+            <img src="/static/musicPlayer/right.png" id='goThirtySec' alt="" class='right' @click='go'>
         </div>
     </div>
 </template>
@@ -38,119 +38,86 @@
                 playing: true,
                 audio: '',
                 params: '',
-                app: {
-                    initialize: function() {
-                        alert("进入initialize")
-                        document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
-                    },
-                    onDeviceReady: function() {
-                        alert("进入deviceReady")
-                        this.receivedEvent();
-                    },
-                    $$: function(id) {
-                        return document.getElementById(id);
-                    },
-                    receivedEvent: function() {
-                        var src = document.getElementById("audio_id").src;
-                        var my_media = null;
-                        var mediaTimer = null;
-                        var timerDur = null;
-                        function mediaSuccess() {
-                            alert("Media成功")
-                        }
-                        function mediaError(err) {
-                            alert("Media失败：" + err)
-                        }
-                        // 开始或恢复播放一个音频文件
-                        function playAudio() {
-                            alert("进入播放函数")
-                            if (my_media == null) {
-                                // 初始化Media对象
-                                alert("playAudio函数中audio的src:" + document.getElementById("audio_id").src)
-                                my_media = new Media(document.getElementById("audio_id").src, mediaSuccess, mediaError);
-                            }
-                            // 播放音频
-                            alert("即将播放")
-                            my_media.play();
-                        }
-                        // 暂停播放音频文件
-                        function pauseAudio() {
-                            if (my_media) {
-                                my_media.pause();
-                            }
-                            // 清除定时器对象
-                            clearInterval(mediaTimer);
-                            mediaTimer = null;
-                        }
-                        // 释放操作系统底层的音频资源。
-                        function releaseAudio() {
-                            if (my_media) {
-                                my_media.release();
-                            }
-                        }
-                        // 停止播放音频文件
-                        function stopAudio() {
-                            if (my_media) {}
-                            my_media.stop();
-                            // 清除定时器对象
-                            clearInterval(mediaTimer);
-                            mediaTimer = null;
-                        }
-                        // 返回在音频文件的当前位置。
-                        function getCurrent() {
-                            if (mediaTimer == null) {
-                                mediaTimer = setInterval(function() {
-                                    my_media.getCurrentPosition(
-                                        // success callback
-                                        function(position) {
-                                            if (position > -1) {
-                                                alert((position) + " sec");
-                                            }
-                                            document.getElementById('audio_current').innerHTML = position;
-                                        },
-                                        // error callback
-                                        function(e) {
-                                            alert("getCurrent方法：Error getting pos=" + e);
-                                        }
-                                    );
-                                }, 1000);
-                            }
-                        }
-                        // 返回一个音频文件的持续时间。
-                        function getDuration() {
-                            // Get duration
-                            var counter = 0;
-                            var timerDur = setInterval(function() {
-                                counter = counter + 100;
-                                if (counter > 2000) {
-                                    clearInterval(timerDur);
-                                }
-                                var dur = my_media.getDuration();
-                                if (dur > 0) {
-                                    clearInterval(timerDur);
-                                    document.getElementById('audio_duration').innerHTML = (dur) + " sec";
-                                }
-                            }, 100);
-                        }
-                        this.$$("play").onclick = function() {
-                            playAudio();
-                            getCurrent();
-                            getDuration();
-                        }
-                        this.$$("pause").onclick = function() {
-                            pauseAudio();
-                        }
-                        this.$$("release").onclick = function() {
-                            releaseAudio();
-                        }
-                        this.$$("stop").onclick = function() {
-                            stopAudio();
-                        }
-                    }
-                }
+                my_media: '',
+                mediaTimer: '',
+                position: 0
             }
         },
         methods: {
+            $$(id) {
+                return document.getElementById(id);
+            },
+            receivedEvent(src) {
+                this.my_media = null;
+                this.mediaTimer = null;
+                this.timerDur = null;
+                function mediaSuccess() {
+                    alert("Media成功")
+                }
+                function mediaError(err) {
+                    alert("Media失败：" + err)
+                }
+                // 开始或恢复播放一个音频文件
+                function playAudio() {
+                    alert("进入播放函数")
+                    if (!this.my_media) {
+                        // 初始化Media对象
+                        this.my_media = new Media(src, mediaSuccess, mediaError);
+                    }
+                    // 播放音频
+                    this.my_media.play();
+                }
+                // 暂停播放音频文件
+                function pauseAudio() {
+                    if (this.my_media) {
+                        this.my_media.pause();
+                    }
+                }
+                // 释放操作系统底层的音频资源。
+                function releaseAudio() {
+                    if (this.my_media) {
+                        this.my_media.release();
+                    }
+                }
+                // 停止播放音频文件
+                function stopAudio() {
+                    if (this.my_media) {}
+                    my_media.stop();
+                }
+                // 返回在音频文件的当前位置。
+                function getCurrent() {
+                    var that = this;
+                    if (!this.mediaTimer) {
+                        this.mediaTimer = setInterval(function() {
+                            this.my_media.getCurrentPosition(
+                                // success callback
+                                function(position) {
+                                    if (position > -1) {
+                                        that.position = position;
+                                        console.log('position',position);
+                                    }
+                                },
+                                // error callback
+                                function(e) {
+                                    alert("getCurrent方法：Error getting pos=" + e);
+                                }
+                            );
+                        }, 1000);
+                    }
+                }
+                this.$$("playSleepMusic").onclick = function() {
+                    playAudio();
+                }
+                this.$$("pauseSleepMusic").onclick = function() {
+                    pauseAudio();
+                }
+                this.$$("goThirtySec").onclick = function() {
+                    console.log('goThirtySec')
+                }
+                this.$$("backThirtySec").onclick = function() {
+                    console.log('backThirtySec')
+                }
+            },
             play() {
                 this.wxAudio.audioPlay();
                 this.playing = !this.playing;
@@ -180,24 +147,27 @@
                 this.wxAudio.audioPlay();
             }
         },
-        mounted() {
+        mounted() { //h5实现的方式
             this.params = this.$route.query;
-            console.log(this.params);
+            // console.log(this.params);
             var that = this;
-            this.wxAudio = new Wxaudio({
-                ele: '#textaudio1',
-                title: 'Jar Of Love',
-                disc: 'Break Me Up',
-                src: that.params.musicurl,
-                width: '320px'
-            });
-            this.play();
-            this.audio = this.wxAudio.wxAudio;
-            this.audio.onended = function() {
-                that.playing = true;
-            }
             //初始化音频插件
-            // this.app.initialize();
+            this.receivedEvent(that.params.musicurl);
+            document.addEventListener('deviceready', function() {
+                that.receivedEvent(that.params.musicurl)
+            }, false);
+            // this.wxAudio = new Wxaudio({
+            //     ele: '#textaudio1',
+            //     title: 'Jar Of Love',
+            //     disc: 'Break Me Up',
+            //     src: that.params.musicurl,
+            //     width: '320px'
+            // });
+            // this.play();
+            // this.audio = this.wxAudio.wxAudio;
+            // this.audio.onended = function() {
+            //     that.playing = true;
+            // }
         }
     }
 </script>
