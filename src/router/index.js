@@ -15,8 +15,9 @@ const introduction = resolve => require(['@/components/introduction/introduction
 const createCharacter = resolve => require(['@/components/create-character/createCharacter.vue'], resolve)
 const createFamily = resolve => require(['@/components/create-family/createFamily.vue'], resolve)
 
-
 const healthRecordsB = resolve => require(['@/components/health-archives/healthArchives.vue'], resolve)
+// const healthRecordsB = resolve =>
+// require(['@/components/health-records-body/healthRecordsB.vue'], resolve)
 const healthRecordsL = resolve => require(['@/components/health-records-list/healthRecordsL.vue'], resolve)
 const addProject = resolve => require(['@/components/add-project/addProject.vue'], resolve)
 const manualEntry = resolve => require(['@/components/manual-entry/manualEntry.vue'], resolve)

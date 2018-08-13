@@ -338,7 +338,7 @@
                 this.year = date.getFullYear();
                 this.month = date.getMonth() + 1;
                 this.date = date.getDate();
-                this.$axios.post('/api/getExistDateList', {
+                this.$axios.post('/api/sleeGetExistDateList', {
                     begin_date: this.year + (this.month > 9 ? this.month : '0' + this.month) + '-01 00:00:00',
                     end_date: this.year + '-' + (this.month > 9 ? this.month : '0' + this.month) + '-' + (this.date > 9 ? this.date : '0' + this.date) + ' 23:59:59'
                 }).then(function(res) {
@@ -395,7 +395,7 @@
                 this.year = date.getFullYear();
                 this.month = date.getMonth() + 1;
                 this.date = date.getDate();
-                this.$axios.post('/api/getExistDateList', {
+                this.$axios.post('/api/sleeGetExistDateList', {
                     begin_date: this.year + '-01-01 00:00:00',
                     end_date: this.year + '-' + (this.month > 9 ? this.month : '0' + this.month) + '-' + (this.date > 9 ? this.date : '0' + this.date) + ' 23:59:59'
                 }).then(function(res) {
