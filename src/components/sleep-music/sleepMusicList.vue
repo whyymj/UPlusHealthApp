@@ -38,13 +38,13 @@
             </div>
         </div>
         <!-- <el-dialog title="关联Apple Health" :visible.sync="dialogVisible" width="80%">
-                                            <span>是否同意关联苹果健康数据？</span>
-                                            <span slot="footer" class="dialog-footer">
-                                                                                                                
-                                    <el-button @click="dialogVisible = false">取 消</el-button>
-                                    <el-button type="primary" @click="saveSleepInfo">确 定</el-button>
-                                    </span>
-                                        </el-dialog> -->
+                                                    <span>是否同意关联苹果健康数据？</span>
+                                                    <span slot="footer" class="dialog-footer">
+                                                                                                                        
+                                            <el-button @click="dialogVisible = false">取 消</el-button>
+                                            <el-button type="primary" @click="saveSleepInfo">确 定</el-button>
+                                            </span>
+                                                </el-dialog> -->
         <bigechart @showbig='showbig' v-if='showBigEcharts'></bigechart>
     </div>
 </template>
@@ -260,17 +260,7 @@
             },
             getAppleHealthData(val, check) { //例子数据，获取苹果健康数据
                 var that = this;
-                var data = this.appleHealthData = val || [{
-                    "categoryType.identifier": "HKCategoryTypeIdentifierSleepAnalysis",
-                    "endDate": "2018-08-10T08:22:04+08:00",
-                    "startDate": "2018-08-09T22:21:28+08:00",
-                    "UUID": "C97F643D-411D-44F5-A7E3-C6C31BBDFAE2",
-                    "sourceBundleId": "com.boohee.sleep",
-                    "value": 1,
-                    "sourceName": "萤火虫睡眠",
-                    "metadata": {},
-                    "categoryType.description": "HKCategoryTypeIdentifierSleepAnalysis"
-                }];
+                var data = this.appleHealthData = val || [];
                 var today = new Date(),
                     todaydata = '';
                 if (check) { //查询某天的数据
@@ -374,19 +364,20 @@
             }
         },
         mounted() {
-            window.localStorage.UPlusApp_getAppleHealthData = false; //测试用的+++++++s++++++++++++++++
-            window.localStorage.UPlusApp_firstLogin_sleepMusicList = undefined;
-            window.plugins = {
-                healthkit: {
-                    requestAuthorization: function() {},
-                    monitorSampleType: function(x, y) {
-                        y()
-                    },
-                    querySampleType(x, y) {
-                        y()
-                    }
-                }
-            }
+            
+            // window.localStorage.UPlusApp_getAppleHealthData = false; //测试用的+++++++s++++++++++++++++
+            // window.localStorage.UPlusApp_firstLogin_sleepMusicList = undefined;
+            // window.plugins = {
+            //     healthkit: {
+            //         requestAuthorization: function() {},
+            //         monitorSampleType: function(x, y) {
+            //             y()
+            //         },
+            //         querySampleType(x, y) {
+            //             y()
+            //         }
+            //     }
+            // }
             //测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++
             this.getHealth(); //获取权限
             this.loadingmodal = Loading.service({

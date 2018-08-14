@@ -484,7 +484,7 @@
                 }
                 axios.post('/api/user', saveData)
                     .then(function(res) {
-                        console.log(res);
+                        
                         that.$router.push({
                             path: '/healthArchives'
                         })

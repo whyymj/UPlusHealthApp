@@ -1,6 +1,6 @@
 <template>
     <div class="sleepManuInput">
-        <sleeptime :list='items' @getSleepTimes='getSleepTimes'></sleeptime>
+        <sleeptime :list='items' @getSleepTimes='getSleepTimes' ></sleeptime>
         <sleepquality :quality='quality' :factors='factors' @chooseQuality='chooseQuality' @chooseFactor='chooseFactor'></sleepquality>
         <div class="button" @click='submitResult'>保存</div>
     </div>
@@ -60,6 +60,8 @@
         },
         data() {
             return {
+                
+             
                 quality: '', //查到的质量
                 factors: '', //查到的因素
                 sleepqualityres: "", //选择的质量
@@ -68,22 +70,22 @@
                 items: [{
                         title: "上床",
                         url: "/static/sleep-manue-input/img1.png",
-                        content: ""
+                        content: "18:00"
                     },
                     {
                         title: "睡着",
                         url: "/static/sleep-manue-input/img2.png",
-                        content: ""
+                        content: "18:10"
                     },
                     {
                         title: "睡醒",
                         url: "/static/sleep-manue-input/img3.png",
-                        content: ""
+                        content: "8:00"
                     },
                     {
                         title: "起床",
                         url: "/static/sleep-manue-input/img4.png",
-                        content: ""
+                        content: "8:15"
                     }
                 ]
             };

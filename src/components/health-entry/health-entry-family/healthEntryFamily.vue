@@ -481,6 +481,7 @@
                 //     .catch(_ => {});
             },
             save() {
+                     var that = this;
                 //				    nick_name: this.input_nick_name,
                 let saveData = {
                     relation: 13, //称呼

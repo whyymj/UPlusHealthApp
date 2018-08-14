@@ -2,6 +2,10 @@
     <div class='playerController'>
         <div id="textaudio1" style="margin-top: 60px"></div>
         <h2>{{level}}</h2>
+        <div class='progressBar'>
+            <el-progress :percentage="percent" style='margin-top:2rem;' :show-text=false></el-progress>
+            <span class='starttime'>{{getPosition}}</span><span class='endtime'>{{getDurationTime}}</span>
+        </div>
         <div class="control">
             <img src="/static/musicPlayer/left.png" id='backThirtySec' alt="" class='left'>
             <img src="/static/musicPlayer/play.png" alt="" class='play' v-show='playing' id="playSleepMusic">
@@ -29,6 +33,31 @@
                     level = '高级'
                 }
                 return title + "(" + level + ")"
+            },
+            getPosition() {
+                var h = 0,
+                    m = 0,
+                    str = '',
+                    s = 0;
+                h = Math.floor(this.position / 3600) > 9 ? Math.floor(this.position / 3600) : ('0' + Math.floor(this.position / 3600));
+                m = Math.floor(this.position % 3600 / 60) > 9 ? Math.floor(this.position % 3600 / 60) : ('0' + Math.floor(this.position % 3600 / 60));
+                s = (this.position % 3600 % 60 > 9) ? (this.position % 3600 % 60) : ('0' + this.position % 3600 % 60);
+                str = '' + ((h == '00') ? '' : (h + ':')) + m + ':' + s
+                return str;
+            },
+            getDurationTime() {
+                var h = 0,
+                    m = 0,
+                    str = '',
+                    s = 0;
+                h = Math.floor(this.duration / 3600) > 9 ? Math.floor(this.duration / 3600) : ('0' + Math.floor(this.duration / 3600));
+                m = Math.floor(this.duration % 3600 / 60) > 9 ? Math.floor(this.duration % 3600 / 60) : ('0' + Math.floor(this.duration % 3600 / 60));
+                s = (this.duration % 3600 % 60 > 9) ? (this.duration % 3600 % 60) : ('0' + this.duration % 3600 % 60);
+                str = '' + ((h == '00') ? '' : (h + ':')) + m + ':' + s
+                return str;
+            },
+            percent() {
+                return Math.round(this.position / (this.duration || 1) * 100)
             }
         },
         props: ['music'],
@@ -41,7 +70,8 @@
                 my_media: '',
                 mediaTimer: '',
                 position: 0,
-                timerDur: 0
+                timerDur: 0,
+                duration: 0
             }
         },
         methods: {
@@ -53,49 +83,32 @@
                 this.my_media = null;
                 this.mediaTimer = null;
                 this.timerDur = null;
-                function mediaSuccess() {
-                    alert("Media成功")
-                }
-                function mediaError(err) {
-                    alert("Media失败：" + err)
-                }
+                function mediaSuccess() {}
+                function mediaError(err) {}
                 // 开始或恢复播放一个音频文件
                 function playAudio() {
-                    alert("进入播放函数")
-                    if (!this.my_media) {
+                    if (!that.my_media) {
                         // 初始化Media对象
-                        this.my_media = new Media(src, mediaSuccess, mediaError);
+                        that.my_media = new Media(src, mediaSuccess, mediaError);
                     }
                     // 播放音频
-                    this.my_media.play();
+                    that.my_media.play();
                 }
                 // 暂停播放音频文件
                 function pauseAudio() {
-                    if (this.my_media) {
-                        this.my_media.pause();
+                    if (that.my_media) {
+                        that.my_media.pause();
                     }
-                }
-                // 释放操作系统底层的音频资源。
-                function releaseAudio() {
-                    if (this.my_media) {
-                        this.my_media.release();
-                    }
-                }
-                // 停止播放音频文件
-                function stopAudio() {
-                    if (this.my_media) {}
-                    that.my_media.stop();
                 }
                 // 返回在音频文件的当前位置。
                 function getCurrent() {
-                    if (!this.mediaTimer) {
-                        this.mediaTimer = setInterval(function() {
+                    if (!that.mediaTimer) {
+                        that.mediaTimer = setInterval(function() {
                             that.my_media.getCurrentPosition(
                                 // success callback
                                 function(position) {
                                     if (position > -1) {
                                         that.position = position;
-                                        console.log('position', position);
                                     }
                                 },
                                 // error callback
@@ -115,31 +128,27 @@
                         if (counter > 2000) {
                             clearInterval(that.timerDur);
                         }
-                        var dur = that.my_media.getDuration();
-                        if (dur > 0) {
+                        that.duration = that.my_media.getDuration();
+                        if (that.duration > 0) {
                             clearInterval(that.timerDur);
                         }
                     }, 100);
                 }
                 this.$$("playSleepMusic").onclick = function() {
-                    console.log('playing')
-                    that.playing = true;
+                    that.playing = !that.playing;
                     playAudio();
                 }
                 this.$$("pauseSleepMusic").onclick = function() {
                     pauseAudio();
-                    that.playing = false;
-                    console.log('pausing')
+                    that.playing = !that.playing;
                 }
                 this.$$("goThirtySec").onclick = function() {
-                    console.log('go 30')
                     var time = that.position + 30;
-                    time = time > that.timerDur ? that.timerDur : time;
+                    time = time > that.duration ? that.duration : time;
                     that.position = time;
                     that.my_media.seekTo(time * 1000);
                 }
                 this.$$("backThirtySec").onclick = function() {
-                    console.log('back 30')
                     var time = that.position - 30;
                     time = time < 0 ? 0 : time;
                     that.position = time;
@@ -175,29 +184,19 @@
             //     this.wxAudio.audioPlay();
             // }
         },
+        beforeDestroy() {
+            this.my_media.release();
+        },
         mounted() { //h5实现的方式
             this.params = this.$route.query;
-            // console.log(this.params);
             var that = this;
             //初始化音频插件
             this.$nextTick(function() {
-                that.receivedEvent(that.params.musicurl||"https://huiai.sleepeazz.com/vod/QinanSleepTraining_01.mp3");
+                that.receivedEvent(that.params.musicurl || "https://huiai.sleepeazz.com/vod/QinanSleepTraining_01.mp3");
             })
             document.addEventListener('deviceready', function() {
-                that.receivedEvent(that.params.musicurl||"https://huiai.sleepeazz.com/vod/QinanSleepTraining_01.mp3")
+                that.receivedEvent(that.params.musicurl || "https://huiai.sleepeazz.com/vod/QinanSleepTraining_01.mp3")
             }, false);
-            // this.wxAudio = new Wxaudio({
-            //     ele: '#textaudio1',
-            //     title: 'Jar Of Love',
-            //     disc: 'Break Me Up',
-            //     src: that.params.musicurl,
-            //     width: '320px'
-            // });
-            // this.play();
-            // this.audio = this.wxAudio.wxAudio;
-            // this.audio.onended = function() {
-            //     that.playing = true;
-            // }
         }
     }
 </script>
@@ -207,6 +206,21 @@
         width: 16rem;
         position: relative;
         margin: auto;
+        .progressBar {
+            position: relative;
+            width: 100%;
+            span {
+                font-size: 0.5rem;
+                font-family: 'PingFangSC-Regular';
+                color: rgba(102, 102, 102, 1);
+            }
+        }
+        .starttime {
+            float: left;
+        }
+        .endtime {
+            float: right;
+        }
         #textaudio1 {
             .wx-audio-content {
                 border: none;
