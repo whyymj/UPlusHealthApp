@@ -6,8 +6,6 @@
             <span class="title">{{item.title}}</span>
             <span class="cont">{{item.content}}</span>
         </div>
-        <!-- <mt-datetime-picker ref="picker" type="time" v-model="pickerValue" @confirm='confirm'>
-                </mt-datetime-picker> -->
         <timepicker :startTime='startTime' :endTime='endTime'></timepicker>
     </div>
 </template>

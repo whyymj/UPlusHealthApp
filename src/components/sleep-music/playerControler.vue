@@ -41,7 +41,7 @@
                     s = 0;
                 h = Math.floor(this.position / 3600) > 9 ? Math.floor(this.position / 3600) : ('0' + Math.floor(this.position / 3600));
                 m = Math.floor(this.position % 3600 / 60) > 9 ? Math.floor(this.position % 3600 / 60) : ('0' + Math.floor(this.position % 3600 / 60));
-                s = (this.position % 3600 % 60 > 9) ? (this.position % 3600 % 60) : ('0' + this.position % 3600 % 60);
+                s = Math.round((this.position % 3600 % 60 > 9) ? (this.position % 3600 % 60) : ('0' + this.position % 3600 % 60));
                 str = '' + ((h == '00') ? '' : (h + ':')) + m + ':' + s
                 return str;
             },
@@ -108,7 +108,7 @@
                                 // success callback
                                 function(position) {
                                     if (position > -1) {
-                                        that.position = position;
+                                        that.position = Math.round(position);
                                     }
                                 },
                                 // error callback
@@ -128,7 +128,7 @@
                         if (counter > 2000) {
                             clearInterval(that.timerDur);
                         }
-                        that.duration = that.my_media.getDuration();
+                        that.duration = Math.round(that.my_media.getDuration());
                         if (that.duration > 0) {
                             clearInterval(that.timerDur);
                         }

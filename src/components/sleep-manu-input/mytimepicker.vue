@@ -101,6 +101,8 @@
                 popupVisible: false,
                 startHour: '',
                 startMin: '',
+                endHour: '',
+                endMin: '',
                 hourArr: [],
                 area: [], //时间区间
                 slots1: [{

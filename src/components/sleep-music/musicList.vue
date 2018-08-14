@@ -5,7 +5,7 @@
                 <!-- <img src="/static/sleepMusicList/img1.png" alt="" class="tab" v-if='playindex==index'> -->
                 <span class="tab">{{index+1}}</span>
             </div>
-            <div class="content">
+            <div class="content" @click='play(index,item)'>
                 <div class="title">{{item.name}}</div>
                 <div class="time">耗时约{{musictime[index]}}分钟</div>
                 <div class="level">{{level(item.level)}}</div>
