@@ -1,11 +1,11 @@
 <template>
 	<div class="uploadimg">
-		<img @click="upload()" :src="imgUrl" alt="" class="head_img blackImg" v-bind:style="{'display':imgUrl=='' ? 'none':'block'}">
+		<img @click="upload()" :src="imgUrl" alt="" class="head_img blackImg" v-bind:style="{'display':imgUrl? 'block':'none'}">
 		<div>
-			<p @click="upload()" class="imgText" v-bind:style="{'display':imgUrl=='' ? 'block':'none'}">点击上传头像</p>
+			<p @click="upload()" class="imgText" v-bind:style="{'display':imgUrl? 'none':'block'}">点击上传头像</p>
 		</div>
 		<input ref="upload" accept="image/gif,image/jpeg,image/jpg,image/png" @change="show()" style="display:none;position:absolute;" type="file" name="" value="点击修改头像">
-		<button @click="uploadImg" class="imgText saveImg" v-bind:style="{'display':imgUrl=='' ? 'none':'block'}">确认</button>
+		<button @click="uploadImg" class="imgText saveImg" v-bind:style="{'display':imgUrl? 'block':'none'}">确认</button>
 	</div>
 </template>
 
@@ -30,8 +30,9 @@
 			async getUserInfo() {
 				try {
 					var that = this;
+					var result = null
 				//获取个人的信息
-				if(location.search.slice(6)==0){
+				if(!that.memberId){
 					 result=await axios.post('/api/user/info', {
 					user_id:''
 					})
@@ -40,7 +41,7 @@
 					member_id:that.memberId
 					})
 				}
-					
+					console.log(result)
 					this.allData = result.data.data
 					this.imgUrl = result.data.data.head_pic
 				} catch(err) {

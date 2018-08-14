@@ -32,6 +32,8 @@ export default {
 			headPic:null,//头像
 			disease:null,//慢病
 			allergy:null,//过敏
+			userdisease:'未设置',//选择的慢病
+			userallergy:"未设置",//选择的过敏
 		}
 	},
 	mounted() {
@@ -39,6 +41,27 @@ export default {
 	},
 
 	methods: {
+		//慢病 过敏截取
+		sliceStr(data){
+			let str =""
+			let firstIndex = data.indexOf(",")
+			if(firstIndex==-1&&!data){
+				str = '未设置'
+			}else{
+				let secondIndex = data.indexOf(",",firstIndex+1)
+				if(secondIndex==-1){
+					str = data
+				}else{
+					let thirdIndex = data.indexOf(",",secondIndex)
+					if(thirdIndex==-1){
+						str = data
+					}else{
+						str = data.substring(0,secondIndex) + "等"
+					}
+				}
+			}	
+			return str
+		},
 		showActionSheet: function() {
 			// 打开action sheet
 			this.sheetVisible = true;
@@ -228,6 +251,8 @@ export default {
 					this.headPic = data.head_pic
 					this.diseas=data.diseas//慢病
 					this.allergy=data.allergy//过敏
+					this.userdisease=this.sliceStr(data.diseas)
+					this.userallergy=this.sliceStr(data.userallergy)
 				}
 			} catch(err) {
 				console.log(err)
