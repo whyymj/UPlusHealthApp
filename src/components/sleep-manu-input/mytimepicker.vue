@@ -141,6 +141,8 @@
             }
             this.startHour = this.startTime[0].split(':')[0] * 1 || 0;
             this.startMin = this.startTime[0].split(':')[1] * 1 || 0;
+            this.endHour = this.endTime[0].split(':')[0] * 1;
+            this.endMin = this.endTime[0].split(':')[1] * 1;
             arr = [];
             var curTime = this.area[0][0];
             for (var i = curTime; i < this.area[0][1]; i++) {
@@ -169,6 +171,7 @@
             }];
             this.slots1 = slots1;
             this.slots2 = slots2;
+            console.log(this.slots1, this.slots2, this.area);
             bus.$on('toggle', function() {
                 that.popupVisible = !that.popupVisible;
             })

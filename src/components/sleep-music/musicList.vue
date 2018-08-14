@@ -10,7 +10,7 @@
                 <div class="time">耗时约{{musictime[index]}}分钟</div>
                 <div class="level">{{level(item.level)}}</div>
             </div>
-            <audio :src="item.musicurl" :ref='"audio"+index' @canplay='canplay(index)'></audio>
+            <!-- <audio :src="item.musicurl" :ref='"audio"+index' @canplay='canplay(index)'></audio> -->
         </div>
     </div>
 </template>
