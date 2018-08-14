@@ -137,6 +137,7 @@
                 this.$$("playSleepMusic").onclick = function() {
                     that.playing = !that.playing;
                     playAudio();
+                    getDuration();
                 }
                 this.$$("pauseSleepMusic").onclick = function() {
                     pauseAudio();
@@ -154,6 +155,10 @@
                     that.position = time;
                     that.my_media.seekTo(time * 1000);
                 }
+                that.playing = !that.playing;
+                playAudio();
+                getDuration();
+                getCurrent();
             },
             // play() {
             //     this.wxAudio.audioPlay();
