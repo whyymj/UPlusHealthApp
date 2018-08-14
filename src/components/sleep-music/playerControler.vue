@@ -149,13 +149,14 @@
                     that.position = time;
                     that.my_media.seekTo(time * 1000);
                 }
+
                 this.$$("backThirtySec").onclick = function() {
                     var time = that.position - 30;
-                    time = time < 0 ? 0 : time;
+                    time = time < 0 ? 0.001 : time;
                     that.position = time;
                     that.my_media.seekTo(time * 1000);
+                    
                 }
-                that.playing = !that.playing;
                 playAudio();
                 getDuration();
                 getCurrent();
@@ -190,6 +191,7 @@
             // }
         },
         beforeDestroy() {
+            this.my_media.stop();
             this.my_media.release();
         },
         mounted() { //h5实现的方式

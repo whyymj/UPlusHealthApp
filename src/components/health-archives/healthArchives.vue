@@ -78,7 +78,6 @@
         watch: {
             healthProResult() {
                 this.showdata = _.chunk(this.healthProResult, 3);
-                console.log('獲取的數據》》', this.showdata);
             }
         },
         data() {
@@ -456,6 +455,9 @@
                     result.data.data.member_id = '';
                     this.myinfo = [result.data.data];
                     if (result.data.code === 'C0000') {
+                        result.data.data.relation_name = '我';
+                        result.data.data.member_id = '';
+                        this.myinfo = [result.data.data];
                         this.initList();
                         // this.$refs.footer.style.display = 'block'
                         if (result.data.data.sex === 'male') {
@@ -503,7 +505,11 @@
                     console.log('memberlist>>>', result);
                     if (result.data.code === 'C0000') {
                         this.createdList = result.data.data[0];
-                        this.memberlist = this.myinfo.concat(this.createdList);
+                        this.memberlist = this.myinfo.concat(this.createdList.map(function(item) {
+                            var newitem = item;
+                            newitem.relation_name = item.nick_name;
+                            return newitem;
+                        }));
                         console.log('memberlist>>>???', this.memberlist);
                         if (window._member_id === '') {
                             this.pageindex = this.initnum = 0;
@@ -523,72 +529,73 @@
             async initList() { //获取成员的健康指标列表
                 var that = this;
                 try {
-                    this.healthProResult = [];
+                    var alllist = [{ //请求到的健康参数
+                            "value": "",
+                            "moudle_name": "血压",
+                            "moudle_name_en": "bloodpressure",
+                            "level": "0"
+                        },
+                        {
+                            "value": "",
+                            "moudle_name": "睡眠",
+                            "moudle_name_en": "sleep",
+                            "level": "0"
+                        },
+                        {
+                            "value": "",
+                            "moudle_name": "体温",
+                            "moudle_name_en": "temperature",
+                            "level": "0"
+                        },
+                        {
+                            "value": "",
+                            "moudle_name": "血氧",
+                            "moudle_name_en": "basal_metabolic",
+                            "level": "0"
+                        },
+                        {
+                            "moudle_name_en": "",
+                            "value": "", //value值为"0"时表示此健康模块暂无健康数据
+                            "moudle_name": "心电",
+                            "moudle_name_en": "",
+                            "level": "0"
+                        },
+                        {
+                            "moudle_name_en": "",
+                            "value": "", //value值为"0"时表示此健康模块暂无健康数据
+                            "moudle_name": "体重",
+                            "moudle_name_en": "",
+                            "level": "0"
+                        },
+                        {
+                            "moudle_name_en": "",
+                            "value": "", //value值为"0"时表示此健康模块暂无健康数据
+                            "moudle_name": "血糖",
+                            "moudle_name_en": "",
+                            "level": "0"
+                        }
+                    ];
+                    this.healthProResult = alllist;
                     const result = await this.$axios.get(`/api/health/result?member_id=${window._member_id}`)
+                    var tmp;
                     if (result.data.code === 'C0000') {
-                        this.healthProResult = result.data.data.healthProResult;
+                        tmp = result.data.data.healthProResult;
                         var hasSleep = false;
-                        var len = this.healthProResult.length;
-                        var alllist = [{ //请求到的健康参数
-                                "value": "",
-                                "moudle_name": "血压",
-                                "moudle_name_en": "bloodpressure",
-                                "level": "0"
-                            },
-                            {
-                                "value": "",
-                                "moudle_name": "睡眠",
-                                "moudle_name_en": "sleep",
-                                "level": "0"
-                            },
-                            {
-                                "value": "",
-                                "moudle_name": "体温",
-                                "moudle_name_en": "temperature",
-                                "level": "0"
-                            },
-                            {
-                                "value": "",
-                                "moudle_name": "血氧",
-                                "moudle_name_en": "basal_metabolic",
-                                "level": "0"
-                            },
-                            {
-                                "moudle_name_en": "",
-                                "value": "", //value值为"0"时表示此健康模块暂无健康数据
-                                "moudle_name": "心电",
-                                "moudle_name_en": "",
-                                "level": "0"
-                            },
-                            {
-                                "moudle_name_en": "",
-                                "value": "", //value值为"0"时表示此健康模块暂无健康数据
-                                "moudle_name": "体重",
-                                "moudle_name_en": "",
-                                "level": "0"
-                            },
-                            {
-                                "moudle_name_en": "",
-                                "value": "", //value值为"0"时表示此健康模块暂无健康数据
-                                "moudle_name": "血糖",
-                                "moudle_name_en": "",
-                                "level": "0"
-                            }
-                        ];
+                        var len = tmp.length;
                         var need = [];
                         alllist.map(function(item) {
                             hasSleep = false;
                             for (var i = 0; i < len; i++) {
-                                if (that.healthProResult[i].moudle_name == item.moudle_name) {
+                                if (tmp[i].moudle_name == item.moudle_name) {
                                     hasSleep = true;
                                     break;
                                 }
                             }
-                            if (!hasSleep) { //判斷有没有睡眠
+                            if (!hasSleep) { //判斷已有的
                                 need.push(item);
                             }
                         })
-                        that.healthProResult=that.healthProResult.concat(need);
+                        that.healthProResult = tmp.concat(need);
                         // 新用户引导页
                         if (!window.localStorage.getItem('fEntry')) {
                             this.isModel = true;
