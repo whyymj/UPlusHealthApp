@@ -145,7 +145,7 @@
 				disease: null, //慢病
 				allergy: null, //过敏
 				isDeleteShow: false,
-				memberId: null,
+				memberId: '',
 				userdisease:'未设置',//选择的慢病
 				userallergy:"未设置",//选择的过敏
 			}
@@ -161,22 +161,26 @@
 			//慢病 过敏截取
 		sliceStr(data){
 			let str =""
-			let firstIndex = data.indexOf(",")
-			if(firstIndex==-1&&!data){
-				str = '未设置'
-			}else{
-				let secondIndex = data.indexOf(",",firstIndex+1)
-				if(secondIndex==-1){
-					str = data
+			if(data){
+				let firstIndex = data.indexOf(",")
+				if(firstIndex==-1&&!data){
+					str = '未设置'
 				}else{
-					let thirdIndex = data.indexOf(",",secondIndex)
-					if(thirdIndex==-1){
+					let secondIndex = data.indexOf(",",firstIndex+1)
+					if(secondIndex==-1){
 						str = data
 					}else{
-						str = data.substring(0,secondIndex) + "等"
+						let thirdIndex = data.indexOf(",",secondIndex)
+						if(thirdIndex==-1){
+							str = data
+						}else{
+							str = data.substring(0,secondIndex) + "等"
+						}
 					}
 				}
-			}	
+			}else{
+				str = "未设置"
+			}
 			return str
 		},
 			//删除家人
@@ -391,8 +395,8 @@
 						this.headPic = data.head_pic
 						this.diseas = data.diseas //慢病
 						this.allergy = data.allergy //过敏
-						this.userdisease=this.sliceStr(data.diseas)
-						this.userallergy=this.sliceStr(data.userallergy)
+						this.userdisease=this.sliceStr(data.disease)
+						this.userallergy=this.sliceStr(data.allergy)
 					}
 				} catch(err) {
 					console.log(err)
@@ -401,12 +405,13 @@
 			//保存
 			save() {
 				let saveData = {
-					height: this.heightValue,
-					weight: this.weightValue,
+					member_id:this.memberId,
+					height: this.heightValue.substring(0,this.heightValue.length-2),
+					weight: this.weightValue.substring(0,this.weightValue.length-2),
 					sex: this.sex,
 					birthday: this.birthday,
 					nick_name: this.nickName,
-					target_weight: this.targetWeightValue,
+					target_weight: this.targetWeightValue.substring(0,this.targetWeightValue.length-2),
 					diseas: this.diseas, //慢病
 					allergy: this.allergy, //过敏
 				}

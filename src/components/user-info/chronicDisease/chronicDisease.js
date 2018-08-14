@@ -10,7 +10,7 @@ export default {
 			//    list: datas.allergicData, allergicValue: false, //是否有过敏史
 			editText: '保存',
 			chronicHistory: true,
-			diseas: '',
+			disease: '',
 			memberId:null,
 			allData: {},
 			chromiclist: [{
@@ -52,8 +52,8 @@ export default {
 					dataSelected.push(data.tags[ii].name)
 				}
 			}
-			this.diseas = dataSelected.join(",")
-			this.allData.diseas = this.diseas
+			this.disease = dataSelected.join(",")
+			this.allData.disease = this.disease
 		},
 		async getUserInfo() {
 			try {
@@ -79,7 +79,7 @@ export default {
 				
 				let result=null
 				//获取个人的信息
-				if(location.search.slice(6)==0){
+				if(!this.memberId){
 					 result=await axios.post('/api/user/info', {
 					user_id:''
 					})
@@ -89,16 +89,15 @@ export default {
 					})
 				}
 				this.allData=result.data.data
-				debugger
-				var diseasdata = result.data.data.diseas;
+				var diseasedata = result.data.data.disease;
 				if(result.data.code === 'C0000') {
-					this.diseas = diseasdata //慢病
+					this.disease = diseasedata //慢病
 					var newchromiclist = this.chromiclist
-					if(diseasdata) {
-						diseasdata = diseasdata.split(",")
+					if(diseasedata) {
+						diseasedata = diseasedata.split(",")
 						for(let i = 0; i < newchromiclist.length; i++) {
-							for(let j = 0; j < diseasdata.length; j++) {
-								if(newchromiclist[i].name == diseasdata[j]) {
+							for(let j = 0; j < diseasedata.length; j++) {
+								if(newchromiclist[i].name == diseasedata[j]) {
 									newchromiclist[i].selected = true
 								}
 							}
@@ -112,8 +111,10 @@ export default {
 		},
 		save() {
 			let saveData = this.allData
+			console.log(this.member)
+			console.log(saveData)
 			//保存个人
-			if(location.search.slice(6)==0){
+			if(!this.memberId){
 				axios.post('/api/user/update', saveData)
 				.then(function(res) {
 					console.log(res);

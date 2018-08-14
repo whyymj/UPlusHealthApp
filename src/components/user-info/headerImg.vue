@@ -16,7 +16,7 @@
 			return {
 				imgUrl: "",
 				allData: {},
-				memberId:null
+				memberId:''
 			}
 		},
 		created() {
@@ -83,9 +83,15 @@
 			},
 			uploadImg() {
 				alert(this.imgUrl)
-				let saveData = this.allData
-				saveData.head_pic = this.imgUrl
-				axios.post('/api/user/update', saveData)
+//				let saveData = this.allData
+//				saveData.head_pic = this.imgUrl
+//				let saveData = this.imgUrl
+				let saveData={
+					member_id:this.memberId,
+					imgFile:this.imgUrl
+				}
+				console.log(saveData)
+				axios.post('/api/uploadPic', saveData)
 				.then(function(res) {
 					console.log(res);
 				})

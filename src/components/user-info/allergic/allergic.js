@@ -76,7 +76,7 @@ export default {
 
 				let result = null
 				//获取个人的信息
-				if(location.search.slice(6) == 0) {
+				if(!this.memberId) {
 					result = await axios.post('/api/user/info', {
 						user_id: ''
 					})
@@ -110,7 +110,7 @@ export default {
 		save() {
 			let saveData = this.allData
 			//保存个人
-			if(location.search.slice(6) == 0) {
+			if(!this.memberId) {
 				axios.post('/api/user/update', saveData)
 					.then(function(res) {
 						console.log(res);
