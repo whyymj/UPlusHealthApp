@@ -14,9 +14,10 @@
 	export default {
 		data() {
 			return {
-				imgUrl: "",
+				imgUrl:null,
 				allData: {},
-				memberId:''
+				memberId:'',
+				upimgUrl:null,
 			}
 		},
 		created() {
@@ -70,6 +71,11 @@
 			},
 			show() {
 				let Img = this.$refs.upload.files[0];
+				let formData = new FormData();
+				formData.append('file',Img);
+				this.upimgUrl = formData
+				debugger 
+//				base64上传图片
 				let reader = new FileReader();
 				let self = this;
 				reader.onload = function(e) {
@@ -79,8 +85,7 @@
 					self.imgUrl = url;
 				}
 				reader.readAsDataURL(Img);
-				
-			},
+		},
 			uploadImg() {
 				alert(this.imgUrl)
 //				let saveData = this.allData
@@ -88,7 +93,7 @@
 //				let saveData = this.imgUrl
 				let saveData={
 					member_id:this.memberId,
-					imgFile:this.imgUrl
+					imgFile:this.upimgUrl
 				}
 				console.log(saveData)
 				axios.post('/api/uploadPic', saveData)
