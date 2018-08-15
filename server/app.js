@@ -12,10 +12,10 @@ const oxygen = require('./oxygen/index')
 const sugar = require('./sugar/index')
 const temperature = require('./temperature/index')
 const news = require('./news/index')
-const sleep =require('./sleep/index')
+const sleep = require('./sleep/index')
 const app = express()
 
-const PORT = 8088 || process.env.PORT
+const PORT = 3001 || process.env.PORT
 
 // parse application/json
 app.use(bodyParser.json({
@@ -68,7 +68,7 @@ app.use(sugar)
 app.use(temperature)
 // 资讯业务
 app.use(news)
-//睡眠业务
+// 睡眠业务
 app.use(sleep)
 
 app.use(express.static(path.resolve(__dirname, '../dist')))
