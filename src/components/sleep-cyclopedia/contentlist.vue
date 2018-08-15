@@ -1,9 +1,11 @@
 <template>
     <div class='contentlist'>
         <ul>
-            <li v-for='(item,index) in list' :key='index' @click='turnTo(item.link)'>
-                <img :src="item.img" alt="">
-                <span>{{item.type}}</span>
+            <li v-for='(item,index) in list' :key='index' @click='turnTo(item)'>
+                <img :src="item.img" alt="" class='bgimg'>
+                <h6>{{item.title}}</h6>
+                <span>{{item.type||'图文'}}</span>
+                <img :src="turnimg(item.type)"  alt="" class='iconimg'>
             </li>
         </ul>
     </div>
@@ -13,8 +15,25 @@
     export default {
         props: ['list'],
         methods: {
+            turnimg(item) {
+                
+                if (item.indexOf('漫画') != -1) {
+                    return '/static/sleep_cyclopedia/news.png'
+                } else if (item.indexOf('音频') != -1) {
+                    return '/static/sleep_cyclopedia/music.png'
+                } else if (item.indexOf('视频') != -1) {
+                    return '/static/sleep_cyclopedia/audio.png'
+                }else{
+                     return '/static/sleep_cyclopedia/news.png'
+                }
+            },
             turnTo(url) {
-                window.location.href = url;
+                console.log('url>>>',url);
+                this.$router.push({
+                    path:'/getSleepWiki',
+                    query:url
+                })
+                // window.location.href = url;
             }
         }
     }
@@ -25,6 +44,20 @@
         width: 100%;
         overflow: auto;
         margin-top: 0.5rem;
+        h6 {
+            position: absolute;
+            color: #fff;
+            font-size: 0.8rem;
+            font-weight: 500;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            height: 1.5rem;
+            line-height: 1.5rem;
+            padding: 0 1rem;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5)
+        }
         ul {
             width: 17rem;
             margin: auto;
@@ -33,9 +66,17 @@
                 height: 10rem;
                 position: relative;
                 margin-bottom: 0.5rem;
-                img {
+                .bgimg {
                     width: 100%;
                     height: 100%;
+                }
+              
+                .iconimg {
+                    width: 2.5rem;
+                    height: 2.5rem;
+                    position: absolute;
+                    bottom: 0;
+                    right: 0.5rem;
                 }
                 span {
                     position: absolute;

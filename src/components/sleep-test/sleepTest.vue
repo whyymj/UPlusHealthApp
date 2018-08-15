@@ -1,8 +1,8 @@
 <template>
-    <div>
+    <div class='sleepTest'>
         <h1>睡眠状况测试-匹兹堡睡眠质量指数<img src="/static/sleepMusicList/img6.png" alt=""></h1>
         <list :list='questions' @turnQestion='turnQestion'></list>
-        <div class="submit" v-if='canSubmit' @click='submitResult'>提交测试</div>
+        <div class="submit" v-show='canSubmit' @click='submitResult'>提交测试</div>
     </div>
 </template>
 
@@ -12,10 +12,14 @@
     import {
         Toast
     } from 'mint-ui';
+    import {
+        Loading
+    } from 'element-ui';
     export default {
         name: 'sleepTest',
         components: {
-            list
+            list,
+            Loading
         },
         methods: {
             submitResult() {
@@ -23,7 +27,7 @@
             },
             turnQestion(index) {
                 this.startnum = index;
-                if (index == this.questions.length) {
+                if (index >= this.questions.length - 1) {
                     this.canSubmit = true;
                 } else {
                     this.canSubmit = false;
@@ -32,63 +36,79 @@
         },
         data() {
             return {
+                loadingmodal: '',
                 canSubmit: false,
-                questions: [{
-                    title: '题1',
-                    options: [1, 2, 3, 4, 5],
-                    default: ''
-                }, {
-                    title: '题2',
-                    options: [1, 2, 3, 4, 5],
-                    default: 0
-                }, {
-                    title: '题3',
-                    options: [1, 2, 3, 4, 5],
-                    default: 1
-                }, {
-                    title: '题4',
-                    options: [1, 2, 3, 4, 5],
-                    default: 2
-                }, {
-                    title: '题5',
-                    options: [1, 2, 3, 4, 5],
-                    default: 3
-                }, {
-                    title: '题6',
-                    options: [1, 2, 3, 4, 5],
-                    default: ''
-                }, {
-                    title: '题7',
-                    options: [1, 2, 3, 4, 5],
-                    default: ''
-                }, {
-                    title: '题8',
-                    options: [1, 2, 3, 4, 5],
-                    default: ''
-                }, {
-                    title: '题9',
-                    options: [1, 2, 3, 4, 5],
-                    default: ''
-                }, {
-                    title: '题10',
-                    options: [1, 2, 3, 4, 5, 6, 7],
-                    default: ''
-                }, ]
+                questions: []
             }
         },
         mounted() {
-            if (true) { //中途退出
-                let instance = Toast({
-                    message: '正从上次退出位置继续答题',
-                    position: 'bottom',
-                    duration: 2000
-                });
-            }
+            this.loadingmodal = Loading.service({
+                fullscreen: true,
+                background: 'rgba(0, 0, 0, 0.7)',
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+            });
+            var params = this.$route.query;
+            var that = this;
+            this.$axios.post('/api/setUserTemplate', {
+                templateId: params.templateId,
+                tuId: params.tuId
+            }).then(function(res) {
+                that.loadingmodal.close();
+                if (params.status === 0 || params.status === '0') { //中途退出
+                    let instance = Toast({
+                        message: '正从上次退出位置继续答题',
+                        position: 'bottom',
+                        duration: 2000
+                    });
+                }
+                if (res.data.code === 'C0000') {
+                    that.questions = res.data.data.templateLineList.map(function(item, index) {
+                        return {
+                            title: index + 1 + '. ' + item.lineTitle,
+                            type: item.lineType,
+                            "templateId": item.templateId,
+                            options: item.selectItemList,
+                            "lineId": item.lineId
+                        }
+                    });
+                }
+            }).catch(function(res) {
+                that.loadingmodal.close();
+                that.$axios.get('/static/testData/setUserTemplate.json').then(function(res) {
+                    if (params.status === 0 || params.status === '0') { //中途退出
+                        let instance = Toast({
+                            message: '正从上次退出位置继续答题',
+                            position: 'bottom',
+                            duration: 2000
+                        });
+                    }
+                    if (res.data.code === 'C0000') {
+                        that.questions = res.data.data.templateLineList.map(function(item, index) {
+                            return {
+                                title: index + 1 + '. ' + item.lineTitle,
+                                type: item.lineType,
+                                "templateId": item.templateId,
+                                options: item.selectItemList,
+                                "lineId": item.lineId
+                            }
+                        });
+                    }
+                })
+            })
         }
     }
 </script>
 
 <style lang='scss' scoped>
+    .sleepTest {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
     h1 {
         font-size: 0.75rem;
         font-family: 'PingFangSC-Regular';
@@ -109,6 +129,7 @@
     }
     .submit {
         position: fixed;
+        z-index: 1000;
         bottom: 0;
         left: 0;
         width: 100%;

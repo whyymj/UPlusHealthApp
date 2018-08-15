@@ -1,15 +1,16 @@
 <template>
     <div class='musiclist'>
-        <div class="row" v-for='(item,index) in musiclist' :key='index' @click='play(index)'>
+        <div class="row" v-for='(item,index) in musiclist' :key='index' @click='play(index,item)'>
             <div class="img">
                 <!-- <img src="/static/sleepMusicList/img1.png" alt="" class="tab" v-if='playindex==index'> -->
                 <span class="tab">{{index+1}}</span>
             </div>
-            <div class="content">
+            <div class="content" @click='play(index,item)'>
                 <div class="title">{{item.name}}</div>
-                <div class="time">耗时约{{item.time}}分钟</div>
+                <div class="time">耗时约{{musictime[index]}}分钟</div>
                 <div class="level">{{level(item.level)}}</div>
             </div>
+            <!-- <audio :src="item.musicurl" :ref='"audio"+index' @canplay='canplay(index)'></audio> -->
         </div>
     </div>
 </template>
@@ -18,28 +19,51 @@
     import bus from './evetbus.js';
     export default {
         props: ['musiclist'],
+        watch: {
+            musiclist() {
+                if (this.musiclist && this.musiclist.length) {
+                    this.musictime = this.musiclist.map(function() {
+                        return 0;
+                    })
+                }
+            }
+        },
+        mounted() {
+            if (this.musiclist && this.musiclist.length) {
+                this.musictime = this.musiclist.map(function() {
+                    return 0;
+                })
+            }
+        },
         methods: {
+            canplay(index) {
+                if (this.$refs['audio' + index][0]) {
+                    this.musictime.splice(index, 1, Math.round(this.$refs['audio' + index][0].duration / 60))
+                }
+            },
             level(index) {
                 if (index == 0) {
                     return '初级'
-                } else {
+                } else if (index == 1) {
                     return '中级'
+                } else {
+                    return '高级'
                 }
             },
-            play(index) {
+            play(index, item) {
                 this.playindex = index;
                 bus.$emit('playing', this.musiclist[index]);
                 this.$router.push({
-                    path:'/sleepMusicPlayerPanel',
-                    query:{
-                        index:index
-                    }
+                    path: '/sleepMusicPlayerPanel',
+                    query: item
                 });
             }
         },
         data() {
             return {
+                showaudio: false,
                 playindex: -1,
+                musictime: []
             }
         },
     }

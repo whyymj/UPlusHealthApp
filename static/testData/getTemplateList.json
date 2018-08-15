@@ -1,0 +1,44 @@
+{
+    "status": "1",
+    "code": "C0000",
+    "msg": "成功",
+    "openId": "c190706c3013460daee2c75983006cec",
+    "data": [
+        {
+            "templateId": "DBAS",
+            "templateTitle": "睡眠认知测试",
+            "templateSubTitle": "睡眠信念和态度问卷",
+            "templateTag": "睡眠评估",
+            "tuId": null,
+            "status": null,
+            "createTime": null
+        },
+        {
+            "templateId": "FIRST9",
+            "templateTitle": "外界影响测试",
+            "templateSubTitle": "福特应激失眠反应测试",
+            "templateTag": "睡眠评估",
+            "tuId": null,
+            "status": null,
+            "createTime": null
+        },
+        {
+            "templateId": "ISI",
+            "templateTitle": "严重程度测试",
+            "templateSubTitle": "失眠严重指数量表",
+            "templateTag": "睡眠评估",
+            "tuId": "1532941639005043",
+            "status": "0",
+            "createTime": "2018-08-01 15:45"
+        },
+        {
+            "templateId": "MEQ-5",
+            "templateTitle": "睡眠习惯测试",
+            "templateSubTitle": "清晨型与夜晚型量表-5项",
+            "templateTag": "睡眠评估",
+            "tuId": null,
+            "status": 1,
+            "createTime": "2018-08-01 15:35"
+        }
+    ]
+}

@@ -70,7 +70,7 @@
             </div>
         </div>
         <div class="bottom">
-            <div class="bottom_text">完成</div>
+            <input type='button' :class="{ 'bottom_text':true, 'bottom_text_bg': !isSave}" @click="save" v-bind:disabled="isSave" value="完成">
         </div>
         <!-- 生日选择 -->
         <mt-popup v-model="birthday_picker" position="bottom">
@@ -123,10 +123,16 @@
 </template>
 <script>
     import tagslist from "./tagsList";
+    import axios from "axios"
+    import myloading from '../../global/Loading.vue';
+    import {
+        Toast
+    } from 'mint-ui';
     export default {
         components: {
             tagslist
         },
+        mixins: [myloading],
         data() {
             return {
                 weight_picker: false,
@@ -174,75 +180,50 @@
                 chromicListResult: [],
                 allergyListResult: [],
                 tempSex: '男',
-                chromiclist: [{
-                        name: "心脏病",
-                        selected: false
-                    },
-                    {
-                        name: "鼻炎",
-                        selected: false
-                    },
-                    {
-                        name: "痛风",
-                        selected: false
-                    },
-                    {
-                        name: "糖尿病",
-                        selected: true
-                    },
-                    {
-                        name: "关节炎",
-                        selected: false
-                    },
-                    {
-                        name: "高血压",
-                        selected: true
-                    },
-                    {
-                        name: "偏头痛",
-                        selected: false
-                    },
-                    {
-                        name: "低血糖",
-                        selected: false
-                    }
-                ],
-                allergylist: [{
-                        name: "水果",
-                        selected: false
-                    },
-                    {
-                        name: "海鲜",
-                        selected: false
-                    },
-                    {
-                        name: "奶制品",
-                        selected: false
-                    },
-                    {
-                        name: "糖尿病",
-                        selected: false
-                    },
-                    {
-                        name: "坚果类",
-                        selected: false
-                    },
-                    {
-                        name: "豆类",
-                        selected: true
-                    },
-                    {
-                        name: "芝麻",
-                        selected: false
-                    },
-                    {
-                        name: "葵花籽",
-                        selected: false
-                    }
-                ]
+                chromiclist: [], //慢病标签
+                allergylist: [], //过敏标签
+                toast: '',
+                isSave: true, //保存标签                
             };
         },
+        watch: {
+            input_nick_name() {
+                console.log(this.input_nick_name)
+                if (this.birthday && this.tall && this.weight && this.sex && this.input_nick_name) {
+                    this.isSave = false
+                } else {
+                    this.isSave = true
+                }
+            },
+            birthday(value) {
+                if (this.birthday && this.tall && this.weight && this.sex && this.input_nick_name) {
+                    this.isSave = false
+                } else {
+                    this.isSave = true
+                }
+            },
+            tall(value) {
+                if (this.birthday && this.tall && this.weight && this.sex && this.input_nick_name) {
+                    this.isSave = false
+                } else {
+                    this.isSave = true
+                }
+            },
+            weight(value) {
+                if (this.birthday && this.tall && this.weight && this.sex && this.input_nick_name) {
+                    this.isSave = false
+                } else {
+                    this.isSave = true
+                }
+            },
+            sex(value) {
+                if (this.birthday && this.tall && this.weight && this.sex && this.input_nick_name) {
+                    this.isSave = false
+                }
+            }
+        },
         mounted() {
+            var that = this;
             var years = [];
             var months = [];
             var tall = [];
@@ -303,6 +284,74 @@
             this.weight = '';
             this.birthday = ''
             //     console.log(thisYear, thisMonth);
+            this.$axios.post('/api/getDiseaseList').then(function(res) {
+                that.loadingmodal.close();
+                if (res.data.code == 'C0000') {
+                    that.chromiclist = res.data.data.map(function(item) {
+                        return {
+                            name: item.dict_name,
+                            selected: false,
+                            "dict_id": item.dict_id,
+                            "dict_name": item.dict_name,
+                            "dict_name_en": item.dict_name_en,
+                            "dict_type_id": item.dict_type_id,
+                            "status": item.status,
+                            "note": item.note
+                        }
+                    })
+                }
+            }).catch(function(res) { //慢病标签
+                that.$axios.get('/static/testData/getDiseaseList.json').then(function(res) {
+                    that.loadingmodal.close();
+                    if (res.data.code == 'C0000') {
+                        that.chromiclist = res.data.data.map(function(item) {
+                            return {
+                                name: item.dict_name,
+                                selected: false,
+                                "dict_id": item.dict_id,
+                                "dict_name": item.dict_name,
+                                "dict_name_en": item.dict_name_en,
+                                "dict_type_id": item.dict_type_id,
+                                "status": item.status,
+                                "note": item.note
+                            }
+                        })
+                    }
+                })
+            })
+            this.$axios.post('/api/getAllergyList').then(function(res) {
+                that.loadingmodal.close();
+                that.allergylist = res.data.data.map(function(item) {
+                    return {
+                        name: item.dict_name,
+                        selected: false,
+                        "dict_id": item.dict_id,
+                        "dict_name": item.dict_name,
+                        "dict_name_en": item.dict_name_en,
+                        "dict_type_id": item.dict_type_id,
+                        "status": item.status,
+                        "note": item.note
+                    }
+                })
+            }).catch(function(res) { //过敏标签
+                that.$axios.get('/static/testData/getAllergyList.json').then(function(res) {
+                    that.loadingmodal.close();
+                    if (res.data.code == 'C0000') {
+                        that.allergylist = res.data.data.map(function(item) {
+                            return {
+                                name: item.dict_name,
+                                selected: false,
+                                "dict_id": item.dict_id,
+                                "dict_name": item.dict_name,
+                                "dict_name_en": item.dict_name_en,
+                                "dict_type_id": item.dict_type_id,
+                                "status": item.status,
+                                "note": item.note
+                            }
+                        })
+                    }
+                })
+            })
         },
         methods: {
             confirm_sex(sex) {
@@ -400,10 +449,22 @@
                 this.birthdayarr[2] = values[0];
             },
             chooseChromic(data) {
-                console.log(data);
+                var dataSelected = []
+                for (var i = 0; i < data.tags.length; i++) {
+                    if (data.tags[i].selected == true) {
+                        dataSelected.push(data.tags[i].name)
+                    }
+                }
+                this.chromicListResult = dataSelected
             },
             chooseAllergy(data) {
-                console.log(data);
+                var dataSelected1 = []
+                for (var j = 0; j < data.tags.length; j++) {
+                    if (data.tags[j].selected == true) {
+                        dataSelected1.push(data.tags[j].name)
+                    }
+                }
+                this.allergyListResult = dataSelected1
             },
             choose_nick_name() {
                 this.nick_name_pop = !this.nick_name_pop;
@@ -418,9 +479,46 @@
                 //         done();
                 //     })
                 //     .catch(_ => {});
+            },
+            save() {
+                     var that = this;
+                //				    nick_name: this.input_nick_name,
+                let saveData = {
+                    relation: 13, //称呼
+                    height: parseFloat(this.tall),
+                    weight: parseFloat(this.weight),
+                    sex: this.sex == '男' ? "male" : "female",
+                    birthday: this.birthday.replace('年', '-').replace('月', '-').replace('日', ''),
+                    nick_name: this.input_nick_name,
+                    disease: this.chromicListResult[0] ? this.chromicListResult.join(",") : "",
+                    allergy: this.allergyListResult[0] ? this.allergyListResult.join(',') : '',
+                }
+                if (saveData.nick_name && saveData.sex && saveData.birthday && saveData.height && saveData.weight) {
+                    //新增家庭成员
+                    axios.post('/api/member', saveData)
+                        .then(function(res) {
+                            if (res.data && res.data.code == 'C0000') {
+                                this.toast = Toast('保存成功');
+                                setTimeout(() => {
+                                    toast.close();
+                                }, 2000);
+                                that.$router.push({
+                                    path: '/healthArchives'
+                                })
+                            }
+                        })
+                        .catch(function(err) {
+                            console.log(err);
+                        })
+                } else {
+                    this.toast = Toast('请先填写完必填信息');
+                    setTimeout(() => {
+                        toast.close();
+                    }, 2000);
+                }
             }
         }
-    };
+    }
 </script>
  
 <style lang="scss">
@@ -558,7 +656,7 @@
             background: #fff;
             text-align: center;
             padding: 0;
-            height: 2rem;
+            height: 2rem!important;
             line-height: 2rem;
             .el-dialog__headerbtn {
                 top: 0.6rem;

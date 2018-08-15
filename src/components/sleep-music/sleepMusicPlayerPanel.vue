@@ -2,7 +2,6 @@
     <div class='musicPlayer'>
         <img src="/static/musicPlayer/bigImg.jpg" alt="" class='bigImg'>
         <myaudio></myaudio>
-       
     </div>
 </template>
 
@@ -12,8 +11,9 @@
         components: {
             myaudio
         },
-        mounted(){
-            console.log('>>>',this.$route);
+        mounted() {
+            var params = this.$route.query;
+            window.localStorage.wh_fromPage = 'music';
         }
     }
 </script>
@@ -33,6 +33,5 @@
             display: block;
             box-shadow: 0.3rem 0.3rem 2rem #bbb;
         }
-      
     }
 </style>

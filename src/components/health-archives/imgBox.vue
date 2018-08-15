@@ -18,11 +18,105 @@
         methods: {
             toReport() {
                 var that = this;
-                this.$router.push({
-                    path: '/sleepMusicList',
-                    query: that.meta
-                })
-            }
+                this.goPages(this.meta)
+                // this.$router.push({
+                //     path: '/sleepMusicList',
+                //     query: that.meta
+                // })
+            },
+            async goPages(item) {
+                var  that=this;
+                switch (item.moudle_name) {
+                    case '体重':
+                        if (window._member_id === '') { // user
+                            try {
+                                const result = await this.$axios.post('/api/user/info', {
+                                    phone: ''
+                                })
+                                if (result.data.code === 'C0000') {
+                                    if (result.data.data.target_weight === '' || result.data.data.target_weight === 0) { // new user
+                                        this.$router.push({
+                                            path: '/setTargetWeight'
+                                        })
+                                    } else {
+                                        this.$router.push({
+                                            path: '/weight'
+                                        })
+                                    }
+                                }
+                            } catch (err) {
+                                console.log(err)
+                            }
+                        } else { // member
+                            let res = this.createdList.filter(_ => {
+                                return _.member_id === window._member_id
+                            })
+                            if (res[0].is_first_set_tw === 1) { // 未设置目标体重
+                                this.$router.push({
+                                    path: '/setTargetWeight'
+                                })
+                            } else {
+                                this.$router.push({
+                                    path: '/weight'
+                                })
+                            }
+                        }
+                        window._weight_selected_date = ''
+                        break
+                    case 'BMI':
+                    case '体脂率':
+                    case '基础代谢':
+                    case '脂肪重量':
+                    case '内脏脂肪等级':
+                    case '肌肉重量':
+                    case '肌肉率':
+                    case '水份':
+                    case '水含量':
+                    case '蛋白质':
+                    case '骨量':
+                        window._weight_selected_date = ''
+                        this.$router.push({
+                            path: '/weight'
+                        })
+                        break
+                    case '血压':
+                        window._pressure_selected_date = ''
+                        this.$router.push({
+                            path: '/pressure'
+                        })
+                        break
+                    case '血糖':
+                        window._suger_selected_date = ''
+                        this.$router.push({
+                            path: '/bloodSugar'
+                        })
+                        break
+                    case '体温':
+                        window._temperature_selected_date = ''
+                        this.$router.push({
+                            path: '/temperature'
+                        })
+                        break
+                    case '心电':
+                        window._ecg_selected_date = ''
+                        this.$router.push({
+                            path: '/ecg'
+                        })
+                        break
+                    case '血氧':
+                        window._oxygen_selected_date = ''
+                        this.$router.push({
+                            path: '/oxygen'
+                        })
+                        break
+                    case '睡眠':
+                        this.$router.push({
+                            path: '/sleepMusicList',
+                            query: that.meta
+                        })
+                        break
+                }
+            },
         },
         data() {
             return {

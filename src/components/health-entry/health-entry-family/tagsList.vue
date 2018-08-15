@@ -33,7 +33,7 @@
         overflow: hidden;
         .body_241 {
             float: left;
-            margin: 0 1.1rem 1rem 0;
+            margin: 0 0.5rem 1rem 0;
             height: 1.6rem;
             border-radius: 0.8rem;
             border: 0.05rem solid rgba(50, 182, 230, 1);

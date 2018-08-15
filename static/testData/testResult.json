@@ -1,0 +1,30 @@
+{
+    "status": "0",
+    "code": "C0000",
+    "msg": "成功",
+    "openId": "c190706c3013460daee2c75983006cec",
+    "data": {
+          "total": 28,
+          "scoreRangeMin": "0",
+          "scoreSuggest": "您目前没有睡眠的困扰。",
+          "templateTitle": "失眠严重指数量表",
+          "createTime": "2018-07-30 17:07:19",
+          "gradesStr": "2分",
+          "ttuSubList": "",
+          "ttLineAudioSubList": [],
+          "radarData": "",
+          "tuId": "1532941639005043",
+          "scoreNormal": [
+            "0~8：睡眠正常",
+            "8~15：轻度失眠",
+            "15~22：中度失眠",
+            ">=22：重度失眠"
+          ],
+          "finishStatus": 0,
+          "scoreRangeMax": "28",
+          "templateId": "ISI",
+          "grades": 0,
+          "scoreInfo": "睡眠正常"
+    }
+  }
+  

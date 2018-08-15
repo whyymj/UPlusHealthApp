@@ -1,14 +1,8 @@
 <template>
     <div class='enterToTest'>
         <el-tabs v-model="activeName" @tab-click="handleClick">
-            <el-tab-pane label="睡眠评估" name="first">
-                <testlist :testList='sleepList'></testlist>
-            </el-tab-pane>
-            <el-tab-pane label="相关疾病" name="second">
-                <testlist :testList='sickList'></testlist>
-            </el-tab-pane>
-            <el-tab-pane label="精神状况" name="third">
-                <testlist :testList='spiritList'></testlist>
+            <el-tab-pane :label="item" :name="'title'+index" v-for='(item,index) in titlelist' :key='index'>
+                <testlist :testList='showlist'></testlist>
             </el-tab-pane>
         </el-tabs>
     </div>
@@ -16,131 +10,110 @@
 
 <script>
     import testlist from './testList';
+    import {
+        Loading
+    } from 'element-ui';
     export default {
         components: {
-            testlist
+            testlist,
+            Loading
         },
         data() {
             return {
-                activeName: 'first',
-                sleepList: [{
-                    title: '严重程度测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '1',
-                    time: '',
-                    result: '',
-                    status: 0//0未答题，>0答一半，
-                }, {
-                    title: '睡眠状况测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '2',
-                    time: '',
-                    result: ''
-                }, {
-                    title: '睡眠习惯测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '3',
-                    time: '',
-                    result: ''
-                }, {
-                    title: '严重程度测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '4',
-                    time: '',
-                    result: ''
-                }, {
-                    title: '睡眠状况测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '5',
-                    time: '2017-05-12 12:35',
-                    result: '未完成'
-                }, {
-                    title: '睡眠习惯测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '6',
-                    time: '2017-05-12 12:35',
-                    result: '中度夜晚型'
-                }],
-                sickList: [{
-                    title: '严重程度测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '1',
-                    time: '',
-                    result: ''
-                }, {
-                    title: '睡眠状况测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '2',
-                    time: '',
-                    result: ''
-                }, {
-                    title: '睡眠习惯测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '3',
-                    time: '',
-                    result: ''
-                }, {
-                    title: '严重程度测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '4',
-                    time: '',
-                    result: ''
-                }, {
-                    title: '睡眠状况测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '5',
-                    time: '2017-05-12 12:35',
-                    result: '未完成'
-                }, {
-                    title: '睡眠习惯测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '6',
-                    time: '2017-05-12 12:35',
-                    result: '中度夜晚型'
-                }],
-                spiritList: [{
-                    title: '严重程度测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '1',
-                    time: '',
-                    result: ''
-                }, {
-                    title: '睡眠状况测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '2',
-                    time: '',
-                    result: ''
-                }, {
-                    title: '睡眠习惯测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '3',
-                    time: '',
-                    result: ''
-                }, {
-                    title: '严重程度测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '4',
-                    time: '',
-                    result: ''
-                }, {
-                    title: '睡眠状况测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '5',
-                    time: '2017-05-12 12:35',
-                    result: '未完成'
-                }, {
-                    title: '睡眠习惯测试',
-                    detail: '失眠严重程度值数量表',
-                    meta: '6',
-                    time: '2017-05-12 12:35',
-                    result: '中度夜晚型'
-                }],
+                loadingmodal: '',
+                activeName: 'title0',
+                titlelist: [],
+                questionslist: {},
+                showlist: []
             };
         },
         methods: {
             handleClick(tab, event) {
-                console.log(tab, event);
+                this.loadingmodal = Loading.service({
+                    fullscreen: true,
+                    background: 'rgba(0, 0, 0, 0.7)',
+                    lock: true,
+                    text: 'loading',
+                    spinner: 'el-icon-loading',
+                });
+                this.getTemplateList(this.titlelist[tab.index]);
+            },
+            getTemplateList(title) {
+                var that = this;
+                if (!that.questionslist[title]) {
+                    this.$axios.post('/api/getTemplateList', {
+                        templateTerm: title
+                    }).then(function(res) {
+                        that.loadingmodal.close();
+                        if (res.data.code == 'C0000') {
+                            that.showlist = that.questionslist[title] = res.data.data.map(function(item, index) {
+                                return {
+                                    title: item.templateTitle,
+                                    detail: item.templateSubTitle,
+                                    meta: item,
+                                    time: item.createTime,
+                                    result: (item.status === null || item.status === 'null') ? '' : (item.status == '0' ? '未完成' : (item.status == '1' ? (item.result || '已完成') : "未知")),
+                                    status: item.status //null未答题，0答一半，1完成
+                                }
+                            });
+                        } else {
+                            that.$notify.error({
+                                title: '错误',
+                                message: 'getTemplateList接口无数据',
+                                showClose: false
+                            });
+                        }
+                    }).catch(function() {
+                        that.$notify.error({
+                            title: '错误',
+                            message: 'getTemplateList接口报错',
+                            showClose: false
+                        });
+                        that.loadingmodal.close();
+                        that.$axios.get('/static/testData/getTemplateList.json').then(function(res) {
+                            if (res.data.code == 'C0000') {
+                                that.showlist = that.questionslist[title] = res.data.data.map(function(item, index) {
+                                    return {
+                                        title: item.templateTitle,
+                                        detail: item.templateSubTitle,
+                                        meta: item,
+                                        time: item.createTime,
+                                        result: (item.status === null || item.status === 'null') ? '' : (item.status == '0' ? '未完成' : (item.status == '1' ? (item.result || '已完成') : "未知")),
+                                        status: item.status //null未答题，0答一半，1完成
+                                    }
+                                });
+                            }
+                        })
+                    });
+                } else {
+                    this.showlist = that.questionslist[title];
+                }
             }
+        },
+        mounted() {
+            var that = this;
+            that.loadingmodal = Loading.service({
+                fullscreen: true,
+                background: 'rgba(0, 0, 0, 0.7)',
+                lock: true,
+                text: 'loading',
+                spinner: 'el-icon-loading',
+            });
+            this.$axios.post('/api/getTemplateTerms').then(function(res) {
+                that.loadingmodal.close();
+                if (res.data.code == 'C0000') {
+                    that.titlelist = res.data.data;
+                    that.getTemplateList(that.titlelist[0])
+                }
+            }).catch(function() {
+                that.loadingmodal.close();
+                that.$axios.get('/static/testData/getTemplateTerms.json').then(function(res) {
+                    if (res.data.code == 'C0000') {
+                        that.titlelist = res.data.data;
+                        that.getTemplateList(that.titlelist[0])
+                    }
+                })
+            });
         }
     }
 </script>

@@ -1,9 +1,10 @@
 <template>
   <div class="userInfo">
     <div>
-      <div @click="showActionSheet()">
-        <mt-cell class="headerImg" title="头像" is-link>
-          <img id="img" src="#"/>
+      <!--<div @click="showActionSheet()">-->
+      <div>
+        <mt-cell class="headerImg" title="头像" is-link  :to="{ name: 'headerImg',params:{member_id:''}}">
+          <img id="img" :src="headPic"/>
         </mt-cell>
       </div>
       <div @click="showNickName()">
@@ -40,16 +41,16 @@
       </div>
     </div>
     <div class="div_magin">
-      <mt-cell title="过敏史" is-link :to="{ name: 'allergic' }">
-        <span>未设置</span>
+      <mt-cell title="过敏史" is-link :to="{ name: 'allergic' ,params:{member_id:''}}">
+        <span>{{userallergy}}</span>
       </mt-cell>
-      <mt-cell title="慢病史" is-link :to="{ name: 'chronicDisease' }">
-        <span>无</span>
+      <mt-cell title="慢病史" is-link :to="{ name: 'chronicDisease' ,params:{member_id:''}}">
+        <span>{{userdisease}}</span>
       </mt-cell>
     </div>
-    <!-- <div class="div_magin">
-      <mt-cell title="隐私设置" is-link/>
-    </div> -->
+    <div class="div_magin">
+      <mt-cell title="隐私设置" is-link :to="{ name: 'privacySet' }"/>
+    </div>
 
     <!--上传头像-->
     <div>

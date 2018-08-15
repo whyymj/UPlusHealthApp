@@ -277,19 +277,19 @@ const weight = { //体重
 
 export default function (name, level) {
     if (name == '血糖') {
-        return sugar[level];
+        return sugar[level||0];
     } else if (name == '体温') {
-        return temperature[level]
+        return temperature[level||0]
     } else if (name == '心电') {
-        return heartEle[level]
+        return heartEle[level||0]
     } else if (name == '血氧') {
-        return oxy[level]
+        return oxy[level||0]
     } else if (name == '血压') {
-        return pressure[level]
+        return pressure[level||0]
     } else if (name == '体重') {
-        return weight[level]
+        return weight[level||0]
     } else if (name == '睡眠') {
-        return sleep[level]
+        return sleep[level||0]
     }else{
         return {
             level: 0,

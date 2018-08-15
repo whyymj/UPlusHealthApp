@@ -2,7 +2,7 @@
     <div>
         <h6>匹兹堡睡眠质量指数<img src="/static/sleepMusicList/img6.png" alt=""></h6>
         <score :score='testScore'></score>
-        <analysis></analysis>
+        <analysis :analysis='analysis'></analysis>
         <warmTips :tips='tips'></warmTips>
         <div class="button">
             <div class="retry" :class='{saved:hadSaved}' @click='reTest'>重新测试</div>
@@ -20,9 +20,48 @@
             save() {
                 this.hadSaved = true
             },
-            reTest(){
+            reTest() {
                 this.$router.push('/sleepTest?from=retest')
             }
+        },
+        mounted() {
+            var params = this.$route.query;
+            var that = this;
+            this.$axios.post('/api/getUserTemplateAnalysis', { //获取用户睡眠量表分析数据
+                tuId: params.tuId
+            }).then(function(res) {
+                if (res.data.code == 'C0000') {
+                    that.testScore = res.data.data.gradesStr.split('分')[0];
+                    that.analysis = {
+                        title: res.data.data.scoreInfo,
+                        detail: res.data.data.scoreSuggest
+                    }
+                } else {
+                    that.$notify.error({
+                        title: '错误',
+                        message: 'getUserTemplateAnalysis接口报错',
+                        showClose: false
+                    });
+                }
+            }).catch(function(res) {
+                that.$notify.error({
+                    title: '错误',
+                    message: 'getUserTemplateAnalysis接口报错',
+                    showClose: false
+                });
+                that.$axios.get('/static/testData/testResult.json', {
+                    tuId: params.tuId
+                }).then(function(res) {
+                    if (res.data.code == 'C0000') {
+                        that.testScore = res.data.data.gradesStr.split('分')[0];
+                        that.analysis = {
+                            title: res.data.data.scoreInfo,
+                            detail: res.data.data.scoreSuggest
+                        }
+                    }
+                    console.log(res)
+                })
+            })
         },
         components: {
             score,
@@ -31,8 +70,12 @@
         },
         data() {
             return {
+                analysis: {
+                    title: '',
+                    detail: ''
+                },
                 hadSaved: false,
-                testScore: 12,
+                testScore: 0,
                 tips: [{
                     title: "身体扫描",
                     body: "关注身体的每个部位，缓解躯体不适"

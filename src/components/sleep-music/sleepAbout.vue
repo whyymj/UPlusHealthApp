@@ -10,9 +10,8 @@
 <script>
     export default {
         props: ['data'],
-        methods:{
-            turnTo(url){
-                
+        methods: {
+            turnTo(url) {
                 this.$router.push(url);
             }
         }

@@ -4,18 +4,6 @@
         <span class="el-icon-close" @click='close'></span>
         <p>苹果健康记录的数据与您以往的睡眠时间存在较大偏差，是否修改？</p>
         <div class="button" @click='changeRecord'>立即修改</div>
-        <modal :showmodal='changeNow' @closemodal='closemodal'>
-            <div class='recordbox'>
-                <div class='imgbox'>
-                    <img src="/static/sleepMusicList/img7.png" class='img1' alt="">
-                    <img src="/static/sleepMusicList/img10.png" class='img2' alt="">
-                    <img src="/static/sleepMusicList/img8.png" class='img3' alt="">
-                </div>
-                <div class="body">
-                    <div class='p'>连接<i> Apple Health </i>后，会将它的睡眠数据同步至<i> 优家App </i>睡眠报告。如果要调整它们之间的共享数据设置，请打开手机上的<i>Health</i><i>(健康)</i><i>应用 </i>，点击<i> 数据来源 </i>，找到优家App,启用或禁用共享权限。</div>
-                </div>
-            </div>
-        </modal>
     </div>
 </template>
 
@@ -39,7 +27,7 @@
                 this.changeNow = false;
             },
             changeRecord() {
-                this.changeNow = true;
+               this.$router.push('/sleepManuInput');
             }
         }
     }

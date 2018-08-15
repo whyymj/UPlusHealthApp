@@ -1,108 +1,134 @@
 <template>
-    <div style='background:#fff;'>
-        <div>
-            <slot name='main'></slot>
-        </div>
-        <!-- <transition name="slide-fade"> -->
-        <div class='slider' ref='slider'>
-            <div>
-                <slot name='slider'></slot>
-            </div>
-        </div>
-        <!-- </transition> -->
-        <div class="block-control" style="left: 0px;height:30px;" @click="showSlider"><i class='el-icon-arrow-down' :class='{rotate:show}'></i></div>
+    <div class='myCollapse'>
+        <swiper :options="option" ref="mySwiper">
+            <!-- slides -->
+            <swiper-slide key='0'>
+                <div style='width:100%;'>
+                    <slot></slot>
+                </div>
+            </swiper-slide>
+
+            <swiper-slide class='menu' key='1' v-if='havedata'>
+                <div class='delete_this'>
+                    <i class="el-icon-delete"></i>
+                    <span class='cannt_getback'>不可恢复</span>
+                </div>
+            </swiper-slide>
+        </swiper>
     </div>
 </template>
 
 <script>
+    import {
+        swiper,
+        swiperSlide
+    } from 'vue-awesome-swiper'
     export default {
-        components: {},
+        components: {
+            swiper,
+            swiperSlide
+        },
+        props: ['havedata'],
+        methods: {
+          
+        },
         data() {
             return {
-                show: false,
-                animateTime: 0,
-                rem: 0
-            }
-        },
-        computed: {
-            setIcon() { //设置箭头向上向下转换
-                return this.show ? 'el-icon-caret-top' : 'el-icon-caret-bottom'
-            }
-        },
-        methods: {
-            showSlider() {
-                this.animateTime = 0;
-                this.funTransitionHeight(this.$refs.slider, 300);
-                this.show = !this.show;
-                this.$emit('showDetail', this.show)
-            },
-            // 高度无缝动画方法
-            funTransitionHeight(element, transTime) { // time, 数值，可缺省
-                var that = this;
-                function myanim(start, end, timeGap) { //(起始高度，终点高度，时间间隔)
-                    var v = 0;
-                    window.requestAnimationFrame(function(time) {
-                        that.animateTime = that.animateTime || time;
-                        v = (start - end) / timeGap * (time - that.animateTime);
-                        element.style.height = start
-                        if (start < end) {
-                            if (start - v >= end) {
-                                element.style.height = end + 'px';
-                            } else {
-                                myanim(start - v, end, timeGap + that.animateTime - time)
-                            }
-                        } else {
-                            if (start - v <= 0) {
-                                element.style.height = 0;
-                            } else {
-                                myanim(start - v, end, timeGap + that.animateTime - time)
-                            }
-                        }
-                    })
+                option: {
+                    slidesPerView: 'auto',
+                    notNextTick: true,
+                    // swiper configs 所有的配置同swiper官方api配置
+                    autoplay: 3000,
+                    resistanceRatio: 0,
+                    slideToClickedSlide: true,
+                    // direction : 'vertical',
+                    // effect: "coverflow",
+                    // loop : true,
+                    initialSlide: 0,
+                    grabCursor: true,
+                    setWrapperSize: true,
+                    spaceBetween: 0,
+                    centeredSlides: false,
+                    // autoHeight: true,
+                    // paginationType:"bullets",
+                    paginationClickable: true,
+                    // scrollbar:'.swiper-scrollbar',
+                    mousewheelControl: true,
+                    observeParents: true,
+                    // if you need use plugins in the swiper, you can config in here like this
+                    // 如果自行设计了插件，那么插件的一些配置相关参数，也应该出现在这个对象中，如下debugger
+                    // debugger: true,
+                    // swiper callbacks
+                    // swiper的各种回调函数也可以出现在这个对象中，和swiper官方一样
+                    // onTransitionStart(swiper){
+                    //   console.log(swiper)
+                    // },
+                    // more Swiper configs and callbacks...
+                    // ...
                 }
-                if (typeof window.getComputedStyle == "undefined") return;
-                var height = window.getComputedStyle(element).height.split('px')[0]; //初始值
-                var targetHeight = 0; //目标
-                if (height > 0) {
-                    targetHeight = 0;
-                } else {
-                    element.style.height = 'auto';
-                    targetHeight = window.getComputedStyle(element).height.split('px')[0];
-                    element.style.height = 0;
-                }
-                this.$nextTick(function() {
-                    myanim(height, targetHeight, transTime)
-                });
             }
         },
+        methods: {},
         mounted() {
-            const html = document.getElementsByTagName('html')[0];
-            const w = document.documentElement.clientWidth || document.body.clientWidth;
-            this.rem = (w / 375) * 20;
+            document.getElementsByTagName('body')[0].onclick=function(e){
+                console.log(e.target.getAttribute('class'));
+
+            }
         }
     }
 </script>
 
-<style lang='scss' scoped>
-    /* 可以设置不同的进入和离开动画 */
-    /* 设置持续时间和动画函数 */
-    .slider {
-        overflow: hidden;
-        transition: height 500ms;
-        height: 0;
-    }
-    .block-control {
-        padding-top: 0.5rem;
-        height: 1.5rem;
-        i {
-            display: block;
-            width: 0.6rem;
-            height: 0.25rem;
-            margin: auto;
+<style lang='scss'>
+    .myCollapse {
+        width: 100%;
+        background: #fff;
+        .swiper-wrapper {
+            width: 20rem;
+            height: 100%;
         }
-        i.rotate {
-            transform: rotate(180deg);
-            transform-origin: 50% 100%;
+        .menu {
+            width: 100px;
+        }
+        .swiper-slide {
+            text-align: center;
+            font-size: 18px;
+            width: 17rem;
+            background: #fff;
+            /* Center slide text vertically */
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+            margin: 0!important;
+        }
+        .menu {
+            width: 3rem;
+            height: 4rem;
+            background-color: #2C8DFB;
+            color: #fff;
+            .delete_this {
+                width: 100%;
+                height: 100%;
+                background: #FF475D;
+                text-align: center;
+                color: #fff;
+                font-size: 0.6rem;
+                font-family: 'PingFangSC-Regular';
+                i {
+                    display: inline-block;
+                    width: 100%;
+                    font-size: 1.3rem;
+                    line-height: 2.5rem;
+                }
+            }
         }
     }
 </style>

@@ -1,65 +1,142 @@
 <template>
     <div class='analysis'>
-        <div class="showdata" v-if='haveDetail'>
-            <div class="imgbox">
-                <img src="/static/sleepMusicList/img5.png" alt="">
+        <mycollapse :havedata='havedata'>
+            <div class="showdata" @click='scalemenu'>
+                <div class="imgbox">
+                    <img src="/static/sleepMusicList/img5.png" alt="">
+                </div>
+                <div class="title">睡眠时长</div>
+                <div class="time"><span>{{Math.floor(sleepTimeLang/60)}}</span>小时<span>{{sleepTimeLang%60}}</span>分</div>
+                <div class="level">{{sleepQuality}}
+                </div><i class="el-icon-arrow-down rightarrow " v-if='rotateArr'></i><i class="el-icon-arrow-right rightarrow" v-else></i>
             </div>
-            <div class="title">睡眠时长</div>
-            <div class="time"><span>6</span>小时<span>32</span>分</div>
-            <div class="level">正常</div>
-        </div>
-        <div class="showdata" style='height:6rem;' v-else>
-            <div class="imgbox">
-                <img src="/static/sleepMusicList/img5.png" alt="">
-            </div>
-            <div class="title">睡眠时长</div>
-            <div class="time"><span>6</span>小时<span>32</span>分</div>
-            <div class='verticalline'></div>
-            <h6>当日作息</h6>
-            <img src="/static/sleepMusicList/img6.png" alt="" @click='showdetail' class='onlyone'>
-            <p>
-                <span>23:32<span>-</span></span> <span>8:32<span></span></span>
-            </p>
-            <div class='supplement'>补全记录</div>
-        </div>
-        <ul class='blocks'>
-            <li v-for='(item,index) in paramslist' :key='index' :style="{float:index%2==1?'right':'left'}">
-                <h6>{{item.title}}</h6>
-                <img src="/static/sleepMusicList/img6.png" alt="" v-if='item.detail!=""' @click='showdetail'>
-                <p>
-                    <span v-for='(val,key) in item.params' :key='key'>{{val.data}}<span>{{val.unit}}</span></span>
-                </p>
-            </li>
-        </ul>
-        <div class="sleepAnalysis">
+        </mycollapse>
+        <mymenu animateT='500'>
+            <ul class='blocks'>
+                <li v-for='(item,index) in paramslist' :key='index' :style="{float:index%2==1?'right':'left','border-right':index%2==0?'1px solid #F8F8F8':'none','border-top':(index==2||index==3)?'1px solid #F8F8F8':'none'}">
+                    <h6>{{item.title}}</h6>
+                    <img src="/static/sleepMusicList/img6.png" alt="" v-if='item.detail!=""' @click='showdetail(item.detail)'>
+                    <p>
+                        <span v-for='(val,key) in item.params' :key='key'>{{val.data}}<span>{{val.unit}}</span></span>
+                    </p>
+                </li>
+            </ul>
+        </mymenu>
+        <div class="sleepAnalysis" v-if='detailAnalysis!=""'>
             <h1>睡眠分析</h1>
             <div class="detail">
-                <p>您和否定法苏哦跟扫下回复可见啊大家发 都会放假后 待发货US和覅闳六点和覅uhuiiush符合符合uhuehruue㛑㛑uehisaudhf李俊峰六黑历史风口浪尖不是。</p>
-                <p>您和否定法苏哦跟扫下回复可见啊大家发 都会放假后 待发货US和覅闳六点和覅uhuiiush符合符合uhuehruue㛑㛑uehisaudhf李俊峰六黑历史风口浪尖不是。</p>
+                <p v-for='(item,index) in contArr' :key='index'>{{item}}
+                </p>
             </div>
         </div>
         <showmodal :showmodal='show' @closemodal='closemodal'>
-            <div class='modalContent'>当日作息即当日上床歇息至起床时间</div>
+            <div class='modalContent'>{{tips}}</div>
         </showmodal>
     </div>
 </template>
 
 <script>
+    import bus from './evetbus.js';
     import showmodal from './myModal';
+    import mycollapse from './mycollapse.vue';
+    import mymenu from './mycollapse3.vue';
+    import {
+        setTimeout
+    } from 'timers';
     export default {
         components: {
-            showmodal
+            showmodal,
+            mymenu,
+            mycollapse
         },
-        props: ['paramslist'],
+        props: ['paramslist', 'detailAnalysis', 'sleepTimeLang', 'level'],
         data() {
             return {
+                isIos: true, //是否是ios机
+                rotateArr: false,
+                roting: false,
+                havedata: true, //控制刪除模块按钮的显示
                 show: false,
-                haveDetail: false
+                tips: '',
+                option: {
+                    slidesPerView: 'auto',
+                    notNextTick: true,
+                    // swiper configs 所有的配置同swiper官方api配置
+                    autoplay: 3000,
+                    resistanceRatio: 0,
+                    slideToClickedSlide: true,
+                    // direction : 'vertical',
+                    // effect: "coverflow",
+                    // loop : true,
+                    initialSlide: 0,
+                    grabCursor: true,
+                    setWrapperSize: true,
+                    spaceBetween: 0,
+                    centeredSlides: false,
+                    // autoHeight: true,
+                    // paginationType:"bullets",
+                    paginationClickable: true,
+                    // scrollbar:'.swiper-scrollbar',
+                    mousewheelControl: true,
+                    observeParents: true,
+                },
             }
         },
-        mounted() {},
+        computed: {
+            sleepQuality() {
+                var quality = ''
+                if (this.level == 1) {
+                    quality = '很低'
+                } else if (this.level == 2) {
+                    quality = '较低'
+                } else if (this.level == 3) {
+                    quality = '正常'
+                } else if (this.level == 4) {
+                    quality = '较高'
+                } else if (this.level == 5) {
+                    quality = '很高'
+                }
+                return quality
+            },
+            contArr() {
+                return this.detailAnalysis.split('<br />');
+            }
+        },
+        watch: {
+        },
+        mounted() {
+            var u = navigator.userAgent
+            this.isIos = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+            var that = this;
+            document.getElementsByTagName('body')[0].onclick = function(e) { //删除按钮
+                if (e.target.getAttribute('class') == 'el-icon-delete' || e.target.getAttribute('class') == 'cannt_getback') {
+                    that.deleteThis()
+                }
+            };
+        },
         methods: {
-            showdetail() {
+            scalemenu() {
+                var that = this;
+                if (!this.roting) {
+                    this.roting = true;
+                    setTimeout(function() {
+                        that.roting = false;
+                    }, 500)
+                    this.rotateArr = !this.rotateArr;
+                    bus.$emit('scalemenu');
+                }
+            },
+            deleteThis() {
+               this.$emit('deleteThis')
+            },
+            toManuInput() {
+                this.$router.push({
+                    path: '/sleepManuInput',
+                    query: {}
+                });
+            },
+            showdetail(tip) {
+                this.tips = tip;
                 this.show = true;
             },
             closemodal() {
@@ -70,6 +147,7 @@
 </script>
 
 <style lang='scss' scoped>
+    .analysis {}
     .modalContent {
         font-size: 0.7rem;
         font-family: 'PingFangSC-Regular';
@@ -122,7 +200,7 @@
                 font-family: 'PingFangSC-Regular';
                 color: rgba(34, 131, 226, 1);
                 line-height: 2rem;
-                text-align:center;
+                text-align: center;
             }
             p {
                 position: absolute;
@@ -191,8 +269,15 @@
                 color: rgba(255, 255, 255, 1);
                 text-align: center;
                 line-height: 0.9rem;
-                right: 1rem;
+                right: 1.5rem;
                 top: 1.5rem;
+            }
+            .rightarrow {
+                position: absolute;
+                right: 0.5rem;
+                top: 1.65rem;
+                font-size: 0.7rem;
+                color: #DBDBDB;
             }
         }
         .blocks {
@@ -200,12 +285,12 @@
             position: relative;
             overflow: hidden;
             li {
-                width: 8.25rem;
-                height: 3rem;
+                width: 50%;
+                height: 4rem;
                 position: relative;
                 float: left;
                 background: #fff;
-                margin-top: 0.5rem;
+                box-sizing: border-box;
                 img {
                     width: 0.7rem;
                     height: 0.7rem;
@@ -223,8 +308,8 @@
                 }
                 p {
                     position: absolute;
-                    right: 0.6rem;
-                    bottom: 0.2rem;
+                    right: 0.8rem;
+                    bottom: 0.5rem;
                     span {
                         font-size: 0.8rem;
                         font-family: 'NotoSansCJKsc-Medium';
@@ -251,6 +336,7 @@
                 color: rgba(17, 17, 17, 1);
                 font-weight: 600;
                 margin-bottom: 0.5rem;
+                padding: 0;
             }
             .detail {
                 width: 100%;
@@ -261,5 +347,8 @@
                 }
             }
         }
+    }
+    .menu {
+        width: 2rem;
     }
 </style>

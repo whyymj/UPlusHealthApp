@@ -6,30 +6,58 @@
             <span class="title">{{item.title}}</span>
             <span class="cont">{{item.content}}</span>
         </div>
-        <mt-datetime-picker ref="picker" type="time" v-model="pickerValue" @confirm='confirm'>
-        </mt-datetime-picker>
+        <timepicker :startTime='startTime' :endTime='endTime'></timepicker>
     </div>
 </template>
 
 <script>
+    import timepicker from './mytimepicker';
+    import bus from './bus.js';
     export default {
+        components: {
+            timepicker
+        },
         props: ['list'],
         data() {
             return {
+                tips: '',
+                popupVisible: false,
+                startTime: ['18:00', '00:30'],
+                endTime: ['23:59', '08:00'],
                 index: 0,
-                mylist: []
+                pickerValue: '',
+                gotobed: [],
+                startsleep: [],
+                wakeup: [],
+                leavebed: []
             }
         },
         methods: {
             openPicker(index) {
                 this.index = index;
-                this.$refs.picker.open();
+                bus.$emit('toggle');
+                // this.$refs.picker.open();
             },
             confirm(data) {
-                this.list[this.index].content = data
+                var hour = data.split(':')[0];
+                var minute = data.split(':')[1];
+                if (this.index == 0) {
+                    this.gotobed = [hour, minute];
+                    if (hour < 18 && hour >= 8) {
+                        this.popupVisible = true;
+                    }
+                } else if (this.index == 1) {
+                    this.startsleep = [hour, minute];
+                } else if (this.index == 2) {
+                    this.wakeup = [hour, minute];
+                } else if (this.index == 3) {
+                    this.leavebed = [hour, minute];
+                }
+                this.list[this.index].content = data;
                 this.list = this.list;
+                this.$emit('getSleepTimes', this.list);
             }
-        },
+        }
     }
 </script>
 

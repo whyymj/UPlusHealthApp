@@ -69,6 +69,9 @@ router.post('/api/user', (req, res, next) => {
     height: req.body.height,
     weight: req.body.weight,
     sex: req.body.sex,
+//  nick_name: req.body.nick_name,
+    disease: req.body.disease,
+    allergy: req.body.allergy,
     birthday: req.body.birthday
   })
 
@@ -117,7 +120,11 @@ router.post('/api/user/update', (req, res, next) => {
     weight: req.body.weight,
     sex: req.body.sex,
     birthday: req.body.birthday,
-    target_weight: req.body.target_weight
+    target_weight: req.body.target_weight,
+    nick_name: req.body.nick_name,
+    head_pic: req.body.head_pic,
+    allergy: req.body.allergy,
+    disease:req.body.disease
   })
 
   const options = {
@@ -154,6 +161,7 @@ router.post('/api/user/update', (req, res, next) => {
   _req.on('error', (e) => {
     console.error(`请求遇到问题: ${e.message}`)
   })
+  
   _req.write(postData)
   _req.end()
 })
@@ -245,15 +253,61 @@ router.post('/api/user/info', (req, res, next) => {
     _req.end()
   }
 })
+// 上传用户头像
+router.post('/api/uploadPic', (req, res, next) => {
+  const postData = querystring.stringify({
+    member_id: req.body.member_id,
+    imgFile: req.body.imgFile,
+  })
+  const options = {
+    host: config.host,
+    port: config.port,
+    method: 'POST',
+    path: `${config.path}/upload/uploadPic`,
+    headers: Object.assign(config.headers, {
+      openId: req.session.token,
+      loginCode: req.session.loginCode
+    })
+  }
+
+  const _req = http.request(options, (_res) => {
+    console.log(`请求地址: ${options.path}`)
+    console.log(`状态码: ${_res.statusCode}`)
+    console.log(`响应头: ${JSON.stringify(_res.headers)}`)
+    _res.setEncoding('utf8')
+    let rawData = ''
+    _res.on('data', (chunk) => {
+      rawData += chunk
+    })
+    _res.on('end', () => {
+      try {
+        const result = JSON.parse(rawData)
+        console.log(`响应中数据: ${JSON.stringify(result)}`)
+        req.session.token = result.openId
+        res.send(global.handle(result))
+      } catch (e) {
+        console.log(e.message)
+      }
+    })
+  })
+  _req.on('error', (e) => {
+    console.error(`请求遇到问题: ${e.message}`)
+  })
+  _req.write(postData)
+  _req.end()
+})
 // 新增家庭成员
 router.post('/api/member', (req, res, next) => {
   const postData = querystring.stringify({
     height: req.body.height,
     weight: req.body.weight,
     birthday: req.body.birthday,
-    relation: req.body.relation
+    relation: req.body.relation,
+    sex: req.body.sex,
+    nick_name: req.body.nick_name,	
+    disease: req.body.disease,
+    allergy: req.body.allergy,
   })
-
   const options = {
     host: config.host,
     port: config.port,
@@ -295,7 +349,13 @@ router.post('/api/member', (req, res, next) => {
 router.post('/api/member/info', (req, res, next) => {
   const postData = querystring.stringify({
     member_id: req.body.member_id,
-    target_weight: req.body.target_weight
+    height: req.body.height,
+    weight: req.body.weight,
+    target_weight: req.body.target_weight,
+    birthday: req.body.birthday,
+    head_pic: req.body.head_pic,
+    disease: req.body.disease,
+    allergy: req.body.allergy,
   })
 
   const options = {

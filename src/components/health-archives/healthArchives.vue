@@ -1,5 +1,5 @@
 <template>
-    <div class='healthArchives' style='background:#fff; height:100;position:fixed;height:100%;top:0;left:0;width:100%;'>
+    <div class='healthArchives' style='background:#fff;position:fixed;height:100%;top:0;left:0;width:100%;'>
         <div class="tabs">
             <!-- 导航条 -->
             <mynav :navigateList='memberlist' :initnum='initnum' @clickNav='clickNav'></mynav>
@@ -63,6 +63,7 @@
                 <x-button type="primary" style="width: 90%">同意</x-button>
             </div>
         </x-dialog>
+        <firstLogin @firstlogin='first_login'></firstLogin>
     </div>
 </template>
 
@@ -79,17 +80,19 @@
         Indicator
     } from 'mint-ui';
     import { XDialog, XButton } from 'vux'
+    import firstLogin from './first_login_sleepreport.vue';
     export default {
         components: {
             imgbox,
             paginator,
             mynav,
             XDialog,
-            XButton
-            },
+            XButton,
+            firstLogin
+        },
         watch: {
             healthProResult() {
-                this.showdata = _.chunk(this.healthProResult, 3)
+                this.showdata = _.chunk(this.healthProResult, 3);
             }
         },
         data() {
@@ -103,49 +106,50 @@
                 activeName: '',
                 showdata: [], //供展示用的健康参数数据
                 healthProResult: [{ //请求到的健康参数
-                        "value": "135/97",
+                        "value": "",
                         "moudle_name": "血压",
                         "moudle_name_en": "bloodpressure",
-                        "level": "3"
+                        status: '',
+                        "level": ""
                     },
                     {
-                        "value": "8.2",
+                        "value": "",
                         "moudle_name": "睡眠",
                         "moudle_name_en": "sleep",
-                        "level": "1"
+                        "level": ""
                     },
                     {
-                        "value": "37",
+                        "value": "",
                         "moudle_name": "体温",
                         "moudle_name_en": "temperature",
-                        "level": "2"
+                        "level": ""
                     },
                     {
-                        "value": "50.5",
+                        "value": "",
                         "moudle_name": "血氧",
                         "moudle_name_en": "basal_metabolic",
-                        "level": "1"
+                        "level": ""
                     },
                     {
                         "moudle_name_en": "",
                         "value": "0", //value值为"0"时表示此健康模块暂无健康数据
                         "moudle_name": "心电",
                         "moudle_name_en": "",
-                        "level": "1"
+                        "level": ""
                     },
                     {
                         "moudle_name_en": "",
-                        "value": "80", //value值为"0"时表示此健康模块暂无健康数据
+                        "value": "", //value值为"0"时表示此健康模块暂无健康数据
                         "moudle_name": "体重",
                         "moudle_name_en": "",
-                        "level": "1"
+                        "level": ""
                     },
                     {
                         "moudle_name_en": "",
-                        "value": "80", //value值为"0"时表示此健康模块暂无健康数据
+                        "value": "", //value值为"0"时表示此健康模块暂无健康数据
                         "moudle_name": "血糖",
                         "moudle_name_en": "",
-                        "level": "1"
+                        "level": ""
                     }
                 ],
                 myinfo: [{
@@ -165,62 +169,33 @@
                     "age": 0
                 }],
                 memberlist: [{ //成员列表,测试数据
-                        "member_id": "",
-                        "login_code": 15153125386,
-                        "relation": "1",
-                        "relation_name": "我",
-                        "height": 170,
-                        "weight": 65,
-                        "birthday": "1966-11-27",
-                        "head_pic": "http://healthapp.haier.net/image/father.png",
-                        "sex": "male",
-                        "create_date": "2018-04-12 10:34:57",
-                        "nick_name": "",
-                        "target_weight": 65,
-                        "is_first_set_tw": 1,
-                        "age": 52
-                    }, {
-                        "member_id": "58",
-                        "login_code": 15153125386,
-                        "relation": "1",
-                        "relation_name": "爸爸",
-                        "height": 170,
-                        "weight": 65,
-                        "birthday": "1966-11-27",
-                        "head_pic": "http://healthapp.haier.net/image/father.png",
-                        "sex": "male",
-                        "create_date": "2018-04-12 10:34:57",
-                        "nick_name": "爸爸",
-                        "target_weight": 65,
-                        "is_first_set_tw": 1,
-                        "age": 52
-                    },
-                    {
-                        "member_id": "42",
-                        "login_code": 15153125386,
-                        "relation": "13",
-                        "relation_name": "朋友",
-                        "height": 180,
-                        "weight": 70,
-                        "birthday": "1989-8-30",
-                        "head_pic": "http://healthapp.haier.net/image/husband.png",
-                        "sex": "male",
-                        "create_date": "2018-01-26 16:12:57",
-                        "nick_name": "朋友2",
-                        "target_weight": 70,
-                        "is_first_set_tw": 1,
-                        "age": 29
-                    }
-                ]
+                    "member_id": "",
+                    "login_code": 15153125386,
+                    "relation": "1",
+                    "relation_name": "我",
+                    "height": 170,
+                    "weight": 65,
+                    "birthday": "1966-11-27",
+                    "head_pic": "http://healthapp.haier.net/image/father.png",
+                    "sex": "male",
+                    "create_date": "2018-04-12 10:34:57",
+                    "nick_name": "",
+                    "target_weight": 65,
+                    "is_first_set_tw": 1,
+                    "age": 52
+                }]
             };
         },
         computed: {},
         methods: {
+            first_login() {
+                window.localStorage.UPlusApp_firstLogin_sleepReport = false;
+            },
             scalebox(item) {
                 bus.$emit('scalebox', item.moudle_name)
             },
             blink(item) {
-                var obj = colorJudger(item.moudle_name, item.level)
+                var obj = colorJudger(item.moudle_name, item.level);
                 return {
                     background: obj.bg,
                     animation: 's-red-animation 1s infinit'
@@ -257,7 +232,6 @@
                         'danger': item.level > 2
                     }
                 } else if (item.moudle_name == '心电') {
-                    console.log();
                     return {
                         "ecg-circle": that.maleShow,
                         "ecg-circle-female": !that.maleShow,
@@ -497,6 +471,9 @@
                     result.data.data.member_id = '';
                     this.myinfo = [result.data.data];
                     if (result.data.code === 'C0000') {
+                        result.data.data.relation_name = '我';
+                        result.data.data.member_id = '';
+                        this.myinfo = [result.data.data];
                         this.initList();
                         // this.$refs.footer.style.display = 'block'
                         if (result.data.data.sex === 'male') {
@@ -540,10 +517,16 @@
             async getFamilyList() {
                 try {
                     var that = this;
-                    const result = await this.$axios.get('/api/family')
+                    const result = await this.$axios.get('/api/family');
+                    console.log('memberlist>>>', result);
                     if (result.data.code === 'C0000') {
                         this.createdList = result.data.data[0];
-                        this.memberlist = myinfo.concat(this.createdList);
+                        this.memberlist = this.myinfo.concat(this.createdList.map(function(item) {
+                            var newitem = item;
+                            newitem.relation_name = item.nick_name;
+                            return newitem;
+                        }));
+                        console.log('memberlist>>>???', this.memberlist);
                         if (window._member_id === '') {
                             this.pageindex = this.initnum = 0;
                         } else {
@@ -560,12 +543,75 @@
                 }
             },
             async initList() { //获取成员的健康指标列表
+                var that = this;
                 try {
-                    this.healthProResult = [];
+                    var alllist = [{ //请求到的健康参数
+                            "value": "",
+                            "moudle_name": "血压",
+                            "moudle_name_en": "bloodpressure",
+                            "level": "0"
+                        },
+                        {
+                            "value": "",
+                            "moudle_name": "睡眠",
+                            "moudle_name_en": "sleep",
+                            "level": "0"
+                        },
+                        {
+                            "value": "",
+                            "moudle_name": "体温",
+                            "moudle_name_en": "temperature",
+                            "level": "0"
+                        },
+                        {
+                            "value": "",
+                            "moudle_name": "血氧",
+                            "moudle_name_en": "basal_metabolic",
+                            "level": "0"
+                        },
+                        {
+                            "moudle_name_en": "",
+                            "value": "", //value值为"0"时表示此健康模块暂无健康数据
+                            "moudle_name": "心电",
+                            "moudle_name_en": "",
+                            "level": "0"
+                        },
+                        {
+                            "moudle_name_en": "",
+                            "value": "", //value值为"0"时表示此健康模块暂无健康数据
+                            "moudle_name": "体重",
+                            "moudle_name_en": "",
+                            "level": "0"
+                        },
+                        {
+                            "moudle_name_en": "",
+                            "value": "", //value值为"0"时表示此健康模块暂无健康数据
+                            "moudle_name": "血糖",
+                            "moudle_name_en": "",
+                            "level": "0"
+                        }
+                    ];
+                    this.healthProResult = alllist;
                     const result = await this.$axios.get(`/api/health/result?member_id=${window._member_id}`)
+                    var tmp;
                     if (result.data.code === 'C0000') {
-                        console.log(result)
-                        this.healthProResult = result.data.data.healthProResult
+                        tmp = result.data.data.healthProResult;
+                        var hasSleep = false;
+                        var len = tmp.length;
+                        var need = [];
+                        alllist.map(function(item) {
+                            hasSleep = false;
+                            for (var i = 0; i < len; i++) {
+                                if (tmp[i].moudle_name == item.moudle_name) {
+                                    hasSleep = true;
+                                    break;
+                                }
+                            }
+                            if (!hasSleep) { //判斷已有的
+                                need.push(item);
+                            }
+                        })
+                        that.healthProResult = tmp.concat(need);
                         // 新用户引导页
                         if (!window.localStorage.getItem('fEntry')) {
                             this.isModel = true;
@@ -578,92 +624,6 @@
                 } catch (err) {
                     console.log('err: ', err)
                     Indicator.close();
-                }
-            },
-            async goPages(item) {
-                switch (item.moudle_name) {
-                    case '体重':
-                        if (window._member_id === '') { // user
-                            try {
-                                const result = await this.$axios.post('/api/user/info', {
-                                    phone: ''
-                                })
-                                if (result.data.code === 'C0000') {
-                                    if (result.data.data.target_weight === '' || result.data.data.target_weight === 0) { // new user
-                                        this.$router.push({
-                                            path: '/setTargetWeight'
-                                        })
-                                    } else {
-                                        this.$router.push({
-                                            path: '/weight'
-                                        })
-                                    }
-                                }
-                            } catch (err) {
-                                console.log(err)
-                            }
-                        } else { // member
-                            let res = this.createdList.filter(_ => {
-                                return _.member_id === window._member_id
-                            })
-                            if (res[0].is_first_set_tw === 1) { // 未设置目标体重
-                                this.$router.push({
-                                    path: '/setTargetWeight'
-                                })
-                            } else {
-                                this.$router.push({
-                                    path: '/weight'
-                                })
-                            }
-                        }
-                        window._weight_selected_date = ''
-                        break
-                    case 'BMI':
-                    case '体脂率':
-                    case '基础代谢':
-                    case '脂肪重量':
-                    case '内脏脂肪等级':
-                    case '肌肉重量':
-                    case '肌肉率':
-                    case '水份':
-                    case '水含量':
-                    case '蛋白质':
-                    case '骨量':
-                        window._weight_selected_date = ''
-                        this.$router.push({
-                            path: '/weight'
-                        })
-                        break
-                    case '血压':
-                        window._pressure_selected_date = ''
-                        this.$router.push({
-                            path: '/pressure'
-                        })
-                        break
-                    case '血糖':
-                        window._suger_selected_date = ''
-                        this.$router.push({
-                            path: '/bloodSugar'
-                        })
-                        break
-                    case '体温':
-                        window._temperature_selected_date = ''
-                        this.$router.push({
-                            path: '/temperature'
-                        })
-                        break
-                    case '心电':
-                        window._ecg_selected_date = ''
-                        this.$router.push({
-                            path: '/ecg'
-                        })
-                        break
-                    case '血氧':
-                        window._oxygen_selected_date = ''
-                        this.$router.push({
-                            path: '/oxygen'
-                        })
-                        break
                 }
             },
             goRecordsList() {
@@ -688,6 +648,9 @@
             }
         },
         mounted() {
+            if (window.localStorage.UPlusApp_firstLogin_sleepReport == undefined || window.localStorage.UPlusApp_firstLogin_sleepReport == "undefined") { //判断是否首次登陆
+                window.localStorage.UPlusApp_firstLogin_sleepReport = true; //在首次登录组件里改变
+            }
             var that = this;
             this.showdata = _.chunk(this.healthProResult, 3);
             if (window._member_id === '') {
@@ -705,6 +668,7 @@
                     code: window.location.href.substring(window.location.href.indexOf('=') + 1, window.location.href.indexOf('&')),
                     url: config.url
                 }
+                console.log('obj.code>>>>', obj.code);
                 if (obj.code !== '') {
                     try {
                         const result = await this.$axios.post('/api/info', obj)
