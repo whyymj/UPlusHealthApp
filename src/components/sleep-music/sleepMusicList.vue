@@ -203,56 +203,56 @@
                     that.loadingmodal.close()
                 }).catch(function(res) { //获取用户最近一条测量记录,判断今天是否有记录信息
                     that.loadingmodal.close();
-                    that.$axios.get('/static/testData/checkSomeDay.json').then(function(res) {
-                        if (res.data.code === 'C0000') {
-                            var data = res.data.data;
-                            that.todayManuInputData = true;
-                            that.paramslist = [{
-                                title: '当日作息',
-                                detail: '当日作息即当日上床歇息至起床时间',
-                                params: [{
-                                    data: data.sleepTime,
-                                    unit: '-'
-                                }, {
-                                    data: data.wakeTime,
-                                    unit: ''
-                                }]
-                            }, {
-                                title: '卧床时长',
-                                detail: '',
-                                params: [{
-                                    data: Math.floor(data.bedTimeLang / 60),
-                                    unit: '小时'
-                                }, {
-                                    data: data.bedTimeLang % 60,
-                                    unit: '分钟'
-                                }]
-                            }, {
-                                title: '睡眠效率',
-                                detail: '',
-                                params: [{
-                                    data: data.sleepEfficiency,
-                                    unit: '%'
-                                }]
-                            }, {
-                                title: '入睡速度（分）',
-                                detail: '',
-                                params: [{
-                                    data: data.sleepingtime,
-                                    unit: '分钟'
-                                }]
-                            }];
-                            that.detailAnalysis = data.sleepAnalysis;
-                            that.sleepTimeLang = data.sleepTimeLang;
-                            that.sleepQuality = data.quality;
-                            that.sleepid = data.sleep_id;
-                        } else {
-                            that.paramslist = [];
-                            that.detailAnalysis = "";
-                            that.todayManuInputData = false;
-                            that.sleepid = '';
-                        }
-                    })
+                    // that.$axios.get('/static/testData/checkSomeDay.json').then(function(res) {
+                    //     if (res.data.code === 'C0000') {
+                    //         var data = res.data.data;
+                    //         that.todayManuInputData = true;
+                    //         that.paramslist = [{
+                    //             title: '当日作息',
+                    //             detail: '当日作息即当日上床歇息至起床时间',
+                    //             params: [{
+                    //                 data: data.sleepTime,
+                    //                 unit: '-'
+                    //             }, {
+                    //                 data: data.wakeTime,
+                    //                 unit: ''
+                    //             }]
+                    //         }, {
+                    //             title: '卧床时长',
+                    //             detail: '',
+                    //             params: [{
+                    //                 data: Math.floor(data.bedTimeLang / 60),
+                    //                 unit: '小时'
+                    //             }, {
+                    //                 data: data.bedTimeLang % 60,
+                    //                 unit: '分钟'
+                    //             }]
+                    //         }, {
+                    //             title: '睡眠效率',
+                    //             detail: '',
+                    //             params: [{
+                    //                 data: data.sleepEfficiency,
+                    //                 unit: '%'
+                    //             }]
+                    //         }, {
+                    //             title: '入睡速度（分）',
+                    //             detail: '',
+                    //             params: [{
+                    //                 data: data.sleepingtime,
+                    //                 unit: '分钟'
+                    //             }]
+                    //         }];
+                    //         that.detailAnalysis = data.sleepAnalysis;
+                    //         that.sleepTimeLang = data.sleepTimeLang;
+                    //         that.sleepQuality = data.quality;
+                    //         that.sleepid = data.sleep_id;
+                    //     } else {
+                    //         that.paramslist = [];
+                    //         that.detailAnalysis = "";
+                    //         that.todayManuInputData = false;
+                    //         that.sleepid = '';
+                    //     }
+                    // })
                 })
             },
             showbig() {
@@ -266,6 +266,7 @@
                 if (check) { //查询某天的数据
                     today = new Date(check)
                 }
+                
                 var year = today.getFullYear(),
                     month = today.getMonth() + 1,
                     date = today.getDate(),
