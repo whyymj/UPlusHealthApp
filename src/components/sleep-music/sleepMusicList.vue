@@ -38,13 +38,13 @@
             </div>
         </div>
         <!-- <el-dialog title="关联Apple Health" :visible.sync="dialogVisible" width="80%">
-                                                    <span>是否同意关联苹果健康数据？</span>
-                                                    <span slot="footer" class="dialog-footer">
-                                                                                                                        
-                                            <el-button @click="dialogVisible = false">取 消</el-button>
-                                            <el-button type="primary" @click="saveSleepInfo">确 定</el-button>
-                                            </span>
-                                                </el-dialog> -->
+                                                                <span>是否同意关联苹果健康数据？</span>
+                                                                <span slot="footer" class="dialog-footer">
+                                                                                                                                    
+                                                        <el-button @click="dialogVisible = false">取 消</el-button>
+                                                        <el-button type="primary" @click="saveSleepInfo">确 定</el-button>
+                                                        </span>
+                                                            </el-dialog> -->
         <bigechart @showbig='showbig' v-if='showBigEcharts'></bigechart>
     </div>
 </template>
@@ -290,22 +290,23 @@
             //打开苹果健康权限
             getHealth() {
                 let supportedTypes = ['HKCategoryTypeIdentifierSleepAnalysis'];
-                if (window.plugins && window.plugins.healthkit) {
-                    window.plugins.healthkit.requestAuthorization({
-                        readTypes: supportedTypes,
-                    });
-                }
+                // if (window.plugins && window.plugins.healthkit) {
+                window.plugins.healthkit.requestAuthorization({
+                    readTypes: supportedTypes,
+                });
+                // }
             },
             //保存信息
             saveSleepInfo(check) {
+                alert('查询 ' + check + ' apple health 的数据')
                 let _this = this;
-                if (window.plugins && window.plugins.healthkit) {
-                    window.plugins.healthkit.monitorSampleType({
-                        'sampleType': 'HKCategoryTypeIdentifierSleepAnalysis'
-                    }, (value) => {
-                        _this.getSleepInfo(check);
-                    })
-                }
+                // if (window.plugins && window.plugins.healthkit) {
+                window.plugins.healthkit.monitorSampleType({
+                    'sampleType': 'HKCategoryTypeIdentifierSleepAnalysis'
+                }, (value) => {
+                    _this.getSleepInfo(check);
+                })
+                // }
             },
             //获取苹果健康数据信息
             getSleepInfo(check) {
@@ -317,29 +318,30 @@
                     startDate = this.isios ? new Date(check + 'T' + '00:00') : new Date(check + ' 00:00');
                     endDate = this.isios ? new Date(check + 'T' + '23:59:59') : new Date(check + ' 23:59:59');
                 }
+                alert('查询数据时间：' + startDate + ' - ' + endDate)
                 // this.dialogVisible = false;
-                if (window.plugins && window.plugins.healthkit) {
-                    window.plugins.healthkit.querySampleType({
-                        'startDate': startDate, // 开始时间
-                        'endDate': endDate, // now 结束时间
-                        'sampleType': 'HKCategoryTypeIdentifierSleepAnalysis',
-                        'limit': limit,
-                        'ascending': 'T',
-                    }, function(value) {
-                        that.getAppleHealthData(value, check);
-                    })
-                    window.plugins.healthkit.querySampleType({ //判断是否有权限
-                        'startDate': 0, // 开始时间
-                        'endDate': endDate, // now 结束时间
-                        'sampleType': 'HKCategoryTypeIdentifierSleepAnalysis',
-                        'limit': limit,
-                        'ascending': 'T',
-                    }, function(value) {
-                        if (value && value.length && typeof value == 'object') {
-                            that.haveAuthor = true;
-                        }
-                    })
-                }
+                // if (window.plugins && window.plugins.healthkit) {
+                window.plugins.healthkit.querySampleType({
+                    'startDate': startDate, // 开始时间
+                    'endDate': endDate, // now 结束时间
+                    'sampleType': 'HKCategoryTypeIdentifierSleepAnalysis',
+                    'limit': limit,
+                    'ascending': 'T',
+                }, function(value) {
+                    that.getAppleHealthData(value, check);
+                })
+                window.plugins.healthkit.querySampleType({ //判断是否有权限
+                    'startDate': 0, // 开始时间
+                    'endDate': endDate, // now 结束时间
+                    'sampleType': 'HKCategoryTypeIdentifierSleepAnalysis',
+                    'limit': limit,
+                    'ascending': 'T',
+                }, function(value) {
+                    if (value && value.length && typeof value == 'object') {
+                        that.haveAuthor = true;
+                    }
+                })
+                // }
             },
             toManuInput() {
                 this.$router.push({
@@ -364,7 +366,6 @@
             }
         },
         mounted() {
-            
             // window.localStorage.UPlusApp_getAppleHealthData = false; //测试用的+++++++s++++++++++++++++
             // window.localStorage.UPlusApp_firstLogin_sleepMusicList = undefined;
             // window.plugins = {
