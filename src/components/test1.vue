@@ -114,118 +114,118 @@
           console.log(value);
         })
       },
-      /*************************音频*******************/
-      //初始化
-      initialize() {
-        document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
-      },
-      getId(id) {
-        return document.getElementById(id);
-      },
-      onDeviceReady(){
+      // /*************************音频*******************/
+      // //初始化
+      // initialize() {
+      //   document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+      // },
+      // getId(id) {
+      //   return document.getElementById(id);
+      // },
+      // onDeviceReady(){
 
-      },
-      mediaSuccess() {
-        console.log("Media成功")
-      },
-      mediaError(err) {
-        console.log("Media失败")
-      },
-      // 开始或恢复播放一个音频文件
-      playAudio() {
-        debugger;
-        if (this.my_media == null) {
-          // 初始化Media对象
-          this.my_media = new Media(this.src, mediaSuccess, mediaError);
-        }
-        // 播放音频
-        this.my_media.play();
-      },
-      // 暂停播放音频文件
-      pauseAudio() {
-        if (this.my_media) {
-          this.my_media.pause();
-        }
-        // 清除定时器对象
-        clearInterval(this.mediaTimer);
-        this.mediaTimer = null;
-      },
-      // 释放操作系统底层的音频资源。
-      releaseAudio() {
-        if (this.my_media) {
-          this.my_media.release();
-        }
+      // },
+      // mediaSuccess() {
+      //   console.log("Media成功")
+      // },
+      // mediaError(err) {
+      //   console.log("Media失败")
+      // },
+      // // 开始或恢复播放一个音频文件
+      // playAudio() {
+      //   debugger;
+      //   if (this.my_media == null) {
+      //     // 初始化Media对象
+      //     this.my_media = new Media(this.src, mediaSuccess, mediaError);
+      //   }
+      //   // 播放音频
+      //   this.my_media.play();
+      // },
+      // // 暂停播放音频文件
+      // pauseAudio() {
+      //   if (this.my_media) {
+      //     this.my_media.pause();
+      //   }
+      //   // 清除定时器对象
+      //   clearInterval(this.mediaTimer);
+      //   this.mediaTimer = null;
+      // },
+      // // 释放操作系统底层的音频资源。
+      // releaseAudio() {
+      //   if (this.my_media) {
+      //     this.my_media.release();
+      //   }
 
-      },
-      // 停止播放音频文件
-      stopAudio() {
-        if (this.my_media) {
+      // },
+      // // 停止播放音频文件
+      // stopAudio() {
+      //   if (this.my_media) {
 
-        }
-        this.my_media.stop();
-        // 清除定时器对象
-        clearInterval(this.mediaTimer);
-        this.mediaTimer = null;
-      },
-      // 返回在音频文件的当前位置。
-      getCurrent() {
-        if (this.mediaTimer == null) {
-          this.mediaTimer = setInterval(function () {
-            this.my_media.getCurrentPosition(
-              // success callback
-              function (position) {
-                if (position > -1) {
-                  console.log((position) + " sec");
-                }
-                document.getElementById('audio_current').innerHTML = position;
-              },
-              // error callback
-              function (e) {
-                console.log("Error getting pos=" + e);
-              }
-            );
-          }, 1000);
-        }
-      },
-      // 返回一个音频文件的持续时间。
-      getDuration() {
-        // Get duration
-        let counter = 0;
-        let timerDur = setInterval(function () {
-          counter = counter + 100;
-          if (counter > 2000) {
-            clearInterval(this.timerDur);
-          }
-          var dur = this.my_media.getDuration();
-          if (dur > 0) {
-            clearInterval(this.timerDur);
-            document.getElementById('audio_duration').innerHTML = (dur) + " sec";
-          }
-        }, 100);
-      },
-      playMedia(){
-        this.playAudio();
-        this.getCurrent();
-        this.getDuration();
-      },
-      pauseMedia(){
-        this.pauseAudio();
-      },
-      releaseMedia(){
-        this.releaseAudio();
-      },
-      stopMedia(){
-        this.stopAudio();
-      },
+      //   }
+      //   this.my_media.stop();
+      //   // 清除定时器对象
+      //   clearInterval(this.mediaTimer);
+      //   this.mediaTimer = null;
+      // },
+      // // 返回在音频文件的当前位置。
+      // getCurrent() {
+      //   if (this.mediaTimer == null) {
+      //     this.mediaTimer = setInterval(function () {
+      //       this.my_media.getCurrentPosition(
+      //         // success callback
+      //         function (position) {
+      //           if (position > -1) {
+      //             console.log((position) + " sec");
+      //           }
+      //           document.getElementById('audio_current').innerHTML = position;
+      //         },
+      //         // error callback
+      //         function (e) {
+      //           console.log("Error getting pos=" + e);
+      //         }
+      //       );
+      //     }, 1000);
+      //   }
+      // },
+      // // 返回一个音频文件的持续时间。
+      // getDuration() {
+      //   // Get duration
+      //   let counter = 0;
+      //   let timerDur = setInterval(function () {
+      //     counter = counter + 100;
+      //     if (counter > 2000) {
+      //       clearInterval(this.timerDur);
+      //     }
+      //     var dur = this.my_media.getDuration();
+      //     if (dur > 0) {
+      //       clearInterval(this.timerDur);
+      //       document.getElementById('audio_duration').innerHTML = (dur) + " sec";
+      //     }
+      //   }, 100);
+      // },
+      // playMedia(){
+      //   this.playAudio();
+      //   this.getCurrent();
+      //   this.getDuration();
+      // },
+      // pauseMedia(){
+      //   this.pauseAudio();
+      // },
+      // releaseMedia(){
+      //   this.releaseAudio();
+      // },
+      // stopMedia(){
+      //   this.stopAudio();
+      // },
     },
     mounted() {
       //照相机
 
       //打开苹果健康权限
-      // this.getHealth();
+      this.getHealth();
 
       //初始化音频插件
-      this.initialize();
+      // this.initialize();
     }
 
   }

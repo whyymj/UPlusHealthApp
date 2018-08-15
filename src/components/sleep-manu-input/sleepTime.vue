@@ -22,7 +22,7 @@
             return {
                 tips: '',
                 popupVisible: false,
-                startTime: ['18:00', '00:00'],
+                startTime: ['18:00', '00:30'],
                 endTime: ['23:59', '08:00'],
                 index: 0,
                 pickerValue: '',
