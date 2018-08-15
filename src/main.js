@@ -16,29 +16,34 @@ import 'echarts/lib/component/markPoint' // 标记
 // import mint ui
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
-import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
-import axios from 'axios';
-Vue.use(VueAwesomeSwiper)
-Vue.use(ElementUI);
+import axios from 'axios'
 // import vux
-import {InlineCalendar, Loading} from 'vux'
-Vue.prototype.$axios=axios;
+import { InlineCalendar, Loading } from 'vux'
 
 import '../config/user.config'
 
+Vue.use(VueAwesomeSwiper)
+Vue.use(ElementUI)
+Vue.prototype.$axios = axios
 
 Vue.config.productionTip = false
-Vue.component('h-header', () => import ('./components/common/header.vue'))
-Vue.component('e-chart', () => import ('./components/common/eChart'))
-Vue.component('chart', () => import ('vue-echarts/components/ECharts'))
+Vue.component('h-header', () => import('./components/common/header.vue'))
+Vue.component('e-chart', () => import('./components/common/eChart'))
+Vue.component('chart', () => import('vue-echarts/components/ECharts'))
 Vue.component('inline-calendar', InlineCalendar)
 Vue.component('loading', Loading)
 Vue.use(MintUI)
 
 /* eslint-disable no-new */
-new Vue({el: '#app', router, components: {
+new Vue({
+  el: '#app',
+  router,
+  components: {
     App
-  }, template: '<App/>'})
+  },
+  template: '<App/>'
+})

@@ -65,24 +65,24 @@ const editFamily=resolve => require(['@/components/user-info/editFamily.vue'], r
 const router = new Router({
   mode: 'history',
   routes: [
-    // {
-    //   path: '*',
-    //   redirect: '/'
-    // }, {
-    //   path: '/',
-    //   redirect: 'login'
-    // }, {
-    //   path: '/test',
-    //   name: 'test',
-    //   component: test
-    // }, {
-    //   path: '/login',
-    //   name: 'login',
-    //   meta: {
-    //     title: '海尔健康'
-    //   },
-    //   component: login
-    // }, 
+    {
+      path: '*',
+      redirect: '/'
+    }, {
+      path: '/',
+      redirect: 'login'
+    }, {
+      path: '/test',
+      name: 'test',
+      component: test
+    }, {
+      path: '/login',
+      name: 'login',
+      meta: {
+        title: '海尔健康'
+      },
+      component: login
+    },
     {
       path: '/introduction',
       name: 'introduction',
