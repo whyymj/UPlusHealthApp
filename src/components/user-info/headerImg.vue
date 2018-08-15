@@ -4,7 +4,7 @@
 		<div>
 			<p @click="upload()" class="imgText" v-bind:style="{'display':imgUrl? 'none':'block'}">点击上传头像</p>
 		</div>
-		<input ref="upload" accept="image/gif,image/jpeg,image/jpg,image/png" @change="show()" style="display:none;position:absolute;" type="file" name="" value="点击修改头像">
+		<input ref="upload" accept="image/gif,image/jpeg,image/jpg,image/png" @change="show()" style="display:none;position:absolute;" type="file" name="" value="点击上传头像">
 		<button @click="uploadImg" class="imgText saveImg" v-bind:style="{'display':imgUrl? 'block':'none'}">确认</button>
 	</div>
 </template>
@@ -14,16 +14,16 @@
 	export default {
 		data() {
 			return {
-				imgUrl:null,
+				imgUrl: null,
 				allData: {},
-				memberId:'',
-				upimgUrl:null,
+				memberId: '',
+				upimgUrl: null,
 			}
 		},
 		created() {
 			this.memberId = this.$route.params.member_id
 		},
-		created(){
+		mounted(){
 			this.getUserInfo()
 		},
 		methods: {
@@ -32,51 +32,51 @@
 				try {
 					var that = this;
 					var result = null
-				//获取个人的信息
-				if(!that.memberId){
-					 result=await axios.post('/api/user/info', {
-					user_id:''
-					})
-				}else{//获取家庭成员的信息
-					result=await axios.post('/api/member', {
-					member_id:that.memberId
-					})
-				}
+					//获取个人的信息
+					if(!that.memberId) {
+						result = await axios.post('/api/user/info', {
+							user_id: ''
+						})
+					} else { //获取家庭成员的信息
+						result = await axios.post('/api/member', {
+							member_id: that.memberId
+						})
+					}
 					console.log(result)
-					this.allData = result.data.data
-					this.imgUrl = result.data.data.head_pic
+					that.allData = result.data.data
+					that.imgUrl = result.data.data.head_pic
 				} catch(err) {
 					console.log(err)
 				}
 			},
-			getCamera(type) {
-				navigator.camera.getPicture(this.onSuccess, this.onFail, {
-					quality: 50,
-					destinationType: Camera.DestinationType.DATA_URL,
-					encodingType: Camera.EncodingType.JPEG,
-					sourceType: type
-				})
-			},
-			onSuccess(imageData) {
-				resolve('data:image/jpeg;base64,' + imageData)
-			},
-			onFail(message) {
-				alert(message)
-			},
-			updata() {
-				alert(this.imgUrl)
-			},
+//			getCamera(type) {
+//				navigator.camera.getPicture(this.onSuccess, this.onFail, {
+//					quality: 50,
+//					destinationType: Camera.DestinationType.DATA_URL,
+//					encodingType: Camera.EncodingType.JPEG,
+//					sourceType: type
+//				})
+//			},
+//			onSuccess(imageData) {
+//				resolve('data:image/jpeg;base64,' + imageData)
+//			},
+//			onFail(message) {
+//				alert(message)
+//			},
+//			updata() {
+//				alert(this.imgUrl)
+//			},
 			upload() {
 				this.$refs.upload.click();
 			},
 			show() {
 				let Img = this.$refs.upload.files[0];
 				let formData = new FormData();
-				formData.append('imgFile',Img);
-				formData.append('member_id',this.memberId);
+				formData.append('file', Img);
+//				formData.append('member_id', this.memberId);
 
 				this.upimgUrl = formData
-//				base64上传图片
+				//base64图片
 				let reader = new FileReader();
 				let self = this;
 				reader.onload = function(e) {
@@ -86,19 +86,25 @@
 					self.imgUrl = url;
 				}
 				reader.readAsDataURL(Img);
-		},
+			},
 			uploadImg() {
 				let config = {
-		            headers:{'Content-Type':'multipart/form-data'}
-		         };  //添加请求头
-				let saveData = this.upimgUrl
-				axios.post('/api/uploadPic',saveData,config)
-				.then(function(res) {
-					console.log(res);
-				})
-				.catch(function(err) {
-					console.log(err);
-				})
+					headers: {
+						'Content-Type': 'multipart/form-data'
+					}
+				}; //添加请求头
+				let saveData = {
+					imgFile: this.upimgUrl,
+					member_id: this.memberId
+				}
+//				let saveData = this.upimgUrl
+				axios.post('/api/uploadPic', saveData, config)
+					.then(function(res) {
+						console.log(res);
+					})
+					.catch(function(err) {
+						console.log(err);
+					})
 				this
 					.$router
 					.replace({
