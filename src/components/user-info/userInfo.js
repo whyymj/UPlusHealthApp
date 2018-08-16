@@ -63,7 +63,7 @@ export default {
 			if(data){
 				let firstIndex = data.indexOf(",")
 				if(firstIndex==-1&&!data){
-					str = '未设置'
+					str = '无'
 				}else{
 					let secondIndex = data.indexOf(",",firstIndex+1)
 					if(secondIndex==-1){
@@ -78,7 +78,7 @@ export default {
 					}
 				}
 			}else{
-				str = "未设置"
+				str = "无"
 			}
 			
 			return str
