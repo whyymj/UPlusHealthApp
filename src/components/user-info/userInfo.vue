@@ -41,10 +41,10 @@
       </div>
     </div>
     <div class="div_magin">
-      <mt-cell title="过敏史" is-link :to="{ name: 'allergic' ,params:{member_id:''}}">
+      <mt-cell title="过敏史" is-link :to="{ name: 'allergic' ,query:{member_id:'',from:'/userInfo'}}">
         <span>{{userallergy}}</span>
       </mt-cell>
-      <mt-cell title="慢病史" is-link :to="{ name: 'chronicDisease' ,params:{member_id:''}}">
+      <mt-cell title="慢病史" is-link :to="{ name: 'chronicDisease' ,query:{member_id:'',from:'/userInfo'}}">
         <span style='overflow:hidden;'>{{userdisease}}</span>
       </mt-cell>
     </div>

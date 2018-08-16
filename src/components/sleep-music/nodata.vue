@@ -33,10 +33,13 @@
         components: {
             modal
         },
-        props:['haveAuthor'],
+        props: ['haveAuthor'],
         mounted() {
             var u = navigator.userAgent
             this.isIos = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+            if (window.localStorage.UPlusApp_getAppleHealthData && (window.localStorage.UPlusApp_getAppleHealthData == 'true' || window.localStorage.UPlusApp_getAppleHealthData == true)) {
+                this.isIos = true;
+            }
         },
         methods: {
             close() {
@@ -46,7 +49,7 @@
                 this.changeNow = false;
             },
             changeRecord() {
-                if (this.isIos&&!this.haveAuthor) {
+                if (this.isIos && !this.haveAuthor) {
                     this.changeNow = true;
                 } else {
                     this.$router.push('/sleepManuInput');

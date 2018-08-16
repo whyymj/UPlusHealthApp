@@ -7,10 +7,9 @@
             </div>
             <div class="content" @click='play(index,item)'>
                 <div class="title">{{item.name}}</div>
-                <div class="time">耗时约{{musictime[index]}}分钟</div>
+                <div class="time">耗时约{{getTime(item.time)}}分钟</div>
                 <div class="level">{{level(item.level)}}</div>
             </div>
-            <!-- <audio :src="item.musicurl" :ref='"audio"+index' @canplay='canplay(index)'></audio> -->
         </div>
     </div>
 </template>
@@ -19,26 +18,13 @@
     import bus from './evetbus.js';
     export default {
         props: ['musiclist'],
-        watch: {
-            musiclist() {
-                if (this.musiclist && this.musiclist.length) {
-                    this.musictime = this.musiclist.map(function() {
-                        return 0;
-                    })
-                }
-            }
-        },
-        mounted() {
-            if (this.musiclist && this.musiclist.length) {
-                this.musictime = this.musiclist.map(function() {
-                    return 0;
-                })
-            }
-        },
         methods: {
-            canplay(index) {
-                if (this.$refs['audio' + index][0]) {
-                    this.musictime.splice(index, 1, Math.round(this.$refs['audio' + index][0].duration / 60))
+            getTime(str) {
+                if (typeof str == 'string') {
+                    var arr = str.split(':');
+                    return arr[0] * 1 + Math.round(arr[1] / 60)
+                }else{
+                    return 0
                 }
             },
             level(index) {
@@ -62,8 +48,7 @@
         data() {
             return {
                 showaudio: false,
-                playindex: -1,
-                musictime: []
+                playindex: -1
             }
         },
     }

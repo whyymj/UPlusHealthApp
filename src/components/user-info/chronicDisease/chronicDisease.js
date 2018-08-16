@@ -6,6 +6,7 @@ export default {
 	},
 	data() {
 		return {
+			route:'',
 			isAllergic: false,
 			//    list: datas.allergicData, allergicValue: false, //是否有过敏史
 			editText: '保存',
@@ -41,7 +42,8 @@ export default {
 		}
 	},
 	created() {
-		this.memberId = this.$route.params.member_id
+		this.memberId = this.$route.query.member_id;
+		this.route=this.$route.query.from;
 		this.getUserInfo();
 	},
 	methods: {
@@ -110,6 +112,7 @@ export default {
 			}
 		},
 		save() {
+			var that=this;
 			let saveData = this.allData
 			console.log(this.member)
 			console.log(saveData)
@@ -136,7 +139,7 @@ export default {
 			this
 				.$router
 				.replace({
-					path: '/userInfo'
+					path: that.route
 				})
 		},
 

@@ -12,8 +12,8 @@
     export default {
         data() {
             return {
-                talltmp: 180,
-                tall: 180,
+                talltmp: 180+'厘米',
+                tall: 180+'厘米',
                 tallarr: [],
                 params:{}
             }
@@ -26,12 +26,12 @@
                     path: that.params.from,
                     query: {
                         name: that.params.row,
-                        value: that.tall
+                        value: that.talltmp
                     }
                 })
             },
             select_tall(picker, value) {
-                this.talltmp = value[0] || 180 + '厘米'
+                this.talltmp =( value[0] || 180) + '厘米'
             },
         },
         mounted() {

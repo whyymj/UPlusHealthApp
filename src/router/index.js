@@ -71,7 +71,7 @@ const weightMeasure = resolve => require(['@/components/weight-measure/weight-me
 const serverError = resolve => require(['@/components/error-message/serverError.vue'], resolve)
 
 const editFamily = resolve => require(['@/components/user-info/editFamily.vue'], resolve)
-
+const editFriends = resolve => require(['@/components/user-info/editFriends.vue'], resolve)
 const router = new Router({
   mode: 'history',
   routes: [
@@ -460,6 +460,13 @@ const router = new Router({
         title: '修改家人资料'
       },
       component: editFamily
+    }, {
+      path: '/editFriends',
+      name: 'editFriends',
+      meta: {
+        title: '修改朋友'
+      },
+      component: editFriends
     }, {
       path: '/test2',
       name: 'test2',

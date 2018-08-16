@@ -9,81 +9,22 @@
 			</div>
 			<div @click="showNickName()">
 				<mt-cell title="昵称" is-link>
-					<span>{{nickName}}</span>
+					<span>{{nickName||'请填写昵称'}}</span>
 				</mt-cell>
 			</div>
-			<!--<div @click="openPicker(4)">
-		        <mt-cell title="性别" is-link>
-		          <span>{{sex}}</span>
-		        </mt-cell>
-		      </div>-->
-			<div @click="openBirthDay('pickerBD')">
-				<mt-cell title="生日" is-link>
-					<span>{{birthday}}</span>
+				<div @click="showNickName()">
+				<mt-cell title="备注" is-link>
+					<span>{{addition||'请填写备注'}}</span>
 				</mt-cell>
 			</div>
 		</div>
-		<div class="div_magin">
-			<div @click="openPicker(1)">
-				<mt-cell title="身高" is-link>
-					<span>{{heightValue}}</span>
-				</mt-cell>
-			</div>
-			<div @click="openPicker(2)">
-				<mt-cell title="体重" is-link>
-					<span>{{weightValue}}</span>
-				</mt-cell>
-			</div>
-			<div @click="openPicker(3)">
-				<mt-cell title="目标体重" is-link>
-					<span>{{targetWeightValue}}</span>
-				</mt-cell>
-			</div>
-		</div>
-		<div class="div_magin">
-			<mt-cell title="过敏史" is-link :to="{ name: 'allergic',query:{member_id:memberId,from:'/editFamily'} }">
-				<span>{{userallergy}}</span>
-			</mt-cell>
-			<mt-cell title="慢病史" is-link :to="{ name: 'chronicDisease' ,query:{member_id:memberId,from:'/editFamily'}}">
-				<span>{{userdisease}}</span>
-			</mt-cell>
-		</div>
-		<!--<div class="div_magin">
-		      <mt-cell title="隐私设置" is-link :to="{ name: 'privacySet' }"/>
-		    </div>-->
-		<div class="deleteFamily" @click="openDeleteFamily">
-			删除家人
-		</div>
+	
 		<!--上传头像-->
 		<div>
 			<mt-actionsheet :actions="headerAction" v-model="sheetVisible" cancel-text="取消">
 			</mt-actionsheet>
 		</div>
-		<!--修改昵称-->
-		<div>
-		</div>
-		<!--删除家人-->
-		<div v-bind:style="{'display':isDeleteShow? 'block':'none'}" class="deleteFamilywrap">
-			<div class="deleteFamilybox">
-				<div class="texttip">删除后档案数据无法恢复，是否确认删除？</div>
-				<div class="confirmDeleteFamily" @click="deleteFamily">确认删除</div>
-			</div>
-			<div class="noDelete" @click="closeDeleteFamily">取消</div>
-		</div>
-		<!-- 日期选择 -->
-		<div @touchmove.prevent>
-			<mt-datetime-picker ref="pickerBD" type="date" v-model="defaultBirthday" year-format="{value} 年" month-format="{value} 月" date-format="{value} 日" :startDate="startDate" :endDate="endDate" @confirm="handleChangeBD">
-			</mt-datetime-picker>
-		</div>
-		<!-- 身高体重性别 -->
-		<div @touchmove.prevent>
-			<mt-popup v-model="pickerVisible" :closeOnClickModal="true" position="bottom" class="mint-datetime">
-				<mt-picker :slots="dateSlots" @change="onChange" value-key="dict_name" class="mint-datetime-picker" show-toolbar>
-					<span class="mint-datetime-action mint-datetime-cancel" @click="pickerVisible = false">取消</span>
-					<span class="mint-datetime-action mint-datetime-confirm" @click="confirm">确定</span>
-				</mt-picker>
-			</mt-popup>
-		</div>
+	
 	</div>
 </template>
 
@@ -109,6 +50,7 @@
 				sheetVisible: false,
 				pickerVisible: false,
 				dateSlots: [],
+				addition:'',
 				valuePicker: null,
 				pickerIndex: null,
 				nickName: "nick", //昵称
@@ -133,7 +75,6 @@
 			this.memberId = this.$route.params.member_id
 		},
 		mounted() {
-			// document.getElementsByTagName('title')[0].innerHTML=''
 			var that = this;
 			this.route = this.$route.path;
 			this.getUserInfo(function() {

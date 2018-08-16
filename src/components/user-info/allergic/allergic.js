@@ -3,6 +3,7 @@ import axios from 'axios';
 export default {
 	data() {
 		return {
+			route:'',
 			isAllergic: false,
 			allergyHistory: true,
 			allergy: '',
@@ -39,7 +40,8 @@ export default {
 		tagslist
 	},
 	created() {
-		this.memberId = this.$route.params.member_id
+		this.memberId = this.$route.params.member_id;
+		this.route=this.$route.query.from;
 		this.getUserInfo();
 	},
 	methods: {
@@ -108,6 +110,7 @@ export default {
 			}
 		},
 		save() {
+			var that=this;
 			let saveData = this.allData
 			//保存个人
 			if(!this.memberId) {
@@ -132,7 +135,7 @@ export default {
 			this
 				.$router
 				.replace({
-					path: '/userInfo'
+					path: that.route
 				})
 		}
 	},
