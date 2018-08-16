@@ -23,7 +23,7 @@ export default {
   mounted() {
     (async () => {
       const tv_result = await axios.get('/api/tv/login')
-      this.showTitle = tv_result.data.flag
+      // this.showTitle = tv_result.data.flag
     })()
     const html = document.getElementsByTagName('html')[0];
     const w = document.documentElement.clientWidth || document.body.clientWidth;
