@@ -6,7 +6,7 @@
         <warmTips :tips='tips'></warmTips>
         <div class="button">
             <div class="retry" :class='{saved:hadSaved}' @click='reTest'>重新测试</div>
-            <div class="save" @click='save' v-if='!hadSaved'>保存结果</div>
+            <div class="save" @click='save' v-if='!hadSaved'>返回</div>
         </div>
     </div>
 </template>
@@ -19,6 +19,9 @@
         methods: {
             save() {
                 this.hadSaved = true
+               this.$router.push({
+                   path:'/enterToTest'
+               })
             },
             reTest() {
                 this.$router.push('/sleepTest?from=retest')

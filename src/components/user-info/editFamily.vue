@@ -183,7 +183,6 @@
 						member_id: memberID
 					})
 					.then(function(res) {
-						console.log(res);
 						this.isDeleteShow = false
 						this
 							.$router

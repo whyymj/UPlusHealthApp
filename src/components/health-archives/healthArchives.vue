@@ -55,9 +55,8 @@
             <div class="dialog-content">
                 <h2>健康档案隐私权政策</h2>
                 <p>
-                    感谢您使用“健康档案”，健康档案尊重用户的个人信息和用户对服务的知情权利，并为此发布了隐私权政策。
-                    为了向您提供高效优质的服务，我们需要搜集：您的手机号码和个人信息（可能涉及账号、设备、服务使用等相关信息），以用于注册您的会员账号等。我们不会向任何第三方提供您的信息，除非得到您的授权。此外，我们还将升级服务，为您提供“一个账号”管理海尔旗下不同应用端的服务便利。
-                    详情请您仔细阅读：<a href="">《海尔家电隐私权政策》</a>
+                    感谢您使用“健康档案”，健康档案尊重用户的个人信息和用户对服务的知情权利，并为此发布了隐私权政策。 为了向您提供高效优质的服务，我们需要搜集：您的手机号码和个人信息（可能涉及账号、设备、服务使用等相关信息），以用于注册您的会员账号等。我们不会向任何第三方提供您的信息，除非得到您的授权。此外，我们还将升级服务，为您提供“一个账号”管理海尔旗下不同应用端的服务便利。 详情请您仔细阅读：
+                    <a href="">《海尔家电隐私权政策》</a>
                 </p>
                 <x-button style="width: 90%;margin-top: 30px">不同意</x-button>
                 <x-button type="primary" style="width: 90%">同意</x-button>
@@ -79,7 +78,10 @@
     import {
         Indicator
     } from 'mint-ui';
-    import { XDialog, XButton } from 'vux'
+    import {
+        XDialog,
+        XButton
+    } from 'vux'
     import firstLogin from './first_login_sleepreport.vue';
     export default {
         components: {
@@ -467,7 +469,6 @@
                     const result = await this.$axios.post('/api/user/info', {
                         phone: ''
                     })
-                    
                     result.data.data.relation_name = '我';
                     result.data.data.member_id = '';
                     this.myinfo = [result.data.data];
@@ -673,7 +674,12 @@
                 if (obj.code !== '') {
                     try {
                         const result = await this.$axios.post('/api/info', obj)
-                        console.log('result？？？？？',result);
+                        
+                        if (result.data.data&&result.data.data.need_guide == 'Y') {
+                            this.$router.push({
+                                path:'/newAddReport'
+                            })
+                        } 
                         if (result.data.data.user_flag === 'Y') { // new user
                             this.$router.replace({
                                 path: '/introduction'

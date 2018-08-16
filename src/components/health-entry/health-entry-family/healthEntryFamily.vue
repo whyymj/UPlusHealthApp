@@ -183,7 +183,8 @@
                 chromiclist: [], //慢病标签
                 allergylist: [], //过敏标签
                 toast: '',
-                isSave: true, //保存标签                
+                isSave: true, //保存标签     
+                route: ''
             };
         },
         watch: {
@@ -223,6 +224,7 @@
             }
         },
         mounted() {
+            this.route = this.$route.query.from || '';
             var that = this;
             var years = [];
             var months = [];
@@ -481,7 +483,7 @@
                 //     .catch(_ => {});
             },
             save() {
-                     var that = this;
+                var that = this;
                 //				    nick_name: this.input_nick_name,
                 let saveData = {
                     relation: 13, //称呼
@@ -502,13 +504,29 @@
                                 setTimeout(() => {
                                     toast.close();
                                 }, 2000);
-                                that.$router.push({
-                                    path: '/healthArchives'
-                                })
+                                if (that.route) {
+                                    that.$router.push({
+                                        path: that.route
+                                    })
+                                } else {
+                                    that.$router.push({
+                                        path: '/healthArchives'
+                                    })
+                                }
                             }
                         })
                         .catch(function(err) {
-                            console.log(err);
+                             if (process.env.NODE_ENV == 'development') {
+                                  if (that.route) {
+                                    that.$router.push({
+                                        path: that.route
+                                    })
+                                } else {
+                                    that.$router.push({
+                                        path: '/healthArchives'
+                                    })
+                                }
+                             }
                         })
                 } else {
                     this.toast = Toast('请先填写完必填信息');

@@ -7,11 +7,11 @@
                 </div>
                 <div class="body_12">
                     <!--<div class="body_121" @click='choose_nick_name'>
-            <span class="body_1211">昵称</span>
-            <span class="body_1212">&middot;</span>
-            <el-input v-model="input_nick_name" placeholder="请输入昵称（不超过16字符）" maxlength=16 @change='input_nick'></el-input>
-            <span class="body_1213"><span></span>&nbsp&nbsp<i class="el-icon-arrow-right" style='color:#DADADA;'></i></span>
-        </div>-->
+                            <span class="body_1211">昵称</span>
+                            <span class="body_1212">&middot;</span>
+                            <el-input v-model="input_nick_name" placeholder="请输入昵称（不超过16字符）" maxlength=16 @change='input_nick'></el-input>
+                            <span class="body_1213"><span></span>&nbsp&nbsp<i class="el-icon-arrow-right" style='color:#DADADA;'></i></span>
+                        </div>-->
                     <div class="body_121" @click='choose_sex'>
                         <span class="body_1211">性别</span>
                         <span class="body_1212">&middot;</span>
@@ -180,6 +180,7 @@
                 chromiclist: [], //慢病标签
                 allergylist: [], //过敏标签
                 isSave: true, //保存按钮
+                route: ''
             };
         },
         watch: {
@@ -213,6 +214,7 @@
             }
         },
         mounted() {
+            this.route = this.$route.query.from || '';
             var that = this;
             var years = [];
             var months = [];
@@ -484,14 +486,28 @@
                 }
                 axios.post('/api/user', saveData)
                     .then(function(res) {
-                        that.$router.push({
-                            path: '/healthArchives'
-                        })
+                        if (that.route) {
+                            that.$router.push({
+                                path: that.route
+                            })
+                        } else {
+                            that.$router.push({
+                                path: '/healthRecordsB'
+                            })
+                        }
                     })
                     .catch(function(err) {
-                        // that.$router.push({
-                        //     path: '/healthArchives'
-                        // })
+                        if (process.env.NODE_ENV == 'development') {
+                            if (that.route) {
+                                that.$router.push({
+                                    path: that.route
+                                })
+                            } else {
+                                that.$router.push({
+                                    path: '/healthRecordsB'
+                                })
+                            }
+                        }
                     })
             }
         }
@@ -510,25 +526,25 @@
             overflow: hidden;
             position: relative;
             /*.input_nick_name {
-                    position: absolute;
-                    width: 14rem;
-                    top: 0;
-                    bottom: 0;
-                    left: 0;
-                    right: 0;
-                    margin: auto;
-                    height: 2rem;
-                    border-radius: 0.2rem;
-                    display: block;
-                    margin: auto;
-                    border: 1px solid #eee;
-                    box-sizing: border-box;
-                    padding: 0 0.5rem;
-                    font-size: 0.7rem;
-                    font-family: "PingFangSC-Regular";
-                    color: #666;
-                    line-height: 2rem;
-                }*/
+                                    position: absolute;
+                                    width: 14rem;
+                                    top: 0;
+                                    bottom: 0;
+                                    left: 0;
+                                    right: 0;
+                                    margin: auto;
+                                    height: 2rem;
+                                    border-radius: 0.2rem;
+                                    display: block;
+                                    margin: auto;
+                                    border: 1px solid #eee;
+                                    box-sizing: border-box;
+                                    padding: 0 0.5rem;
+                                    font-size: 0.7rem;
+                                    font-family: "PingFangSC-Regular";
+                                    color: #666;
+                                    line-height: 2rem;
+                                }*/
         }
         .sex_radio {
             padding: 0.5rem 5rem;
