@@ -329,23 +329,23 @@
 					case 1:
 						this.heightValue = this.valuePicker;
 						//调用身高保存接口
-						this.save()
-						break
+						this.save();
+						break;
 					case 2:
 						this.weightValue = this.valuePicker;
 						//调用体重保存接口
-						this.save()
-						break
+						this.save();
+						break;
 					case 3:
 						this.targetWeightValue = this.valuePicker;
 						//调用目标体重保存接口
-						this.save()
-						break
+						this.save();
+						break;
 					case 4:
 						this.sex = this.valuePicker;
 						//调用性别保存接口
-						this.save()
-						break
+						this.save();
+						break;
 				}
 
 				this.pickerVisible = false

@@ -36,8 +36,18 @@ export default {
 			userallergy:"未设置",//选择的过敏
 		}
 	},
-	mounted() {
-		this.getUserInfo();
+	mounted() {		
+		var that=this	   ;
+		
+		this.getUserInfo(function(){
+			 var data=that.$route.query;
+			 that[data.name]=data.value;
+			 that.save(function(){
+				 that.getUserInfo();
+			 });
+		});
+		
+	
 	},
 
 	methods: {
@@ -72,26 +82,13 @@ export default {
 			this.sheetVisible = true;
 		},
 		showNickName: function() {
-			let message = "请输入昵称";
-			let title = "";
-			let options = {
-				inputPlaceholder: '请输入昵称'
-			};
-			MessageBox
-				.prompt(message, title, options)
-				.then(({
-					value
-				}) => {
-					if(value&&value.length<17) {
-						//调用昵称保存接口
-						
-						this.nickName = value;
-						this.save()
-					} else {
-						MessageBox('提示', '昵称不能超过16个字符');
-					}
-
-				});
+			this.$router.push({
+				path:'/userInfoNickName',
+				query:{
+					from :'/userInfo',
+					row:"nickName"
+				}
+			})
 		},
 		formatDate(date) {
 			const y = date.getFullYear();
@@ -105,10 +102,14 @@ export default {
 				d
 			return y + '-' + m + '-' + d
 		},
-		openBirthDay(picker) {
-			this
-				.$refs[picker]
-				.open();
+		openBirthDay() {
+			this.$router.push({
+				path:'/userInfoBirthday',
+				query:{
+					from:'/userInfo',
+					row:"birthday"
+				}
+			})
 		},
 		handleChangeBD(value) {
 			this.birthday = this.formatDate(value);
@@ -126,56 +127,40 @@ export default {
 			}]
 			switch(index) {
 				case 1:
-					this.dateSlots[0].values = webConfig.height;
-					this.dateSlots[0].defaultIndex = this.heightValue ?
-						webConfig
-						.height
-						.indexOf(this.heightValue) :
-						webConfig
-						.height
-						.indexOf('178cm');
-					this.valuePicker = this.heightValue ?
-						this.heightValue :
-						'178cm';
+				this.$router.push({
+					path:'/userInfoHeight',
+					query:{
+						from:'/userInfo',
+						row:"heightValue"
+					}
+				})
 					break
 				case 2:
-					this.dateSlots[0].values = webConfig.weight;
-					this.dateSlots[0].defaultIndex = this.weightValue ?
-						webConfig
-						.weight
-						.indexOf(this.weightValue) :
-						webConfig
-						.weight
-						.indexOf('80kg');
-					this.valuePicker = this.weightValue ?
-						this.weightValue :
-						'80kg';
+				this.$router.push({
+					path:'/userInfoWeight',
+					query:{
+						from:'/userInfo',
+						row:"weightValue"
+					}
+				})
 					break
 				case 3:
-					this.dateSlots[0].values = webConfig.weight;
-					this.dateSlots[0].defaultIndex = this.weightValue ?
-						webConfig
-						.weight
-						.indexOf(this.targetWeightValue) :
-						webConfig
-						.weight
-						.indexOf('80kg');
-					this.valuePicker = this.targetWeightValue ?
-						this.targetWeightValue :
-						'80kg';
+				this.$router.push({
+					path:'/userInfoWeight',
+					query:{
+						from:'/userInfo',
+						row:"targetWeightValue"
+					}
+				})
 					break;
 				case 4:
-					this.dateSlots[0].values = webConfig.sex;
-					this.dateSlots[0].defaultIndex = this.sex ?
-						webConfig
-						.weight
-						.indexOf(this.sex) :
-						webConfig
-						.sex
-						.indexOf('男');
-					this.valuePicker = this.sex ?
-						this.sex :
-						'男';
+					this.$router.push({
+						path:'/userInfoSex',
+						query:{
+							from:'/userInfo',
+							row:"sex"
+						}
+					})
 					break;
 			}
 			this.pickerIndex = index;
@@ -184,32 +169,7 @@ export default {
 			this.valuePicker = values[0]
 		},
 		// 确认选择数据并显示
-		confirm() {
-			switch(this.pickerIndex) {
-				case 1:
-					this.heightValue = this.valuePicker;
-					//调用身高保存接口
-					this.save()
-					break
-				case 2:
-					this.weightValue = this.valuePicker;
-					//调用体重保存接口
-					this.save()
-					break
-				case 3:
-					this.targetWeightValue = this.valuePicker;
-					//调用目标体重保存接口
-					this.save()
-					break
-				case 4:
-					this.sex = this.valuePicker;
-					//调用性别保存接口
-					this.save()
-					break
-			}
-
-			this.pickerVisible = false
-		},
+	
 		openCamera: function() {
 			console.log("打開攝像頭")
 			this.getCamera(1)
@@ -236,7 +196,7 @@ export default {
 			alert(message)
 		},
 		closeActionSheet: function() {},
-		async getUserInfo() {
+		async getUserInfo(fn) {
 			try {
 				var that = this;
 				//根据id获取个人信息
@@ -250,40 +210,51 @@ export default {
 					this.endDate = new Date();
 					this.defaultBirthday = '1980-01-01'; //默认生日
 					this.birthday = data.birthday; //生日
-					this.heightValue = data.height + 'cm'; //身高
-					this.weightValue = data.weight + "kg"; //体重
+					this.heightValue = data.height + '厘米'; //身高
+					this.weightValue = data.weight + "公斤"; //体重
 					this.targetWeightValue = data.target_weight + "kg"; //目标体重
 					this.headPic = data.head_pic
 					this.disease=data.disease//慢病
 					this.allergy=data.allergy//过敏
 					this.userdisease=this.sliceStr(data.disease)
-					this.userallergy=this.sliceStr(data.allergy)
+					this.userallergy=this.sliceStr(data.allergy);
+					
 				}
+				if(fn){
+						fn();
+					}
 			} catch(err) {
-				console.log(err)
+				if(fn){
+					fn();
+				}
 			}
 		},
 		//保存
-		save() {
+		save(fn) {
 			let saveData = {
 				height: this.heightValue.substring(0,this.heightValue.length-2),
 				weight: this.weightValue.substring(0,this.weightValue.length-2),
 				sex: this.sex,
-				birthday: this.birthday,
+				birthday: this.birthday.repalce('年','-').repalce('月','-').repalce('日',''),
 				nick_name: this.nickName,
 				headPic:this.headPic,
 				target_weight: this.targetWeightValue.substring(0,this.targetWeightValue.length-2),
 				disease:this.disease,//慢病
 				allergy:this.allergy,//过敏
 			}
-			console.log(saveData)
 			//用户信息更改
 			axios.post('/api/user/update', saveData)
 				.then(function(res) {
 					console.log(res);
+					if(fn){
+						fn();
+					}
 				})
 				.catch(function(err) {
 					console.log(err);
+					if(fn){
+						fn();
+					}
 				})
 		}
 	}

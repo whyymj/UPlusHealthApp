@@ -138,6 +138,7 @@
                 })
             },
             checkDateData(val) { //查询当天的数据
+            console.log('check date',val);
                 this.loadingmodal = Loading.service({
                     fullscreen: true,
                     background: 'rgba(0, 0, 0, 0.7)',
