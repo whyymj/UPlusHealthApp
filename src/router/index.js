@@ -50,7 +50,7 @@ const test = resolve => require(['@/components/test.vue'], resolve)
 const test1 = resolve => require(['@/components/test1.vue'], resolve)
 const test2 = resolve => require(['@/components/test2.vue'], resolve)
 const getSleepWiki = resolve => require(['@/components/sleep-cyclopedia/content.vue'], resolve)
-//个人资料
+// 个人资料
 const userInfo = resolve => require(['@/components/user-info/userInfo.vue'], resolve)
 const allergic = resolve => require(['@/components/user-info/allergic/allergic.vue'], resolve)
 const userInfoSex = resolve => require(['@/components/user-info/sex/sex.vue'], resolve)
@@ -59,9 +59,9 @@ const userInfoNickName = resolve => require(['@/components/user-info/nick_name/n
 const userInfoWeight = resolve => require(['@/components/user-info/weight/weight.vue'], resolve)
 const userInfoHeight = resolve => require(['@/components/user-info/height/height.vue'], resolve)
 const chronicDisease = resolve => require(['@/components/user-info/chronicDisease/chronicDisease.vue'], resolve)
-//上传头像
+// 上传头像
 const headerImg = resolve => require(['@/components/user-info/headerImg.vue'], resolve)
-//隐私设置 privacySet
+// 隐私设置 privacySet
 const privacySet = resolve => require(['@/components/user-info/privacySet.vue'], resolve)
 const healthEntryFamily = resolve => require(['@/components/health-entry/health-entry-family/healthEntryFamily.vue'], resolve)
 const healthEntryMy = resolve => require(['@/components/health-entry/health-entry-my/healthEntryMy.vue'], resolve)

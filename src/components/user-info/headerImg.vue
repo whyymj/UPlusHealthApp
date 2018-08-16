@@ -10,6 +10,7 @@
 </template>
 
 <script>
+	import { Indicator,Toast } from 'mint-ui';
 	import axios from 'axios'
 	export default {
 		data() {
@@ -88,22 +89,32 @@
 				reader.readAsDataURL(Img);
 			},
 			uploadImg() {
-				let config = {
-					headers: {
-						'Content-Type': 'multipart/form-data'
-					}
-				}; //添加请求头
+				Indicator.open({
+				  text: '上传中...',
+				  spinnerType: 'fading-circle'
+				});
+//				//添加请求头
+//				let config = {
+//					headers: {
+//						'Content-Type': 'multipart/form-data'
+//					}
+//				}; 
 				let saveData = {
 					imgFile: this.upimgUrl,
 					member_id: this.memberId
 				}
 //				let saveData = this.upimgUrl
-				axios.post('/api/uploadPic', saveData, config)
+				axios.post('/api/uploadPic', saveData)
 					.then(function(res) {
 						console.log(res);
+						Indicator.close();
+						Toast('上传成功');
+
 					})
 					.catch(function(err) {
 						console.log(err);
+						Indicator.close();
+						Toast('上传失败');
 					})
 				this
 					.$router

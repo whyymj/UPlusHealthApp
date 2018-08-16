@@ -51,6 +51,18 @@
             <p class='floatButton' @click="goFamilyManage"><img class='img' src="/static/healthArchives/index8.png" alt=""></p>
         </div>
         <paginator :pagenum='pagenum' :pageindex='pageindex'></paginator>
+        <x-dialog v-model="show" class="dialog-demo">
+            <div class="dialog-content">
+                <h2>健康档案隐私权政策</h2>
+                <p>
+                    感谢您使用“健康档案”，健康档案尊重用户的个人信息和用户对服务的知情权利，并为此发布了隐私权政策。
+                    为了向您提供高效优质的服务，我们需要搜集：您的手机号码和个人信息（可能涉及账号、设备、服务使用等相关信息），以用于注册您的会员账号等。我们不会向任何第三方提供您的信息，除非得到您的授权。此外，我们还将升级服务，为您提供“一个账号”管理海尔旗下不同应用端的服务便利。
+                    详情请您仔细阅读：<a href="">《海尔家电隐私权政策》</a>
+                </p>
+                <x-button style="width: 90%;margin-top: 30px">不同意</x-button>
+                <x-button type="primary" style="width: 90%">同意</x-button>
+            </div>
+        </x-dialog>
         <firstLogin @firstlogin='first_login'></firstLogin>
     </div>
 </template>
@@ -67,12 +79,15 @@
     import {
         Indicator
     } from 'mint-ui';
+    import { XDialog, XButton } from 'vux'
     import firstLogin from './first_login_sleepreport.vue';
     export default {
         components: {
             imgbox,
             paginator,
             mynav,
+            XDialog,
+            XButton,
             firstLogin
         },
         watch: {
@@ -82,6 +97,7 @@
         },
         data() {
             return {
+                show: false,
                 initnum: 0, //初始页
                 maleShow: true,
                 pagenum: 2,
@@ -695,6 +711,20 @@
 
 <style lang='scss'>
     .healthArchives {
+        .dialog-demo {
+            .dialog-content {
+                height: 400px;
+                overflow: hidden;
+            }
+            h2 {
+                font-size: 20px;
+                font-weight: bold
+            }
+            p {
+                margin: 5px;
+                text-align: justify
+            }
+        }
         .tabs {
             position: relative;
             .floatButton {
