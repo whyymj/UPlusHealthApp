@@ -53,6 +53,11 @@ const getSleepWiki = resolve => require(['@/components/sleep-cyclopedia/content.
 // 个人资料
 const userInfo = resolve => require(['@/components/user-info/userInfo.vue'], resolve)
 const allergic = resolve => require(['@/components/user-info/allergic/allergic.vue'], resolve)
+const userInfoSex = resolve => require(['@/components/user-info/sex/sex.vue'], resolve)
+const userInfoBirthday = resolve => require(['@/components/user-info/birthday/birthday.vue'], resolve)
+const userInfoNickName = resolve => require(['@/components/user-info/nick_name/nickname.vue'], resolve)
+const userInfoWeight = resolve => require(['@/components/user-info/weight/weight.vue'], resolve)
+const userInfoHeight = resolve => require(['@/components/user-info/height/height.vue'], resolve)
 const chronicDisease = resolve => require(['@/components/user-info/chronicDisease/chronicDisease.vue'], resolve)
 // 上传头像
 const headerImg = resolve => require(['@/components/user-info/headerImg.vue'], resolve)
@@ -462,7 +467,43 @@ const router = new Router({
         title: '音频播放测试'
       },
       component: test2
+    }, {
+      path: '/userInfoSex',
+      name: 'userInfoSex',
+      meta: {
+        title: '性别'
+      },
+      component: userInfoSex
+    }, {
+      path: '/userInfoBirthday',
+      name: 'userInfoBirthday',
+      meta: {
+        title: '生日'
+      },
+      component: userInfoBirthday
+    }, {
+      path: '/userInfoNickName',
+      name: 'userInfoNickName',
+      meta: {
+        title: '昵称'
+      },
+      component: userInfoNickName
+    }, {
+      path: '/userInfoWeight',
+      name: 'userInfoWeight',
+      meta: {
+        title: '体重'
+      },
+      component: userInfoWeight
+    }, {
+      path: '/userInfoHeight',
+      name: 'userInfoHeight',
+      meta: {
+        title: '身高'
+      },
+      component: userInfoHeight
     }
+
   ]
 })
 

@@ -467,6 +467,7 @@
                     const result = await this.$axios.post('/api/user/info', {
                         phone: ''
                     })
+                    
                     result.data.data.relation_name = '我';
                     result.data.data.member_id = '';
                     this.myinfo = [result.data.data];
@@ -672,6 +673,7 @@
                 if (obj.code !== '') {
                     try {
                         const result = await this.$axios.post('/api/info', obj)
+                        console.log('result？？？？？',result);
                         if (result.data.data.user_flag === 'Y') { // new user
                             this.$router.replace({
                                 path: '/introduction'

@@ -1,6 +1,6 @@
 <template>
     <div class="sleepManuInput">
-        <sleeptime :list='items' @getSleepTimes='getSleepTimes' ></sleeptime>
+        <sleeptime :list='items' @getSleepTimes='getSleepTimes'></sleeptime>
         <sleepquality :quality='quality' :factors='factors' @chooseQuality='chooseQuality' @chooseFactor='chooseFactor'></sleepquality>
         <div class="button" @click='submitResult'>保存</div>
     </div>
@@ -9,6 +9,7 @@
 <script>
     import sleeptime from './sleepTime';
     import sleepquality from './sleepQuality.vue';
+    import bus from './bus.js';
     export default {
         components: {
             sleeptime,
@@ -21,47 +22,50 @@
             chooseQuality(index) {
                 this.sleepqualityres = index;
             },
-            getSleepTimes(list) {
+            getSleepTimes(list, flag) {
                 this.items = list;
+                this.cansub = flag;
             },
             submitResult() {
                 var that = this;
-                if (this.sleepid) { //有sleep_id为修改，否则为添加
-                    this.$axios.post('/api/updateSleepAnalysis', {
-                        sleep_id: that.sleepid,
-                        startTime: that.items[0].content,
-                        sleepTime: that.items[1].content,
-                        wakeTime: that.items[2].content,
-                        getupTime: that.items[3].content,
-                        quality: that.sleepqualityres,
-                        influence: that.sleepfactors
-                    }).then(function(res) {
-                        that.$router.push('/sleepMusicList');
-                    }).catch(function() {
-                        that.$router.push('/sleepMusicList');
-                    });
-                } else {
-                    this.$axios.post('/api/sleep/insert', {
-                        member_id: "",
-                        startTime: that.items[0].content,
-                        sleepTime: that.items[1].content,
-                        wakeTime: that.items[2].content,
-                        getupTime: that.items[3].content,
-                        quality: that.sleepqualityres,
-                        influence: that.sleepfactors
-                    }).then(function(res) {
-                        that.$router.push('/sleepMusicList');
-                    }).catch(function() {
-                      
-                        that.$router.push('/sleepMusicList');
-                    });
+                if (this.cansub) {
+                    if (this.sleepid) { //有sleep_id为修改，否则为添加
+                        this.$axios.post('/api/updateSleepAnalysis', {
+                            sleep_id: that.sleepid,
+                            startTime: that.items[0].content,
+                            sleepTime: that.items[1].content,
+                            wakeTime: that.items[2].content,
+                            getupTime: that.items[3].content,
+                            quality: that.sleepqualityres,
+                            influence: that.sleepfactors
+                        }).then(function(res) {
+                            that.$router.push('/sleepMusicList');
+                        }).catch(function() {
+                            that.$router.push('/sleepMusicList');
+                        });
+                    } else {
+                        this.$axios.post('/api/sleep/insert', {
+                            member_id: "",
+                            startTime: that.items[0].content,
+                            sleepTime: that.items[1].content,
+                            wakeTime: that.items[2].content,
+                            getupTime: that.items[3].content,
+                            quality: that.sleepqualityres,
+                            influence: that.sleepfactors
+                        }).then(function(res) {
+                            that.$router.push('/sleepMusicList');
+                        }).catch(function() {
+                            that.$router.push('/sleepMusicList');
+                        });
+                    }
+                }else{
+                    bus.$emit('whycannotsub');
                 }
             }
         },
         data() {
             return {
-                
-             
+                cansub: true,
                 quality: '', //查到的质量
                 factors: '', //查到的因素
                 sleepqualityres: "", //选择的质量
@@ -70,12 +74,12 @@
                 items: [{
                         title: "上床",
                         url: "/static/sleep-manue-input/img1.png",
-                        content: "18:00"
+                        content: "00:00"
                     },
                     {
                         title: "睡着",
                         url: "/static/sleep-manue-input/img2.png",
-                        content: "18:10"
+                        content: "00:00"
                     },
                     {
                         title: "睡醒",
@@ -85,7 +89,7 @@
                     {
                         title: "起床",
                         url: "/static/sleep-manue-input/img4.png",
-                        content: "8:15"
+                        content: "8:00"
                     }
                 ]
             };
