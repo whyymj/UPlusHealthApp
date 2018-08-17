@@ -37,14 +37,7 @@
                 </div>
             </div>
         </div>
-        <!-- <el-dialog title="关联Apple Health" :visible.sync="dialogVisible" width="80%">
-                                                                                                            <span>是否同意关联苹果健康数据？</span>
-                                                                                                            <span slot="footer" class="dialog-footer">
-                                                                                                                                                                                
-                                                                                                    <el-button @click="dialogVisible = false">取 消</el-button>
-                                                                                                    <el-button type="primary" @click="saveSleepInfo">确 定</el-button>
-                                                                                                    </span>
-                                                                                                        </el-dialog> -->
+  
         <bigechart @showbig='showbig' v-if='showBigEcharts'></bigechart>
     </div>
 </template>
@@ -285,7 +278,6 @@
                             that.sleep_id = res.data.data.sleep_id
                         }
                     }).catch(function() {
-                        
                     });
                 }
             },
@@ -563,7 +555,8 @@
                 }
             })
             this.$axios.post('/api/getSleepInfo', { //获取睡眠资讯
-                size: 7
+                pageSize: 10,
+                currentPage: 1
             }).then(function(res) {
                 that.sleepnewslist = res.data;
             }).catch(function(res) {

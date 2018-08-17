@@ -6,12 +6,7 @@
                     <div class="body_11_txt">基本信息</div>
                 </div>
                 <div class="body_12">
-                    <!--<div class="body_121" @click='choose_nick_name'>
-                            <span class="body_1211">昵称</span>
-                            <span class="body_1212">&middot;</span>
-                            <el-input v-model="input_nick_name" placeholder="请输入昵称（不超过16字符）" maxlength=16 @change='input_nick'></el-input>
-                            <span class="body_1213"><span></span>&nbsp&nbsp<i class="el-icon-arrow-right" style='color:#DADADA;'></i></span>
-                        </div>-->
+            
                     <div class="body_121" @click='choose_sex'>
                         <span class="body_1211">性别</span>
                         <span class="body_1212">&middot;</span>
@@ -55,7 +50,7 @@
                 <div class="body_122" v-show='chronDiseaseHistory'>
                     <div class="body_1221 body_231">请选择慢病标签&nbsp;&nbsp;&nbsp;(可多选)：</div>
                 </div>
-                <tagslist :tags='chromiclist' name='chronic' @choose='chooseChromic' v-show='chronDiseaseHistory'></tagslist>
+                <tagslist :tags='chromiclist' name='chronic' :clear='clearChronDiseaseHistory' @choose='chooseChromic' v-show='chronDiseaseHistory'></tagslist>
                 <div class="body_22">
                     <div class="body_221">你是否有过敏史？</div>
                     <div class="body_222">
@@ -66,7 +61,7 @@
                 <div class="body_122" v-show='allergyHistory'>
                     <div class="body_1221 body_231">请选择过敏源&nbsp;&nbsp;&nbsp;(可多选)：</div>
                 </div>
-                <tagslist :tags='allergylist' name='allergy' @choose='chooseAllergy' v-show='allergyHistory'></tagslist>
+                <tagslist :tags='allergylist' name='allergy' :clear='clearAllergyHistory' @choose='chooseAllergy' v-show='allergyHistory'></tagslist>
             </div>
         </div>
         <div class="bottom">
@@ -168,7 +163,9 @@
                 sex_radio: false,
                 sex: "",
                 sextmp: '',
+                clearChronDiseaseHistory: true, //是否清空慢病史
                 chronDiseaseHistory: false, //慢病史
+                clearAllergyHistory: true, //是否清空过敏史
                 allergyHistory: false, //过敏史
                 birthday: "", //生日
                 tall: "", //身高
@@ -180,10 +177,18 @@
                 chromiclist: [], //慢病标签
                 allergylist: [], //过敏标签
                 isSave: true, //保存按钮
-                route: ''
+                route: '',
+                disease: '',
+                allergy: ''
             };
         },
         watch: {
+            chronDiseaseHistory() {
+                this.clearChronDiseaseHistory = this.chronDiseaseHistory
+            },
+            allergyHistory() {
+                this.clearAllergyHistory = this.allergyHistory;
+            },
             birthday(value) {
                 if (this.birthday && this.tall && this.weight && this.sex) {
                     this.isSave = false
@@ -290,25 +295,57 @@
                             "note": item.note
                         }
                     })
+                    var diseasedata = window.localStorage.uplus_sleep_user_disease;
+                    that.disease = diseasedata || '' //慢病
+                    var newchromiclist = that.chromiclist;
+                    if (typeof diseasedata == 'string') {
+                        diseasedata = diseasedata.split(",")
+                        for (let i = 0; i < newchromiclist.length; i++) {
+                            for (let j = 0; j < diseasedata.length; j++) {
+                                if (newchromiclist[i].name == diseasedata[j]) {
+                                    that.chronDiseaseHistory = true;
+                                    newchromiclist[i].selected = true;
+                                }
+                            }
+                        }
+                    }
+                    that.chromiclist = newchromiclist;
                 }
             }).catch(function(res) { //慢病标签
-                that.$axios.get('/static/testData/getDiseaseList.json').then(function(res) {
-                    that.loadingmodal.close();
-                    if (res.data.code == 'C0000') {
-                        that.chromiclist = res.data.data.map(function(item) {
-                            return {
-                                name: item.dict_name,
-                                selected: false,
-                                "dict_id": item.dict_id,
-                                "dict_name": item.dict_name,
-                                "dict_name_en": item.dict_name_en,
-                                "dict_type_id": item.dict_type_id,
-                                "status": item.status,
-                                "note": item.note
+                if (process.env.NODE_ENV == 'development') {
+                    that.$axios.get('/static/testData/getDiseaseList.json').then(function(res) {
+                        that.loadingmodal.close();
+                        if (res.data.code == 'C0000') {
+                            that.chromiclist = res.data.data.map(function(item) {
+                                return {
+                                    name: item.dict_name,
+                                    selected: false,
+                                    "dict_id": item.dict_id,
+                                    "dict_name": item.dict_name,
+                                    "dict_name_en": item.dict_name_en,
+                                    "dict_type_id": item.dict_type_id,
+                                    "status": item.status,
+                                    "note": item.note
+                                }
+                            })
+                            var diseasedata = window.localStorage.uplus_sleep_user_disease;
+                            that.disease = diseasedata || '' //慢病
+                            var newchromiclist = that.chromiclist;
+                            if (typeof diseasedata == 'string') {
+                                diseasedata = diseasedata.split(",")
+                                for (let i = 0; i < newchromiclist.length; i++) {
+                                    for (let j = 0; j < diseasedata.length; j++) {
+                                        if (newchromiclist[i].name == diseasedata[j]) {
+                                            that.chronDiseaseHistory = true;
+                                            newchromiclist[i].selected = true;
+                                        }
+                                    }
+                                }
                             }
-                        })
-                    }
-                })
+                            that.chromiclist = newchromiclist;
+                        }
+                    })
+                }
             })
             this.$axios.post('/api/getAllergyList').then(function(res) {
                 that.loadingmodal.close();
@@ -325,25 +362,57 @@
                             "note": item.note
                         }
                     })
+                    var allergydata = window.localStorage.uplus_sleep_user_allergy;
+                    that.allergy = allergydata
+                    var newallergylist = that.allergylist
+                    if (allergydata) {
+                        allergydata = allergydata.split(",")
+                        for (let i = 0; i < newallergylist.length; i++) {
+                            for (let j = 0; j < allergydata.length; j++) {
+                                if (newallergylist[i].name == allergydata[j]) {
+                                    that.allergyHistory = true;
+                                    newallergylist[i].selected = true;
+                                }
+                            }
+                        }
+                    }
+                    that.allergylist = newallergylist
                 }
             }).catch(function(res) { //过敏标签
-                that.$axios.get('/static/testData/getAllergyList.json').then(function(res) {
-                    that.loadingmodal.close();
-                    if (res.data.code == 'C0000') {
-                        that.allergylist = res.data.data.map(function(item) {
-                            return {
-                                name: item.dict_name,
-                                selected: false,
-                                "dict_id": item.dict_id,
-                                "dict_name": item.dict_name,
-                                "dict_name_en": item.dict_name_en,
-                                "dict_type_id": item.dict_type_id,
-                                "status": item.status,
-                                "note": item.note
+                if (process.env.NODE_ENV == 'development') {
+                    that.$axios.get('/static/testData/getAllergyList.json').then(function(res) {
+                        that.loadingmodal.close();
+                        if (res.data.code == 'C0000') {
+                            that.allergylist = res.data.data.map(function(item) {
+                                return {
+                                    name: item.dict_name,
+                                    selected: false,
+                                    "dict_id": item.dict_id,
+                                    "dict_name": item.dict_name,
+                                    "dict_name_en": item.dict_name_en,
+                                    "dict_type_id": item.dict_type_id,
+                                    "status": item.status,
+                                    "note": item.note
+                                }
+                            })
+                            var allergydata = window.localStorage.uplus_sleep_user_allergy;
+                            that.allergy = allergydata
+                            var newallergylist = that.allergylist
+                            if (allergydata) {
+                                allergydata = allergydata.split(",")
+                                for (let i = 0; i < newallergylist.length; i++) {
+                                    for (let j = 0; j < allergydata.length; j++) {
+                                        if (newallergylist[i].name == allergydata[j]) {
+                                            that.allergyHistory = true;
+                                            newallergylist[i].selected = true;
+                                        }
+                                    }
+                                }
                             }
-                        })
-                    }
-                })
+                            that.allergylist = newallergylist;
+                        }
+                    })
+                }
             })
         },
         methods: {
@@ -448,7 +517,8 @@
                         dataSelected.push(data.tags[i].name)
                     }
                 }
-                this.chromicListResult = dataSelected
+                this.chromicListResult = dataSelected;
+                console.log('this.chromicListResult', this.chromicListResult);
             },
             chooseAllergy(data) {
                 var dataSelected1 = []
@@ -457,7 +527,8 @@
                         dataSelected1.push(data.tags[j].name)
                     }
                 }
-                this.allergyListResult = dataSelected1
+                this.allergyListResult = dataSelected1;
+                console.log('this.allergyListResult', this.allergyListResult);
             },
             choose_nick_name() {
                 this.nick_name_pop = !this.nick_name_pop;
@@ -474,16 +545,24 @@
                 //     .catch(_ => {});
             },
             save() {
+                console.log(123);
                 var that = this;
                 let saveData = {
-                    height: parseFloat(this.tall),
-                    weight: parseFloat(this.weight),
-                    sex: this.sex == '男' ? "male" : "female",
-                    birthday: this.birthday.replace('年', '-').replace('月', '-').replace('日', ''),
+                    height: parseFloat(that.tall),
+                    weight: parseFloat(that.weight),
+                    sex: that.sex == '男' ? "male" : "female",
+                    birthday: that.birthday.replace('年', '-').replace('月', '-').replace('日', ''),
                     //				    nick_name: this.input_nick_name,
-                    disease: this.chromicListResult[0] ? this.chromicListResult.join(",") : "",
-                    allergy: this.allergyListResult[0] ? this.allergyListResult.join(',') : '',
+                    disease: that.chromicListResult[0] ? that.chromicListResult.join(",") : "",
+                    allergy: that.allergyListResult[0] ? that.allergyListResult.join(',') : '',
                 }
+                if (!this.chronDiseaseHistory) {
+                    saveData.disease = ''
+                }
+                if (!this.allergyHistory) {
+                    saveData.allergy = ''
+                }
+                
                 axios.post('/api/user', saveData)
                     .then(function(res) {
                         if (that.route) {
@@ -503,9 +582,9 @@
                                     path: that.route
                                 })
                             } else {
-                                that.$router.push({
-                                    path: '/healthRecordsB'
-                                })
+                                // that.$router.push({
+                                //     path: '/healthRecordsB'
+                                // })
                             }
                         }
                     })
@@ -526,25 +605,25 @@
             overflow: hidden;
             position: relative;
             /*.input_nick_name {
-                                    position: absolute;
-                                    width: 14rem;
-                                    top: 0;
-                                    bottom: 0;
-                                    left: 0;
-                                    right: 0;
-                                    margin: auto;
-                                    height: 2rem;
-                                    border-radius: 0.2rem;
-                                    display: block;
-                                    margin: auto;
-                                    border: 1px solid #eee;
-                                    box-sizing: border-box;
-                                    padding: 0 0.5rem;
-                                    font-size: 0.7rem;
-                                    font-family: "PingFangSC-Regular";
-                                    color: #666;
-                                    line-height: 2rem;
-                                }*/
+                                                                        position: absolute;
+                                                                        width: 14rem;
+                                                                        top: 0;
+                                                                        bottom: 0;
+                                                                        left: 0;
+                                                                        right: 0;
+                                                                        margin: auto;
+                                                                        height: 2rem;
+                                                                        border-radius: 0.2rem;
+                                                                        display: block;
+                                                                        margin: auto;
+                                                                        border: 1px solid #eee;
+                                                                        box-sizing: border-box;
+                                                                        padding: 0 0.5rem;
+                                                                        font-size: 0.7rem;
+                                                                        font-family: "PingFangSC-Regular";
+                                                                        color: #666;
+                                                                        line-height: 2rem;
+                                                                    }*/
         }
         .sex_radio {
             padding: 0.5rem 5rem;

@@ -3,6 +3,7 @@
         <div class="tabs">
             <!-- 导航条 -->
             <mynav :navigateList='memberlist' :initnum='initnum' @clickNav='clickNav'></mynav>
+            <i class="icon-sleep_icon"></i>
             <mt-swipe :auto="0" :show-indicators="false" @change="handleChange" :continuous='false' ref='swipe'>
                 <!-- 第一页 -->
                 <mt-swipe-item>
@@ -172,19 +173,19 @@
                 }],
                 memberlist: [{ //成员列表,测试数据
                     "member_id": "",
-                    "login_code": 15153125386,
+                    "login_code": '',
                     "relation": "1",
                     "relation_name": "我",
-                    "height": 170,
-                    "weight": 65,
-                    "birthday": "1966-11-27",
-                    "head_pic": "http://healthapp.haier.net/image/father.png",
-                    "sex": "male",
-                    "create_date": "2018-04-12 10:34:57",
+                    "height": '',
+                    "weight": '',
+                    "birthday": "",
+                    "head_pic": "",
+                    "sex": "",
+                    "create_date": "",
                     "nick_name": "",
-                    "target_weight": 65,
-                    "is_first_set_tw": 1,
-                    "age": 52
+                    "target_weight": '',
+                    "is_first_set_tw": '',
+                    "age": ''
                 }]
             };
         },
@@ -650,6 +651,7 @@
             }
         },
         mounted() {
+            window.localStorage.uplus_sleep_user_info_cache = ''; //个人信息存储清空
             if (window.localStorage.UPlusApp_firstLogin_sleepReport == undefined || window.localStorage.UPlusApp_firstLogin_sleepReport == "undefined") { //判断是否首次登陆
                 window.localStorage.UPlusApp_firstLogin_sleepReport = true; //在首次登录组件里改变
             }
@@ -660,7 +662,6 @@
             } else {
                 this.memberlist.map(function(item, index) {
                     if (item.member_id == window._member_id) {
-                        console.log('num:::::', index);
                         that.initnum = that.pageindex = index;
                     }
                 })
@@ -670,16 +671,19 @@
                     code: window.location.href.substring(window.location.href.indexOf('=') + 1, window.location.href.indexOf('&')),
                     url: config.url
                 }
-                console.log('obj.code>>>>', obj.code);
                 if (obj.code !== '') {
                     try {
                         const result = await this.$axios.post('/api/info', obj)
-                        
-                        if (result.data.data&&result.data.data.need_guide == 'Y') {
+                        if (result.data.code == 'C0000') {
+                            window.localStorage.uplus_sleep_user_id = result.data.data.login_code; //暂存个人id
+                            window.localStorage.uplus_sleep_user_disease = result.data.data.disease; //暂存个人慢病
+                            window.localStorage.uplus_sleep_user_allergy = result.data.data.allergy; //暂存个人过敏
+                        }
+                        if (result.data.data && result.data.data.need_guide == 'Y') {
                             this.$router.push({
-                                path:'/newAddReport'
+                                path: '/newAddReport'
                             })
-                        } 
+                        }
                         if (result.data.data.user_flag === 'Y') { // new user
                             this.$router.replace({
                                 path: '/introduction'
@@ -694,7 +698,13 @@
                             this.getFamilyList() //请求全部家庭成员列表
                         }
                     } catch (err) {
-                        console.log(err)
+                        if (process.env.NODE_ENV == 'development') {
+                            this.$axios.get('/static/testData/checkOthersLogin.json').then(function(result) {
+                                    window.localStorage.uplus_sleep_user_id = result.data.data.login_code; //暂存个人id
+                                    window.localStorage.uplus_sleep_user_disease = result.data.data.disease; //暂存个人慢病
+                                    window.localStorage.uplus_sleep_user_allergy = result.data.data.allergy; //暂存个人过敏
+                            })
+                        }
                     }
                 } else {
                     this.memberID = window._member_id
@@ -716,6 +726,7 @@
 </script>
 
 <style lang='scss'>
+    @import '../../assets/healthSleep/style.css';
     .healthArchives {
         .dialog-demo {
             .dialog-content {

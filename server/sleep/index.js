@@ -1034,7 +1034,7 @@ router.post('/api/sleep/getByDay', (req, res, next) => {
 })
 // 获取睡眠资讯
 router.post('/api/getSleepInfo', (req, res, next) => {
-  const postData = querystring.stringify({size: req.body.size})
+  const postData = querystring.stringify({pageSize: req.body.pageSize,currentPage:req.body.currentPage})
 
   const options = {
     host: config.host,

@@ -1,0 +1,24 @@
+{
+    "status": "0",
+    "code": "C0000",
+    "msg": "成功",
+    "openId": "f87ca9ed6597430fa9c00949af355b80",
+    "data":    {
+       "login_code": "15153125386",
+       "nick_name": "测试是",
+       "sex": "male",
+       "height": 161,
+       "weight": 172,
+       "target_weight": 52,
+       "birthday": "1989-11-20",
+       "msisdn": 15153125386,
+       "head_pic": "http://healthapp.haier.net/image/husband.png",
+       "create_date": 1523499348000,
+       "password": null,
+       "user_flag": "N",
+       "age": 29,
+       "disease": "减重,慢性肠胃炎,血脂升高",
+       "allergy": "磺胺类,链霉素"
+    }
+ }
+ 

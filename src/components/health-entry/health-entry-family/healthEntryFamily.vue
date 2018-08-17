@@ -55,7 +55,7 @@
                 <div class="body_122" v-show='chronDiseaseHistory'>
                     <div class="body_1221 body_231">请选择慢病标签&nbsp;&nbsp;&nbsp;(可多选)：</div>
                 </div>
-                <tagslist :tags='chromiclist' name='chronic' @choose='chooseChromic' v-show='chronDiseaseHistory'></tagslist>
+                <tagslist :tags='chromiclist' :clear='clearChronDiseaseHistory' name='chronic' @choose='chooseChromic' v-show='chronDiseaseHistory'></tagslist>
                 <div class="body_22">
                     <div class="body_221">你是否有过敏史？</div>
                     <div class="body_222">
@@ -66,7 +66,7 @@
                 <div class="body_122" v-show='allergyHistory'>
                     <div class="body_1221 body_231">请选择过敏源&nbsp;&nbsp;&nbsp;(可多选)：</div>
                 </div>
-                <tagslist :tags='allergylist' name='allergy' @choose='chooseAllergy' v-show='allergyHistory'></tagslist>
+                <tagslist :tags='allergylist' name='allergy' :clear='clearAllergyHistory' @choose='chooseAllergy' v-show='allergyHistory'></tagslist>
             </div>
         </div>
         <div class="bottom">
@@ -171,8 +171,10 @@
                 sex_radio: false,
                 sex: "",
                 sextmp: '',
+                clearChronDiseaseHistory: true,
                 chronDiseaseHistory: false, //慢病史
                 allergyHistory: false, //过敏史
+                clearAllergyHistory: true,
                 birthday: "", //生日
                 tall: "", //身高
                 talltmp: '',
@@ -184,10 +186,17 @@
                 allergylist: [], //过敏标签
                 toast: '',
                 isSave: true, //保存标签     
-                route: ''
+                route: '',
+                memberId: ''
             };
         },
         watch: {
+            chronDiseaseHistory() {
+                this.clearChronDiseaseHistory = this.chronDiseaseHistory
+            },
+            allergyHistory() {
+                this.clearAllergyHistory = this.allergyHistory;
+            },
             input_nick_name() {
                 console.log(this.input_nick_name)
                 if (this.birthday && this.tall && this.weight && this.sex && this.input_nick_name) {
@@ -225,6 +234,7 @@
         },
         mounted() {
             this.route = this.$route.query.from || '';
+            this.memberId = this.$route.query.memberId || '';
             var that = this;
             var years = [];
             var months = [];
@@ -301,10 +311,31 @@
                             "note": item.note
                         }
                     })
+                    that.$axios.post('/api/member', {
+                        member_id: that.memberId
+                    }).then(function(res) {
+                        if (res.data.code == 'C0000') {
+                            var diseasedata = res.data.data.disease;
+                            that.disease = diseasedata || '' //慢病
+                            var newchromiclist = that.chromiclist;
+                            if (typeof diseasedata == 'string') {
+                                diseasedata = diseasedata.split(",")
+                                for (let i = 0; i < newchromiclist.length; i++) {
+                                    for (let j = 0; j < diseasedata.length; j++) {
+                                        if (newchromiclist[i].name == diseasedata[j]) {
+                                            that.chronDiseaseHistory = true;
+                                            newchromiclist[i].selected = true;
+                                        }
+                                    }
+                                }
+                            }
+                            that.chromiclist = newchromiclist;
+                        }
+                    })
                 }
-            }).catch(function(res) { //慢病标签
+            }).catch(function(res) { //慢病标签  
+                that.loadingmodal.close();
                 that.$axios.get('/static/testData/getDiseaseList.json').then(function(res) {
-                    that.loadingmodal.close();
                     if (res.data.code == 'C0000') {
                         that.chromiclist = res.data.data.map(function(item) {
                             return {
@@ -318,10 +349,25 @@
                                 "note": item.note
                             }
                         })
+                        var diseasedata = window.localStorage.uplus_sleep_user_disease;
+                        that.disease = diseasedata || '' //慢病
+                        var newchromiclist = that.chromiclist;
+                        if (typeof diseasedata == 'string') {
+                            diseasedata = diseasedata.split(",")
+                            for (let i = 0; i < newchromiclist.length; i++) {
+                                for (let j = 0; j < diseasedata.length; j++) {
+                                    if (newchromiclist[i].name == diseasedata[j]) {
+                                        that.chronDiseaseHistory = true;
+                                        newchromiclist[i].selected = true;
+                                    }
+                                }
+                            }
+                        }
+                        that.chromiclist = newchromiclist;
                     }
                 })
             })
-            this.$axios.post('/api/getAllergyList').then(function(res) {
+            that.$axios.post('/api/getAllergyList').then(function(res) {
                 that.loadingmodal.close();
                 that.allergylist = res.data.data.map(function(item) {
                     return {
@@ -333,6 +379,27 @@
                         "dict_type_id": item.dict_type_id,
                         "status": item.status,
                         "note": item.note
+                    }
+                })
+                that.$axios.post('/api/member', {
+                    member_id: that.memberId
+                }).then(function(res) {
+                    if (res.data.code == 'C0000') {
+                        var allergydata = res.data.data.allergy;
+                        that.allergy = allergydata
+                        var newallergylist = that.allergylist
+                        if (allergydata) {
+                            allergydata = allergydata.split(",")
+                            for (let i = 0; i < newallergylist.length; i++) {
+                                for (let j = 0; j < allergydata.length; j++) {
+                                    if (newallergylist[i].name == allergydata[j]) {
+                                        that.allergyHistory = true;
+                                        newallergylist[i].selected = true;
+                                    }
+                                }
+                            }
+                        }
+                        that.allergylist = newallergylist;
                     }
                 })
             }).catch(function(res) { //过敏标签
@@ -351,6 +418,21 @@
                                 "note": item.note
                             }
                         })
+                        var allergydata = window.localStorage.uplus_sleep_user_allergy;
+                        that.allergy = allergydata
+                        var newallergylist = that.allergylist
+                        if (allergydata) {
+                            allergydata = allergydata.split(",")
+                            for (let i = 0; i < newallergylist.length; i++) {
+                                for (let j = 0; j < allergydata.length; j++) {
+                                    if (newallergylist[i].name == allergydata[j]) {
+                                        that.allergyHistory = true;
+                                        newallergylist[i].selected = true;
+                                    }
+                                }
+                            }
+                        }
+                        that.allergylist = newallergylist;
                     }
                 })
             })
@@ -516,8 +598,8 @@
                             }
                         })
                         .catch(function(err) {
-                             if (process.env.NODE_ENV == 'development') {
-                                  if (that.route) {
+                            if (process.env.NODE_ENV == 'development') {
+                                if (that.route) {
                                     that.$router.push({
                                         path: that.route
                                     })
@@ -526,7 +608,7 @@
                                         path: '/healthArchives'
                                     })
                                 }
-                             }
+                            }
                         })
                 } else {
                     this.toast = Toast('请先填写完必填信息');

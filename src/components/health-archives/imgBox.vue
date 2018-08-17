@@ -176,7 +176,7 @@
         top: 1.6rem;
         background: #ccc;
         left: 65%;
-        width: 4rem;
+        width: 4.5rem;
         border-radius: .15rem;
         background-color: #26A6FF;
         font-weight: 600;

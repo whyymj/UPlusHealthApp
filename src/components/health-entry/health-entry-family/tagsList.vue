@@ -1,26 +1,57 @@
 <template>
     <div class="body_25">
-        <span class="body_241" :class='{active:item.selected!=""}' v-for='(item,index) in tags' :key='index' @click='choose(index)'>{{item.name}}</span>
+        <span class="body_241" :class='{active:item.selected!=""}' v-for='(item,index) in showlist' :key='index' @click='choose(index)'>{{item.name}}</span>
     </div>
 </template>
 
 <script>
     export default {
-        props: ['tags', 'name'],
+        props: ['tags', 'name', 'clear'],
+        watch: {
+            clear() {
+                this.refresh();
+            },
+            tags() {
+                var that=this;
+                this.showlist = this.tags;
+                this.$emit('choose', {
+                    tags: that.showlist,
+                    name: that.name
+                });
+            }
+        },
         data() {
             return {
+                showlist: [],
                 chooses: {}
             }
         },
         methods: {
-            choose(index) {
+            refresh() {
+                var newitem;
                 var that=this;
-                this.tags[index].selected = this.tags[index].selected ? '' : true;
+                this.showlist = this.tags.map(function(item) {
+                    newitem = item;
+                    newitem.selected = '';
+                    return newitem;
+                })
+                 this.$emit('choose', {
+                    tags: that.showlist,
+                    name: that.name
+                });
+            },
+            choose(index) {
+                var that = this;
+                this.showlist[index].selected = this.tags[index].selected ? '' : true;
                 this.$emit('choose', {
-                    tags:that.tags,
-                    name:that.name
+                    tags: that.showlist,
+                    name: that.name
                 });
             }
+        },
+        mounted() {
+            console.log('clear22222', this.clear);
+            this.showlist = this.tags;
         }
     }
 </script>
