@@ -38,8 +38,11 @@
   import firstLogin from './first_login_family.vue';
   import {
     MessageBox
-  } from 'mint-ui'
+  } from 'mint-ui';
+  
+	import myloading from '../global/Loading.vue';
   export default {
+    mixins:[myloading],
     components: {
       firstLogin
     },
@@ -120,19 +123,23 @@
           if (result.data.code === 'C0000') {
             this.headPic = result.data.data.head_pic
           }
+           that.loadingmodal.close();
         } catch (err) {
+           that.loadingmodal.close();
           console.log(err)
         }
       },
       async getFamilyList() {
+        var that=this;
         try {
           const result = await axios.get('/api/family')
           if (result.data.code === 'C0000') {
             this.associatedList = result.data.data[1]
             this.createdList = result.data.data[0]
           }
+           that.loadingmodal.close();
         } catch (err) {
-          console.log(err)
+           that.loadingmodal.close();
         }
       },
       openAssociate() {

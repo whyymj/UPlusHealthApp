@@ -13,10 +13,10 @@
 				</mt-cell>
 			</div>
 			<!--<div @click="openPicker(4)">
-		        <mt-cell title="性别" is-link>
-		          <span>{{sex}}</span>
-		        </mt-cell>
-		      </div>-->
+			        <mt-cell title="性别" is-link>
+			          <span>{{sex}}</span>
+			        </mt-cell>
+			      </div>-->
 			<div @click="openBirthDay('pickerBD')">
 				<mt-cell title="生日" is-link>
 					<span>{{birthday}}</span>
@@ -49,8 +49,8 @@
 			</mt-cell>
 		</div>
 		<!--<div class="div_magin">
-		      <mt-cell title="隐私设置" is-link :to="{ name: 'privacySet' }"/>
-		    </div>-->
+			      <mt-cell title="隐私设置" is-link :to="{ name: 'privacySet' }"/>
+			    </div>-->
 		<div class="deleteFamily" @click="openDeleteFamily">
 			删除家人
 		</div>
@@ -88,13 +88,15 @@
 </template>
 
 <script type="text/javascript">
-	import webConfig from '../../../config/web.config'
+	import webConfig from '../../../config/web.config';
+	import myloading from '../global/Loading.vue';
 	import {
 		MessageBox
 	} from 'mint-ui'
 	import axios from "axios"
 	// import new from './../../assets/healthSleep/bus';
 	export default {
+		mixins: [myloading],
 		data() {
 			return {
 				// action sheet 选项内容
@@ -137,6 +139,7 @@
 			var that = this;
 			this.route = this.$route.path;
 			this.getUserInfo(function() {
+				 that.loadingmodal.close();
 				var data = that.$route.query;
 				that[data.name] = data.value;
 				that.save(function() {

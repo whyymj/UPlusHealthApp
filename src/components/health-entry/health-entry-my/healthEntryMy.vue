@@ -6,7 +6,6 @@
                     <div class="body_11_txt">基本信息</div>
                 </div>
                 <div class="body_12">
-            
                     <div class="body_121" @click='choose_sex'>
                         <span class="body_1211">性别</span>
                         <span class="body_1212">&middot;</span>
@@ -312,9 +311,9 @@
                     that.chromiclist = newchromiclist;
                 }
             }).catch(function(res) { //慢病标签
+                that.loadingmodal.close();
                 if (process.env.NODE_ENV == 'development') {
                     that.$axios.get('/static/testData/getDiseaseList.json').then(function(res) {
-                        that.loadingmodal.close();
                         if (res.data.code == 'C0000') {
                             that.chromiclist = res.data.data.map(function(item) {
                                 return {
@@ -378,10 +377,10 @@
                     }
                     that.allergylist = newallergylist
                 }
-            }).catch(function(res) { //过敏标签
+            }).catch(function(res) { //过敏标签 
+                that.loadingmodal.close();
                 if (process.env.NODE_ENV == 'development') {
                     that.$axios.get('/static/testData/getAllergyList.json').then(function(res) {
-                        that.loadingmodal.close();
                         if (res.data.code == 'C0000') {
                             that.allergylist = res.data.data.map(function(item) {
                                 return {
@@ -562,7 +561,6 @@
                 if (!this.allergyHistory) {
                     saveData.allergy = ''
                 }
-                
                 axios.post('/api/user', saveData)
                     .then(function(res) {
                         if (that.route) {
@@ -605,25 +603,25 @@
             overflow: hidden;
             position: relative;
             /*.input_nick_name {
-                                                                        position: absolute;
-                                                                        width: 14rem;
-                                                                        top: 0;
-                                                                        bottom: 0;
-                                                                        left: 0;
-                                                                        right: 0;
-                                                                        margin: auto;
-                                                                        height: 2rem;
-                                                                        border-radius: 0.2rem;
-                                                                        display: block;
-                                                                        margin: auto;
-                                                                        border: 1px solid #eee;
-                                                                        box-sizing: border-box;
-                                                                        padding: 0 0.5rem;
-                                                                        font-size: 0.7rem;
-                                                                        font-family: "PingFangSC-Regular";
-                                                                        color: #666;
-                                                                        line-height: 2rem;
-                                                                    }*/
+                                                                            position: absolute;
+                                                                            width: 14rem;
+                                                                            top: 0;
+                                                                            bottom: 0;
+                                                                            left: 0;
+                                                                            right: 0;
+                                                                            margin: auto;
+                                                                            height: 2rem;
+                                                                            border-radius: 0.2rem;
+                                                                            display: block;
+                                                                            margin: auto;
+                                                                            border: 1px solid #eee;
+                                                                            box-sizing: border-box;
+                                                                            padding: 0 0.5rem;
+                                                                            font-size: 0.7rem;
+                                                                            font-family: "PingFangSC-Regular";
+                                                                            color: #666;
+                                                                            line-height: 2rem;
+                                                                        }*/
         }
         .sex_radio {
             padding: 0.5rem 5rem;

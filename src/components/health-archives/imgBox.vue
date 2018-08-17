@@ -3,8 +3,12 @@
         <p class='shadow' :class='{active:activebox}' :style="{background:bgcolor}"></p>
         <p class="tips-r" :class='{active:activebox}' v-if="position=='right'">{{tips}}</p>
         <p class="tips" :class='{active:activebox}' v-else>{{tips}}</p>
-        <div class='box' :class='{active:activebox}' :style="{background:bgcolor}" @click='toReport'><i :class='[icon]' :style='{color:color}'></i><span :style="{color:color}">{{meta.moudle_name}}</span></div>
-        <div class='detail'><span class='cont'>{{meta.value}}</span><span class='unit' :style="{display:display}">{{unit}}</span></div>
+        <div class='box' :class='{active:activebox}' :style="{background:bgcolor}" @click='toReport'><i :class='[icon]' :style='{color:color}'>
+            <i class="path2" v-if='icon=="ico-sleep_icon"'></i><i class="path3" v-if='icon=="ico-sleep_icon"'></i><i class="path4" v-if='icon=="ico-sleep_icon"'></i><i class="path5" v-if='icon=="ico-sleep_icon"'></i></i><span :style="{color:color}">{{meta.moudle_name}}</span></div>
+        <div class='detail' v-if='icon!="ico-sleep_icon"'><span class='cont' :style="{display:display}">{{meta.value}}</span><span class='unit' :style="{display:display}">{{unit}}</span></div>
+        <!-- 下面是睡眠时间的显示 -->
+        <div class='detail sleepdetail' v-else><span class='cont' :style="{display:display}">{{Math.floor(meta.value)}}<span class='unit' :style="{display:display}">小时</span></span><span class='cont' :style="{display:display}">{{Math.round((meta.value-Math.floor(meta.value)*60))}}<span class='unit' :style="{display:display}">分</span></span>
+        </div>
     </div>
 </template>
 
@@ -25,7 +29,7 @@
                 // })
             },
             async goPages(item) {
-                var  that=this;
+                var that = this;
                 switch (item.moudle_name) {
                     case '体重':
                         if (window._member_id === '') { // user
@@ -131,7 +135,8 @@
         props: ['meta', 'position'],
         computed: {
             display() {
-                return this.meta.value != '' ? 'block' : 'none'
+                console.log(this.meta, this.meta.value, this.meta.value == '' || this.meta.value == 0)
+                return (this.meta.value == '' || this.meta.value == 0) ? 'none!important' : 'block'
             }
         },
         watch: {
@@ -186,7 +191,7 @@
         white-space: nowrap;
         overflow: hidden;
         -webkit-transform: perspective(150px) rotateY(-15deg);
-        transform: perspective(150px) rotateY(-15deg);
+        transform: perspective(600px) rotateY(-25deg);
         width: 0;
         -webkit-transition: width .3s ease-in;
         transition: width .3s ease-in;
@@ -213,7 +218,7 @@
         white-space: nowrap;
         overflow: hidden;
         -webkit-transform: perspective(150px) rotateY(15deg);
-        transform: perspective(150px) rotateY(15deg);
+        transform: perspective(600px) rotateY(25deg);
         width: 0; // -webkit-transition: width .3s ease-in;
         // transition: width .3s ease-in;
         opacity: 0;
@@ -263,11 +268,11 @@
             opacity: 1;
         }
         20% {
-            width: 7rem;
+            width: 8rem;
             opacity: 1;
         }
         80% {
-            width: 7rem;
+            width:8rem;
             opacity: 1;
         }
         100% {
@@ -329,6 +334,11 @@
         text-align: center;
         margin: auto;
         padding-top: 0.2rem;
+    }
+    .sleepdetail {
+        span {
+            display: inline!important;
+        }
     }
     .cont {
         font-size: 1.2rem;

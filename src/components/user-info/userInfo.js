@@ -1,8 +1,10 @@
 import webConfig from '../../../config/web.config'
 import { MessageBox } from 'mint-ui'
 import axios from "axios"
+import myloading from '../global/Loading.vue';
 // import new from './../../assets/healthSleep/bus';
 export default {
+	mixins:[myloading],
 	name: 'userInfo',
 	data() {
 		return {
@@ -42,6 +44,7 @@ export default {
 		var that=this;
 		this.route=this.$route.path;
 		this.getUserInfo(function(){
+			that.loadingmodal.close();
 			 var data=that.$route.query;
 			 that[data.name]=data.value;
 			 that.save(function(){

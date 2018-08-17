@@ -1,0 +1,47 @@
+@font-face {
+  font-family: 'sleep_ico';
+  src:  url('fonts/icomoon.eot?4x4twd');
+  src:  url('fonts/icomoon.eot?4x4twd#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?4x4twd') format('truetype'),
+    url('fonts/icomoon.woff?4x4twd') format('woff'),
+    url('fonts/icomoon.svg?4x4twd#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="ico-"], [class*=" ico-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'sleep_ico' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+.ico-sleep_icon .path2:before {
+  content: "\e902";
+  /* margin-left: -1.4501953125em; */
+  color: inherit;
+}
+.ico-sleep_icon .path3:before {
+  content: "\e903";
+  margin-left: -1.4501953125em;
+  color: inherit;
+}
+.ico-sleep_icon .path4:before {
+  content: "\e904";
+  margin-left: -1.4501953125em;
+  color: inherit;
+}
+.ico-sleep_icon .path5:before {
+  content: "\e905";
+  margin-left: -1.4501953125em;
+  color: inherit;
+}

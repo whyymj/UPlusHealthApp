@@ -38,6 +38,8 @@ const chooseDevice = resolve => require(['@/components/equipment-entry/choose-de
 const searchDevice = resolve => require(['@/components/equipment-entry/search-device/searchDevice.vue'], resolve)
 const noSearchDevice = resolve => require(['@/components/equipment-entry/no-search-device/noSearchDevice.vue'], resolve)
 const startTest = resolve => require(['@/components/equipment-entry/start-test/startTest.vue'], resolve)
+
+// 這裏往下
 const newAddReport = resolve => require(['@/components/new-add-report/newSleepReport.vue'], resolve)
 const sleepTest = resolve => require(['@/components/sleep-test/sleepTest.vue'], resolve)
 const sleepManuInput = resolve => require(['@/components/sleep-manu-input/sleepManuInput.vue'], resolve)

@@ -3,7 +3,6 @@
         <div class="tabs">
             <!-- 导航条 -->
             <mynav :navigateList='memberlist' :initnum='initnum' @clickNav='clickNav'></mynav>
-            <i class="icon-sleep_icon"></i>
             <mt-swipe :auto="0" :show-indicators="false" @change="handleChange" :continuous='false' ref='swipe'>
                 <!-- 第一页 -->
                 <mt-swipe-item>
@@ -75,6 +74,7 @@
     import paginator from '../new-add-report/myPagination.vue';
     import config from '../../../config/global.config'
     import colorJudger from './color.js';
+    import myloading from '../global/Loading.vue';
     import _ from 'lodash';
     import {
         Indicator
@@ -85,6 +85,7 @@
     } from 'vux'
     import firstLogin from './first_login_sleepreport.vue';
     export default {
+        mixins: [myloading],
         components: {
             imgbox,
             paginator,
@@ -697,12 +698,15 @@
                             }
                             this.getFamilyList() //请求全部家庭成员列表
                         }
+                        that.loadingmodal.close();
                     } catch (err) {
+                        that.loadingmodal.close();
+                        
                         if (process.env.NODE_ENV == 'development') {
                             this.$axios.get('/static/testData/checkOthersLogin.json').then(function(result) {
-                                    window.localStorage.uplus_sleep_user_id = result.data.data.login_code; //暂存个人id
-                                    window.localStorage.uplus_sleep_user_disease = result.data.data.disease; //暂存个人慢病
-                                    window.localStorage.uplus_sleep_user_allergy = result.data.data.allergy; //暂存个人过敏
+                                window.localStorage.uplus_sleep_user_id = result.data.data.login_code; //暂存个人id
+                                window.localStorage.uplus_sleep_user_disease = result.data.data.disease; //暂存个人慢病
+                                window.localStorage.uplus_sleep_user_allergy = result.data.data.allergy; //暂存个人过敏
                             })
                         }
                     }
@@ -726,7 +730,7 @@
 </script>
 
 <style lang='scss'>
-    @import '../../assets/healthSleep/style.css';
+    @import '../../assets/healthSleep/icomoon/style.css';
     .healthArchives {
         .dialog-demo {
             .dialog-content {
