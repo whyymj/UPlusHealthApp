@@ -10,7 +10,7 @@
 </template>
 
 <script>
-	import { Indicator,Toast } from 'mint-ui';
+	import { Indicator, Toast } from 'mint-ui';
 	import axios from 'axios'
 	export default {
 		data() {
@@ -19,12 +19,13 @@
 				allData: {},
 				memberId: '',
 				upimgUrl: null,
+				formData: null,
 			}
 		},
 		created() {
 			this.memberId = this.$route.params.member_id
 		},
-		mounted(){
+		mounted() {
 			this.getUserInfo()
 		},
 		methods: {
@@ -50,65 +51,46 @@
 					console.log(err)
 				}
 			},
-//			getCamera(type) {
-//				navigator.camera.getPicture(this.onSuccess, this.onFail, {
-//					quality: 50,
-//					destinationType: Camera.DestinationType.DATA_URL,
-//					encodingType: Camera.EncodingType.JPEG,
-//					sourceType: type
-//				})
-//			},
-//			onSuccess(imageData) {
-//				resolve('data:image/jpeg;base64,' + imageData)
-//			},
-//			onFail(message) {
-//				alert(message)
-//			},
-//			updata() {
-//				alert(this.imgUrl)
-//			},
 			upload() {
 				this.$refs.upload.click();
 			},
 			show() {
 				let Img = this.$refs.upload.files[0];
-				let formData = new FormData();
-				formData.append('file', Img);
-//				formData.append('member_id', this.memberId);
+				console.log('Img', Img)
+				this.formData = new FormData();
+				this.formData.append('imgFile', Img);
+				this.formData.append('member_id', this.memberId);
 
-				this.upimgUrl = formData
+
 				//base64图片
 				let reader = new FileReader();
 				let self = this;
 				reader.onload = function(e) {
 					let ev = e || window.event;
 					let url = ev.target.result;
-					self.formData = url;
 					self.imgUrl = url;
 				}
 				reader.readAsDataURL(Img);
 			},
 			uploadImg() {
 				Indicator.open({
-				  text: '上传中...',
-				  spinnerType: 'fading-circle'
+					text: '上传中...',
+					spinnerType: 'fading-circle'
 				});
-//				//添加请求头
-//				let config = {
-//					headers: {
-//						'Content-Type': 'multipart/form-data'
-//					}
-//				}; 
-				let saveData = {
-					imgFile: this.upimgUrl,
-					member_id: this.memberId
+				let config={
+					headers:{"Content-Type":"application/x-www-form-urlencoded"}
 				}
-//				let saveData = this.upimgUrl
-				axios.post('/api/uploadPic', saveData)
+				try{
+					axios.post('/api/uploadPic', this.formData,config)
 					.then(function(res) {
 						console.log(res);
-						Indicator.close();
-						Toast('上传成功');
+						if(res.data.msg == '成功') {
+							Indicator.close();
+							Toast('上传成功');
+						} else {
+							Indicator.close();
+							Toast('上传失败');
+						}
 
 					})
 					.catch(function(err) {
@@ -116,6 +98,12 @@
 						Indicator.close();
 						Toast('上传失败');
 					})
+				}
+				catch(err){
+					Indicator.close();
+					Toast('上传失败');
+				}
+				
 				this
 					.$router
 					.replace({

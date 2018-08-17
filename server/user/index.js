@@ -4,6 +4,8 @@ const http = require('http')
 const querystring = require('querystring')
 const global = require('../../config/main')
 const config = require('../../config/global.config')
+const multipart = require('connect-multiparty');
+var multipartMiddleware = multipart();
 
 // access_token 获取用户信息
 router.post('/api/info', (req, res, next) => {
@@ -254,47 +256,51 @@ router.post('/api/user/info', (req, res, next) => {
   }
 })
 // 上传用户头像
-router.post('/api/uploadPic', (req, res, next) => {
-  const postData = querystring.stringify({
-    member_id: req.body.member_id,
-    imgFile: req.body.imgFile,
-  })
-  const options = {
-    host: config.host,
-    port: config.port,
-    method: 'POST',
-    path: `${config.path}/upload/uploadPic`,
-    headers: Object.assign(config.headers, {
-      openId: req.session.token,
-      loginCode: req.session.loginCode
-    })
-  }
+router.post('/api/uploadPic', multipartMiddleware, (req, res, next) => {
+	console.log('req.body>>>>>>>>>>>> ', req.body);
+	console.log('req.file>>>>>>>>>>>> ', req.files);
 
-  const _req = http.request(options, (_res) => {
-    console.log(`请求地址: ${options.path}`)
-    console.log(`状态码: ${_res.statusCode}`)
-    console.log(`响应头: ${JSON.stringify(_res.headers)}`)
-    _res.setEncoding('utf8')
-    let rawData = ''
-    _res.on('data', (chunk) => {
-      rawData += chunk
-    })
-    _res.on('end', () => {
-      try {
-        const result = JSON.parse(rawData)
-        console.log(`响应中数据: ${JSON.stringify(result)}`)
-        req.session.token = result.openId
-        res.send(global.handle(result))
-      } catch (e) {
-        console.log(e.message)
-      }
-    })
-  })
-  _req.on('error', (e) => {
-    console.error(`请求遇到问题: ${e.message}`)
-  })
-  _req.write(postData)
-  _req.end()
+	const postData = querystring.stringify({
+		memeber_id:req.body.member_id,
+		imgFile:req.files.imgFile
+	})
+	const options = {
+		host: config.host,
+		port: config.port,
+		method: 'POST',
+		path: `${config.path}/upload/uploadPic`,
+		headers: Object.assign(config.headers, {
+			openId: req.session.token,
+			loginCode: req.session.loginCode
+		})
+	}
+
+	const _req = http.request(options, (_res) => {
+		console.log(`请求地址: ${options.path}`)
+		console.log(`状态码: ${_res.statusCode}`)
+		console.log(`响应头: ${JSON.stringify(_res.headers)}`)
+		_res.setEncoding('utf8')
+		let rawData = ''
+		_res.on('data', (chunk) => {
+			rawData += chunk
+		})
+		_res.on('end', () => {
+			try {
+				const result = JSON.parse(rawData)
+				console.log(`响应中数据: ${JSON.stringify(result)}`)
+				req.session.token = result.openId
+				res.send(global.handle(result))
+			} catch(e) {
+				console.log(e.message)
+			}
+		})
+	})
+	_req.on('error', (e) => {
+		console.error(`请求遇到问题: ${e.message}`)
+	})
+	_req.write(postData)
+	_req.end()
+	console.log("postData>>>>>>>>>>>>", postData)
 })
 // 新增家庭成员
 router.post('/api/member', (req, res, next) => {
