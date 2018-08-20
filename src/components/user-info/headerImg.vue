@@ -4,7 +4,7 @@
 		<div>
 			<p @click="upload()" class="imgText" v-bind:style="{'display':imgUrl? 'none':'block'}">点击上传头像</p>
 		</div>
-		<input ref="upload" accept="image/gif,image/jpeg,image/jpg,image/png" @change="show()" style="display:none;position:absolute;" type="file" name="" value="点击上传头像">
+		<input ref="upload" accept="image/gif,image/jpeg,image/jpg,image/png" @change="show()" style="display:none;position:absolute;" type="file" name="file" value="点击上传头像">
 		<button @click="uploadImg" class="imgText saveImg" v-bind:style="{'display':imgUrl? 'block':'none'}">确认</button>
 	</div>
 </template>
@@ -20,6 +20,7 @@
 				memberId: '',
 				upimgUrl: null,
 				formData: null,
+				oldImgUrl: null,
 			}
 		},
 		created() {
@@ -47,6 +48,7 @@
 					console.log(result)
 					that.allData = result.data.data
 					that.imgUrl = result.data.data.head_pic
+					that.oldImgUrl = result.data.data.head_pic
 				} catch(err) {
 					console.log(err)
 				}
@@ -61,7 +63,6 @@
 				this.formData.append('imgFile', Img);
 				this.formData.append('member_id', this.memberId);
 
-
 				//base64图片
 				let reader = new FileReader();
 				let self = this;
@@ -73,42 +74,52 @@
 				reader.readAsDataURL(Img);
 			},
 			uploadImg() {
-				Indicator.open({
-					text: '上传中...',
-					spinnerType: 'fading-circle'
-				});
-				let config={
-					headers:{"Content-Type":"application/x-www-form-urlencoded"}
-				}
-				try{
-					axios.post('/api/uploadPic', this.formData,config)
-					.then(function(res) {
-						console.log(res);
-						if(res.data.msg == '成功') {
-							Indicator.close();
-							Toast('上传成功');
-						} else {
-							Indicator.close();
-							Toast('上传失败');
+				if(this.imgUrl == this.oldImgUrl) {
+					this
+						.$router
+						.replace({
+							path: '/userInfo'
+						})
+				} else {
+					Indicator.open({
+						text: '上传中...',
+						spinnerType: 'fading-circle'
+					});
+					let config = {
+						headers: {
+							"Content-Type": "application/x-www-form-urlencoded"
 						}
+					}
+					try {
+						axios.post('/api/uploadPic', this.formData, config)
+							.then(function(res) {
+								console.log(res);
+								if(res.data.msg == '成功') {
+									Indicator.close();
+									Toast('上传成功');
+								} else {
+									Indicator.close();
+									Toast('上传失败');
+								}
 
-					})
-					.catch(function(err) {
-						console.log(err);
+							})
+							.catch(function(err) {
+								console.log(err);
+								Indicator.close();
+								Toast('上传失败');
+							})
+					} catch(err) {
 						Indicator.close();
 						Toast('上传失败');
-					})
+					}
+
+					this
+						.$router
+						.replace({
+							path: '/userInfo'
+						})
 				}
-				catch(err){
-					Indicator.close();
-					Toast('上传失败');
-				}
-				
-				this
-					.$router
-					.replace({
-						path: '/userInfo'
-					})
+
 			}
 		}
 	}
