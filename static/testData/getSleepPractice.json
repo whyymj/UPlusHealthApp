@@ -2,56 +2,64 @@
     "status": "0",
     "code": "C0000",
     "msg": "成功",
-    "openId": "c190706c3013460daee2c75983006cec",
+    "openId": "41db732d4166420e80357644c4898cf5",
     "data": [
-        {
-            "imgUrl": "https://huiai.sleepeazz.com/qinan/resources/style3/images/SK3_01.png",
-            "audioUrl": "https://huiai.sleepeazz.com/vod/QinanSleepTraining_01.mp3",
-            "lineTitle": "身体扫描",
-            "lineId": "SK3_01",
-            "resourceType": 3
-        },
-        {
-            "imgUrl": "https://huiai.sleepeazz.com/qinan/resources/style3/images/SK3_02.png",
-            "audioUrl": "https://huiai.sleepeazz.com/vod/QinanSleepTraining_02.mp3",
-            "lineTitle": "正念呼吸",
-            "lineId": "SK3_02",
-            "resourceType": 3
-        },
-        {
-            "imgUrl": "https://huiai.sleepeazz.com/qinan/resources/style3/images/SK3_03.png",
-            "audioUrl": "https://huiai.sleepeazz.com/vod/QinanSleepTraining_03.mp3",
-            "lineTitle": "正念聆听与思考",
-            "lineId": "SK3_03",
-            "resourceType": 3
-        },
-        {
-            "imgUrl": "https://huiai.sleepeazz.com/qinan/resources/style3/images/SK3_04.png",
-            "audioUrl": "https://huiai.sleepeazz.com/vod/QinanSleepTraining_04.mp3",
-            "lineTitle": "晨间呼吸觉知练习",
-            "lineId": "SK3_04",
-            "resourceType": 2
-        },
-        {
-            "imgUrl": "https://huiai.sleepeazz.com/qinan/resources/style3/images/SK3_05.png",
-            "audioUrl": "https://huiai.sleepeazz.com/vod/QinanSleepTraining_05.mp3",
-            "lineTitle": "渐进式肌肉放松训练",
-            "lineId": "SK3_05",
-            "resourceType": 1
-        },
-        {
-            "imgUrl": "https://huiai.sleepeazz.com/qinan/resources/style3/images/SK3_06.png",
-            "audioUrl": "https://huiai.sleepeazz.com/vod/QinanSleepTraining_06.mp3",
-            "lineTitle": "腹式呼吸",
-            "lineId": "SK3_06",
-            "resourceType": 1
-        },
-        {
-            "imgUrl": "https://huiai.sleepeazz.com/qinan/resources/style3/images/SK3_07.png",
-            "audioUrl": "https://huiai.sleepeazz.com/vod/QinanSleepTraining_07.mp3",
-            "lineTitle": "直接放松法",
-            "lineId": "SK3_07",
-            "resourceType": 2
-        }
+      {
+        "imgUrl": "",
+        "audioUrl": "https://huiai.sleepeazz.com/vod/QinanSleepTraining_01.mp3",
+        "lineTitle": "身体扫描",
+        "lineValues": "33:34",
+        "lineId": "SK3_01",
+        "resourceType": 3
+      },
+      {
+        "imgUrl": "",
+        "audioUrl": "https://huiai.sleepeazz.com/vod/QinanSleepTraining_02.mp3",
+        "lineTitle": "正念呼吸",
+        "lineValues": "12:36",
+        "lineId": "SK3_02",
+        "resourceType": 3
+      },
+      {
+        "imgUrl": "",
+        "audioUrl": "https://huiai.sleepeazz.com/vod/QinanSleepTraining_03.mp3",
+        "lineTitle": "正念聆听与思考",
+        "lineValues": "11:04",
+        "lineId": "SK3_03",
+        "resourceType": 3
+      },
+      {
+        "imgUrl": "",
+        "audioUrl": "https://huiai.sleepeazz.com/vod/QinanSleepTraining_04.mp3",
+        "lineTitle": "晨间呼吸觉知练习",
+        "lineValues": "09:30",
+        "lineId": "SK3_04",
+        "resourceType": 2
+      },
+      {
+        "imgUrl": "",
+        "audioUrl": "https://huiai.sleepeazz.com/vod/QinanSleepTraining_05.mp3",
+        "lineTitle": "渐进式肌肉放松训练",
+        "lineValues": "27:52",
+        "lineId": "SK3_05",
+        "resourceType": 1
+      },
+      {
+        "imgUrl": "",
+        "audioUrl": "https://huiai.sleepeazz.com/vod/QinanSleepTraining_06.mp3",
+        "lineTitle": "腹式呼吸",
+        "lineValues": "06:06",
+        "lineId": "SK3_06",
+        "resourceType": 1
+      },
+      {
+        "imgUrl": "",
+        "audioUrl": "https://huiai.sleepeazz.com/vod/QinanSleepTraining_07.mp3",
+        "lineTitle": "直接放松法",
+        "lineValues": "08:59",
+        "lineId": "SK3_07",
+        "resourceType": 2
+      }
     ]
-}
+  }
+  

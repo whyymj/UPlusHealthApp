@@ -38,6 +38,8 @@ const chooseDevice = resolve => require(['@/components/equipment-entry/choose-de
 const searchDevice = resolve => require(['@/components/equipment-entry/search-device/searchDevice.vue'], resolve)
 const noSearchDevice = resolve => require(['@/components/equipment-entry/no-search-device/noSearchDevice.vue'], resolve)
 const startTest = resolve => require(['@/components/equipment-entry/start-test/startTest.vue'], resolve)
+
+// 這裏往下
 const newAddReport = resolve => require(['@/components/new-add-report/newSleepReport.vue'], resolve)
 const sleepTest = resolve => require(['@/components/sleep-test/sleepTest.vue'], resolve)
 const sleepManuInput = resolve => require(['@/components/sleep-manu-input/sleepManuInput.vue'], resolve)
@@ -71,7 +73,7 @@ const weightMeasure = resolve => require(['@/components/weight-measure/weight-me
 const serverError = resolve => require(['@/components/error-message/serverError.vue'], resolve)
 
 const editFamily = resolve => require(['@/components/user-info/editFamily.vue'], resolve)
-
+const editFriends = resolve => require(['@/components/user-info/editFriends.vue'], resolve)
 const router = new Router({
   mode: 'history',
   routes: [
@@ -460,6 +462,13 @@ const router = new Router({
         title: '修改家人资料'
       },
       component: editFamily
+    }, {
+      path: '/editFriends',
+      name: 'editFriends',
+      meta: {
+        title: '修改朋友'
+      },
+      component: editFriends
     }, {
       path: '/test2',
       name: 'test2',

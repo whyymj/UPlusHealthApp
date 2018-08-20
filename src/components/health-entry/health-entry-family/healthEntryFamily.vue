@@ -55,7 +55,7 @@
                 <div class="body_122" v-show='chronDiseaseHistory'>
                     <div class="body_1221 body_231">请选择慢病标签&nbsp;&nbsp;&nbsp;(可多选)：</div>
                 </div>
-                <tagslist :tags='chromiclist' name='chronic' @choose='chooseChromic' v-show='chronDiseaseHistory'></tagslist>
+                <tagslist :tags='chromiclist' :clear='clearChronDiseaseHistory' name='chronic' @choose='chooseChromic' v-show='chronDiseaseHistory'></tagslist>
                 <div class="body_22">
                     <div class="body_221">你是否有过敏史？</div>
                     <div class="body_222">
@@ -66,7 +66,7 @@
                 <div class="body_122" v-show='allergyHistory'>
                     <div class="body_1221 body_231">请选择过敏源&nbsp;&nbsp;&nbsp;(可多选)：</div>
                 </div>
-                <tagslist :tags='allergylist' name='allergy' @choose='chooseAllergy' v-show='allergyHistory'></tagslist>
+                <tagslist :tags='allergylist' name='allergy' :clear='clearAllergyHistory' @choose='chooseAllergy' v-show='allergyHistory'></tagslist>
             </div>
         </div>
         <div class="bottom">
@@ -171,8 +171,10 @@
                 sex_radio: false,
                 sex: "",
                 sextmp: '',
+                clearChronDiseaseHistory: true,
                 chronDiseaseHistory: false, //慢病史
                 allergyHistory: false, //过敏史
+                clearAllergyHistory: true,
                 birthday: "", //生日
                 tall: "", //身高
                 talltmp: '',
@@ -183,12 +185,19 @@
                 chromiclist: [], //慢病标签
                 allergylist: [], //过敏标签
                 toast: '',
-                isSave: true, //保存标签                
+                isSave: true, //保存标签     
+                route: '',
+                memberId: ''
             };
         },
         watch: {
+            chronDiseaseHistory() {
+                this.clearChronDiseaseHistory = this.chronDiseaseHistory
+            },
+            allergyHistory() {
+                this.clearAllergyHistory = this.allergyHistory;
+            },
             input_nick_name() {
-                console.log(this.input_nick_name)
                 if (this.birthday && this.tall && this.weight && this.sex && this.input_nick_name) {
                     this.isSave = false
                 } else {
@@ -211,18 +220,20 @@
             },
             weight(value) {
                 if (this.birthday && this.tall && this.weight && this.sex && this.input_nick_name) {
-                    this.isSave = false
+                    this.isSave = false;
                 } else {
-                    this.isSave = true
+                    this.isSave = true;
                 }
             },
             sex(value) {
                 if (this.birthday && this.tall && this.weight && this.sex && this.input_nick_name) {
-                    this.isSave = false
+                    this.isSave = false;
                 }
             }
         },
         mounted() {
+            this.route = this.$route.query.from || '';
+            this.memberId = this.$route.query.memberId || '';
             var that = this;
             var years = [];
             var months = [];
@@ -233,7 +244,7 @@
             var today = new Date().getDate();
             var weightarr = [];
             for (var i = 200; i > 1; i--) {
-                weightarr.push(i)
+                weightarr.push(i);
             }
             this.weightarr1 = [{
                 flex: 1,
@@ -299,58 +310,136 @@
                             "note": item.note
                         }
                     })
+                    that.$axios.post('/api/member', { //获取家人信息
+                        member_id: that.memberId
+                    }).then(function(res) {
+                        if (res.data.code == 'C0000') {
+                            var diseasedata = res.data.data.disease;
+                            that.disease = diseasedata || ''; //慢病
+                            var newchromiclist = that.chromiclist;
+                            if (typeof diseasedata == 'string') {
+                                diseasedata = diseasedata.split(",");
+                                for (let i = 0; i < newchromiclist.length; i++) {
+                                    for (let j = 0; j < diseasedata.length; j++) {
+                                        if (newchromiclist[i].name == diseasedata[j]) {
+                                            that.chronDiseaseHistory = true;
+                                            newchromiclist[i].selected = true;
+                                        }
+                                    }
+                                }
+                            }
+                            that.chromiclist = newchromiclist;
+                        }
+                    })
                 }
-            }).catch(function(res) { //慢病标签
-                that.$axios.get('/static/testData/getDiseaseList.json').then(function(res) {
-                    that.loadingmodal.close();
-                    if (res.data.code == 'C0000') {
-                        that.chromiclist = res.data.data.map(function(item) {
-                            return {
-                                name: item.dict_name,
-                                selected: false,
-                                "dict_id": item.dict_id,
-                                "dict_name": item.dict_name,
-                                "dict_name_en": item.dict_name_en,
-                                "dict_type_id": item.dict_type_id,
-                                "status": item.status,
-                                "note": item.note
-                            }
-                        })
-                    }
-                })
-            })
-            this.$axios.post('/api/getAllergyList').then(function(res) {
+            }).catch(function(res) { //慢病标签  
                 that.loadingmodal.close();
-                that.allergylist = res.data.data.map(function(item) {
-                    return {
-                        name: item.dict_name,
-                        selected: false,
-                        "dict_id": item.dict_id,
-                        "dict_name": item.dict_name,
-                        "dict_name_en": item.dict_name_en,
-                        "dict_type_id": item.dict_type_id,
-                        "status": item.status,
-                        "note": item.note
-                    }
-                })
-            }).catch(function(res) { //过敏标签
-                that.$axios.get('/static/testData/getAllergyList.json').then(function(res) {
-                    that.loadingmodal.close();
-                    if (res.data.code == 'C0000') {
-                        that.allergylist = res.data.data.map(function(item) {
-                            return {
-                                name: item.dict_name,
-                                selected: false,
-                                "dict_id": item.dict_id,
-                                "dict_name": item.dict_name,
-                                "dict_name_en": item.dict_name_en,
-                                "dict_type_id": item.dict_type_id,
-                                "status": item.status,
-                                "note": item.note
+                if (process.env.NODE_ENV == 'development') {
+                    that.$axios.get('/static/testData/getDiseaseList.json').then(function(res) {
+                        if (res.data.code == 'C0000') {
+                            that.chromiclist = res.data.data.map(function(item) {
+                                return {
+                                    name: item.dict_name,
+                                    selected: false,
+                                    "dict_id": item.dict_id,
+                                    "dict_name": item.dict_name,
+                                    "dict_name_en": item.dict_name_en,
+                                    "dict_type_id": item.dict_type_id,
+                                    "status": item.status,
+                                    "note": item.note
+                                }
+                            })
+                            var diseasedata = window.localStorage.uplus_sleep_user_disease;
+                            that.disease = diseasedata || ''; //慢病
+                            var newchromiclist = that.chromiclist;
+                            if (typeof diseasedata == 'string') {
+                                diseasedata = diseasedata.split(",");
+                                for (let i = 0; i < newchromiclist.length; i++) {
+                                    for (let j = 0; j < diseasedata.length; j++) {
+                                        if (newchromiclist[i].name == diseasedata[j]) {
+                                            that.chronDiseaseHistory = true;
+                                            newchromiclist[i].selected = true;
+                                        }
+                                    }
+                                }
                             }
-                        })
-                    }
-                })
+                            that.chromiclist = newchromiclist;
+                        }
+                    })
+                }
+            })
+            that.$axios.post('/api/getAllergyList').then(function(res) {
+                that.loadingmodal.close();
+                if (res.data.code == 'C0000') {
+                    that.allergylist = res.data.data.map(function(item) {
+                        return {
+                            name: item.dict_name,
+                            selected: false,
+                            "dict_id": item.dict_id,
+                            "dict_name": item.dict_name,
+                            "dict_name_en": item.dict_name_en,
+                            "dict_type_id": item.dict_type_id,
+                            "status": item.status,
+                            "note": item.note
+                        }
+                    })
+                    that.$axios.post('/api/member', {
+                        member_id: that.memberId
+                    }).then(function(res) {
+                        if (res.data.code == 'C0000') {
+                            var allergydata = res.data.data.allergy;
+                            that.allergy = allergydata
+                            var newallergylist = that.allergylist
+                            if (allergydata) {
+                                allergydata = allergydata.split(",")
+                                for (let i = 0; i < newallergylist.length; i++) {
+                                    for (let j = 0; j < allergydata.length; j++) {
+                                        if (newallergylist[i].name == allergydata[j]) {
+                                            that.allergyHistory = true;
+                                            newallergylist[i].selected = true;
+                                        }
+                                    }
+                                }
+                            }
+                            that.allergylist = newallergylist;
+                        }
+                    })
+                }
+            }).catch(function(res) { //过敏标签 
+                that.loadingmodal.close();
+                if (process.env.NODE_ENV == 'development') {
+                    that.$axios.get('/static/testData/getAllergyList.json').then(function(res) {
+                        if (res.data.code == 'C0000') {
+                            that.allergylist = res.data.data.map(function(item) {
+                                return {
+                                    name: item.dict_name,
+                                    selected: false,
+                                    "dict_id": item.dict_id,
+                                    "dict_name": item.dict_name,
+                                    "dict_name_en": item.dict_name_en,
+                                    "dict_type_id": item.dict_type_id,
+                                    "status": item.status,
+                                    "note": item.note
+                                }
+                            })
+                            var allergydata = window.localStorage.uplus_sleep_user_allergy;
+                            that.allergy = allergydata
+                            var newallergylist = that.allergylist
+                            if (allergydata) {
+                                allergydata = allergydata.split(",")
+                                for (let i = 0; i < newallergylist.length; i++) {
+                                    for (let j = 0; j < allergydata.length; j++) {
+                                        if (newallergylist[i].name == allergydata[j]) {
+                                            that.allergyHistory = true;
+                                            newallergylist[i].selected = true;
+                                        }
+                                    }
+                                }
+                            }
+                            that.allergylist = newallergylist;
+                        }
+                    })
+                }
             })
         },
         methods: {
@@ -481,8 +570,7 @@
                 //     .catch(_ => {});
             },
             save() {
-                     var that = this;
-                //				    nick_name: this.input_nick_name,
+                var that = this;
                 let saveData = {
                     relation: 13, //称呼
                     height: parseFloat(this.tall),
@@ -502,13 +590,29 @@
                                 setTimeout(() => {
                                     toast.close();
                                 }, 2000);
-                                that.$router.push({
-                                    path: '/healthArchives'
-                                })
+                                if (that.route) {
+                                    that.$router.push({
+                                        path: that.route
+                                    })
+                                } else {
+                                    that.$router.push({
+                                        path: '/healthArchives'
+                                    })
+                                }
                             }
                         })
                         .catch(function(err) {
-                            console.log(err);
+                            if (process.env.NODE_ENV == 'development') {
+                                if (that.route) {
+                                    that.$router.push({
+                                        path: that.route
+                                    })
+                                } else {
+                                    that.$router.push({
+                                        path: '/healthArchives'
+                                    })
+                                }
+                            }
                         })
                 } else {
                     this.toast = Toast('请先填写完必填信息');

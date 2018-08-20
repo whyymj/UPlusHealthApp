@@ -1,7 +1,11 @@
 @import '../../common/css/variable.scss';
 
 .associated-family-v {
-  background: #F6F6F6;
+  background: #FAFCFE;
+  position: fixed;
+  top:0;
+  bottom:0;
+  left:0;right:0;
   .model {
     position: fixed;
     width: 100%;

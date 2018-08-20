@@ -1,11 +1,14 @@
 import webConfig from '../../../config/web.config'
 import { MessageBox } from 'mint-ui'
 import axios from "axios"
+import myloading from '../global/Loading.vue';
 // import new from './../../assets/healthSleep/bus';
 export default {
+	mixins:[myloading],
 	name: 'userInfo',
 	data() {
 		return {
+			isDeleteShow:false,
 			// action sheet 选项内容
 			headerAction: [{
 				name: "拍照",
@@ -24,22 +27,24 @@ export default {
 			sex: "男", //性别
 			startDate: new Date('1920-01-01'),
 			endDate: new Date(),
-			defaultBirthday: "1980-1-1", //默认生日
-			birthday: "1980-1-1", //生日
-			heightValue: "181cm", //身高
-			weightValue: "75kg", //体重
-			targetWeightValue: "74kg", //目标体重
+			defaultBirthday: "1980年1月1日", //默认生日
+			birthday: "1980年1月1日", //生日
+			heightValue: "181厘米", //身高
+			weightValue: "75公斤", //体重
+			targetWeightValue: "74公斤", //目标体重
 			headPic:null,//头像
 			disease:null,//慢病
 			allergy:null,//过敏
 			userdisease:'未设置',//选择的慢病
 			userallergy:"未设置",//选择的过敏
+			route:''
 		}
 	},
 	mounted() {		
-		var that=this	   ;
-		
+		var that=this;
+		this.route=this.$route.path;
 		this.getUserInfo(function(){
+			that.loadingmodal.close();
 			 var data=that.$route.query;
 			 that[data.name]=data.value;
 			 that.save(function(){
@@ -51,13 +56,17 @@ export default {
 	},
 
 	methods: {
+			//删除家人
+			openDeleteFamily() {
+				this.isDeleteShow = true
+			},
 		//慢病 过敏截取
 		sliceStr(data){
 			let str =""
 			if(data){
 				let firstIndex = data.indexOf(",")
 				if(firstIndex==-1&&!data){
-					str = '未设置'
+					str = '无'
 				}else{
 					let secondIndex = data.indexOf(",",firstIndex+1)
 					if(secondIndex==-1){
@@ -72,7 +81,7 @@ export default {
 					}
 				}
 			}else{
-				str = "未设置"
+				str = "无"
 			}
 			
 			return str
@@ -82,10 +91,11 @@ export default {
 			this.sheetVisible = true;
 		},
 		showNickName: function() {
+			var that=this;
 			this.$router.push({
 				path:'/userInfoNickName',
 				query:{
-					from :'/userInfo',
+					from :that.route,
 					row:"nickName"
 				}
 			})
@@ -103,10 +113,11 @@ export default {
 			return y + '-' + m + '-' + d
 		},
 		openBirthDay() {
+			var that=this;
 			this.$router.push({
 				path:'/userInfoBirthday',
 				query:{
-					from:'/userInfo',
+					from:that.route,
 					row:"birthday"
 				}
 			})
@@ -117,6 +128,7 @@ export default {
 			//调用生日保存接口
 		},
 		openPicker(index) {
+			var that=this;
 			this.pickerVisible = true;
 			this.dateSlots = [{
 				flex: 1,
@@ -130,7 +142,7 @@ export default {
 				this.$router.push({
 					path:'/userInfoHeight',
 					query:{
-						from:'/userInfo',
+						from:that.route,
 						row:"heightValue"
 					}
 				})
@@ -139,7 +151,7 @@ export default {
 				this.$router.push({
 					path:'/userInfoWeight',
 					query:{
-						from:'/userInfo',
+						from:that.route,
 						row:"weightValue"
 					}
 				})
@@ -148,7 +160,7 @@ export default {
 				this.$router.push({
 					path:'/userInfoWeight',
 					query:{
-						from:'/userInfo',
+						from:that.route,
 						row:"targetWeightValue"
 					}
 				})
@@ -157,7 +169,7 @@ export default {
 					this.$router.push({
 						path:'/userInfoSex',
 						query:{
-							from:'/userInfo',
+							from:that.route,
 							row:"sex"
 						}
 					})
@@ -208,11 +220,11 @@ export default {
 					this.nickName = data.nick_name; //昵称
 					this.sex = data.sex == 'female' ? '女' : "男"; //性别
 					this.endDate = new Date();
-					this.defaultBirthday = '1980-01-01'; //默认生日
-					this.birthday = data.birthday; //生日
+					this.defaultBirthday = '1980年01月01日'; //默认生日
+					this.birthday = data.birthday.replace('-','年').replace('-','月')+'日'; //生日
 					this.heightValue = data.height + '厘米'; //身高
 					this.weightValue = data.weight + "公斤"; //体重
-					this.targetWeightValue = data.target_weight + "kg"; //目标体重
+					this.targetWeightValue = data.target_weight + "公斤"; //目标体重
 					this.headPic = data.head_pic
 					this.disease=data.disease//慢病
 					this.allergy=data.allergy//过敏
@@ -231,17 +243,20 @@ export default {
 		},
 		//保存
 		save(fn) {
+			var that=this;	
 			let saveData = {
-				height: this.heightValue.substring(0,this.heightValue.length-2),
-				weight: this.weightValue.substring(0,this.weightValue.length-2),
-				sex: this.sex,
-				birthday: this.birthday.repalce('年','-').repalce('月','-').repalce('日',''),
-				nick_name: this.nickName,
-				headPic:this.headPic,
-				target_weight: this.targetWeightValue.substring(0,this.targetWeightValue.length-2),
-				disease:this.disease,//慢病
-				allergy:this.allergy,//过敏
+				height: parseInt(that.heightValue),
+				weight: parseInt(that.weightValue),
+				sex: that.sex,
+				birthday: that.birthday.replace('年','-').replace('月','-').replace('日',''),
+				nick_name: that.nickName,
+				headPic:that.headPic,
+				target_weight:parseInt(that.targetWeightValue),
+				disease:that.disease,//慢病
+				allergy:that.allergy,//过敏
 			}
+	
+		
 			//用户信息更改
 			axios.post('/api/user/update', saveData)
 				.then(function(res) {

@@ -4,13 +4,13 @@
 		<div>
 			<p @click="upload()" class="imgText" v-bind:style="{'display':imgUrl? 'none':'block'}">点击上传头像</p>
 		</div>
-		<input ref="upload" accept="image/gif,image/jpeg,image/jpg,image/png" @change="show()" style="display:none;position:absolute;" type="file" name="" value="点击上传头像">
+		<input ref="upload" accept="image/gif,image/jpeg,image/jpg,image/png" @change="show()" style="display:none;position:absolute;" type="file" name="file" value="点击上传头像">
 		<button @click="uploadImg" class="imgText saveImg" v-bind:style="{'display':imgUrl? 'block':'none'}">确认</button>
 	</div>
 </template>
 
 <script>
-	import { Indicator,Toast } from 'mint-ui';
+	import { Indicator, Toast } from 'mint-ui';
 	import axios from 'axios'
 	export default {
 		data() {
@@ -19,12 +19,14 @@
 				allData: {},
 				memberId: '',
 				upimgUrl: null,
+				formData: null,
+				oldImgUrl: null,
 			}
 		},
 		created() {
 			this.memberId = this.$route.params.member_id
 		},
-		mounted(){
+		mounted() {
 			this.getUserInfo()
 		},
 		methods: {
@@ -46,81 +48,78 @@
 					console.log(result)
 					that.allData = result.data.data
 					that.imgUrl = result.data.data.head_pic
+					that.oldImgUrl = result.data.data.head_pic
 				} catch(err) {
 					console.log(err)
 				}
 			},
-//			getCamera(type) {
-//				navigator.camera.getPicture(this.onSuccess, this.onFail, {
-//					quality: 50,
-//					destinationType: Camera.DestinationType.DATA_URL,
-//					encodingType: Camera.EncodingType.JPEG,
-//					sourceType: type
-//				})
-//			},
-//			onSuccess(imageData) {
-//				resolve('data:image/jpeg;base64,' + imageData)
-//			},
-//			onFail(message) {
-//				alert(message)
-//			},
-//			updata() {
-//				alert(this.imgUrl)
-//			},
 			upload() {
 				this.$refs.upload.click();
 			},
 			show() {
 				let Img = this.$refs.upload.files[0];
-				let formData = new FormData();
-				formData.append('file', Img);
-//				formData.append('member_id', this.memberId);
+				console.log('Img', Img)
+				this.formData = new FormData();
+				this.formData.append('imgFile', Img);
+				this.formData.append('member_id', this.memberId);
 
-				this.upimgUrl = formData
 				//base64图片
 				let reader = new FileReader();
 				let self = this;
 				reader.onload = function(e) {
 					let ev = e || window.event;
 					let url = ev.target.result;
-					self.formData = url;
 					self.imgUrl = url;
 				}
 				reader.readAsDataURL(Img);
 			},
 			uploadImg() {
-				Indicator.open({
-				  text: '上传中...',
-				  spinnerType: 'fading-circle'
-				});
-//				//添加请求头
-//				let config = {
-//					headers: {
-//						'Content-Type': 'multipart/form-data'
-//					}
-//				}; 
-				let saveData = {
-					imgFile: this.upimgUrl,
-					member_id: this.memberId
-				}
-//				let saveData = this.upimgUrl
-				axios.post('/api/uploadPic', saveData)
-					.then(function(res) {
-						console.log(res);
-						Indicator.close();
-						Toast('上传成功');
+				if(this.imgUrl == this.oldImgUrl) {
+					this
+						.$router
+						.replace({
+							path: '/userInfo'
+						})
+				} else {
+					Indicator.open({
+						text: '上传中...',
+						spinnerType: 'fading-circle'
+					});
+					let config = {
+						headers: {
+							"Content-Type": "application/x-www-form-urlencoded"
+						}
+					}
+					try {
+						axios.post('/api/uploadPic', this.formData, config)
+							.then(function(res) {
+								console.log(res);
+								if(res.data.msg == '成功') {
+									Indicator.close();
+									Toast('上传成功');
+								} else {
+									Indicator.close();
+									Toast('上传失败');
+								}
 
-					})
-					.catch(function(err) {
-						console.log(err);
+							})
+							.catch(function(err) {
+								console.log(err);
+								Indicator.close();
+								Toast('上传失败');
+							})
+					} catch(err) {
 						Indicator.close();
 						Toast('上传失败');
-					})
-				this
-					.$router
-					.replace({
-						path: '/userInfo'
-					})
+					}
+
+					this
+						.$router
+						.replace({
+							path: '/userInfo'
+						})
+				}
+
 			}
 		}
 	}

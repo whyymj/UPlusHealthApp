@@ -9,12 +9,12 @@
         </div>
         <div class="news">
             <ul class='newsbox'>
-                <li v-for="(item,index) in list" :key='index' class='new'>
-                    <img src="/static/errorpage/exam1.png" alt="">
-                    <h2>(这世界)那些不睡觉的传说，还是留给真正的天才吧！</h2>
+                <li v-for="(item,index) in list" :key='index' class='new' @click='toUrl(item.gotoUrl)'>
+                    <img :src="item.attachmentPath" alt="">
+                    <h2>{{item.postTitle}}</h2>
                     <ul class="keywords">
                         <li>健康</li>
-                        <li>健康</li>
+                        <li>睡眠</li>
                     </ul>
                 </li>
             </ul>
@@ -24,6 +24,46 @@
         </div>
     </div>
 </template>
+<script>
+    export default {
+        data() {
+            return {
+                list: [], //新聞列表
+                loading: false,
+                curpage: 1
+            };
+        },
+        methods: {
+            toUrl(url) {
+                window.location.href = url
+            },
+            loadMore() {
+                var that = this;
+                if (!this.loading) {
+                    this.loading = true;
+                    this.$axios.post('/api/getSleepInfo', { //获取睡眠资讯
+                        pageSize:10,
+                        currentPage:that.curpage
+                    }).then(function(res) {
+                        if (res.data.code == 'C0000') {
+                            that.curpage = that.curpage + 1;
+                            that.list = that.list.concat(res.data.data)
+                            that.loading = false;
+                        }
+                    }).catch(function(res) {
+                        if (process.env.NODE_ENV == 'development') {
+                            that.$axios.get('/static/testData/getSleepInfo.json').then(function(res) {
+                                that.list = that.list.concat(res.data)
+                            });
+                        }
+                        that.loading = false;
+                    })
+                }
+            }
+        }
+    };
+</script>
+
 <style lang="scss">
     @import "./errorMessage.scss";
     @keyframes rotate {
@@ -122,26 +162,4 @@
         }
     }
 </style>
-<script>
-    export default {
-        data() {
-            return {
-                list: [1, 2, 3, 4, 5, 6, 7, 8, 9], //新聞列表
-                loading: false,
-            };
-        },
-        methods: {
-            loadMore() {
-                this.loading = true;
-                setTimeout(() => {
-                    let last = this.list[this.list.length - 1];
-                    for (let i = 1; i <= 10; i++) {
-                        this.list.push(last + i);
-                    }
-                    this.loading = false;
-                }, 2500);
-            }
-        }
-    };
-</script>
 

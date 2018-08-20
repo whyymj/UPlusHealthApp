@@ -55,9 +55,8 @@
             <div class="dialog-content">
                 <h2>健康档案隐私权政策</h2>
                 <p>
-                    感谢您使用“健康档案”，健康档案尊重用户的个人信息和用户对服务的知情权利，并为此发布了隐私权政策。
-                    为了向您提供高效优质的服务，我们需要搜集：您的手机号码和个人信息（可能涉及账号、设备、服务使用等相关信息），以用于注册您的会员账号等。我们不会向任何第三方提供您的信息，除非得到您的授权。此外，我们还将升级服务，为您提供“一个账号”管理海尔旗下不同应用端的服务便利。
-                    详情请您仔细阅读：<a href="">《海尔家电隐私权政策》</a>
+                    感谢您使用“健康档案”，健康档案尊重用户的个人信息和用户对服务的知情权利，并为此发布了隐私权政策。 为了向您提供高效优质的服务，我们需要搜集：您的手机号码和个人信息（可能涉及账号、设备、服务使用等相关信息），以用于注册您的会员账号等。我们不会向任何第三方提供您的信息，除非得到您的授权。此外，我们还将升级服务，为您提供“一个账号”管理海尔旗下不同应用端的服务便利。 详情请您仔细阅读：
+                    <a href="">《海尔家电隐私权政策》</a>
                 </p>
                 <x-button style="width: 90%;margin-top: 30px">不同意</x-button>
                 <x-button type="primary" style="width: 90%">同意</x-button>
@@ -75,13 +74,18 @@
     import paginator from '../new-add-report/myPagination.vue';
     import config from '../../../config/global.config'
     import colorJudger from './color.js';
+    import myloading from '../global/Loading.vue';
     import _ from 'lodash';
     import {
         Indicator
     } from 'mint-ui';
-    import { XDialog, XButton } from 'vux'
+    import {
+        XDialog,
+        XButton
+    } from 'vux'
     import firstLogin from './first_login_sleepreport.vue';
     export default {
+        mixins: [myloading],
         components: {
             imgbox,
             paginator,
@@ -170,19 +174,19 @@
                 }],
                 memberlist: [{ //成员列表,测试数据
                     "member_id": "",
-                    "login_code": 15153125386,
+                    "login_code": '',
                     "relation": "1",
                     "relation_name": "我",
-                    "height": 170,
-                    "weight": 65,
-                    "birthday": "1966-11-27",
-                    "head_pic": "http://healthapp.haier.net/image/father.png",
-                    "sex": "male",
-                    "create_date": "2018-04-12 10:34:57",
+                    "height": '',
+                    "weight": '',
+                    "birthday": "",
+                    "head_pic": "",
+                    "sex": "",
+                    "create_date": "",
                     "nick_name": "",
-                    "target_weight": 65,
-                    "is_first_set_tw": 1,
-                    "age": 52
+                    "target_weight": '',
+                    "is_first_set_tw": '',
+                    "age": ''
                 }]
             };
         },
@@ -467,7 +471,6 @@
                     const result = await this.$axios.post('/api/user/info', {
                         phone: ''
                     })
-                    
                     result.data.data.relation_name = '我';
                     result.data.data.member_id = '';
                     this.myinfo = [result.data.data];
@@ -649,6 +652,7 @@
             }
         },
         mounted() {
+            window.localStorage.uplus_sleep_user_info_cache = ''; //个人信息存储清空
             if (window.localStorage.UPlusApp_firstLogin_sleepReport == undefined || window.localStorage.UPlusApp_firstLogin_sleepReport == "undefined") { //判断是否首次登陆
                 window.localStorage.UPlusApp_firstLogin_sleepReport = true; //在首次登录组件里改变
             }
@@ -659,7 +663,6 @@
             } else {
                 this.memberlist.map(function(item, index) {
                     if (item.member_id == window._member_id) {
-                        console.log('num:::::', index);
                         that.initnum = that.pageindex = index;
                     }
                 })
@@ -669,11 +672,19 @@
                     code: window.location.href.substring(window.location.href.indexOf('=') + 1, window.location.href.indexOf('&')),
                     url: config.url
                 }
-                console.log('obj.code>>>>', obj.code);
                 if (obj.code !== '') {
                     try {
                         const result = await this.$axios.post('/api/info', obj)
-                        console.log('result？？？？？',result);
+                        if (result.data.code == 'C0000') {
+                            window.localStorage.uplus_sleep_user_id = result.data.data.login_code; //暂存个人id
+                            window.localStorage.uplus_sleep_user_disease = result.data.data.disease; //暂存个人慢病
+                            window.localStorage.uplus_sleep_user_allergy = result.data.data.allergy; //暂存个人过敏
+                        }
+                        if (result.data.data && result.data.data.need_guide == 'Y') {
+                            this.$router.push({
+                                path: '/newAddReport'
+                            })
+                        }
                         if (result.data.data.user_flag === 'Y') { // new user
                             this.$router.replace({
                                 path: '/introduction'
@@ -687,8 +698,17 @@
                             }
                             this.getFamilyList() //请求全部家庭成员列表
                         }
+                        that.loadingmodal.close();
                     } catch (err) {
-                        console.log(err)
+                        that.loadingmodal.close();
+                        
+                        if (process.env.NODE_ENV == 'development') {
+                            this.$axios.get('/static/testData/checkOthersLogin.json').then(function(result) {
+                                window.localStorage.uplus_sleep_user_id = result.data.data.login_code; //暂存个人id
+                                window.localStorage.uplus_sleep_user_disease = result.data.data.disease; //暂存个人慢病
+                                window.localStorage.uplus_sleep_user_allergy = result.data.data.allergy; //暂存个人过敏
+                            })
+                        }
                     }
                 } else {
                     this.memberID = window._member_id
@@ -710,6 +730,7 @@
 </script>
 
 <style lang='scss'>
+    @import '../../assets/healthSleep/icomoon/style.css';
     .healthArchives {
         .dialog-demo {
             .dialog-content {

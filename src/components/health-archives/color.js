@@ -52,7 +52,7 @@ const sleep = { //睡眠
         bg: '#F7F7F7',
         tips: '还没数据，快去记录吧',
         unit:"小时",
-        icon:"icon-blood-sugar",
+        icon:"ico-sleep_icon",
         color:'#A3D0FF'
     },
     '1': {
@@ -61,7 +61,7 @@ const sleep = { //睡眠
         bg: '#5DA2C5',
         tips: '睡眠偏少',
         unit:"小时",
-        icon:"icon-blood-sugar",
+        icon:"ico-sleep_icon",
         color:'#fff'
     },
     '2': {
@@ -70,7 +70,7 @@ const sleep = { //睡眠
         bg: '#26A5FD',
         tips: '睡眠正常',
         unit:"小时",
-        icon:"icon-blood-sugar",
+        icon:"ico-sleep_icon",
         color:'#fff'
     },
     '3': {
@@ -79,7 +79,7 @@ const sleep = { //睡眠
         bg: '#FF7E10',
         tips: '睡眠偏多',
         unit:"小时",
-        icon:"icon-blood-sugar",
+        icon:"ico-sleep_icon",
         color:'#fff'
     }
 }
