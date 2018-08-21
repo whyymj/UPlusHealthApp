@@ -711,6 +711,7 @@
                         }
                     }
                 } else {
+                	that.loadingmodal.close();
                     this.memberID = window._member_id
                     if (window._member_id === '') {
                         this.getUserInfo()
