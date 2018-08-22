@@ -10,6 +10,15 @@ const sugar = { //血糖
     },
     '1': {
         level: 1,
+        status: '最低',
+        bg: '#2889B8',
+        tips: '血糖最低，请注意',
+        unit:"mmol/L",
+        icon:"icon-blood-sugar",
+        color:'#fff'
+    },
+    '2': {
+        level: 2,
         status: '偏低',
         bg: '#5DA2C5',
         tips: '血糖偏低，请注意',
@@ -17,8 +26,8 @@ const sugar = { //血糖
         icon:"icon-blood-sugar",
         color:'#fff'
     },
-    '2': {
-        level: 2,
+    '3': {
+        level: 3,
         status: '正常',
         bg: '#26A5FD',
         tips: '血糖正常',
@@ -26,8 +35,8 @@ const sugar = { //血糖
         icon:"icon-blood-sugar",
         color:'#fff'
     },
-    '3': {
-        level: 3,
+    '4': {
+        level: 4,
         status: '稍高',
         bg: '#FF7E10',
         tips: '血糖稍高，请注意',
@@ -35,8 +44,8 @@ const sugar = { //血糖
         icon:"icon-blood-sugar",
         color:'#fff'
     },
-    '4': {
-        level: 4,
+    '5': {
+        level: 5,
         status: '偏高',
         bg: '#F65261',
         tips: '血糖偏高，请注意',
@@ -239,6 +248,15 @@ const weight = { //体重
     },
     '1': {
         level: 1,
+        status: '消瘦',
+        bg: '#2889B8',
+        tips: '体重过轻,请注意',
+        unit:"KG",
+        icon:'icon-weight',
+        color:'#fff'
+    },
+    '2': {
+        level: 2,
         status: '偏瘦',
         bg: '#5DA2C5',
         tips: '体重偏轻',
@@ -246,8 +264,8 @@ const weight = { //体重
         icon:'icon-weight',
         color:'#fff'
     },
-    '2': {
-        level: 2,
+    '3': {
+        level: 3,
         status: '正常',
         bg: '#26A5FD',
         tips: '体重正常',
@@ -255,8 +273,8 @@ const weight = { //体重
         icon:'icon-weight',
         color:'#fff'
     },
-    '3': {
-        level: 3,
+    '4': {
+        level: 4,
         status: '偏胖',
         bg: '#FF7E10',
         tips: '体重偏胖，请注意',
@@ -264,8 +282,8 @@ const weight = { //体重
         icon:'icon-weight',
         color:'#fff'
     },
-    '4': {
-        level: 4,
+    '5': {
+        level: 5,
         status: '肥胖',
         bg: '#F65261',
         tips: '体重过高，请注意',

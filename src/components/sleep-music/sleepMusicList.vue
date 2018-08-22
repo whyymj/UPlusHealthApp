@@ -414,6 +414,7 @@
                         }
                     })
                 }
+                that.loadingmodal.close();
             }).catch(function() { //获取音乐列表
                 if (process.env.NODE_ENV == 'development') {
                     that.$axios.get('/static/testData/getSleepPractice.json').then(function(res) {
@@ -430,6 +431,7 @@
                         }
                     });
                 }
+                that.loadingmodal.close();
             });
             this.$axios.post('/api/sleep/getLast').then(function(res) {
                 if (res.data.code === 'C0000') {
@@ -559,6 +561,7 @@
                 currentPage: 1
             }).then(function(res) {
                 that.sleepnewslist = res.data;
+                that.loadingmodal.close();
             }).catch(function(res) {
                 if (process.env.NODE_ENV == 'development') {
                     that.$axios.get('/static/testData/getSleepInfo.json').then(function(res) {
@@ -566,6 +569,7 @@
                         that.sleepnewslist = res.data;
                     });
                 }
+                that.loadingmodal.close();
             })
             window.localStorage.UPlusApp_firstLogin_sleepMusicList = false; //非首次登陆
         }
