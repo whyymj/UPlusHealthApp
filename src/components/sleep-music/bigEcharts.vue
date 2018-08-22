@@ -535,13 +535,6 @@
 							obj[['top', 'bottom'][+(pos[1] < size.viewSize[1] / 2)]] = 120;
 							return obj;
 						}
-						//                      position: function(pos, params, el, elRect, size) {
-						//                          var obj = {
-						//                              top: 40,
-						//                          };
-						//                          obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30;
-						//                          return obj;
-						//                      },
 					},
 					grid: {
 						left: '8%',

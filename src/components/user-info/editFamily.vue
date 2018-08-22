@@ -151,25 +151,36 @@
 			//慢病 过敏截取
 			sliceStr(data) {
 				let str = ""
-				if (data) {
+				if(data) { 
 					let firstIndex = data.indexOf(",")
-					if (firstIndex == -1 && !data) {
-						str = '未设置'
-					} else {
+					if(firstIndex == -1) { 
+						str = data
+					} else { 
 						let secondIndex = data.indexOf(",", firstIndex + 1)
-						if (secondIndex == -1) {
-							str = data
-						} else {
-							let thirdIndex = data.indexOf(",", secondIndex)
-							if (thirdIndex == -1) {
-								str = data
+						if(secondIndex == -1) { 
+							if(firstIndex > 3) {
+								str = data.substring(0, firstIndex) + "等"
 							} else {
-								str = data.substring(0, secondIndex) + "等"
+								if(data.length - firstIndex - 1 > 3) {
+									str = data.substring(firstIndex + 1) + "等"
+								} else {
+									str = data
+								}
+							}
+						} else { 
+							if(firstIndex > 3) {
+								str = data.substring(0, firstIndex) + "等"
+							} else {
+								if(secondIndex - firstIndex - 1 > 3) {
+									str = data.substring(firstIndex + 1, secondIndex) + "等"
+								} else {
+									str = data.substring(0, secondIndex) + "等"
+								}
 							}
 						}
 					}
 				} else {
-					str = "未设置"
+					str = '无'
 				}
 				return str
 			},
