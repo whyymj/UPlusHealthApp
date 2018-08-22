@@ -84,6 +84,11 @@ const router = new Router({
       path: '/',
       redirect: 'login'
     }, {
+      path: '/privacy',
+      name: 'privacy',
+      component: resolve => require(['@/components/common/privacyDetail.vue'], resolve)
+    },
+    {
       path: '/test',
       name: 'test',
       component: test
