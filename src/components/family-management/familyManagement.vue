@@ -21,10 +21,10 @@
         </div>
         <!-- associate -->
       </div>
-      <!--<div class="associated-create add-friends " @click="openCreate()">
+      <div class="associated-create add-friends " @click="openCreate()">
         <img class="addFriends" src='/static/familyManage/link.png'>
         <span class="add" id='addf'>添加好友<i>（已有U+账号）</i></span>
-      </div>-->
+      </div>
       <div class="associated-create" @click="openCreate()">
         <i class="create fa fa-plus"></i> <span class="create">创建家人</span>
       </div>
@@ -116,6 +116,7 @@
         window.localStorage.UPlusApp_firstLogin_family = false;
       },
       async initUserInfo() {
+      	var that=this;
         try {
           const result = await axios.post('/api/user/info', {
             phone: ''

@@ -46,6 +46,8 @@
       overflow: hidden;
       background-color: #fff;
       margin: 0 -.75rem;
+      overflow: auto;
+      max-height:26rem;
       .family-item {
         float: left;
         width: 25%;

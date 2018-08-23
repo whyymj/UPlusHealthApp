@@ -165,6 +165,7 @@
                     this.checkstartsleep();
                 } else if (this.index == 1) {
                     this.startsleep = data;
+                    this.checkstartsleep();
                     this.checkwakeup()
                 } else if (this.index == 2) {
                     this.wakeup = data;
