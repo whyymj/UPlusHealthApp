@@ -46,19 +46,19 @@ export default {
         }
     },
     methods: {
-        $_agree () {
+        $_agree () { // 同意隐私协议
             this.privacy_show = false
         },
-        $_quit () {
+        $_quit () { // 首次点击「不同意并退出」
             this.privacy_show = false
             this.privacy_again = true
         },
-        $_again () {
+        $_again () { // 同意
             this.privacy_again = false
         },
-        $_exit () {
+        $_exit () { // 再次点击「不同意并退出」
             this.privacy_again = false
-            window.close()
+            this.$router.go(-1)
         }
     }
 }

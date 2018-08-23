@@ -1,33 +1,44 @@
 <template>
-
-  <div class="page introduction">
-    <!-- <h-header title="海尔健康"></h-header> -->
-    <div class="container">
-      <div class="introduction-bg">
-        <img src="../../assets/introduction-bg.jpg" alt="">
-      </div>
-      <div class="introduction-container">
-        <div class="create-archives card-container text-center">
-          <p>在体验海尔健康之前，<br/>
-            先创建一份您专属的档案信息吧</p>
-          <button class="default-btn" @click="createArchives">创建档案</button>
+  <div>
+    <div class="page introduction">
+      <!-- <h-header title="海尔健康"></h-header> -->
+      <div class="container">
+        <div class="introduction-bg">
+          <img src="../../assets/introduction-bg.jpg" alt="">
         </div>
-        <div class="create-process card-container text-center">
-          <div class="title">业务介绍</div>
-          <div class="introduction-step">
-            <img src="../../assets/introduction.png" alt="">
+        <div class="introduction-container">
+          <div class="create-archives card-container text-center">
+            <p>在体验海尔健康之前，<br/>
+              先创建一份您专属的档案信息吧</p>
+            <button class="default-btn" @click="createArchives">创建档案</button>
+          </div>
+          <div class="create-process card-container text-center">
+            <div class="title">业务介绍</div>
+            <div class="introduction-step">
+              <img src="../../assets/introduction.png" alt="">
+            </div>
           </div>
         </div>
       </div>
     </div>
+    <privacy :show="show"></privacy>
   </div>
 
 </template>
 
 <script type="text/javascript">
+  import privacy from '../common/privacy.vue';
 
   export default {
     name: 'introduction',
+    components: {
+      privacy
+    },
+    data() {
+      return {
+        show: true
+      }
+    },
     created () {
     },
     mounted () {

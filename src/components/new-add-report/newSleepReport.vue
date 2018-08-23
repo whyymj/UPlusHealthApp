@@ -1,38 +1,45 @@
 <template>
-    <div style='background:#fff;border:1px solid #fff;height:100;position:fixed;height:100%;top:0;left:0;width:100%;'>
-        <mt-swipe :auto="0" :show-indicators="false" @change="handleChange" :continuous='false'>
-            <mt-swipe-item>
-                <div class='page1'>
-                    <h1>新增睡眠报告</h1>
-                    <span>睡眠认知和睡眠联系帮您睡的更香</span>
-                    <img src="/static/newAddReport/new-sleep-report.png" alt="">
-                </div>
-            </mt-swipe-item>
-            <mt-swipe-item>
-                <div class="page2">
-                    <h1>新增慢病标签</h1>
-                    <span>优化健康的同时，帮您规避健康隐形风险</span>
-                    <img src="/static/newAddReport/new-disease-tag.png" alt="">
-                    <div class="button">
-                        <span class='span1' @click="jump(1)">补全慢病信息</span>
-                        <span class='span2' @click="jump(2)">跳过</span>
+    <div>
+        <div style='background:#fff;border:1px solid #fff;height:100;position:fixed;height:100%;top:0;left:0;width:100%;'>
+            <mt-swipe :auto="0" :show-indicators="false" @change="handleChange" :continuous='false'>
+                <mt-swipe-item>
+                    <div class='page1'>
+                        <h1>新增睡眠报告</h1>
+                        <span>睡眠认知和睡眠联系帮您睡的更香</span>
+                        <img src="/static/newAddReport/new-sleep-report.png" alt="">
                     </div>
-                </div>
-            </mt-swipe-item>
-        </mt-swipe>
-        <paginator :pagenum='pagenum' :pageindex='pageindex'></paginator>
+                </mt-swipe-item>
+                <mt-swipe-item>
+                    <div class="page2">
+                        <h1>新增慢病标签</h1>
+                        <span>优化健康的同时，帮您规避健康隐形风险</span>
+                        <img src="/static/newAddReport/new-disease-tag.png" alt="">
+                        <div class="button">
+                            <span class='span1' @click="jump(1)">补全慢病信息</span>
+                            <span class='span2' @click="jump(2)">跳过</span>
+                        </div>
+                    </div>
+                </mt-swipe-item>
+            </mt-swipe>
+            <paginator :pagenum='pagenum' :pageindex='pageindex'></paginator>
+        </div>
+        <privacy :show="show"></privacy>
     </div>
 </template>
 
 <script>
     import paginator from './myPagination';
+    import privacy from '../common/privacy.vue';
+
     export default {
         name: 'newSleepReport',
         components: {
-            paginator
+            paginator,
+            privacy
         },
         data() {
             return {
+                show: true,
                 pagenum: 2,
                 pageindex: 0
             }
