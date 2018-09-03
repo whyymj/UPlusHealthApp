@@ -64,8 +64,8 @@
 	import paginator from '../new-add-report/myPagination.vue';
 	import config from '../../../config/global.config'
 	import colorJudger from './color.js';
-    import myloading from '../global/Loading.vue';
-    import privacy from '../common/privacy.vue'
+	import myloading from '../global/Loading.vue';
+	import privacy from '../common/privacy.vue'
 	import _ from 'lodash';
 	import {
 		Indicator
@@ -87,7 +87,7 @@
 		},
 		data() {
 			return {
-				show: true,
+				show: false,
 				initnum: 0, //初始页
 				maleShow: true,
 				pagenum: 2,
@@ -193,49 +193,49 @@
 			},
 			setClass(item) {
 				var that = this;
-				if(item.moudle_name == '体重') {
+				if (item.moudle_name == '体重') {
 					return {
 						"weight-circle-female": that.maleShow,
 						"weight-circle": !that.maleShow,
 						'normal': item.level <= 2,
 						'danger': item.level > 2
 					}
-				} else if(item.moudle_name == '血糖') {
+				} else if (item.moudle_name == '血糖') {
 					return {
 						"sugar-circle": that.maleShow,
 						"sugar-circle-female": !that.maleShow,
 						'normal': item.level <= 2,
 						'danger': item.level > 2
 					}
-				} else if(item.moudle_name == '体温') {
+				} else if (item.moudle_name == '体温') {
 					return {
 						"temperature-circle": that.maleShow,
 						"temperature-circle-female": !that.maleShow,
 						'normal': item.level <= 2,
 						'danger': item.level > 2
 					}
-				} else if(item.moudle_name == '血压') {
+				} else if (item.moudle_name == '血压') {
 					return {
 						"pressure-circle": that.maleShow,
 						"pressure-circle-female": !that.maleShow,
 						'normal': item.level <= 2,
 						'danger': item.level > 2
 					}
-				} else if(item.moudle_name == '心电') {
+				} else if (item.moudle_name == '心电') {
 					return {
 						"ecg-circle": that.maleShow,
 						"ecg-circle-female": !that.maleShow,
 						'normal': item.level <= 2,
 						'danger': item.level > 2
 					}
-				} else if(item.moudle_name == '血氧') {
+				} else if (item.moudle_name == '血氧') {
 					return {
 						"oxygen-circle": that.maleShow,
 						"oxygen-circle-female": !that.maleShow,
 						'normal': item.level <= 2,
 						'danger': item.level > 2
 					}
-				} else if(item.moudle_name == '睡眠') {
+				} else if (item.moudle_name == '睡眠') {
 					return {
 						"sleep-circle": that.maleShow,
 						"sleep-circle-female": !that.maleShow,
@@ -248,7 +248,7 @@
 				this.pageindex = index;
 			},
 			clickNav(index) {
-				if(this.pageindex != 0) {
+				if (this.pageindex != 0) {
 					this.$refs.swipe.prev();
 					this.pageindex = 0;
 				}
@@ -304,7 +304,7 @@
 					spinnerType: 'fading-circle'
 				});
 				window._member_id = this.memberlist[index].member_id;
-				if(window._member_id === '') {
+				if (window._member_id === '') {
 					this.getUserInfo()
 				} else {
 					this.getMemberInfo()
@@ -312,8 +312,8 @@
 			},
 			getIndex(node) {
 				let elems = node.parentNode.children;
-				for(let i = 0; i < elems.length; i++) {
-					if(elems[i] == node) {
+				for (let i = 0; i < elems.length; i++) {
+					if (elems[i] == node) {
 						return i;
 					}
 				}
@@ -329,29 +329,29 @@
 				let liList = parent.children;
 				let index = this.getIndex(target);
 				let needScrollLeft = (index - 2) * 72 + 27;
-				for(let k = 0; k < liList.length; k++) {
+				for (let k = 0; k < liList.length; k++) {
 					liList[k].classList.remove('active');
 				}
 				target.classList.add('active');
-				if(parent.parentNode.scrollLeft > needScrollLeft && needScrollLeft > 0 && (index != liList.length - 1 && index != liList.length - 2)) {
+				if (parent.parentNode.scrollLeft > needScrollLeft && needScrollLeft > 0 && (index != liList.length - 1 && index != liList.length - 2)) {
 					let setIntervalTab1 = setInterval(function() {
 						parent.parentNode.scrollLeft -= 10;
-						if(parent.parentNode.scrollLeft <= needScrollLeft) {
+						if (parent.parentNode.scrollLeft <= needScrollLeft) {
 							parent.parentNode.scrollLeft = needScrollLeft;
 							clearInterval(setIntervalTab1)
 						}
 					}, 20)
-				} else if(parent.parentNode.scrollLeft < needScrollLeft && needScrollLeft > 0 && (index != liList.length - 1 && index != liList.length - 2)) {
+				} else if (parent.parentNode.scrollLeft < needScrollLeft && needScrollLeft > 0 && (index != liList.length - 1 && index != liList.length - 2)) {
 					let setIntervalTab2 = setInterval(function() {
 						parent.parentNode.scrollLeft += 10;
-						if(parent.parentNode.scrollLeft >= needScrollLeft) {
+						if (parent.parentNode.scrollLeft >= needScrollLeft) {
 							parent.parentNode.scrollLeft = needScrollLeft;
 							clearInterval(setIntervalTab2)
 						}
 					}, 20)
 				}
 				window._member_id = id
-				if(id === '') {
+				if (id === '') {
 					this.getUserInfo()
 				} else {
 					this.getMemberInfo()
@@ -368,25 +368,25 @@
 				let allTipsLen = allTips.length;
 				let targetClassName = target.className;
 				clearTimeout(window.animateBubble);
-				for(let i = 0; i < allBodyLen; i++) {
+				for (let i = 0; i < allBodyLen; i++) {
 					allBody[i].classList.remove('s-normal-animate');
 				}
-				for(let j = 0; j < allBubbleLen; j++) {
+				for (let j = 0; j < allBubbleLen; j++) {
 					allBubble[j].classList.remove('b-animate');
 				}
-				for(let k = 0; k < allTipsLen; k++) {
+				for (let k = 0; k < allTipsLen; k++) {
 					allTips[k].classList.remove('tips-open');
 				}
-				if(targetClassName.indexOf('normal') > -1) {
+				if (targetClassName.indexOf('normal') > -1) {
 					target.classList.add('s-normal-animate');
 				}
 				//big bubble and tips
-				switch(item.moudle_name) {
+				switch (item.moudle_name) {
 					case '体重':
 						this.$refs.weight[0].classList.add('b-animate')
-						if(item.level === '') { // empty
+						if (item.level === '') { // empty
 							this.$refs.weightEmpty[0].classList.add('tips-open')
-						} else if(item.level === '1') { // normal
+						} else if (item.level === '1') { // normal
 							this.$refs.weightNormal[0].classList.add('tips-open')
 						} else { // abnormal
 							this.$refs.weightAbnormal[0].classList.add('tips-open')
@@ -394,9 +394,9 @@
 						break
 					case '血糖':
 						this.$refs.sugar[0].classList.add('b-animate')
-						if(item.level === '') { // empty
+						if (item.level === '') { // empty
 							this.$refs.sugarEmpty[0].classList.add('tips-open')
-						} else if(item.level === '1') { // normal
+						} else if (item.level === '1') { // normal
 							this.$refs.sugarNormal[0].classList.add('tips-open')
 						} else { // abnormal
 							this.$refs.sugarAbnormal[0].classList.add('tips-open')
@@ -404,9 +404,9 @@
 						break
 					case '体温':
 						this.$refs.temperature[0].classList.add('b-animate')
-						if(item.level === '') { // empty
+						if (item.level === '') { // empty
 							this.$refs.temperatureEmpty[0].classList.add('tips-open')
-						} else if(item.level === '1') { // normal
+						} else if (item.level === '1') { // normal
 							this.$refs.temperatureNormal[0].classList.add('tips-open')
 						} else { // abnormal
 							this.$refs.temperatureAbnormal[0].classList.add('tips-open')
@@ -414,9 +414,9 @@
 						break
 					case '血压':
 						this.$refs.pressure[0].classList.add('b-animate')
-						if(item.level === '') {
+						if (item.level === '') {
 							this.$refs.pressureEmpty[0].classList.add('tips-open')
-						} else if(item.level === '1') {
+						} else if (item.level === '1') {
 							this.$refs.pressureNormal[0].classList.add('tips-open')
 						} else {
 							this.$refs.pressureAbnormal[0].classList.add('tips-open')
@@ -424,9 +424,9 @@
 						break
 					case '心电':
 						this.$refs.ecg[0].classList.add('b-animate')
-						if(item.level === '') {
+						if (item.level === '') {
 							this.$refs.ecgEmpty[0].classList.add('tips-open')
-						} else if(item.level === '1') {
+						} else if (item.level === '1') {
 							this.$refs.ecgNormal[0].classList.add('tips-open')
 						} else {
 							this.$refs.ecgAbnormal[0].classList.add('tips-open')
@@ -434,9 +434,9 @@
 						break
 					case '血氧':
 						this.$refs.oxygen[0].classList.add('b-animate')
-						if(item.level === '') {
+						if (item.level === '') {
 							this.$refs.oxygenEmpty[0].classList.add('tips-open')
-						} else if(item.level === '1') {
+						} else if (item.level === '1') {
 							this.$refs.oxygenNormal[0].classList.add('tips-open')
 						} else {
 							this.$refs.oxygenAbnormal[0].classList.add('tips-open')
@@ -444,10 +444,10 @@
 						break
 				}
 				window.animateBubble = setTimeout(function() {
-					for(let j = 0; j < allBubbleLen; j++) {
+					for (let j = 0; j < allBubbleLen; j++) {
 						allBubble[j].classList.remove('b-animate');
 					}
-					for(let k = 0; k < allTipsLen; k++) {
+					for (let k = 0; k < allTipsLen; k++) {
 						allTips[k].classList.remove('tips-open');
 					}
 				}, 1500);
@@ -460,13 +460,13 @@
 					result.data.data.relation_name = '我';
 					result.data.data.member_id = '';
 					this.myinfo = [result.data.data];
-					if(result.data.code === 'C0000') {
+					if (result.data.code === 'C0000') {
 						result.data.data.relation_name = '我';
 						result.data.data.member_id = '';
 						this.myinfo = [result.data.data];
 						this.initList();
 						// this.$refs.footer.style.display = 'block'
-						if(result.data.data.sex === 'male') {
+						if (result.data.data.sex === 'male') {
 							this.BGSVGIMG = {
 								src: require('../../assets/BG-human.svg')
 							}
@@ -478,17 +478,17 @@
 							this.maleShow = false
 						}
 					}
-				} catch(err) {
+				} catch (err) {
 					console.log(err)
 				}
 			},
 			async getMemberInfo() {
 				try {
 					const result = await this.$axios.get(`/api/member?member_id=${window._member_id}`)
-					if(result.data.code === 'C0000') {
+					if (result.data.code === 'C0000') {
 						this.initList();
 						// this.$refs.footer.style.display = 'block'
-						if(result.data.data.sex === 'male') {
+						if (result.data.data.sex === 'male') {
 							this.BGSVGIMG = {
 								src: require('../../assets/BG-human.svg')
 							}
@@ -500,7 +500,7 @@
 							this.maleShow = false
 						}
 					}
-				} catch(err) {
+				} catch (err) {
 					console.log(err)
 				}
 			},
@@ -508,27 +508,24 @@
 				try {
 					var that = this;
 					const result = await this.$axios.get('/api/family');
-					console.log('memberlist>>>', result);
-					if(result.data.code === 'C0000') {
+					if (result.data.code === 'C0000') {
 						this.createdList = result.data.data[0];
 						this.memberlist = this.myinfo.concat(this.createdList.map(function(item) {
 							var newitem = item;
 							newitem.relation_name = item.nick_name;
 							return newitem;
 						}));
-						console.log('memberlist>>>???', this.memberlist);
-						if(window._member_id === '') {
+						if (window._member_id === '') {
 							this.pageindex = this.initnum = 0;
 						} else {
 							this.memberlist.map(function(item, index) {
-								if(item.member_id == window._member_id) {
+								if (item.member_id == window._member_id) {
 									that.initnum = that.pageindex = index;
 								}
 							})
 						}
 					}
-					console.log('result>>>', result);
-				} catch(err) {
+				} catch (err) {
 					console.log(err)
 				}
 			},
@@ -584,26 +581,26 @@
 					this.healthProResult = alllist;
 					const result = await this.$axios.get(`/api/health/result?member_id=${window._member_id}`)
 					var tmp;
-					if(result.data.code === 'C0000') {
+					if (result.data.code === 'C0000') {
 						tmp = result.data.data.healthProResult;
 						var hasSleep = false;
 						var len = tmp.length;
 						var need = [];
 						alllist.map(function(item) {
 							hasSleep = false;
-							for(var i = 0; i < len; i++) {
-								if(tmp[i].moudle_name == item.moudle_name) {
+							for (var i = 0; i < len; i++) {
+								if (tmp[i].moudle_name == item.moudle_name) {
 									hasSleep = true;
 									break;
 								}
 							}
-							if(!hasSleep) { //判斷已有的
+							if (!hasSleep) { //判斷已有的
 								need.push(item);
 							}
 						})
 						that.healthProResult = tmp.concat(need);
 						// 新用户引导页
-						if(!window.localStorage.getItem('fEntry')) {
+						if (!window.localStorage.getItem('fEntry')) {
 							this.isModel = true;
 							window.localStorage.setItem('fEntry', '1');
 						} else {
@@ -611,7 +608,7 @@
 						}
 						Indicator.close();
 					}
-				} catch(err) {
+				} catch (err) {
 					console.log('err: ', err)
 					Indicator.close();
 				}
@@ -639,45 +636,50 @@
 		},
 		mounted() {
 			window.localStorage.uplus_sleep_user_info_cache = ''; //个人信息存储清空
+			if (window.localStorage.UPlusAPP_agree_privacyPlan && (window.localStorage.UPlusAPP_agree_privacyPlan == 'true' || window.localStorage.UPlusAPP_agree_privacyPlan == true)) {
+				this.show = false;
+			}else{
+				this.show = true;
+			}
 			var that = this;
 			this.showdata = _.chunk(this.healthProResult, 3);
-			if(window._member_id === '') {
+			if (window._member_id === '') {
 				this.pageindex = this.initnum = 0;
 			} else {
 				this.memberlist.map(function(item, index) {
-					if(item.member_id == window._member_id) {
+					if (item.member_id == window._member_id) {
 						that.initnum = that.pageindex = index;
 					}
 				})
 			}
 			//如果是首次登录  则调用免登陆接口 否则调用/api/user/info根据id查询用户信息
-			if(window.localStorage.UPlusApp_firstLogin_sleepReport == undefined || window.localStorage.UPlusApp_firstLogin_sleepReport == "undefined") { //判断是否首次登陆
+			if (window.localStorage.UPlusApp_firstLogin_sleepReport == undefined || window.localStorage.UPlusApp_firstLogin_sleepReport == "undefined") { //判断是否首次登陆
 				window.localStorage.UPlusApp_firstLogin_sleepReport = true; //在首次登录组件里改变
 				(async() => {
 					let obj = {
 						code: window.location.href.substring(window.location.href.indexOf('=') + 1, window.location.href.indexOf('&')),
 						url: config.url
 					}
-					if(obj.code !== '') {
+					if (obj.code !== '') {
 						try {
 							const result = await this.$axios.post('/api/info', obj)
-							if(result.data.code == 'C0000') {
+							if (result.data.code == 'C0000') {
 								window.localStorage.uplus_sleep_user_id = result.data.data.login_code; //暂存个人id
 								window.localStorage.uplus_sleep_user_disease = result.data.data.disease; //暂存个人慢病
 								window.localStorage.uplus_sleep_user_allergy = result.data.data.allergy; //暂存个人过敏
 							}
-							if(result.data.data && result.data.data.need_guide == 'Y') {
+							if (result.data.data && result.data.data.need_guide == 'Y') {
 								this.$router.push({
 									path: '/newAddReport'
 								})
 							}
-							if(result.data.data.user_flag === 'Y') { // new user
+							if (result.data.data.user_flag === 'Y') { // new user
 								this.$router.replace({
 									path: '/introduction'
 								}) // 介绍页面
 							} else {
 								this.memberID = window._member_id
-								if(window._member_id === '') {
+								if (window._member_id === '') {
 									this.getUserInfo() //获取用户信息，判断性别，获取健康数据
 								} else {
 									this.getMemberInfo() //获取家庭成员信息，判断性别，获取健康数据
@@ -685,9 +687,9 @@
 								this.getFamilyList() //请求全部家庭成员列表
 							}
 							that.loadingmodal.close();
-						} catch(err) {
+						} catch (err) {
 							that.loadingmodal.close();
-							if(process.env.NODE_ENV == 'development') {
+							if (process.env.NODE_ENV == 'development') {
 								this.$axios.get('/static/testData/checkOthersLogin.json').then(function(result) {
 									window.localStorage.uplus_sleep_user_id = result.data.data.login_code; //暂存个人id
 									window.localStorage.uplus_sleep_user_disease = result.data.data.disease; //暂存个人慢病
@@ -698,7 +700,7 @@
 					} else {
 						that.loadingmodal.close();
 						this.memberID = window._member_id
-						if(window._member_id === '') {
+						if (window._member_id === '') {
 							this.getUserInfo()
 						} else {
 							this.getMemberInfo()
@@ -710,23 +712,23 @@
 				(async() => {
 					try {
 						const result = await this.$axios.post('/api/user/info', '')
-						if(result.data.code == 'C0000') {
+						if (result.data.code == 'C0000') {
 							window.localStorage.uplus_sleep_user_id = result.data.data.login_code; //暂存个人id
 							window.localStorage.uplus_sleep_user_disease = result.data.data.disease; //暂存个人慢病
 							window.localStorage.uplus_sleep_user_allergy = result.data.data.allergy; //暂存个人过敏
 						}
-						if(result.data.data && result.data.data.need_guide == 'Y') {
+						if (result.data.data && result.data.data.need_guide == 'Y') {
 							this.$router.push({
 								path: '/newAddReport'
 							})
 						}
-						if(result.data.data.user_flag === 'Y') { // new user
+						if (result.data.data.user_flag === 'Y') { // new user
 							this.$router.replace({
 								path: '/introduction'
 							}) // 介绍页面
 						} else {
 							this.memberID = window._member_id
-							if(window._member_id === '') {
+							if (window._member_id === '') {
 								this.getUserInfo() //获取用户信息，判断性别，获取健康数据
 							} else {
 								this.getMemberInfo() //获取家庭成员信息，判断性别，获取健康数据
@@ -734,9 +736,9 @@
 							this.getFamilyList() //请求全部家庭成员列表
 						}
 						that.loadingmodal.close();
-					} catch(err) {
+					} catch (err) {
 						that.loadingmodal.close();
-						if(process.env.NODE_ENV == 'development') {
+						if (process.env.NODE_ENV == 'development') {
 							this.$axios.get('/static/testData/checkOthersLogin.json').then(function(result) {
 								window.localStorage.uplus_sleep_user_id = result.data.data.login_code; //暂存个人id
 								window.localStorage.uplus_sleep_user_disease = result.data.data.disease; //暂存个人慢病
@@ -744,7 +746,6 @@
 							})
 						}
 					}
-
 				})()
 			} // this.$nextTick(function() {
 			//     let winH = document.documentElement.clientHeight || document.body.clientHeight;
@@ -923,7 +924,6 @@
 			transform: translate(-50%, 0);
 		}
 	}
-	
 	@keyframes s-red-animation {
 		0% {
 			box-shadow: 0 0 0 0 rgba(255, 71, 93, .1);
@@ -935,7 +935,6 @@
 			box-shadow: 0 0 0 0 rgba(255, 71, 93, .1);
 		}
 	}
-	
 	@-webkit-keyframes s-normal-animation {
 		0% {
 			box-shadow: 0 0 0 0 rgba(38, 166, 255, .1);
@@ -947,7 +946,6 @@
 			box-shadow: 0 0 0 0 rgba(38, 166, 255, .1);
 		}
 	}
-	
 	@keyframes s-normal-animation {
 		0% {
 			box-shadow: 0 0 0 0 rgba(38, 166, 255, .1);
@@ -959,7 +957,6 @@
 			box-shadow: 0 0 0 0 rgba(38, 166, 255, .1);
 		}
 	}
-	
 	@-webkit-keyframes s-red-animation {
 		0% {
 			box-shadow: 0 0 0 0 rgba(255, 71, 93, .1);

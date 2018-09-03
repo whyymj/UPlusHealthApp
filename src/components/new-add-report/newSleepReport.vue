@@ -30,7 +30,6 @@
 <script>
     import paginator from './myPagination';
     import privacy from '../common/privacy.vue';
-
     export default {
         name: 'newSleepReport',
         components: {
@@ -39,7 +38,7 @@
         },
         data() {
             return {
-                show: true,
+                show: false,
                 pagenum: 2,
                 pageindex: 0
             }
@@ -48,13 +47,24 @@
             handleChange(index) {
                 this.pageindex = index;
             },
-          jump(type){
-            if(type==1){
-              this.$router.push({path: '/healthEntryMy'})
-            }else{
-              this.$router.push({path: '/healthRecordsB'})
+            jump(type) {
+                if (type == 1) {
+                    this.$router.push({
+                        path: '/healthEntryMy'
+                    })
+                } else {
+                    this.$router.push({
+                        path: '/healthRecordsB'
+                    })
+                }
             }
-          }
+        },
+        mounted() {
+            if (window.localStorage.UPlusAPP_agree_privacyPlan && (window.localStorage.UPlusAPP_agree_privacyPlan == 'true' || window.localStorage.UPlusAPP_agree_privacyPlan == true)) {
+                this.show = false;
+            } else {
+                this.show = true;
+            }
         }
     }
 </script>

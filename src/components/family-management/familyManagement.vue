@@ -11,9 +11,12 @@
           <div class="name">我</div>
         </div>
         <div class="family-item text-center" v-for="(item, index) in createdList" :key="index">
-          <div class="family-img" @click="skipTo(item.member_id)">
-            <img :src="item.head_pic" alt="family-img">
-          </div>
+          <el-badge value="关联" class="item" v-if='haveNoRelation(item)'>
+            <div class="family-img" @click="skipTo(item)">
+              <img :src="item.head_pic" alt="family-img">
+            </div>
+          </el-badge>
+          <div class="family-img haveNoRelation" style='border:none;' @click='clickNoRelation' v-else>未关联</div>
           <div class="name">{{item.relation_name}}</div>
           <div class="delete-wrap" v-show="isDelete">
             <img class="u-minus" src="../../assets/reduce.png" @click="deleteItem(item.member_id, index)" alt="">
@@ -21,10 +24,11 @@
         </div>
         <!-- associate -->
       </div>
-      <div class="associated-create add-friends " @click="openCreate()">
-        <img class="addFriends" src='/static/familyManage/link.png'>
-        <span class="add" id='addf'>添加好友<i>（已有U+账号）</i></span>
-      </div>
+      <!-- <div class="associated-create add-friends " @click="openCreate()">
+                                      <img class="addFriends" src='/static/familyManage/link.png'>
+                                      <span class="add" id='addf'>添加好友<i>（已有U+账号）</i></span>
+                                    </div> -->
+      <p class='additionTips'>注：无法查看未启用健康档案的用户信息</p>
       <div class="associated-create" @click="openCreate()">
         <i class="create fa fa-plus"></i> <span class="create">创建家人</span>
       </div>
@@ -35,20 +39,25 @@
 
 <script type="text/javascript">
   import axios from 'axios'
+  import { Toast } from 'mint-ui';
   import firstLogin from './first_login_family.vue';
   import {
     MessageBox
   } from 'mint-ui';
-  
-	import myloading from '../global/Loading.vue';
+  import myloading from '../global/Loading.vue';
+  import {
+    clearTimeout
+  } from 'timers';
   export default {
-    mixins:[myloading],
+    mixins: [myloading],
     components: {
       firstLogin
     },
     name: 'family-management',
     data() {
       return {
+        bar: '',
+        toast: '',
         isModel: null,
         isDelete: false,
         editText: '编辑',
@@ -112,11 +121,25 @@
       // })
     },
     methods: {
+      showTips(msg) {
+        this.toast = Toast(msg);
+        var that = this;
+        clearTimeout(this.bar);
+        this.bar = setTimeout(() => {
+          that.toast.close();
+        }, 2000);
+      },
       first_login() {
         window.localStorage.UPlusApp_firstLogin_family = false;
       },
+      haveNoRelation(item) { //判断是否关联的账号
+        return false;
+      },
+      clickNoRelation() { //点击未启用的用户
+        this.showTips('无法查看未启用健康档案的用户信息')
+      },
       async initUserInfo() {
-      	var that=this;
+        var that = this;
         try {
           const result = await axios.post('/api/user/info', {
             phone: ''
@@ -124,23 +147,23 @@
           if (result.data.code === 'C0000') {
             this.headPic = result.data.data.head_pic
           }
-           that.loadingmodal.close();
+          that.loadingmodal.close();
         } catch (err) {
-           that.loadingmodal.close();
+          that.loadingmodal.close();
           console.log(err)
         }
       },
       async getFamilyList() {
-        var that=this;
+        var that = this;
         try {
           const result = await axios.get('/api/family')
           if (result.data.code === 'C0000') {
             this.associatedList = result.data.data[1]
             this.createdList = result.data.data[0]
           }
-           that.loadingmodal.close();
+          that.loadingmodal.close();
         } catch (err) {
-           that.loadingmodal.close();
+          that.loadingmodal.close();
         }
       },
       openAssociate() {
@@ -165,8 +188,9 @@
           console.log(err)
         });
       },
-      skipTo(id) {
-        window._member_id = id
+      skipTo(item) { //根据是否关联了用户
+        var id = item.member_id;
+        window._member_id = id;
         if (!id) {
           this.$router.push({
             name: 'userInfo',
@@ -212,6 +236,35 @@
 <style lang="scss">
   @import "./familyManagement.scss";
   .associated-family-v {
+    .additionTips {
+      background: #fff;
+      font-size: 0.6rem;
+      font-family: 'PingFangSC-Regular';
+      font-weight: 400;
+      color: rgba(179, 179, 179, 1);
+      margin-bottom: 0.5rem;
+    }
+    .container {
+      background: #fff;
+      padding-bottom: 0;
+    }
+    .haveNoRelation {
+      width: 2.5rem;
+      height: 2.5rem;
+      background: rgba(221, 221, 221, 1);
+      text-align: center;
+      line-height: 2.5rem;
+      color: #fff;
+    }
+    .el-badge__content {
+      background: #2283E2; // padding-top:1px ;
+      // padding-bottom: 1px;
+    }
+    .family-img {
+      width: 2.6rem;
+      height: 2.6rem;
+      border: 1px solid #2283E2;
+    }
     .add-friends {
       .addFriends {
         width: 1rem;

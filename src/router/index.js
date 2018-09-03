@@ -74,6 +74,8 @@ const serverError = resolve => require(['@/components/error-message/serverError.
 
 const editFamily = resolve => require(['@/components/user-info/editFamily.vue'], resolve)
 const editFriends = resolve => require(['@/components/user-info/editFriends.vue'], resolve)
+const additionInfo= resolve => require(['@/components/user-info/additionInfo/additionInfo.vue'], resolve)
+
 const router = new Router({
   mode: 'history',
   routes: [
@@ -169,7 +171,14 @@ const router = new Router({
         title: '关联家人'
       },
       component: associatedFamilyR
-    }, {
+    },  {
+      path: '/additionInfo',
+      name: 'additionInfo',
+      meta: {
+        title: '关联备注'
+      },
+      component: additionInfo
+    },{
       path: '/associationRequest/:phone',
       name: 'associationRequest',
       meta: {

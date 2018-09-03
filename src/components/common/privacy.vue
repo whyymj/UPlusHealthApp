@@ -45,9 +45,15 @@ export default {
             privacy_again: false
         }
     },
+    watch:{
+        show(){
+            this.privacy_show=this.show;
+        }
+    },
     methods: {
         $_agree () { // 同意隐私协议
-            this.privacy_show = false
+            this.privacy_show = false;
+            localStorage.UPlusAPP_agree_privacyPlan=true;
         },
         $_quit () { // 首次点击「不同意并退出」
             this.privacy_show = false
