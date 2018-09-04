@@ -524,7 +524,37 @@
 								}
 							})
 						}
+					} else {
+						this.createdList = [];
 					}
+					this.$axios.get('/api/getUHomeFamilyMember').then(function(res) {
+						if (res.data.code == 'C0000') {
+							var arr = res.data.data.UHomeList.filter(function(item) {
+								return (typeof item.unHealthUser == 'string') && item.unHealthUser != 'Y'
+							}).map(function(item, index) {
+								return {
+									"member_id": item.mobile,
+									"login_code": item.mobile,
+									"relation": "13",
+									"relation_name": "朋友",
+									"height": item.height,
+									"weight": item.weight,
+									"birthday": item.birthday,
+									"head_pic": item.avatarUrl,
+									"sex": item.gender,
+									"create_date": "",
+									"nick_name": item.nickname,
+									"target_weight": '',
+									"is_first_set_tw": 1,
+									"age": '',
+									"unHealthUser": item.unHealthUser || 'Y'
+								}
+							});
+							this.createdList=this.createdList.concat(arr);
+						}
+					}).catch(function(res) {
+						
+					})
 				} catch (err) {
 					console.log(err)
 				}
@@ -557,21 +587,18 @@
 							"level": "0"
 						},
 						{
-							"moudle_name_en": "",
 							"value": "", //value值为"0"时表示此健康模块暂无健康数据
 							"moudle_name": "心电",
 							"moudle_name_en": "",
 							"level": "0"
 						},
 						{
-							"moudle_name_en": "",
 							"value": "", //value值为"0"时表示此健康模块暂无健康数据
 							"moudle_name": "体重",
 							"moudle_name_en": "",
 							"level": "0"
 						},
 						{
-							"moudle_name_en": "",
 							"value": "", //value值为"0"时表示此健康模块暂无健康数据
 							"moudle_name": "血糖",
 							"moudle_name_en": "",
@@ -582,7 +609,14 @@
 					const result = await this.$axios.get(`/api/health/result?member_id=${window._member_id}`)
 					var tmp;
 					if (result.data.code === 'C0000') {
-						tmp = result.data.data.healthProResult;
+						tmp = result.data.data.typeList.map(function(item, index) {
+							return {
+								"value": item.index_value, //value值为"0"时表示此健康模块暂无健康数据
+								"moudle_name": item.index_name,
+								"moudle_name_en": '',
+								"level": item.level
+							}
+						});
 						var hasSleep = false;
 						var len = tmp.length;
 						var need = [];
@@ -638,7 +672,7 @@
 			window.localStorage.uplus_sleep_user_info_cache = ''; //个人信息存储清空
 			if (window.localStorage.UPlusAPP_agree_privacyPlan && (window.localStorage.UPlusAPP_agree_privacyPlan == 'true' || window.localStorage.UPlusAPP_agree_privacyPlan == true)) {
 				this.show = false;
-			}else{
+			} else {
 				this.show = true;
 			}
 			var that = this;

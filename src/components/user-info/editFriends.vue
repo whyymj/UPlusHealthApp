@@ -3,20 +3,20 @@
 		<div>
 			<!--<div @click="showActionSheet()">-->
 			<div>
-				<mt-cell class="headerImg" title="头像" is-link :to="{ name: 'headerImg',params:{member_id:memberId}}">
-					<img id="img" src="#" />
+				<mt-cell class="headerImg" title="头像" is-link >
+					<img id="img" :src="headImg" />
 				</mt-cell>
 			</div>
-			<div @click="showNickName()">
+			<div >
 				<mt-cell title="昵称" is-link>
 					<span>{{nickName||'请填写昵称'}}</span>
 				</mt-cell>
 			</div>
-			<div @click="showAdditionInfo()" style='background: #FFFFFF;' class='addtion'>
+			<!-- <div @click="showAdditionInfo()" style='background: #FFFFFF;' class='addtion'>
 				<label for="">备注</label>
 				<p>{{addition||'请填写备注'}}</p>
 				<span class='el-icon-arrow-right'></span>
-			</div>
+			</div> -->
 		</div>
 		<!--上传头像-->
 		<div>
@@ -36,6 +36,7 @@
 	export default {
 		data() {
 			return {
+				headImg:'',
 				// action sheet 选项内容
 				headerAction: [{
 					name: "拍照",
@@ -51,14 +52,14 @@
 				addition: '',
 				valuePicker: null,
 				pickerIndex: null,
-				nickName: "nick", //昵称
+				nickName: "", //昵称
 				sex: "男", //性别
 				startDate: new Date('1920-01-01'),
 				endDate: new Date(),
 				defaultBirthday: "1980-1-1", //默认生日
-				birthday: "1980-1-1", //生日
-				heightValue: "181cm", //身高
-				weightValue: "75kg", //体重
+				birthday: "", //生日
+				heightValue: "", //身高
+				weightValue: "", //体重
 				targetWeightValue: "74kg", //目标体重
 				headPic: null, //头像
 				disease: null, //慢病
@@ -73,6 +74,10 @@
 			this.memberId = this.$route.params.member_id
 		},
 		mounted() {
+			var query=this.$route.query;
+			this.headImg=query.img;
+			this.nickName=query.nickname
+			this.addition=query.addition;
 			var that = this;
 			this.route = this.$route.path;
 			this.getUserInfo(function() {

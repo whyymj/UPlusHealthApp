@@ -20,7 +20,13 @@
         setInterval,
         clearInterval
     } from 'timers';
+    import {
+        Loading
+    } from 'element-ui';
     export default {
+        components: {
+            Loading
+        },
         computed: {
             level() {
                 var title = this.params.name;
@@ -71,7 +77,8 @@
                 mediaTimer: '',
                 position: 0,
                 timerDur: 0,
-                duration: 0
+                duration: 0,
+                loadingmodal: ''
             }
         },
         methods: {
@@ -108,6 +115,7 @@
                                 // success callback
                                 function(position) {
                                     if (position > -1) {
+                                        that.loadingmodal.close()
                                         that.position = Math.round(position);
                                     }
                                 },
@@ -149,13 +157,11 @@
                     that.position = time;
                     that.my_media.seekTo(time * 1000);
                 }
-
                 this.$$("backThirtySec").onclick = function() {
                     var time = that.position - 30;
                     time = time < 0 ? 0.001 : time;
                     that.position = time;
                     that.my_media.seekTo(time * 1000);
-                    
                 }
                 playAudio();
                 getDuration();
@@ -195,6 +201,13 @@
             this.my_media.release();
         },
         mounted() { //h5实现的方式
+            this.loadingmodal = Loading.service({
+                fullscreen: true,
+                background: 'rgba(0, 0, 0, 0.7)',
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+            });
             this.params = this.$route.query;
             var that = this;
             //初始化音频插件

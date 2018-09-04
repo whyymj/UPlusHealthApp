@@ -11,23 +11,34 @@
           <div class="name">我</div>
         </div>
         <div class="family-item text-center" v-for="(item, index) in createdList" :key="index">
-          <el-badge value="关联" class="item" v-if='haveNoRelation(item)'>
+          <el-badge value="" class="item">
             <div class="family-img" @click="skipTo(item)">
               <img :src="item.head_pic" alt="family-img">
             </div>
           </el-badge>
-          <div class="family-img haveNoRelation" style='border:none;' @click='clickNoRelation' v-else>未关联</div>
-          <div class="name">{{item.relation_name}}</div>
+          <div class="name">{{item.nick_name}}</div>
           <div class="delete-wrap" v-show="isDelete">
             <img class="u-minus" src="../../assets/reduce.png" @click="deleteItem(item.member_id, index)" alt="">
           </div>
         </div>
         <!-- associate -->
+        <div class="family-item text-center" v-for="(item, index) in associatedList" :key="'1'+index">
+          <el-badge value="关联" class="item" v-if='item.unHealthUser!=="Y"' @click='clickNoRelation(item)'>
+            <div class="family-img" @click="skipTo(item)">
+              <img :src="item.head_pic" alt="family-img">
+            </div>
+          </el-badge>
+          <div class="family-img haveNoRelation" style='border:none;' @click='clickNoRelation(item)' v-else>未关联</div>
+          <div class="name">{{item.nick_name}}</div>
+          <div class="delete-wrap" v-show="isDelete">
+            <img class="u-minus" src="../../assets/reduce.png" @click="deleteItem(item.member_id, index)" alt="">
+          </div>
+        </div>
       </div>
       <!-- <div class="associated-create add-friends " @click="openCreate()">
-                                      <img class="addFriends" src='/static/familyManage/link.png'>
-                                      <span class="add" id='addf'>添加好友<i>（已有U+账号）</i></span>
-                                    </div> -->
+                                                    <img class="addFriends" src='/static/familyManage/link.png'>
+                                                    <span class="add" id='addf'>添加好友<i>（已有U+账号）</i></span>
+                                                  </div> -->
       <p class='additionTips'>注：无法查看未启用健康档案的用户信息</p>
       <div class="associated-create" @click="openCreate()">
         <i class="create fa fa-plus"></i> <span class="create">创建家人</span>
@@ -39,7 +50,9 @@
 
 <script type="text/javascript">
   import axios from 'axios'
-  import { Toast } from 'mint-ui';
+  import {
+    Toast
+  } from 'mint-ui';
   import firstLogin from './first_login_family.vue';
   import {
     MessageBox
@@ -67,42 +80,9 @@
         memberList: ''
       }
     },
-    created() {},
     mounted() {
       if (process.env.NODE_ENV == 'development') {
-        this.createdList = [{
-            "member_id": "58",
-            "login_code": 15153125386,
-            "relation": "1",
-            "relation_name": "爸爸",
-            "height": 170,
-            "weight": 65,
-            "birthday": "1966-11-27",
-            "head_pic": "http://healthapp.haier.net/image/father.png",
-            "sex": "male",
-            "create_date": "2018-04-12 10:34:57",
-            "nick_name": "爸爸",
-            "target_weight": 65,
-            "is_first_set_tw": 1,
-            "age": 52
-          },
-          {
-            "member_id": "42",
-            "login_code": 15153125386,
-            "relation": "13",
-            "relation_name": "朋友",
-            "height": 180,
-            "weight": 70,
-            "birthday": "1989-8-30",
-            "head_pic": "http://healthapp.haier.net/image/husband.png",
-            "sex": "male",
-            "create_date": "2018-01-26 16:12:57",
-            "nick_name": "朋友2",
-            "target_weight": 70,
-            "is_first_set_tw": 1,
-            "age": 29
-          }
-        ]
+        this.createdList = []
       }
       // init family list && window.localStorage.getItem('newUser')
       this.getFamilyList()
@@ -132,11 +112,15 @@
       first_login() {
         window.localStorage.UPlusApp_firstLogin_family = false;
       },
-      haveNoRelation(item) { //判断是否关联的账号
-        return false;
-      },
-      clickNoRelation() { //点击未启用的用户
-        this.showTips('无法查看未启用健康档案的用户信息')
+      clickNoRelation(item) { //点击未启用的用户
+        this.$router.push({
+          path: '/editFriends',
+          query: {
+            img: item.head_pic,
+            nickname: item.nick_name,
+            addition: ''
+          }
+        })
       },
       async initUserInfo() {
         var that = this;
@@ -158,12 +142,60 @@
         try {
           const result = await axios.get('/api/family')
           if (result.data.code === 'C0000') {
-            this.associatedList = result.data.data[1]
-            this.createdList = result.data.data[0]
+            this.createdList = result.data.data[0];
+            this.$axios.get('/api/getUHomeFamilyMember').then(function(res) {
+              if (res.data.code == 'C0000') {
+                that.associatedList = res.data.data.UHomeList.map(function(item, index) {
+                  return {
+                    "member_id": item.mobile,
+                    "login_code": item.mobile,
+                    "relation": "13",
+                    "relation_name": "朋友",
+                    "height": item.height,
+                    "weight": item.weight,
+                    "birthday": item.birthday,
+                    "head_pic": item.avatarUrl,
+                    "sex": item.gender,
+                    "create_date": "",
+                    "nick_name": item.nickname,
+                    "target_weight": '',
+                    "is_first_set_tw": 1,
+                    "age": '',
+                    "unHealthUser": item.unHealthUser || 'Y'
+                  }
+                });
+              }
+            }).catch(function(res) {})
           }
           that.loadingmodal.close();
         } catch (err) {
           that.loadingmodal.close();
+          that.$axios.get('/static/testData/family.json').then(function(res) {
+            that.createdList = res.data.data[0];
+            that.$axios.get('/static/testData/getUHomeFamilyMember.json').then(function(res) {
+              if (res.data.code == 'C0000') {
+                that.associatedList = res.data.data.UHomeList.map(function(item, index) {
+                  return {
+                    "member_id": item.mobile,
+                    "login_code": item.mobile,
+                    "relation": "13",
+                    "relation_name": "朋友",
+                    "height": item.height,
+                    "weight": item.weight,
+                    "birthday": item.birthday,
+                    "head_pic": item.avatarUrl,
+                    "sex": item.gender,
+                    "create_date": "",
+                    "nick_name": item.nickname,
+                    "target_weight": '',
+                    "is_first_set_tw": 1,
+                    "age": '',
+                    "unHealthUser": item.unHealthUser || 'Y'
+                  }
+                });
+              }
+            }).catch(function(res) {})
+          })
         }
       },
       openAssociate() {
