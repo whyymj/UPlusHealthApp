@@ -572,7 +572,7 @@
             save() {
                 var that = this;
                 let saveData = {
-                    relation: 13, //称呼
+                    relation: 13, //称呼,默认朋友关系
                     height: parseFloat(this.tall),
                     weight: parseFloat(this.weight),
                     sex: this.sex == '男' ? "male" : "female",

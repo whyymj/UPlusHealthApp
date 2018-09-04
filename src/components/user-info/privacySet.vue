@@ -73,6 +73,9 @@
 					this.isSelect = true
 				}
 			}
+		},
+		mounted(){
+			
 		}
 	}
 </script>

@@ -12,19 +12,17 @@
 					<span>{{nickName||'请填写昵称'}}</span>
 				</mt-cell>
 			</div>
-				<div @click="showNickName()">
-				<mt-cell title="备注" is-link>
-					<span>{{addition||'请填写备注'}}</span>
-				</mt-cell>
+			<div @click="showAdditionInfo()" style='background: #FFFFFF;' class='addtion'>
+				<label for="">备注</label>
+				<p>{{addition||'请填写备注'}}</p>
+				<span class='el-icon-arrow-right'></span>
 			</div>
 		</div>
-	
 		<!--上传头像-->
 		<div>
 			<mt-actionsheet :actions="headerAction" v-model="sheetVisible" cancel-text="取消">
 			</mt-actionsheet>
 		</div>
-	
 	</div>
 </template>
 
@@ -50,7 +48,7 @@
 				sheetVisible: false,
 				pickerVisible: false,
 				dateSlots: [],
-				addition:'',
+				addition: '',
 				valuePicker: null,
 				pickerIndex: null,
 				nickName: "nick", //昵称
@@ -150,6 +148,17 @@
 					}
 				})
 			},
+			showAdditionInfo() {
+				var that = this;
+				this.$router.push({
+					path: '/additionInfo',
+					query: {
+						from: that.route,
+						row: "addition",
+						default: that.addition
+					}
+				})
+			},
 			formatDate(date) {
 				const y = date.getFullYear();
 				let m = date.getMonth() + 1
@@ -220,7 +229,7 @@
 							path: '/userInfoSex',
 							query: {
 								from: that.route,
-								row: "sex"
+								row: "sex",
 							}
 						})
 						break;
@@ -345,7 +354,51 @@
 		}
 	}
 </script>
-<style type="text/css" scoped="scoped">
+<style type="text/css" scoped="scoped" lang='scss'>
+	.userInfo {
+		.addtion {
+			width: 100%;
+			height: 2.5rem;
+			position: relative;
+			label,
+			p {
+				height: 100%;
+				line-height: 2.5rem;
+				font-size: 0.75rem;
+				font-family: 'PingFangSC-Regular';
+				font-weight: 400;
+				color: rgba(51, 51, 51, 1);
+			}
+			label {
+				float: left;
+				width: 2.5rem;
+				text-align: center;
+
+			}
+			p {
+				text-align: right;
+				position: absolute;
+				left: 3rem;
+				top: 0;
+				right: 1.5rem;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				color: #999;
+				font-size: 0.75rem;
+			}
+			.el-icon-arrow-right {
+				color: #c8c8cd;
+				font-size: 0.5rem;
+				font-weight: 700;
+				position: absolute;
+				right: 0.8rem;
+				top: 0;
+				bottom: 0;
+				line-height: 2.5rem;
+			}
+		}
+	}
 	.deleteFamily {
 		width: 8rem;
 		height: 2rem;

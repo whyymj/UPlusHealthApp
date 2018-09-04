@@ -1,13 +1,8 @@
 import axios from 'axios'
-import myDatePicker from './myDatePicker.vue';
-import mycollapse2 from '../sleep-music/mycollapse2.vue';
+
 export default {
-  name : 'pressure',
-  components : {
-    myDatePicker,
-    mycollapse2
-  },
-  data() {
+  name: 'pressure',
+  data () {
     return {
       ChooseTypePopupVisible: false,
       bluetoothVisible: false,
@@ -18,9 +13,7 @@ export default {
       newsResult: [],
       calendarOpen: false,
       pressureRecordData: [],
-      recordOptions: [
-        '最近七次', '周', '月', '年'
-      ],
+      recordOptions: ['最近七次', '周', '月', '年'],
       selectedRecordOption: '最近七次',
       selectedRecordArgs: 'seven',
       pressureChartsOption: this.getChartsOption([], [], [], []),
@@ -48,56 +41,126 @@ export default {
       disablePast: false,
       disableFuture: true,
       disableWeekend: false,
-      disableDateFunction(date) {
+      disableDateFunction (date) {
         return false
       }
     }
   },
-  mounted() {
-    this
-      .$nextTick(function () {
-        this.chartOption('seven')
-        
-        if (window._pressure_selected_date) {
-          this.value = window._pressure_selected_date
-        }
-      })
+  mounted () {
+    this.$nextTick(function () {
+      this.chartOption('seven')
+      document.getElementsByClassName('calendar-header')[0].style.display = 'none'
+      if (window._pressure_selected_date) {
+        this.value = window._pressure_selected_date
+        this.toggleOpenCalendar()
+      }
+    })
     this.initList()
   },
-  methods : {
-    checkDateData(date) {
-      var str = date.year + '-' + (date.month > 9
-        ? date.month
-        : ('0' + date.month)) + '-' + (date.date > 9
-        ? date.date
-        : ('0' + date.date));
-      this.onChange(str);
+  methods: {
+    goManualEntry (type) {
+      this.$router.push({path: `/manualEntry/${type}`})
     },
-    goManualEntry(type) {
-      this
-        .$router
-        .push({path: `/manualEntry/${type}`})
+    addNewDevice () {
+      this.$router.push({path: '/deviceType'})
     },
-    addNewDevice() {
-      this
-        .$router
-        .push({path: '/deviceType'})
-    },
-    addRecentlyDevice() {
+    addRecentlyDevice () {
       this.bluetoothVisible = true
     },
-    openBluetooth() {
+    openBluetooth () {
       this.bluetoothVisible = false
       this.popupVisible = true
     },
-   
-    onChange(val) {
+    toggleOpenCalendar () {
+      this.calendarOpen = !this.calendarOpen
+      if (document.getElementsByClassName('calendar-header')[0].style.display === 'none') {
+        document.getElementsByClassName('calendar-header')[0].style.display = 'block'
+      } else {
+        document.getElementsByClassName('calendar-header')[0].style.display = 'none'
+      }
+      setTimeout(() => {
+        this.onlyShowCurrentOrToday(this.calendarOpen)
+      }, 0)
+    },
+    onChange (val) {
+      console.log('on-change', val)
       window._pressure_selected_date = val
       this.pressureDate = val
       this.initList()
-     
+      document.getElementById('calendarTop').classList.remove('open')
+      document.getElementById('calendarBg').classList.remove('open')
+      document.getElementById('calendarBelow').classList.remove('open')
+      this.calendarOpen = !this.calendarOpen
+      if (document.getElementsByClassName('calendar-header')[0].style.display === 'none') {
+        document.getElementsByClassName('calendar-header')[0].style.display = 'block'
+      } else {
+        document.getElementsByClassName('calendar-header')[0].style.display = 'none'
+      }
+      setTimeout(() => {
+        this.onlyShowCurrentOrToday(this.calendarOpen)
+      }, 0)
     },
-    switchTab(option) {
+    onViewChange (val, count) {
+      console.log('on view change', val, count)
+      this.firstDate = val.firstDate
+      this.lastDate = val.lastDate
+      this.month = val.month < 10 ? '0' + val.month : val.month
+      this.year = val.year
+      setTimeout(() => {
+        this.initDateList()
+        this.onlyShowCurrentOrToday(this.calendarOpen)
+        this.setTomorrowColor()
+      }, 150)
+    },
+    setTomorrowColor () {
+      let dayNum = new Date().getDate()
+      let dayStr = dayNum < 10 ? '0' + dayNum : '' + dayNum
+      let monthNum = new Date().getMonth() + 1
+      let monthStr = monthNum < 10 ? '0' + monthNum : '' + monthNum
+      let yearStr = new Date().getFullYear()
+      let todayV = yearStr + '' + monthStr + '' + dayStr
+      let nodes = document.getElementsByTagName('td')
+      let nodesLen = nodes.length
+
+      for (let i = 0; i < nodesLen; i++) {
+        nodes[i].style.color = '#444'
+        if (parseInt(nodes[i].getAttribute('data-date').replace(/-/g, '')) > parseInt(todayV)) {
+          nodes[i].style.color = '#ccc'
+        }
+      }
+    },
+    onlyShowCurrentOrToday (isShow) {
+      if (isShow) {
+        for (let tr of document.querySelectorAll('.inline-calendar.inline-calendar-demo tbody tr')) {
+          tr.style.display = ''
+        }
+      } else {
+        let className = null
+        if (document.querySelectorAll('.inline-calendar.inline-calendar-demo .current').length > 0) {
+          className = 'current'
+        } else if (document.querySelectorAll('.inline-calendar.inline-calendar-demo .is-today').length > 0) {
+          className = 'is-today'
+        }
+
+        if (!className) {
+          return
+        }
+
+        for (let tr of document.querySelectorAll('.inline-calendar.inline-calendar-demo tbody tr')) {
+          let hasSelected = false
+          for (let td of tr.querySelectorAll('td')) {
+            if (td.getAttribute('class').indexOf(className) >= 0) {
+              hasSelected = true
+              break
+            }
+          }
+          if (!hasSelected) {
+            tr.style.display = 'none'
+          }
+        }
+      }
+    },
+    switchTab (option) {
       // 切换图表标签页
       this.selectedRecordOption = option
       switch (option) {
@@ -122,7 +185,7 @@ export default {
         })
       })
     },
-    async initNews() {
+    async initNews () {
       try {
         const result = await axios.get(`/api/news?id=3&level=${this.pressureLevel}`)
         console.log('result: ', result)
@@ -131,7 +194,7 @@ export default {
         console.log('err: ', err)
       }
     },
-    async initList() {
+    async initList () {
       try {
         const result = await axios.get(`/api/pressure/three?member_id=${window._member_id}&date=${this.pressureDate}&limit=N`)
         if (result.data.code === 'C0000') {
@@ -144,10 +207,7 @@ export default {
           } else {
             this.$refs.noData.style.display = 'none'
             if (result.data.data.length > 3) {
-              result
-                .data
-                .data
-                .splice(3)
+              result.data.data.splice(3)
               this.$refs.allData.style.display = 'block'
               this.pressureRecordData = result.data.data
             } else {
@@ -162,21 +222,45 @@ export default {
         console.log('Whoops: ', err)
       }
     },
-    async chartOption(args, callback) {
+    async initDateList () {
+      try {
+        const result = await axios.get(`/api/health/list?member_id=${window._member_id}&flag=3&begin=${this.firstDate}&end=${this.lastDate}`)
+        if (result.data.code === 'C0000') {
+          // console.log(result)
+          let _result = result.data.data.date_list
+          let nodes = document.getElementsByTagName('td')
+          let nodesLen = nodes.length
+          // clear
+          let calendarData = document.getElementsByClassName('calendar-data')
+          let calendarDataLen = calendarData.length
+          for (let i = 0; i < calendarDataLen; i++) {
+            calendarData[0].parentNode.removeChild(calendarData[0])
+          }
+
+          for (let j = 0; j < _result.length; j++) {
+            for (let i = 0; i < nodesLen; i++) {
+              let span = document.createElement('span')
+              span.classList.add('calendar-data')
+              if (nodes[i].getAttribute('data-date') === _result[j]) {
+                nodes[i].appendChild(span)
+                break
+              }
+            }
+          }
+        }
+      } catch (err) {
+        console.log('err: ', err)
+      }
+    },
+    async chartOption (args, callback) {
       try {
         const result = await axios.get(`/api/pressure/${args}?member_id=${window._member_id}`)
         if (result.data.code === 'C0000') {
           let d = result.data.data.diastolic_data
           let s = result.data.data.systolic_data
-          let c = args !== 'seven'
-            ? result.data.data.create_date
-            : result
-              .data
-              .data
-              .create_date
-              .map(_ => {
-                return _.split(' ')[0]
-              })
+          let c = args !== 'seven' ? result.data.data.create_date : result.data.data.create_date.map(_ => {
+            return _.split(' ')[0]
+          })
           let t = result.data.data.time_list
           // this.$refs.pressure.$children[0] && this.$refs.pressure.$children[0].clear()
           if (d.length === 0 && s.length === 0) {
@@ -186,35 +270,21 @@ export default {
             } else {
               if (this.$refs.noPressure.style.display === 'none') {
                 this.pressureChartsOption = this.getChartsOption([], [], [], [])
-                // this.$refs.pressure.$children[0].mergeOptions(this.getChartsOption([], [],
-                // [], []))
+                // this.$refs.pressure.$children[0].mergeOptions(this.getChartsOption([], [], [], []))
               }
             }
           } else {
             this.$refs.noPressure.style.display = 'none'
             this.$refs.pressure.$el.style.display = 'block'
             this.pressureChartsOption = this.getChartsOption(d, s, c, t)
-            // this.$refs.pressure.$children[0] &&
-            // this.$refs.pressure.$children[0].mergeOptions(this.getChartsOption(d, s, c,
-            // t))
+            // this.$refs.pressure.$children[0] && this.$refs.pressure.$children[0].mergeOptions(this.getChartsOption(d, s, c, t))
           }
           if (this.$refs.pressure.$children.length !== 0) {
-            this
-              .$refs
-              .pressure
-              .$children[0]
-              .chart
-              ._api
-              .getZr()
-              .on('mouseup', () => {
-                this
-                  .$refs
-                  .pressure
-                  .$children[0]
-                  .chart
-                  ._api
-                  .dispatchAction({type: 'hideTip'})
+            this.$refs.pressure.$children[0].chart._api.getZr().on('mouseup', () => {
+              this.$refs.pressure.$children[0].chart._api.dispatchAction({
+                type: 'hideTip'
               })
+            })
           }
         }
       } catch (err) {
@@ -222,11 +292,14 @@ export default {
       }
       callback && callback()
     },
-    async deleteRecord(index, item) {
+    async deleteRecord (index, item) {
       try {
-        const result = await axios.post('/api/pressure/delete', {bloodPressure_id: item.bloodPressure.bloodPressure_id})
+        const result = await axios.post('/api/pressure/delete', {
+          bloodPressure_id: item.bloodPressure.bloodPressure_id
+        })
         if (result.data.code === 'C0000') {
           this.chartOption(this.selectedRecordArgs)
+          this.initDateList()
           this.initList()
           console.log('delete success...')
         } else {
@@ -236,7 +309,7 @@ export default {
         console.log('Whoops: ', err)
       }
     },
-    getChartsOption(diastolicData, systolicData, createDate, date) {
+    getChartsOption (diastolicData, systolicData, createDate, date) {
       let startPoint = [] // 第一范围起始点
       let endPoint = [] // 第一范围结束点
       let startPointTwo = [] // 第二范围起始点
@@ -300,12 +373,8 @@ export default {
               let res = foo[0] + '<br/>'
               for (let i = 0, length = params.length; i < length; i++) {
                 if (i % 2 === 0) {
-                  params[i].value = !params[i].value
-                    ? '--'
-                    : params[i].value + 'mmHg'
-                  params[i + 1].value = !params[i + 1].value
-                    ? '--'
-                    : params[i + 1].value + 'mmHg'
+                  params[i].value = !params[i].value ? '--' : params[i].value + 'mmHg'
+                  params[i + 1].value = !params[i + 1].value ? '--' : params[i + 1].value + 'mmHg'
                   res += params[i].seriesName + ': ' + params[i].value + ' ~ ' + params[i + 1].value + '<br/>'
                 }
               }
@@ -396,16 +465,9 @@ export default {
           {
             name: '收缩压（高压）',
             type: 'scatter',
-            symbol: 'image://data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAICAYAAADJEc7MAAAAAX' +
-                'NSR0IArs4c6QAAAOxJREFUGBljZEAD6kv/dv9nYCiBCzMy/mdkZCy4Gck4CS4GZDDBOA3//zOpL/s7A0' +
-                'UTSPL/f8b///5NVF/2vxqmFkQzggiH/f9Znj//t+D/f4ZoEB8XACruvBnNXAGSZ9Re9Z/tz5//K////x' +
-                '+ASwOyONCJU69HMeUyqi/9t/M/w383ZEkQm5GBcT+QEgHK6aLLASUXMmHTBNS2RVKK0YuFldGBgZHxFI' +
-                'bG/wzx8MCBSTIyMqziVWcMOuDI+ONqGOM7Rm5GF2CoHoTJw2gUjUBN8yIjmSLPmjD+him46c/4WYiF0R' +
-                'Po9O0wMRANAJJARcEvG/YSAAAAAElFTkSuQmCC',
+            symbol: 'image://data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAICAYAAADJEc7MAAAAAXNSR0IArs4c6QAAAOxJREFUGBljZEAD6kv/dv9nYCiBCzMy/mdkZCy4Gck4CS4GZDDBOA3//zOpL/s7A0UTSPL/f8b///5NVF/2vxqmFkQzggiH/f9Znj//t+D/f4ZoEB8XACruvBnNXAGSZ9Re9Z/tz5//K////x+ASwOyONCJU69HMeUyqi/9t/M/w383ZEkQm5GBcT+QEgHK6aLLASUXMmHTBNS2RVKK0YuFldGBgZHxFIbG/wzx8MCBSTIyMqziVWcMOuDI+ONqGOM7Rm5GF2CoHoTJw2gUjUBN8yIjmSLPmjD+him46c/4WYiF0RPo9O0wMRANAJJARcEvG/YSAAAAAElFTkSuQmCC',
             symbolRotate: 180,
-            symbolSize: [
-              7, 4
-            ], // 空心标记的大小
+            symbolSize: [7, 4], // 空心标记的大小
             itemStyle: {
               normal: {
                 color: '#26A5FD'
@@ -414,19 +476,13 @@ export default {
             data: systolicData.map(function (d) {
               return d[0]
             })
-          }, {
+          },
+          {
             name: '收缩压（高压）',
             type: 'scatter',
-            symbol: 'image://data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAICAYAAADJEc7MAAAAAX' +
-                'NSR0IArs4c6QAAAOxJREFUGBljZEAD6kv/dv9nYCiBCzMy/mdkZCy4Gck4CS4GZDDBOA3//zOpL/s7A0' +
-                'UTSPL/f8b///5NVF/2vxqmFkQzggiH/f9Znj//t+D/f4ZoEB8XACruvBnNXAGSZ9Re9Z/tz5//K////x' +
-                '+ASwOyONCJU69HMeUyqi/9t/M/w383ZEkQm5GBcT+QEgHK6aLLASUXMmHTBNS2RVKK0YuFldGBgZHxFI' +
-                'bG/wzx8MCBSTIyMqziVWcMOuDI+ONqGOM7Rm5GF2CoHoTJw2gUjUBN8yIjmSLPmjD+him46c/4WYiF0R' +
-                'Po9O0wMRANAJJARcEvG/YSAAAAAElFTkSuQmCC',
+            symbol: 'image://data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAICAYAAADJEc7MAAAAAXNSR0IArs4c6QAAAOxJREFUGBljZEAD6kv/dv9nYCiBCzMy/mdkZCy4Gck4CS4GZDDBOA3//zOpL/s7A0UTSPL/f8b///5NVF/2vxqmFkQzggiH/f9Znj//t+D/f4ZoEB8XACruvBnNXAGSZ9Re9Z/tz5//K////x+ASwOyONCJU69HMeUyqi/9t/M/w383ZEkQm5GBcT+QEgHK6aLLASUXMmHTBNS2RVKK0YuFldGBgZHxFIbG/wzx8MCBSTIyMqziVWcMOuDI+ONqGOM7Rm5GF2CoHoTJw2gUjUBN8yIjmSLPmjD+him46c/4WYiF0RPo9O0wMRANAJJARcEvG/YSAAAAAElFTkSuQmCC',
             symbolRotate: 180,
-            symbolSize: [
-              7, 4
-            ],
+            symbolSize: [7, 4],
             itemStyle: {
               normal: {
                 color: '#26A5FD'
@@ -435,18 +491,12 @@ export default {
             data: systolicData.map(function (d) {
               return d[1]
             })
-          }, {
+          },
+          {
             name: '舒张压（低压）',
             type: 'scatter',
-            symbol: 'image://data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAICAYAAADJEc7MAAAAAX' +
-                'NSR0IArs4c6QAAAOxJREFUGBljZEAD6kv/dv9nYCiBCzMy/mdkZCy4Gck4CS4GZDDBOA3//zOpL/s7A0' +
-                'UTSPL/f8b///5NVF/2vxqmFkQzggiH/f9Znj//t+D/f4ZoEB8XACruvBnNXAGSZ9Re9Z/tz5//K////x' +
-                '+ASwOyONCJU69HMeUyqi/9t/M/w383ZEkQm5GBcT+QEgHK6aLLASUXMmHTBNS2RVKK0YuFldGBgZHxFI' +
-                'bG/wzx8MCBSTIyMqziVWcMOuDI+ONqGOM7Rm5GF2CoHoTJw2gUjUBN8yIjmSLPmjD+him46c/4WYiF0R' +
-                'Po9O0wMRANAJJARcEvG/YSAAAAAElFTkSuQmCC',
-            symbolSize: [
-              7, 4
-            ],
+            symbol: 'image://data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAICAYAAADJEc7MAAAAAXNSR0IArs4c6QAAAOxJREFUGBljZEAD6kv/dv9nYCiBCzMy/mdkZCy4Gck4CS4GZDDBOA3//zOpL/s7A0UTSPL/f8b///5NVF/2vxqmFkQzggiH/f9Znj//t+D/f4ZoEB8XACruvBnNXAGSZ9Re9Z/tz5//K////x+ASwOyONCJU69HMeUyqi/9t/M/w383ZEkQm5GBcT+QEgHK6aLLASUXMmHTBNS2RVKK0YuFldGBgZHxFIbG/wzx8MCBSTIyMqziVWcMOuDI+ONqGOM7Rm5GF2CoHoTJw2gUjUBN8yIjmSLPmjD+him46c/4WYiF0RPo9O0wMRANAJJARcEvG/YSAAAAAElFTkSuQmCC',
+            symbolSize: [7, 4],
             itemStyle: {
               normal: {
                 color: '#26A5FD'
@@ -455,18 +505,12 @@ export default {
             data: diastolicData.map(function (d) {
               return d[0]
             })
-          }, {
+          },
+          {
             name: '舒张压（低压）',
             type: 'scatter',
-            symbol: 'image://data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAICAYAAADJEc7MAAAAAX' +
-                'NSR0IArs4c6QAAAOxJREFUGBljZEAD6kv/dv9nYCiBCzMy/mdkZCy4Gck4CS4GZDDBOA3//zOpL/s7A0' +
-                'UTSPL/f8b///5NVF/2vxqmFkQzggiH/f9Znj//t+D/f4ZoEB8XACruvBnNXAGSZ9Re9Z/tz5//K////x' +
-                '+ASwOyONCJU69HMeUyqi/9t/M/w383ZEkQm5GBcT+QEgHK6aLLASUXMmHTBNS2RVKK0YuFldGBgZHxFI' +
-                'bG/wzx8MCBSTIyMqziVWcMOuDI+ONqGOM7Rm5GF2CoHoTJw2gUjUBN8yIjmSLPmjD+him46c/4WYiF0R' +
-                'Po9O0wMRANAJJARcEvG/YSAAAAAElFTkSuQmCC',
-            symbolSize: [
-              7, 4
-            ],
+            symbol: 'image://data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAICAYAAADJEc7MAAAAAXNSR0IArs4c6QAAAOxJREFUGBljZEAD6kv/dv9nYCiBCzMy/mdkZCy4Gck4CS4GZDDBOA3//zOpL/s7A0UTSPL/f8b///5NVF/2vxqmFkQzggiH/f9Znj//t+D/f4ZoEB8XACruvBnNXAGSZ9Re9Z/tz5//K////x+ASwOyONCJU69HMeUyqi/9t/M/w383ZEkQm5GBcT+QEgHK6aLLASUXMmHTBNS2RVKK0YuFldGBgZHxFIbG/wzx8MCBSTIyMqziVWcMOuDI+ONqGOM7Rm5GF2CoHoTJw2gUjUBN8yIjmSLPmjD+him46c/4WYiF0RPo9O0wMRANAJJARcEvG/YSAAAAAElFTkSuQmCC',
+            symbolSize: [7, 4],
             itemStyle: {
               normal: {
                 color: '#26A5FD'
@@ -475,7 +519,8 @@ export default {
             data: diastolicData.map(function (d) {
               return d[1]
             })
-          }, {
+          },
+          {
             name: '起始点',
             stack: true,
             type: 'bar',
@@ -490,7 +535,8 @@ export default {
             tooltip: {
               show: false
             }
-          }, {
+          },
+          {
             name: '范围',
             stack: true,
             type: 'bar',
@@ -506,7 +552,8 @@ export default {
             tooltip: {
               show: false
             }
-          }, {
+          },
+          {
             name: '第二范围起始点',
             stack: true,
             type: 'bar',
@@ -521,7 +568,8 @@ export default {
             tooltip: {
               show: false
             }
-          }, {
+          },
+          {
             name: '第二段范围',
             stack: true,
             type: 'bar',
@@ -543,30 +591,24 @@ export default {
 
       return option
     },
-    openHealthTips(index) {
-      this.pressureIndex = this.pressureIndex === index
-        ? -index
-        : index
+    openHealthTips (index) {
+      this.pressureIndex = this.pressureIndex === index ? -index : index
     },
-    openDetail(item) {
+    openDetail (item) {
       window.open(`http://lifehaier.com/News/Advisory/detail/id/${item.news_id}.html`)
     },
-    fnGetAllData() {
+    fnGetAllData () {
       if (this.pressureDate === '') {
         let _date = new Date()
-        let day = _date.getDate() < 10
-          ? '0' + _date.getDate()
-          : _date.getDate()
+        let day = _date.getDate() < 10 ? '0' + _date.getDate() : _date.getDate()
         this.pressureDate = this.year + '-' + this.month + '-' + day
       }
-      this
-        .$router
-        .push({path: `/pressure/history/${this.pressureDate}`})
+      this.$router.push({ path: `/pressure/history/${this.pressureDate}` })
     },
-    setOpacity(ele, opacity) {
+    setOpacity (ele, opacity) {
       ele.style.opacity = opacity
     },
-    fadeout(ele, time, callback) {
+    fadeout (ele, time, callback) {
       window.fadeTimer = window.fadeTimer || 0
       clearInterval(window.fadeTimer)
       if (ele) {
@@ -587,7 +629,7 @@ export default {
         }, 50)
       }
     },
-    fadein(ele, time, callback) {
+    fadein (ele, time, callback) {
       window.fadeTimer = window.fadeTimer || 0
       clearInterval(window.fadeTimer)
       if (ele) {

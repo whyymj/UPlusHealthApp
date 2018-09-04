@@ -544,7 +544,6 @@
                 //     .catch(_ => {});
             },
             save() {
-                console.log(123);
                 var that = this;
                 let saveData = {
                     height: parseFloat(that.tall),
@@ -580,9 +579,9 @@
                                     path: that.route
                                 })
                             } else {
-                                // that.$router.push({
-                                //     path: '/healthRecordsB'
-                                // })
+                                that.$router.push({
+                                    path: '/healthRecordsB'
+                                })
                             }
                         }
                     })

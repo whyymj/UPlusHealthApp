@@ -3,7 +3,7 @@
 		<div>
 			<!--<div @click="showActionSheet()">-->
 			<div>
-				<mt-cell class="headerImg" title="头像" is-link :to="{ name: 'headerImg',params:{member_id:memberId}}">
+				<mt-cell class="headerImg" title="头像" is-link :to="{ name: 'headerImg',params:{member_id:memberId,from:'/editFamily'}}">
 					<img id="img" src="#" />
 				</mt-cell>
 			</div>

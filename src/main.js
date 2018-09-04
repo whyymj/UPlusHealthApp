@@ -38,6 +38,22 @@ Vue.component('inline-calendar', InlineCalendar)
 Vue.component('loading', Loading)
 Vue.use(MintUI)
 
+
+//添加拦截器
+axios.interceptors.request.use(function(config){
+	return config
+},function(err){
+	return Promise.reject(err)
+});
+axios.interceptors.response.use(function(response){
+	console.log('response',response);
+	return response
+},function(err){
+
+	return Promise.reject(err)
+});
+    
+    
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
