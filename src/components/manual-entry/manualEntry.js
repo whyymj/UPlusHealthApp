@@ -184,7 +184,7 @@ export default {
           cache: true,
           slides: (function () {
             const slides = []
-            for (let i = 300; i < 1200; i++) {
+            for (let i = 300; i < 2000; i++) {
               let ruler = ``
               if ((i + 1) % 50 === 0) {
                 ruler = `<span class="ruler-long"></span><span class="ruler-num">${(i + 1) / 10}</span>`
