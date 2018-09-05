@@ -15,6 +15,7 @@
             };
         },
         methods: {
+           
             save() {
                 var that = this;
                 this.$router.push({
