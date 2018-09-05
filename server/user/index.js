@@ -441,7 +441,7 @@ router.post('/api/member/target', (req, res, next) => {
 })
 // 删除家庭成员
 router.post('/api/member/delete', (req, res, next) => {
-  const postData = querystring.stringify({memberList: req.body.memberList})
+  const postData = querystring.stringify({memberList: req.body.member_id})
   const options = {
     host: config.host,
     port: config.port,
@@ -476,6 +476,7 @@ router.post('/api/member/delete', (req, res, next) => {
     console.error(`请求遇到问题: ${e.message}`)
   })
   _req.write(postData)
+  console.log('delte>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ',postData);
   _req.end()
 })
 // 同意关联用户申请

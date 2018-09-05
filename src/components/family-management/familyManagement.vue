@@ -222,6 +222,7 @@
       },
       skipTo(item) { //根据是否关联了用户
         var id = item.member_id;
+        
         window._member_id = id;
         if (!id) {
           this.$router.push({
@@ -233,7 +234,7 @@
         } else {
           this.$router.push({
             name: 'editFamily',
-            params: {
+            query: {
               member_id: id
             }
           })
@@ -250,7 +251,7 @@
             //这里做删除
             try {
               const result = await axios.post('/api/member/delete', {
-                memberList: this.memberList.substring(0, this.memberList.length - 1)
+                member_id: this.memberList.substring(0, this.memberList.length - 1)
               })
               if (result.data.code === 'C0000') {
                 this.editText = '编辑'

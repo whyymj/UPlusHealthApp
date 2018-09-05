@@ -18,6 +18,7 @@
            
             save() {
                 var that = this;
+                console.log(this.$router);
                 this.$router.push({
                     path: that.params.from,
                     query: {

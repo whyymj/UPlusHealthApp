@@ -71,6 +71,9 @@
 		Indicator
 	} from 'mint-ui';
 	import firstLogin from './first_login_sleepreport.vue';
+	import {
+		setTimeout
+	} from 'timers';
 	export default {
 		mixins: [myloading],
 		components: {
@@ -550,11 +553,9 @@
 									"unHealthUser": item.unHealthUser || 'Y'
 								}
 							});
-							this.createdList=this.createdList.concat(arr);
+							this.createdList = this.createdList.concat(arr);
 						}
-					}).catch(function(res) {
-						
-					})
+					}).catch(function(res) {})
 				} catch (err) {
 					console.log(err)
 				}
@@ -606,8 +607,11 @@
 						}
 					];
 					this.healthProResult = alllist;
-					const result = await this.$axios.get(`/api/health/result?member_id=${window._member_id}`)
+					const result = await this.$axios.post(`/api/getHealthIndexInfo?member_id=${window._member_id}`,{
+						member_id:window._member_id
+					})
 					var tmp;
+					console.log('result',result)
 					if (result.data.code === 'C0000') {
 						tmp = result.data.data.typeList.map(function(item, index) {
 							return {
@@ -676,6 +680,9 @@
 				this.show = true;
 			}
 			var that = this;
+			setTimeout(function() {
+				that.loadingmodal.close();
+			}, 100000)
 			this.showdata = _.chunk(this.healthProResult, 3);
 			if (window._member_id === '') {
 				this.pageindex = this.initnum = 0;

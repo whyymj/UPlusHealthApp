@@ -18,14 +18,30 @@ export default {
 			allergy: '',
 			allData: {},
 			memberId:null,
-			allergylist: []
+			allergylist: [],
+			height:'',
+			weight:'',
+			sex: '',
+			birthday: '',
+			nickName: '',
+			target_weight: '',
+			disease: '', //慢病
+			allergy: '', //过敏
+			endDate:'',
+			defaultBirthday:'',
+			heightValue:'',
+			weightValue:'',
+			targetWeightValue:'',
+			headPic:'',
+			userdisease:'',
+			userallergy:''
 		}
 	},
 	components: {
 		tagslist
 	},
 	created() {
-		this.memberId = this.$route.params.member_id;
+		this.memberId = window._member_id;
 		this.route=this.$route.query.from;
 		this.getUserInfo();
 	},
@@ -40,128 +56,128 @@ export default {
 			this.allergy = dataSelected.join(",")
 			this.allData.allergy = this.allergy
 		},
-		async getUserInfo() {
-			try {
+		 getUserInfo() {
 				var that = this;
 				//获取过敏标签
-				try{
-					var getAllergylist = await axios.post('/api/getAllergyList', {
+				this.$axios.post('/api/getAllergyList', {
 						//phone: ''
-						openId: that.memberId
-					})
-					that.allergylist = getAllergylist.data.data.map((item) => {
-						return {
-							name: item.dict_name,
-							selected: false,
-							"dict_id": item.dict_id,
-							"dict_name": item.dict_name,
-							"dict_name_en": item.dict_name_en,
-							"dict_type_id": item.dict_type_id,
-							"status": item.status,
-							"note": item.note
-						}
-					})
-
-				}catch(e){
-					if (process.env.NODE_ENV == 'development') {
-						that.$axios.get('/static/testData/getAllergyList.json').then(function(res){
-							that.allergylist = res.data.data.map((item) => {
-								return {
-									name: item.dict_name,
-									selected: false,
-									"dict_id": item.dict_id,
-									"dict_name": item.dict_name,
-									"dict_name_en": item.dict_name_en,
-									"dict_type_id": item.dict_type_id,
-									"status": item.status,
-									"note": item.note
-								}
-							})
-
-
-						var allergydata=window.localStorage.uplus_sleep_user_allergy;
-						that.allergy = allergydata;
-						var newallergylist = that.allergylist
-						if(allergydata) {
-							allergydata = allergydata.split(",")
-							for(let i = 0; i < newallergylist.length; i++) {
-								for(let j = 0; j < allergydata.length; j++) {
-									if(newallergylist[i].name == allergydata[j]) {
-										that.allergyHistory=true;
-										newallergylist[i].selected = true;
-									}
-								}
+					}).then(function(res){
+						that.allergylist = res.data.data.map((item) => {
+							return {
+								name: item.dict_name,
+								selected: false,
+								"dict_id": item.dict_id,
+								"dict_name": item.dict_name,
+								"dict_name_en": item.dict_name_en,
+								"dict_type_id": item.dict_type_id,
+								"status": item.status,
+								"note": item.note
 							}
-						}
-						that.allergylist = newallergylist
 						})
-						
-					}
-				}
-				
-				let result = null;
-				var allergydata ;
-				//获取个人的信息
-				if(!this.memberId) {
-					allergydata=window.localStorage.uplus_sleep_user_allergy;
-					
-				} else { //获取家庭成员的信息
-					result = await axios.post('/api/member', {
-						member_id: that.memberId
-					})
-					allergydata = result.data.data.allergy;
-				}
-						this.allergy = allergydata;
-						var newallergylist = this.allergylist
-						if(allergydata) {
-							allergydata = allergydata.split(",")
-							for(let i = 0; i < newallergylist.length; i++) {
-								for(let j = 0; j < allergydata.length; j++) {
-									if(newallergylist[i].name == allergydata[j]) {
-										that.allergyHistory=true;
-										newallergylist[i].selected = true;
+
+	
+						var allergydata ;
+						//获取个人的信息
+						if(!window._member_id) {
+							allergydata=window.localStorage.uplus_sleep_user_allergy;
+							var newallergylist = that.allergylist;
+							that.allergylist={};
+							if(allergydata) {
+								allergydata = allergydata.split(",")
+								for(let i = 0; i < newallergylist.length; i++) {
+									for(let j = 0; j < allergydata.length; j++) {
+										if(newallergylist[i].name == allergydata[j]) {
+											that.allergyHistory=true;
+											newallergylist[i].selected = true;
+										}
 									}
 								}
 							}
+							that.allergylist = newallergylist
+
+
+						} else { //获取家庭成员的信息
+							that.$axios.post('/api/checkMemberInfo', {
+								member_id: window._member_id
+							}).then(function(result){
+								allergydata = result.data.data.allergy;
+								var data = result.data.data;
+								that.nickName = data.nick_name; //昵称
+								that.sex = data.sex == 'female' ? '女' : "男"; //性别
+								that.endDate = new Date();
+								that.defaultBirthday = '1980年01月01日'; //默认生日
+								that.birthday = data.birthday.replace('-', '年').replace('-', '月') + '日'; //生日
+								that.heightValue = data.height + '厘米'; //身高
+								that.weightValue = data.weight + "公斤"; //体重
+								that.targetWeightValue = data.target_weight + "公斤"; //目标体重
+								that.headPic = data.head_pic
+								that.disease = data.disease //慢病
+
+								that.allergy = allergydata;
+								var newallergylist = that.allergylist;
+								that.allergylist={};
+								if(allergydata) {
+									allergydata = allergydata.split(",")
+									for(let i = 0; i < newallergylist.length; i++) {
+										for(let j = 0; j < allergydata.length; j++) {
+											if(newallergylist[i].name == allergydata[j]) {
+												that.allergyHistory=true;
+												newallergylist[i].selected = true;
+											}
+										}
+									}
+								}
+								that.allergylist = newallergylist
+							})
+						
 						}
-						this.allergylist = newallergylist
 					
-			} catch(err) {
-				
-			
-			}
+					
+					})
 		},
+		//保存
 		save() {
 			var that=this;
 			//保存个人
-			if(!this.memberId) {
-				axios.post('/api/user/update', {
-					allergy:that.allergy
-				})
-					.then(function(res) {
-						console.log(res);
-					})
-					.catch(function(err) {
-						console.log(err);
-					})
+			if(!window._member_id) {
+				window.localStorage.uplus_sleep_user_allergy=this.allergy;
 			} else {
 				//保存家庭成员信息
-				axios.post('/api/member/info', {
-					allergy:that.allergy,
-					member_id:that.memberId
-				})
+				let saveData = {
+					member_id: window._member_id,
+					height: parseInt(that.heightValue),
+					weight: parseInt(that.weightValue),
+					sex: that.sex,
+					birthday: that.birthday.replace('年', '-').replace('月', '-').replace('日', ''),
+					nick_name: that.nickName,
+					target_weight: parseInt(that.targetWeightValue),
+					disease: that.disease, //慢病
+					allergy: that.clearAllergyHistory?that.allergy:'', //过敏
+				}
+				axios.post('/api/changeMemberInfo', saveData)
 					.then(function(res) {
 						console.log(res);
+						if (fn) {
+							fn();
+						}
 					})
 					.catch(function(err) {
 						console.log(err);
+						if (fn) {
+							fn();
+						}
 					})
 			}
 			//调用接口保存过敏史数据 返回主页面
+			console.log('allergy>>',that.allergy);
 			this
 				.$router
 				.replace({
-					path: that.route
+					path: that.route,
+					query:{
+						value:that.allergy,
+						name:'allergy'
+					}
 				})
 		}
 	},
