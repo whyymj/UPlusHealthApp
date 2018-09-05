@@ -2,7 +2,7 @@
     <div class="sleepManuInput">
         <sleeptime :list='items' @getSleepTimes='getSleepTimes'></sleeptime>
         <sleepquality :quality='quality' :factors='factors' @chooseQuality='chooseQuality' @chooseFactor='chooseFactor'></sleepquality>
-        <div class="button" @click='submitResult'>保存</div>
+        <div class="button" :class='{canSubmit:(cansub&&sleepfactors!==""&&sleepqualityres!=="")}' @click='submitResult'>保存</div>
     </div>
 </template>
 
@@ -10,10 +10,20 @@
     import sleeptime from './sleepTime';
     import sleepquality from './sleepQuality.vue';
     import bus from './bus.js';
+    import {
+        Loading
+    } from 'element-ui';
+    import {
+        MessageBox
+    } from 'mint-ui';
+    import {
+        setTimeout
+    } from 'timers';
     export default {
         components: {
             sleeptime,
-            sleepquality
+            sleepquality,
+            Loading
         },
         methods: {
             chooseFactor(list) {
@@ -29,42 +39,92 @@
             submitResult() {
                 var that = this;
                 if (this.cansub) {
-                    if (this.sleepid) { //有sleep_id为修改，否则为添加
-                        this.$axios.post('/api/updateSleepAnalysis', {
-                            sleep_id: that.sleepid,
-                            startTime: that.items[0].content,
-                            sleepTime: that.items[1].content,
-                            wakeTime: that.items[2].content,
-                            getupTime: that.items[3].content,
-                            quality: that.sleepqualityres,
-                            influence: that.sleepfactors
-                        }).then(function(res) {
-                            that.$router.push('/sleepMusicList');
-                        }).catch(function() {
-                            that.$router.push('/sleepMusicList');
-                        });
+                    var startTime = that.items[0].content,
+                        sleepTime = that.items[1].content,
+                        wakeTime = that.items[2].content,
+                        getupTime = that.items[3].content;
+                    var h1 = startTime.split(':')[0],
+                        h2 = sleepTime.split(':')[0],
+                        h3 = wakeTime.split(':')[0],
+                        h4 = getupTime.split(':')[0];
+                    startTime = (h1 <= 8 ? that.today : that.yesterday) + ' ' + startTime;
+                    if (h2 >= h1 && h2 >= 18) {
+                        sleepTime = that.yesterday + ' ' + sleepTime;
                     } else {
-                        this.$axios.post('/api/sleep/insert', {
-                            member_id: "",
-                            startTime: that.items[0].content,
-                            sleepTime: that.items[1].content,
-                            wakeTime: that.items[2].content,
-                            getupTime: that.items[3].content,
-                            quality: that.sleepqualityres,
-                            influence: that.sleepfactors
-                        }).then(function(res) {
-                            that.$router.push('/sleepMusicList');
-                        }).catch(function() {
-                            that.$router.push('/sleepMusicList');
-                        });
+                        sleepTime = that.today + ' ' + sleepTime;
                     }
-                }else{
+                    if (h3 >= h2 && h3 >= 18) {
+                        wakeTime = that.yesterday + ' ' + wakeTime;
+                    } else {
+                        wakeTime = that.today + ' ' + wakeTime;
+                    }
+                    if (h4 >= h3 && h4 >= 18) {
+                        getupTime = that.yesterday + ' ' + getupTime;
+                    } else {
+                        getupTime = that.today + ' ' + getupTime;
+                    }
+                    if (that.sleepqualityres === '' || that.sleepfactors === '') {
+                        MessageBox.alert('请选择睡眠质量与影响因素', '请完成内容选择');
+                    } else {
+                        this.loadingModal = Loading.service({
+                            fullscreen: true,
+                            background: 'rgba(0, 0, 0, 0.7)',
+                            lock: true,
+                            text: '正在提交',
+                            spinner: 'el-icon-loading',
+                        });
+                        if (this.sleepid) { //有sleep_id为修改，否则为添加
+                            this.$axios.post('/api/updateSleepAnalysis', {
+                                sleep_id: that.sleepid,
+                                startTime: startTime,
+                                sleepTime: sleepTime,
+                                wakeTime: wakeTime,
+                                getupTime: getupTime,
+                                quality: that.sleepqualityres,
+                                influence: that.sleepfactors
+                            }).then(function(res) {
+                                that.loadingModal.close();
+                                if (res.data.data && res.data.data.code == 'C0000') {
+                                    that.$router.push('/sleepMusicList');
+                                } else {
+                                    MessageBox.alert('请稍后重试', '请求失败');
+                                }
+                            }).catch(function() {
+                                that.loadingModal.close();
+                                that.$router.push('/sleepMusicList');
+                            });
+                        } else {
+                            this.$axios.post('/api/sleep/insert', {
+                                member_id: "",
+                                startTime: startTime,
+                                sleepTime: sleepTime,
+                                wakeTime: wakeTime,
+                                getupTime: getupTime,
+                                quality: that.sleepqualityres,
+                                influence: that.sleepfactors
+                            }).then(function(res) {
+                                that.loadingModal.close();
+                                if (res.data.data && res.data.data.code == 'C0000') {
+                                    that.$router.push('/sleepMusicList');
+                                } else {
+                                    MessageBox.alert('请稍后重试', '请求失败');
+                                }
+                            }).catch(function() {
+                                that.loadingModal.close();
+                                that.$router.push('/sleepMusicList');
+                            });
+                        }
+                    }
+                } else {
                     bus.$emit('whycannotsub');
                 }
             }
         },
         data() {
             return {
+                loadingModal: '',
+                today: '',
+                yesterday: '',
                 cansub: true,
                 quality: '', //查到的质量
                 factors: '', //查到的因素
@@ -96,8 +156,23 @@
         },
         mounted() {
             var that = this;
+            this.loadingModal = Loading.service({
+                fullscreen: true,
+                background: 'rgba(0, 0, 0, 0.7)',
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+            });
+            var date = new Date();
+            var month = date.getMonth() + 1;
+            var day = date.getDate();
+            this.today = date.getFullYear() + '-' + (month > 9 ? month : ('0' + month)) + '-' + (day > 9 ? day : ('0' + day));
+            var lastday = new Date(date.getTime() - 24 * 3600 * 1000);
+            month = lastday.getMonth() + 1;
+            day = lastday.getDate();
+            this.yesterday = lastday.getFullYear() + '-' + (month > 9 ? month : ('0' + month)) + '-' + (day > 9 ? day : ('0' + day));
             var sleepid = this.$route.query;
-            if (sleepid.sleepid) {
+            if (sleepid.sleepid) { //有sleep_id为修改，否则为添加
                 this.sleepid = sleepid.sleepid;
                 this.$axios.post('/api/getAnalysisById', {
                     sleep_id: sleepid
@@ -112,7 +187,9 @@
                         that.sleepqualityres = that.quality = data.quality
                         that.sleepfactors = that.factors = data.influence;
                     }
+                    that.loadingModal.close();
                 }).catch(function() {
+                    that.loadingModal.close();
                     that.$axios.get('/static/testData/getAnalysisById.json').then(function(res) {
                         var data;
                         if (res.data.code == 'C0000') {
@@ -126,6 +203,8 @@
                         }
                     })
                 })
+            } else {
+                that.loadingModal.close();
             }
         }
     };
@@ -139,6 +218,16 @@
         background: #fff;
         /* overflow: auto; */
         .button {
+            width: 100%;
+            height: 3rem;
+            background: #ccc;
+            line-height: 3rem;
+            font-size: 0.8rem;
+            font-family: 'PingFangSC-Regular';
+            color: rgba(255, 255, 255, 1);
+            text-align: center;
+        }
+        .canSubmit {
             width: 100%;
             height: 3rem;
             background: #26A6FF;

@@ -33,7 +33,9 @@
                 startsleep: [0, 0],
                 wakeup: [8, 0],
                 leavebed: [8, 0],
-                cansub: [true, true, true] //记录是否可以提交
+                cansub: [true, true, true], //记录是否可以提交
+                today: '',
+                yesterday: ''
             }
         },
         methods: {
@@ -194,6 +196,7 @@
             bus.$on('whycannotsub', function() {
                 that.whycannotsub();
             })
+           
         }
     }
 </script>
