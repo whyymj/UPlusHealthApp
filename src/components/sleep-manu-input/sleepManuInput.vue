@@ -36,6 +36,12 @@
                 this.items = list;
                 this.cansub = flag;
             },
+            formateNumber(num) {
+                return num * 1 > 9 ? num * 1 : ('0' + num * 1);
+            },
+            formateTime(h, m) {
+                return this.formateNumber(h) + ':' + this.formateNumber(m)
+            },
             submitResult() {
                 var that = this;
                 if (this.cansub) {
@@ -46,7 +52,15 @@
                     var h1 = startTime.split(':')[0],
                         h2 = sleepTime.split(':')[0],
                         h3 = wakeTime.split(':')[0],
-                        h4 = getupTime.split(':')[0];
+                        h4 = getupTime.split(':')[0],
+                        m1 = startTime.split(':')[1],
+                        m2 = sleepTime.split(':')[1],
+                        m3 = wakeTime.split(':')[1],
+                        m4 = getupTime.split(':')[1];
+                    startTime = this.formateTime(h1, m1);
+                    sleepTime = this.formateTime(h2, m2);
+                    wakeTime = this.formateTime(h3, m3);
+                    getupTime = this.formateTime(h4, m4);
                     startTime = (h1 <= 8 ? that.today : that.yesterday) + ' ' + startTime;
                     if (h2 >= h1 && h2 >= 18) {
                         sleepTime = that.yesterday + ' ' + sleepTime;
@@ -84,7 +98,7 @@
                                 influence: that.sleepfactors
                             }).then(function(res) {
                                 that.loadingModal.close();
-                                if (res.data.data && res.data.data.code == 'C0000') {
+                                if (res.data && res.data.code == 'C0000') {
                                     that.$router.push('/sleepMusicList');
                                 } else {
                                     MessageBox.alert('请稍后重试', '请求失败');

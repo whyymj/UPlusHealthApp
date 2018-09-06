@@ -371,7 +371,7 @@
             }
         },
         mounted() {
-            console.log('process.env.NODE_ENV', process.env.NODE_ENV)
+            
             if (window.localStorage.UPlusApp_getAppleHealthData && (window.localStorage.UPlusApp_getAppleHealthData == 'true' || window.localStorage.UPlusApp_getAppleHealthData == true)) {
                 this.haveAuthor = true;
             }
@@ -444,10 +444,10 @@
                             title: '当日作息',
                             detail: '当日作息即当日上床歇息至起床时间',
                             params: [{
-                                data: data.sleepTime,
+                                data: data.sleepTime.split(' ')[1],
                                 unit: '-'
                             }, {
-                                data: data.wakeTime,
+                                data: data.wakeTime.split(' ')[1],
                                 unit: ''
                             }]
                         }, {

@@ -1,5 +1,5 @@
 <template>
-    <div class='turnQuestions' refs='sleepTestList'>
+    <div class='turnQuestions' ref='sleepTestList'>
         <bar :totalnum='totalnum' :curnum='curnum+1' v-if='totalnum>0'></bar>
         <el-carousel class='carousels' indicator-position='none' :autoplay='autoplay' arrow='never' ref='carousel' :initial-index='initialindex' v-if='totalnum>0'>
             <el-carousel-item v-for="(item,index) in showlist" :key="index" style='height:20rem'>
@@ -109,6 +109,16 @@
                             "lineId": item.lineId
                         };
                     });
+                    var result = [];
+                    var finalstr = ''
+                    for (var k in that.cacheOptions) {
+                        result.push(that.cacheOptions[k].lineId + '&')
+                    }
+                    finalstr = result.join('|');
+                    that.$axios.post('/api/saveUserTemplate', { //刷新
+                        tuId: that.params.tuId,
+                        inputVal: finalstr
+                    }).then(function(res) {})
                 })
             },
             prev() {
@@ -139,16 +149,14 @@
                     for (var k in that.cacheOptions) {
                         result.push(that.cacheOptions[k].lineId + '&' + that.cacheOptions[k].option.join(','))
                     }
-                    finalstr = result.join('|');
+                    finalstr = result.filter(function(item) {
+                        return item.split('&')[1] !== '';
+                    }).join('|');
                     this.$axios.post('/api/saveUserTemplateByTime', { //实时保存结果
                         templateId: that.params.templateId,
                         tuId: that.params.tuId,
                         inputVal: finalstr
-                    }).then(function(res) {
-                       
-                    }).catch(function() {
-                       
-                    })
+                    }).then(function(res) {}).catch(function() {})
                     that.doubleclick = true;
                     this.bar = setTimeout(function() {
                         that.doubleclick = false;
@@ -157,6 +165,7 @@
             }
         },
         mounted() {
+            var that = this;
             this.params = this.$route.query;
             var that = this;
             document.getElementsByClassName('turnQuestions')[0].onclick = function(e) {
@@ -221,11 +230,14 @@
                         tuId: that.params.tuId,
                         inputVal: finalstr
                     }).then(function(res) {
-                        that.loadingmodal.close()
-                        that.$router.push({
-                            path: '/sleepTestResult',
-                            query: that.params
-                        });
+                        that.loadingmodal.close();
+                        if ( res.data.code == 'C0000') {
+                            that.params.totalScore = res.data.data.totalScore;
+                            that.$router.push({
+                                path: '/sleepTestResult',
+                                query: that.params
+                            });
+                        }
                     }).catch(function() {
                         that.$notify.error({
                             title: '错误',
@@ -269,7 +281,6 @@
         .el-carousel__container {
             width: 100%;
             height: 100%;
-            overflow: auto;
             .el-carousel__item {
                 height: 100%!important;
                 overflow: auto;

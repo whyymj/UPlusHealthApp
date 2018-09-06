@@ -1,7 +1,7 @@
 <template>
     <div>
         <h6>匹兹堡睡眠质量指数<img src="/static/sleepMusicList/img6.png" alt=""></h6>
-        <score :score='testScore'></score>
+        <score :score='testScore' :totalscore='totalscore'></score>
         <analysis :analysis='analysis'></analysis>
         <warmTips :tips='tips'></warmTips>
         <div class="button">
@@ -19,17 +19,26 @@
         methods: {
             save() {
                 this.hadSaved = true
-               this.$router.push({
-                   path:'/enterToTest'
-               })
+                // this.$router.push({
+                //     path: '/enterToTest'
+                // })
+                 this.$router.go(-2)
             },
             reTest() {
-                this.$router.push('/sleepTest?from=retest')
+                var that = this;
+                this.params.from = 'retest'
+                // this.$router.push({
+                //     path: '/sleepTest?from=retest',
+                //     query: that.params
+                // })
+                this.$router.go(-1)
             }
         },
         mounted() {
             var params = this.$route.query;
+            this.params = params;
             var that = this;
+            this.totalscore = params.totalScore;
             this.$axios.post('/api/getUserTemplateAnalysis', { //获取用户睡眠量表分析数据
                 tuId: params.tuId
             }).then(function(res) {
@@ -73,10 +82,12 @@
         },
         data() {
             return {
+                params: '',
                 analysis: {
                     title: '',
                     detail: ''
                 },
+                totalscore: 0,
                 hadSaved: false,
                 testScore: 0,
                 tips: [{

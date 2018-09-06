@@ -45,12 +45,10 @@
         display: none;
     }
     .el-progress-bar__outer {
+        width:87%;
         margin: auto;
     }
-    .el-progress--without-text .el-progress-bar {
-        padding-left: 25px;
-        padding-right: 25px;
-    }
+    
     .mybar {
         position: relative;
         height: 2.5rem;
@@ -60,12 +58,12 @@
             font-family: 'PingFangSC-Regular';
             color: rgba(179, 179, 179, 1);
             position: absolute;
-            left: 25px;
+            left: 1rem;
         }
         .shower {
             position: absolute;
             top: 0;
-            right: 25px;
+            right: 1rem;
             font-size: 0.75rem;
             font-family: 'PingFangSC-Medium';
             color: rgba(50, 182, 230, 1);

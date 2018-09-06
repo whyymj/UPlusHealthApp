@@ -24,6 +24,9 @@
             },
             dealtime(time) { //将时间字符串化为小数
                 if (time) {
+                    if (time.indexOf('-') != -1) {
+                        time=time.split(' ')[1]
+                    }
                     var t = time.split(':');
                     var h = t[0] * 1;
                     var m = t[1] / 60;
