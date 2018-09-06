@@ -30,7 +30,7 @@
                 var that = this;
                 this
                     .$axios
-                    .get('/api/getSleepWikiList', {
+                    .post('/api/getSleepWikiList', {
                         termsId: that.navs[index].termsId
                     })
                     .then(function(res) {
@@ -81,7 +81,7 @@
             var that = this;
             this
                 .$axios
-                .get('/api/getSleepWikiTerms')
+                .post('/api/getSleepWikiTerms')
                 .then(function(res) {
                     if (res.data.code == 'C0000') {
                         that.navs = res
