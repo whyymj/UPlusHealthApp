@@ -57,6 +57,7 @@
               if (my_media == null) {
                 // 初始化Media对象
                 alert("playAudio函数中audio的src:" + document.getElementById("audio_id").src)
+                alert('Media:'+(typeof Media))
                 my_media = new Media(document.getElementById("audio_id").src, mediaSuccess, mediaError);
               }
               // 播放音频

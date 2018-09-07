@@ -1,6 +1,6 @@
 <template>
     <div class='wh_datepicker'>
-        <div style='overflow:hidden;padding-top:0.5rem;' v-if="hidetop!='true'">
+        <div style='overflow:hidden;padding-top:0.5rem;padding-bottom:0.5rem;' v-if="hidetop!='true'">
             <div class='selector' style='padding:0 2% 0 3%;'>
                 <el-select v-model="year" placeholder="请选择" @change='getYear'>
                     <el-option v-for="item in years" :key="item.value" :label="item.label" :value="item.value">
