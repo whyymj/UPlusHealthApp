@@ -153,7 +153,7 @@
       }
     },
     methods: {},
-    mounted() {
+    created() {
       //初始化音频插件
       this.app.initialize();
       
