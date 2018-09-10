@@ -611,7 +611,6 @@
 						member_id: window._member_id
 					})
 					var tmp;
-					console.log('result', result)
 					if (result.data.code === 'C0000') {
 						tmp = result.data.data.typeList.map(function(item, index) {
 							return {

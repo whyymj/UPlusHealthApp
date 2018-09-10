@@ -1,6 +1,6 @@
 <template>
 	<div class="uploadimg">
-		<el-upload class="avatar-uploader" action="http://10.130.94.227:9020/upload/uploadPic" name="file" :data="data" :with-credentials=true :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+		<el-upload class="avatar-uploader" headers='{method:"POST"}' :action="uploadimg" name="file" :data="data" :with-credentials=true :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
 			<img v-if="imageUrl" :src="imageUrl" class="avatar">
 			<i v-else class="el-icon-plus avatar-uploader-icon"></i>
 		</el-upload>
@@ -52,7 +52,8 @@
 					openId:'',
 					loginCode:''
 				},
-				router: ''
+				router: '',
+				uploadimg:'http://123.103.113.201:8085/api/uploadPic'
 			};
 		},
 		created() {

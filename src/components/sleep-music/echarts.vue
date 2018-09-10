@@ -2,8 +2,8 @@
     <div class='echarts'>
         <div class="button nearest" :class="{active:active==0}" @click='getdata(0)'>最近七次</div>
         <div class="button week" :class="{active:active==1}" @click='getdata(1)'>周</div>
-        <div class="button month" :class="{active:active==2}" @click='getdata(2)'>月</div>
-        <div class="button year" :class="{active:active==3}" @click='getdata(3)'>年</div>
+        <!-- <div class="button month" :class="{active:active==2}" @click='getdata(2)'>月</div>
+                                            <div class="button year" :class="{active:active==3}" @click='getdata(3)'>年</div> -->
         <div id='main' ref='echarts'>
         </div>
         <div class="legend">
@@ -30,6 +30,7 @@
                     var t = time.split(':');
                     var h = t[0] * 1;
                     var m = t[1] / 60;
+                    h = (h == 0) ? 24 : h;
                     return h + m;
                 } else {
                     return NaN
@@ -182,7 +183,9 @@
             },
             nearestSeven() { //最近7次
                 var that = this;
-                this.$axios.post('/api/getByLastSeven').then(function(res) {
+                this.$axios.post('/api/getByLastSeven', {
+                    member_id: window._member_id
+                }).then(function(res) {
                     if (res.data.code === 'C0000') {
                         var list = res.data.data.map(function(item, index) {
                             var newitem = item;
@@ -219,8 +222,11 @@
                             data: ''
                         }
                         that.sleeplengthtimes = list.map(function(item, index) {
-                            that.sleepstarttimes.push(that.dealtime(item.sleepTime));
-                            that.sleependtimes.push(that.dealtime(item.wakeTime) + 24);
+                            var startT = that.dealtime(item.sleepTime);
+                            startT = startT <= 8 ? startT + 24 : startT;
+                            var endT = that.dealtime(item.wakeTime) + 24;
+                            that.sleepstarttimes.push(startT);
+                            that.sleependtimes.push(endT);
                             return (item.sleepTimeLang / 60).toFixed(1);
                         });
                         var year = new Date().getFullYear();
@@ -270,8 +276,11 @@
                                     data: ''
                                 }
                                 that.sleeplengthtimes = list.map(function(item, index) {
-                                    that.sleepstarttimes.push(that.dealtime(item.sleepTime));
-                                    that.sleependtimes.push(that.dealtime(item.wakeTime) + 24);
+                                    var startT = that.dealtime(item.sleepTime);
+                                    startT = startT <= 8 ? startT + 24 : startT;
+                                    var endT = that.dealtime(item.wakeTime) + 24;
+                                    that.sleepstarttimes.push(startT);
+                                    that.sleependtimes.push(endT);
                                     return (item.sleepTimeLang / 60).toFixed(1);
                                 });
                                 var year = new Date().getFullYear();
@@ -288,7 +297,9 @@
             },
             thisWeek() { //本周
                 var that = this;
-                this.$axios.post('/api/sleep/getByWeek').then(function(res) {
+                this.$axios.post('/api/sleep/getByWeek', {
+                    member_id: window._member_id
+                }).then(function(res) {
                     if (res.data.code === 'C0000') {
                         var list = res.data.data.map(function(item, index) {
                             var newitem = item;
@@ -302,8 +313,11 @@
                         });
                         list = that.fillThisWeekArr(list);
                         that.sleeplengthtimes = list.map(function(item, index) {
-                            that.sleepstarttimes.push(that.dealtime(item.sleepTime));
-                            that.sleependtimes.push(that.dealtime(item.wakeTime) + 24);
+                            var startT = that.dealtime(item.sleepTime);
+                            startT = startT <= 8 ? startT + 24 : startT;
+                            var endT = that.dealtime(item.wakeTime) + 24;
+                            that.sleepstarttimes.push(startT);
+                            that.sleependtimes.push(endT);
                             return (item.sleepTimeLang / 60).toFixed(1);
                         });
                         that.setOptions();
@@ -326,8 +340,8 @@
                                 });
                                 list = that.fillThisWeekArr(list);
                                 that.sleeplengthtimes = list.map(function(item, index) {
-                                    that.sleepstarttimes.push(that.dealtime(item.sleepTime));
-                                    that.sleependtimes.push(that.dealtime(item.wakeTime) + 24);
+                                    that.sleepstarttimes.push(startT);
+                                    that.sleependtimes.push(endT);
                                     return (item.sleepTimeLang / 60).toFixed(1);
                                 });
                                 that.setOptions();
@@ -346,6 +360,7 @@
                 this.month = date.getMonth() + 1;
                 this.date = date.getDate();
                 this.$axios.post('/api/sleeGetExistDateList', {
+                    member_id: window._member_id,
                     begin_date: this.year + (this.month > 9 ? this.month : '0' + this.month) + '-01 00:00:00',
                     end_date: this.year + '-' + (this.month > 9 ? this.month : '0' + this.month) + '-' + (this.date > 9 ? this.date : '0' + this.date) + ' 23:59:59'
                 }).then(function(res) {
@@ -362,8 +377,11 @@
                         });
                         list = that.fillThisWeekArr(list);
                         that.sleeplengthtimes = list.map(function(item, index) {
-                            that.sleepstarttimes.push(that.dealtime(item.sleepTime));
-                            that.sleependtimes.push(that.dealtime(item.wakeTime) + 24);
+                            var startT = that.dealtime(item.sleepTime);
+                            startT = startT <= 8 ? startT + 24 : startT;
+                            var endT = that.dealtime(item.wakeTime) + 24;
+                            that.sleepstarttimes.push(startT);
+                            that.sleependtimes.push(endT);
                             return (item.sleepTimeLang / 60).toFixed(1);
                         });
                         that.setOptions();
@@ -386,8 +404,8 @@
                                 });
                                 list = that.fillThisWeekArr(list);
                                 that.sleeplengthtimes = list.map(function(item, index) {
-                                    that.sleepstarttimes.push(that.dealtime(item.sleepTime));
-                                    that.sleependtimes.push(that.dealtime(item.wakeTime) + 24);
+                                    that.sleepstarttimes.push(startT);
+                                    that.sleependtimes.push(endT);
                                     return (item.sleepTimeLang / 60).toFixed(1);
                                 });
                                 that.setOptions();
@@ -405,6 +423,7 @@
                 this.month = date.getMonth() + 1;
                 this.date = date.getDate();
                 this.$axios.post('/api/sleeGetExistDateList', {
+                    member_id: window._member_id,
                     begin_date: this.year + '-01-01 00:00:00',
                     end_date: this.year + '-' + (this.month > 9 ? this.month : '0' + this.month) + '-' + (this.date > 9 ? this.date : '0' + this.date) + ' 23:59:59'
                 }).then(function(res) {
@@ -421,8 +440,11 @@
                         });
                         list = that.fillThisWeekArr(list);
                         that.sleeplengthtimes = list.map(function(item, index) {
-                            that.sleepstarttimes.push(that.dealtime(item.sleepTime));
-                            that.sleependtimes.push(that.dealtime(item.wakeTime) + 24);
+                            var startT = that.dealtime(item.sleepTime);
+                            startT = startT <= 8 ? startT + 24 : startT;
+                            var endT = that.dealtime(item.wakeTime) + 24;
+                            that.sleepstarttimes.push(startT);
+                            that.sleependtimes.push(endT);
                             return (item.sleepTimeLang / 60).toFixed(1);
                         });
                         that.setOptions();

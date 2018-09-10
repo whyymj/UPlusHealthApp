@@ -38,7 +38,8 @@
             return {
                 loadingmodal: '',
                 canSubmit: false,
-                questions: []
+                questions: [],
+                tmpCache: ''
             }
         },
         mounted() {
@@ -51,9 +52,13 @@
             });
             var params = this.$route.query;
             var that = this;
+            this.tmpCache = localStorage['saveUsersleepTemplate' + params.tuId] || ''; //暂存的答题结果
+            var tempArr = this.tmpCache.split('|');
+            var initArr = [];
             this.$axios.post('/api/setUserTemplate', {
                 templateId: params.templateId,
-                tuId: params.tuId
+                tuId: params.tuId,
+                 member_id: window._member_id,
             }).then(function(res) {
                 that.loadingmodal.close();
                 if (params.status === 0 || params.status === '0') { //中途退出
@@ -65,37 +70,73 @@
                 }
                 if (res.data.code === 'C0000') {
                     that.questions = res.data.data.templateLineList.map(function(item, index) {
+                        var options = item.selectItemList;
+                        var tmp = tempArr[index];
+                        var id = '',
+                            resuilts = '',
+                            arr = [];
+                        if (tmp) {
+                            arr = tmp.split('&')
+                            id = arr[0];
+                            resuilts = (typeof arr[1] == 'string') ? arr[1].split(',') : '';
+                        }
+                        if (id == item.lineId && resuilts !== '') { //根据缓存判断上次答题情况
+                            options = options.slice().map(function(val, key) {
+                                var newitem = val;
+                                if (resuilts.indexOf('' + key) !== -1) {
+                                    newitem.checked = true;
+                                } else {
+                                    newitem.checked = false;
+                                }
+                                return newitem;
+                            })
+                        } else {
+                            options = options.slice().map(function(val, key) {
+                                var newitem = val;
+                                newitem.checked = false;
+                                return newitem;
+                            })
+                        }
+                        initArr.push(item.lineId + '&');
                         return {
                             title: index + 1 + '. ' + item.lineTitle,
                             type: item.lineType,
                             "templateId": item.templateId,
-                            options: item.selectItemList,
-                            "lineId": item.lineId
+                            options: options,
+                            "lineId": item.lineId,
+                            tuId: params.tuId
                         }
                     });
+                    console.log('questions:::', that.questions, '>>>', localStorage['saveUsersleepTemplate' + params.tuId]);
+                    if (initArr.length > 0) {
+                        localStorage['saveUsersleepTemplate' + params.tuId] = initArr.join('|'); //刷新缓存
+                    }
                 }
             }).catch(function(res) {
                 that.loadingmodal.close();
-                that.$axios.get('/static/testData/setUserTemplate.json').then(function(res) {
-                    if (params.status === 0 || params.status === '0') { //中途退出
-                        let instance = Toast({
-                            message: '正从上次退出位置继续答题',
-                            position: 'bottom',
-                            duration: 2000
-                        });
-                    }
-                    if (res.data.code === 'C0000') {
-                        that.questions = res.data.data.templateLineList.map(function(item, index) {
-                            return {
-                                title: index + 1 + '. ' + item.lineTitle,
-                                type: item.lineType,
-                                "templateId": item.templateId,
-                                options: item.selectItemList,
-                                "lineId": item.lineId
-                            }
-                        });
-                    }
-                })
+                console.log(res)
+                if (process.env.NODE_ENV == 'development') {
+                    that.$axios.get('/static/testData/setUserTemplate.json').then(function(res) {
+                        if (params.status === 0 || params.status === '0') { //中途退出
+                            let instance = Toast({
+                                message: '正从上次退出位置继续答题',
+                                position: 'bottom',
+                                duration: 2000
+                            });
+                        }
+                        if (res.data.code === 'C0000') {
+                            that.questions = res.data.data.templateLineList.map(function(item, index) {
+                                return {
+                                    title: index + 1 + '. ' + item.lineTitle,
+                                    type: item.lineType,
+                                    "templateId": item.templateId,
+                                    options: item.selectItemList,
+                                    "lineId": item.lineId
+                                }
+                            });
+                        }
+                    })
+                }
             })
         }
     }

@@ -99,11 +99,12 @@
                 return quality
             },
             contArr() {
-                return this.detailAnalysis.split('<br />');
+                if (typeof this.detailAnalysis == 'string') {
+                    return this.detailAnalysis.split('<br />');
+                }
             }
         },
-        watch: {
-        },
+        watch: {},
         mounted() {
             var u = navigator.userAgent
             this.isIos = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
@@ -127,7 +128,7 @@
                 }
             },
             deleteThis() {
-               this.$emit('deleteThis')
+                this.$emit('deleteThis')
             },
             toManuInput() {
                 this.$router.push({
@@ -147,7 +148,6 @@
 </script>
 
 <style lang='scss' scoped>
-    .analysis {}
     .modalContent {
         font-size: 0.7rem;
         font-family: 'PingFangSC-Regular';
@@ -167,7 +167,7 @@
     }
     .analysis {
         width: 17rem;
-        margin: 1rem auto 0;
+        margin: 0.5rem auto 0;
         position: relative;
         .showdata {
             position: relative;

@@ -33,6 +33,7 @@
         },
         data() {
             return {
+                tmpCache: '',
                 loadingmodal: '',
                 doubleclick: false,
                 reStart: false,
@@ -43,7 +44,8 @@
                 showlist: [],
                 initialindex: 0,
                 bar: '',
-                params: ''
+                params: '',
+                tuId: ''
             }
         },
         watch: {
@@ -54,6 +56,7 @@
                 var that = this;
                 this.showlist = this.list;
                 this.totalnum = this.list.length;
+                this.tuId = this.list[0].tuId;
                 var lasttestnum = 0;
                 this.list.map(function(item, index) {
                     that.cacheOptions[index] = {
@@ -109,6 +112,11 @@
                             "lineId": item.lineId
                         };
                     });
+                    var tmpstr = localStorage['saveUsersleepTemplate' + that.tuId];
+                    tmpstr.split('|').map(function(item) {
+                        return item.split('&')[0]
+                    }).join('|');
+                    localStorage['saveUsersleepTemplate' + that.tuId] = tmpstr;
                     var result = [];
                     var finalstr = ''
                     for (var k in that.cacheOptions) {
@@ -116,6 +124,7 @@
                     }
                     finalstr = result.join('|');
                     that.$axios.post('/api/saveUserTemplate', { //刷新
+                        member_id: window._member_id,
                         tuId: that.params.tuId,
                         inputVal: finalstr
                     }).then(function(res) {})
@@ -149,10 +158,12 @@
                     for (var k in that.cacheOptions) {
                         result.push(that.cacheOptions[k].lineId + '&' + that.cacheOptions[k].option.join(','))
                     }
+                    localStorage['saveUsersleepTemplate' + that.tuId] = result.join('|');
                     finalstr = result.filter(function(item) {
                         return item.split('&')[1] !== '';
                     }).join('|');
                     this.$axios.post('/api/saveUserTemplateByTime', { //实时保存结果
+                        member_id: window._member_id,
                         templateId: that.params.templateId,
                         tuId: that.params.tuId,
                         inputVal: finalstr
@@ -174,6 +185,7 @@
                 }
             }
             if (this.list && this.list.length) {
+                this.tuId = this.list[0].tuId;
                 this.showlist = this.list;
                 this.totalnum = this.list.length;
                 var lasttestnum = 0;
@@ -227,12 +239,14 @@
                     }
                     finalstr = result.join('|');
                     that.$axios.post('/api/saveUserTemplate', { //最终保存结果
+                        member_id: window._member_id,
                         tuId: that.params.tuId,
                         inputVal: finalstr
                     }).then(function(res) {
                         that.loadingmodal.close();
-                        if ( res.data.code == 'C0000') {
+                        if (res.data.code == 'C0000') {
                             that.params.totalScore = res.data.data.totalScore;
+                            that.params.allResult = finalstr;
                             that.$router.push({
                                 path: '/sleepTestResult',
                                 query: that.params
