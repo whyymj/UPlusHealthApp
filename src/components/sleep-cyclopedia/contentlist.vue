@@ -28,7 +28,6 @@
                 }
             },
             turnTo(url) {
-                console.log('url>>>',url);
                 this.$router.push({
                     path:'/getSleepWiki',
                     query:url

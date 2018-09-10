@@ -56,8 +56,8 @@ router.post('/api/getTemplateList', (req, res, next) => {
     path: `${config.path}/sleep/getTemplateList`,
     method: 'POST',
     headers: Object.assign(config.headers, {
-      openId: req.session.token,
-      loginCode: req.session.loginCode
+      openId: req.session.token||'ab7ffc85a5ef44ce8c6ce6e0f032557c',
+      loginCode: req.session.loginCode||'17561722550'
     })
   }
   const _req = http.request(options, _res => {
@@ -443,15 +443,7 @@ router.post('/api/getUserTemplateAnalysis', (req, res, next) => {
 })
 // 新增睡眠测试记录
 router.post('/api/sleep/insert', (req, res, next) => {
-  const postData = querystring.stringify({
-    member_id: req.body.member_id,
-    startTime: req.body.startTime,
-    sleepTime: req.body.sleepTime,
-    wakeTime: req.body.wakeTime,
-    getupTime: req.body.getupTime,
-    quality: req.body.quality,
-    influence: req.body.influence
-  })
+  const postData = querystring.stringify(req.body)
 
   const options = {
     host: config.host,

@@ -18,7 +18,9 @@
             var that = this;
             var params = this.$route.query;
             this.title = params.title;
-            this.$axios.post('/api/getSleepWiki').then(function(res) {
+            this.$axios.post('/api/getSleepWiki',{
+                postId:params.postId
+            }).then(function(res) {
                 if (res.data.code == 'C0000') {
                     that.cont = res.data.data.wikiContent
                 }

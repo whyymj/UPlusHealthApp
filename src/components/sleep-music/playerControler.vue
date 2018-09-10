@@ -18,7 +18,8 @@
 <script>
     import {
         setInterval,
-        clearInterval
+        clearInterval,
+        setTimeout
     } from 'timers';
     import {
         Loading
@@ -201,13 +202,6 @@
             this.my_media.release();
         },
         mounted() { //h5实现的方式
-            this.loadingmodal = Loading.service({
-                fullscreen: true,
-                background: 'rgba(0, 0, 0, 0.7)',
-                lock: true,
-                text: 'Loading',
-                spinner: 'el-icon-loading',
-            });
             this.params = this.$route.query;
             var that = this;
             //初始化音频插件
@@ -217,6 +211,16 @@
             document.addEventListener('deviceready', function() {
                 that.receivedEvent(that.params.musicurl || "https://huiai.sleepeazz.com/vod/QinanSleepTraining_01.mp3")
             }, false);
+            this.loadingmodal = Loading.service({
+                fullscreen: true,
+                background: 'rgba(0, 0, 0, 0.7)',
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+            });
+            setTimeout(function() {
+                that.loadingmodal.close();
+            }, 10000)
         }
     }
 </script>

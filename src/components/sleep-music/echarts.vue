@@ -24,6 +24,9 @@
             },
             dealtime(time) { //将时间字符串化为小数
                 if (time) {
+                    if (time.indexOf('-') != -1) {
+                        time = time.split(' ')[1]
+                    }
                     var t = time.split(':');
                     var h = t[0] * 1;
                     var m = t[1] / 60;
@@ -229,56 +232,58 @@
                         that.myChart.hideLoading();
                     }
                 }).catch(function() {
-                    that.$axios.get('/static/testData/getByLastSeven.json').then(function(res) {
-                        if (res.data.code === 'C0000') {
-                            var list = res.data.data.map(function(item, index) {
-                                var newitem = item;
-                                newitem.date = new Date(item.create_date.replace('-', '/')).getTime();
-                                return newitem;
-                            }).sort(function(a, b) {
-                                return a.date - b.date;
-                            });
-                            var formate = list.map(function(item, index) {
-                                var arr = item.create_date.split('-')
-                                return arr[1] + '月' + arr[2] + '日';
-                            });
-                            that.option.xAxis = {
-                                type: 'category',
-                                splitLine: {
-                                    show: true,
-                                    lineStyle: {
-                                        type: 'dashed'
-                                    }
-                                },
-                                axisLine: {
-                                    lineStyle: {
-                                        color: '#ccc'
-                                    }
-                                },
-                                splitNumber: list.length,
-                                axisLabel: {
-                                    color: '#333',
-                                    rotate: -70,
-                                    formatter: function(item, index) {
-                                        return formate[index]
-                                    }
-                                },
-                                data: ''
+                    if (process.env.NODE_ENV == 'development') {
+                        that.$axios.get('/static/testData/getByLastSeven.json').then(function(res) {
+                            if (res.data.code === 'C0000') {
+                                var list = res.data.data.map(function(item, index) {
+                                    var newitem = item;
+                                    newitem.date = new Date(item.create_date.replace('-', '/')).getTime();
+                                    return newitem;
+                                }).sort(function(a, b) {
+                                    return a.date - b.date;
+                                });
+                                var formate = list.map(function(item, index) {
+                                    var arr = item.create_date.split('-')
+                                    return arr[1] + '月' + arr[2] + '日';
+                                });
+                                that.option.xAxis = {
+                                    type: 'category',
+                                    splitLine: {
+                                        show: true,
+                                        lineStyle: {
+                                            type: 'dashed'
+                                        }
+                                    },
+                                    axisLine: {
+                                        lineStyle: {
+                                            color: '#ccc'
+                                        }
+                                    },
+                                    splitNumber: list.length,
+                                    axisLabel: {
+                                        color: '#333',
+                                        rotate: -70,
+                                        formatter: function(item, index) {
+                                            return formate[index]
+                                        }
+                                    },
+                                    data: ''
+                                }
+                                that.sleeplengthtimes = list.map(function(item, index) {
+                                    that.sleepstarttimes.push(that.dealtime(item.sleepTime));
+                                    that.sleependtimes.push(that.dealtime(item.wakeTime) + 24);
+                                    return (item.sleepTimeLang / 60).toFixed(1);
+                                });
+                                var year = new Date().getFullYear();
+                                window.sleep_xaxis_arr = formate.map(function(item) {
+                                    return year + '年' + item;
+                                });
+                                that.setOptions();
+                                that.myChart.setOption(that.option);
+                                that.myChart.hideLoading();
                             }
-                            that.sleeplengthtimes = list.map(function(item, index) {
-                                that.sleepstarttimes.push(that.dealtime(item.sleepTime));
-                                that.sleependtimes.push(that.dealtime(item.wakeTime) + 24);
-                                return (item.sleepTimeLang / 60).toFixed(1);
-                            });
-                            var year = new Date().getFullYear();
-                            window.sleep_xaxis_arr = formate.map(function(item) {
-                                return year + '年' + item;
-                            });
-                            that.setOptions();
-                            that.myChart.setOption(that.option);
-                            that.myChart.hideLoading();
-                        }
-                    });
+                        });
+                    }
                 })
             },
             thisWeek() { //本周
@@ -306,29 +311,31 @@
                         that.myChart.hideLoading();
                     }
                 }).catch(function() {
-                    that.$axios.get('/static/testData/getByWeek.json').then(function(res) {
-                        if (res.data.code === 'C0000') {
-                            var list = res.data.data.map(function(item, index) {
-                                var newitem = item;
-                                newitem.date = new Date(item.create_date.replace('-', '/')).getDay() - 1;
-                                if (newitem.date == -1) {
-                                    newitem.date = 6;
-                                }
-                                return newitem;
-                            }).sort(function(a, b) {
-                                return a.date - b.date;
-                            });
-                            list = that.fillThisWeekArr(list);
-                            that.sleeplengthtimes = list.map(function(item, index) {
-                                that.sleepstarttimes.push(that.dealtime(item.sleepTime));
-                                that.sleependtimes.push(that.dealtime(item.wakeTime) + 24);
-                                return (item.sleepTimeLang / 60).toFixed(1);
-                            });
-                            that.setOptions();
-                            that.myChart.setOption(that.option);
-                            that.myChart.hideLoading();
-                        }
-                    });
+                    if (process.env.NODE_ENV == 'development') {
+                        that.$axios.get('/static/testData/getByWeek.json').then(function(res) {
+                            if (res.data.code === 'C0000') {
+                                var list = res.data.data.map(function(item, index) {
+                                    var newitem = item;
+                                    newitem.date = new Date(item.create_date.replace('-', '/')).getDay() - 1;
+                                    if (newitem.date == -1) {
+                                        newitem.date = 6;
+                                    }
+                                    return newitem;
+                                }).sort(function(a, b) {
+                                    return a.date - b.date;
+                                });
+                                list = that.fillThisWeekArr(list);
+                                that.sleeplengthtimes = list.map(function(item, index) {
+                                    that.sleepstarttimes.push(that.dealtime(item.sleepTime));
+                                    that.sleependtimes.push(that.dealtime(item.wakeTime) + 24);
+                                    return (item.sleepTimeLang / 60).toFixed(1);
+                                });
+                                that.setOptions();
+                                that.myChart.setOption(that.option);
+                                that.myChart.hideLoading();
+                            }
+                        });
+                    }
                 })
             },
             thisMonth() { //本月
@@ -364,29 +371,31 @@
                         that.myChart.hideLoading();
                     }
                 }).catch(function() {
-                    that.$axios.get('/static/testData/getByWeek.json').then(function(res) {
-                        if (res.data.code === 'C0000') {
-                            var list = res.data.data.map(function(item, index) {
-                                var newitem = item;
-                                newitem.date = new Date(item.create_date.replace('-', '/')).getDay() - 1;
-                                if (newitem.date == -1) {
-                                    newitem.date = 6;
-                                }
-                                return newitem;
-                            }).sort(function(a, b) {
-                                return a.date - b.date;
-                            });
-                            list = that.fillThisWeekArr(list);
-                            that.sleeplengthtimes = list.map(function(item, index) {
-                                that.sleepstarttimes.push(that.dealtime(item.sleepTime));
-                                that.sleependtimes.push(that.dealtime(item.wakeTime) + 24);
-                                return (item.sleepTimeLang / 60).toFixed(1);
-                            });
-                            that.setOptions();
-                            that.myChart.setOption(that.option);
-                            that.myChart.hideLoading();
-                        }
-                    });
+                    if (process.env.NODE_ENV == 'development') {
+                        that.$axios.get('/static/testData/getByWeek.json').then(function(res) {
+                            if (res.data.code === 'C0000') {
+                                var list = res.data.data.map(function(item, index) {
+                                    var newitem = item;
+                                    newitem.date = new Date(item.create_date.replace('-', '/')).getDay() - 1;
+                                    if (newitem.date == -1) {
+                                        newitem.date = 6;
+                                    }
+                                    return newitem;
+                                }).sort(function(a, b) {
+                                    return a.date - b.date;
+                                });
+                                list = that.fillThisWeekArr(list);
+                                that.sleeplengthtimes = list.map(function(item, index) {
+                                    that.sleepstarttimes.push(that.dealtime(item.sleepTime));
+                                    that.sleependtimes.push(that.dealtime(item.wakeTime) + 24);
+                                    return (item.sleepTimeLang / 60).toFixed(1);
+                                });
+                                that.setOptions();
+                                that.myChart.setOption(that.option);
+                                that.myChart.hideLoading();
+                            }
+                        });
+                    }
                 })
             },
             thisYear() { //本年
@@ -421,29 +430,31 @@
                         that.myChart.hideLoading();
                     }
                 }).catch(function() {
-                    that.$axios.get('/static/testData/getByWeek.json').then(function(res) {
-                        if (res.data.code === 'C0000') {
-                            var list = res.data.data.map(function(item, index) {
-                                var newitem = item;
-                                newitem.date = new Date(item.create_date.replace('-', '/')).getDay() - 1;
-                                if (newitem.date == -1) {
-                                    newitem.date = 6;
-                                }
-                                return newitem;
-                            }).sort(function(a, b) {
-                                return a.date - b.date;
-                            });
-                            list = that.fillThisWeekArr(list);
-                            that.sleeplengthtimes = list.map(function(item, index) {
-                                that.sleepstarttimes.push(that.dealtime(item.sleepTime));
-                                that.sleependtimes.push(that.dealtime(item.wakeTime) + 24);
-                                return (item.sleepTimeLang / 60).toFixed(1);
-                            });
-                            that.setOptions();
-                            that.myChart.setOption(that.option);
-                            that.myChart.hideLoading();
-                        }
-                    });
+                    if (process.env.NODE_ENV == 'development') {
+                        that.$axios.get('/static/testData/getByWeek.json').then(function(res) {
+                            if (res.data.code === 'C0000') {
+                                var list = res.data.data.map(function(item, index) {
+                                    var newitem = item;
+                                    newitem.date = new Date(item.create_date.replace('-', '/')).getDay() - 1;
+                                    if (newitem.date == -1) {
+                                        newitem.date = 6;
+                                    }
+                                    return newitem;
+                                }).sort(function(a, b) {
+                                    return a.date - b.date;
+                                });
+                                list = that.fillThisWeekArr(list);
+                                that.sleeplengthtimes = list.map(function(item, index) {
+                                    that.sleepstarttimes.push(that.dealtime(item.sleepTime));
+                                    that.sleependtimes.push(that.dealtime(item.wakeTime) + 24);
+                                    return (item.sleepTimeLang / 60).toFixed(1);
+                                });
+                                that.setOptions();
+                                that.myChart.setOption(that.option);
+                                that.myChart.hideLoading();
+                            }
+                        });
+                    }
                 })
             },
             getAxisFormatter(val, index) { //计算x轴坐标
@@ -589,9 +600,8 @@
                         axisLabel: {
                             color: '#333',
                             formatter: function(val, index) {
-                                var num = (index + 1) * 8 % 48;
-                                num = num > 24 ? 48 - num : num;
-                                return num + '时'
+                                var num = (index + 1) * 8 % 24;
+                                return (num == 0 ? 24 : num) + '时'
                             }
                         },
                         axisLine: {

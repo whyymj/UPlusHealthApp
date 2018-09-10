@@ -607,11 +607,11 @@
 						}
 					];
 					this.healthProResult = alllist;
-					const result = await this.$axios.post(`/api/getHealthIndexInfo?member_id=${window._member_id}`,{
-						member_id:window._member_id
+					const result = await this.$axios.post(`/api/getHealthIndexInfo?member_id=${window._member_id}`, {
+						member_id: window._member_id
 					})
 					var tmp;
-					console.log('result',result)
+					console.log('result', result)
 					if (result.data.code === 'C0000') {
 						tmp = result.data.data.typeList.map(function(item, index) {
 							return {
@@ -698,7 +698,7 @@
 				window.localStorage.UPlusApp_firstLogin_sleepReport = true; //在首次登录组件里改变
 				(async() => {
 					let obj = {
-						code: window.location.href.substring(window.location.href.indexOf('=') + 1, window.location.href.indexOf('&')),
+						code: this.$route.query.code||window.location.href.substring(window.location.href.indexOf('=') + 1, window.location.href.indexOf('&')),
 						url: config.url
 					}
 					if (obj.code !== '') {

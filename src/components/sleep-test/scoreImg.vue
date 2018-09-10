@@ -27,7 +27,6 @@
             left() {
                 if (this.score >= this.downlimit && this.score <= this.uplimit) {
                     var left = -1 + (this.score - this.downlimit) / (this.uplimit - this.downlimit) * 4;
-                    console.log('>>>>', left);
                     return left;
                 } else {
                     return 0

@@ -1,4 +1,4 @@
-const express = require('express')
+ const express = require('express')
 const router = express.Router()
 const http = require('http')
 const querystring = require('querystring')
@@ -9,6 +9,7 @@ var multipartMiddleware = multipart();
 
 // access_token 获取用户信息
 router.post('/api/info', (req, res, next) => {
+  console.log('>>>>>>>>>>>+++++++++>',JSON.stringify(req.body));
   const postData = querystring.stringify({code: req.body.code, redirect_url: req.body.url})
   const options = {
     host: config.host,

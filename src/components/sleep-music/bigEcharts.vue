@@ -23,7 +23,10 @@
 				this.$emit('showbig')
 			},
 			dealtime(time) { //将时间字符串化为小数
-				if(time) {
+				if (time) {
+					 if (time.indexOf('-') != -1) {
+                        time = time.split(' ')[1]
+                    }
 					var t = time.split(':');
 					var h = t[0] * 1;
 					var m = t[1] / 60;
@@ -35,10 +38,10 @@
 			fillThisWeekArr(arr) { //用于填充数组两个时间之间的空白
 				var a, b;
 				var len = arr.length;
-				for(var i = 0; i < len - 1; i++) {
+				for (var i = 0; i < len - 1; i++) {
 					a = arr[i];
 					b = arr[i + 1];
-					for(var j = 0; j < b.date - a.date - 1; j++) {
+					for (var j = 0; j < b.date - a.date - 1; j++) {
 						arr.splice(i + 1, 0, {
 							"sleepTime": "",
 							"wakeTime": "",
@@ -56,9 +59,9 @@
 				this.active = index;
 				window.sleep_charts_active = index;
 				var that = this;
-				if(index == 0) { //最近7次
+				if (index == 0) { //最近7次
 					this.nearestSeven();
-				} else if(index == 1) { //本周
+				} else if (index == 1) { //本周
 					this.option.yAxis = {
 						type: 'category',
 						inverse: true,
@@ -82,13 +85,13 @@
 						data: that.getAxisData()
 					}
 					this.thisWeek();
-				} else if(index == 2) { //本月
+				} else if (index == 2) { //本月
 					var year = new Date().getFullYear();
 					var month = (new Date().getMonth() + 1) > 9 ? (new Date().getMonth() + 1) : '0' + (new Date().getMonth() + 1);
 					var len = new Date(year, month, 0).getDate();
 					var dateArray = [];
 					var dateTemp;
-					for(var i = 1; i <= len; i++) {
+					for (var i = 1; i <= len; i++) {
 						dateTemp = year + '年' + month + "月" + (i > 9 ? i : '0' + i) + '日';
 						dateArray.push(dateTemp);
 					}
@@ -119,7 +122,7 @@
 							var dateArray = [];
 							var dateTemp;
 							var flag = 1;
-							for(var i = 1; i <= len; i++) {
+							for (var i = 1; i <= len; i++) {
 								dateTemp = year + '年' + month + "月" + (i > 9 ? i : '0' + i) + '日';
 								dateArray.push(dateTemp);
 							}
@@ -127,17 +130,16 @@
 						}()
 					}
 					this.thisMonth();
-				} else if(index == 3) { //本年
+				} else if (index == 3) { //本年
 					var date = new Date();
 					var year = date.getFullYear();
-
 					function getMonthDate(year, month) {
 						var firstDay = new Date(year, month - 1, 1);
 						var lastDay = new Date(year, month, 0);
 						var firday = firstDay.getDate() > 9 ? firstDay.getDate() : '0' + firstDay.getDate();
 						var lasday = lastDay.getDate() > 9 ? lastDay.getDate() : '0' + lastDay.getDate();
 						var date = [];
-						for(var i = firday; i <= lasday; i++) {
+						for (var i = firday; i <= lasday; i++) {
 							date.push({
 								year: year,
 								month: month,
@@ -154,7 +156,7 @@
 						monthlimit = [];
 					var tmp;
 					! function() {
-						for(var i = 1; i <= 12; i++) {
+						for (var i = 1; i <= 12; i++) {
 							tmp = getMonthDate(year, i);
 							tmp.map(function(item) {
 								dateTemp = year + '年' + (i > 9 ? i + '月' : '0' + i + '月') + item.date + '日';
@@ -163,9 +165,9 @@
 							monthlength[i - 1] = tmp.length;
 						}
 					}();
-					for(var i = 1; i <= 12; i++) {
+					for (var i = 1; i <= 12; i++) {
 						monthlimit[i - 1] = 0;
-						for(var j = 0; j < i; j++) {
+						for (var j = 0; j < i; j++) {
 							monthlimit[i - 1] = monthlimit[i - 1] + monthlength[j];
 						}
 					}
@@ -181,7 +183,7 @@
 			nearestSeven() { //最近7次
 				var that = this;
 				this.$axios.post('/api/getByLastSeven').then(function(res) {
-					if(res.data.code === 'C0000') {
+					if (res.data.code === 'C0000') {
 						var list = res.data.data.map(function(item, index) {
 							var newitem = item;
 							newitem.date = new Date(item.create_date.replace('-', '/')).getTime();
@@ -220,7 +222,7 @@
 						that.sleeplengthtimes = list.map(function(item, index) {
 							that.sleepstarttimes.push(that.dealtime(item.sleepTime));
 							that.sleependtimes.push(that.dealtime(item.wakeTime) + 24);
-							return(item.sleepTimeLang / 60).toFixed(1);
+							return (item.sleepTimeLang / 60).toFixed(1);
 						});
 						var year = new Date().getFullYear();
 						window.sleep_xaxis_arr = formate.map(function(item) {
@@ -230,66 +232,68 @@
 						that.myChart.setOption(that.option);
 					}
 				}).catch(function() {
-					that.$axios.get('/static/testData/getByLastSeven.json').then(function(res) {
-						if(res.data.code === 'C0000') {
-							var list = res.data.data.map(function(item, index) {
-								var newitem = item;
-								newitem.date = new Date(item.create_date.replace('-', '/')).getTime();
-								return newitem;
-							}).sort(function(a, b) {
-								return a.date - b.date;
-							});
-							var formate = list.map(function(item, index) {
-								var arr = item.create_date.split('-')
-								return arr[1] + '月' + arr[2] + '日';
-							});
-							that.option.yAxis = {
-								type: 'category',
-								inverse: true,
-								splitLine: {
-									show: true,
-									lineStyle: {
-										type: 'dashed'
-									}
-								},
-								axisLine: {
-									lineStyle: {
-										color: '#ccc'
-									}
-								},
-								splitNumber: list.length,
-								axisLabel: {
-									color: '#333',
-									rotate: -90,
-									formatter: function(item, index) {
-										return formate[index]
-									}
-								},
-								data: ''
+					if (process.env.NODE_ENV == 'development') {
+						that.$axios.get('/static/testData/getByLastSeven.json').then(function(res) {
+							if (res.data.code === 'C0000') {
+								var list = res.data.data.map(function(item, index) {
+									var newitem = item;
+									newitem.date = new Date(item.create_date.replace('-', '/')).getTime();
+									return newitem;
+								}).sort(function(a, b) {
+									return a.date - b.date;
+								});
+								var formate = list.map(function(item, index) {
+									var arr = item.create_date.split('-')
+									return arr[1] + '月' + arr[2] + '日';
+								});
+								that.option.yAxis = {
+									type: 'category',
+									inverse: true,
+									splitLine: {
+										show: true,
+										lineStyle: {
+											type: 'dashed'
+										}
+									},
+									axisLine: {
+										lineStyle: {
+											color: '#ccc'
+										}
+									},
+									splitNumber: list.length,
+									axisLabel: {
+										color: '#333',
+										rotate: -90,
+										formatter: function(item, index) {
+											return formate[index]
+										}
+									},
+									data: ''
+								}
+								that.sleeplengthtimes = list.map(function(item, index) {
+									that.sleepstarttimes.push(that.dealtime(item.sleepTime));
+									that.sleependtimes.push(that.dealtime(item.wakeTime) + 24);
+									return (item.sleepTimeLang / 60).toFixed(1);
+								});
+								var year = new Date().getFullYear();
+								window.sleep_xaxis_arr = formate.map(function(item) {
+									return year + '年' + item;
+								});
+								that.setOptions();
+								that.myChart.setOption(that.option);
 							}
-							that.sleeplengthtimes = list.map(function(item, index) {
-								that.sleepstarttimes.push(that.dealtime(item.sleepTime));
-								that.sleependtimes.push(that.dealtime(item.wakeTime) + 24);
-								return(item.sleepTimeLang / 60).toFixed(1);
-							});
-							var year = new Date().getFullYear();
-							window.sleep_xaxis_arr = formate.map(function(item) {
-								return year + '年' + item;
-							});
-							that.setOptions();
-							that.myChart.setOption(that.option);
-						}
-					});
+						});
+					}
 				})
 			},
 			thisWeek() { //本周
 				var that = this;
 				this.$axios.post('/api/sleep/getByWeek').then(function(res) {
-					if(res.data.code === 'C0000') {
+					if (res.data.code === 'C0000') {
 						var list = res.data.data.map(function(item, index) {
 							var newitem = item;
 							newitem.date = new Date(item.create_date.replace('-', '/')).getDay() - 1;
-							if(newitem.date == -1) {
+							if (newitem.date == -1) {
 								newitem.date = 6;
 							}
 							return newitem;
@@ -300,34 +304,36 @@
 						that.sleeplengthtimes = list.map(function(item, index) {
 							that.sleepstarttimes.push(that.dealtime(item.sleepTime));
 							that.sleependtimes.push(that.dealtime(item.wakeTime) + 24);
-							return(item.sleepTimeLang / 60).toFixed(1);
+							return (item.sleepTimeLang / 60).toFixed(1);
 						});
 						that.setOptions();
 						that.myChart.setOption(that.option);
 					}
 				}).catch(function() {
-					that.$axios.get('/static/testData/getByWeek.json').then(function(res) {
-						if(res.data.code === 'C0000') {
-							var list = res.data.data.map(function(item, index) {
-								var newitem = item;
-								newitem.date = new Date(item.create_date.replace('-', '/')).getDay() - 1;
-								if(newitem.date == -1) {
-									newitem.date = 6;
-								}
-								return newitem;
-							}).sort(function(a, b) {
-								return a.date - b.date;
-							});
-							list = that.fillThisWeekArr(list);
-							that.sleeplengthtimes = list.map(function(item, index) {
-								that.sleepstarttimes.push(that.dealtime(item.sleepTime));
-								that.sleependtimes.push(that.dealtime(item.wakeTime) + 24);
-								return(item.sleepTimeLang / 60).toFixed(1);
-							});
-							that.setOptions();
-							that.myChart.setOption(that.option);
-						}
-					});
+					if (process.env.NODE_ENV == 'development') {
+						that.$axios.get('/static/testData/getByWeek.json').then(function(res) {
+							if (res.data.code === 'C0000') {
+								var list = res.data.data.map(function(item, index) {
+									var newitem = item;
+									newitem.date = new Date(item.create_date.replace('-', '/')).getDay() - 1;
+									if (newitem.date == -1) {
+										newitem.date = 6;
+									}
+									return newitem;
+								}).sort(function(a, b) {
+									return a.date - b.date;
+								});
+								list = that.fillThisWeekArr(list);
+								that.sleeplengthtimes = list.map(function(item, index) {
+									that.sleepstarttimes.push(that.dealtime(item.sleepTime));
+									that.sleependtimes.push(that.dealtime(item.wakeTime) + 24);
+									return (item.sleepTimeLang / 60).toFixed(1);
+								});
+								that.setOptions();
+								that.myChart.setOption(that.option);
+							}
+						});
+					}
 				})
 			},
 			thisMonth() { //本月
@@ -341,11 +347,11 @@
 					begin_date: this.year + (this.month > 9 ? this.month : '0' + this.month) + '-01 00:00:00',
 					end_date: this.year + '-' + (this.month > 9 ? this.month : '0' + this.month) + '-' + (this.date > 9 ? this.date : '0' + this.date) + ' 23:59:59'
 				}).then(function(res) {
-					if(res.data.code === 'C0000') {
+					if (res.data.code === 'C0000') {
 						var list = res.data.data.map(function(item, index) {
 							var newitem = item;
 							newitem.date = new Date(item.create_date.replace('-', '/')).getDay() - 1;
-							if(newitem.date == -1) {
+							if (newitem.date == -1) {
 								newitem.date = 6;
 							}
 							return newitem;
@@ -356,34 +362,36 @@
 						that.sleeplengthtimes = list.map(function(item, index) {
 							that.sleepstarttimes.push(that.dealtime(item.sleepTime));
 							that.sleependtimes.push(that.dealtime(item.wakeTime) + 24);
-							return(item.sleepTimeLang / 60).toFixed(1);
+							return (item.sleepTimeLang / 60).toFixed(1);
 						});
 						that.setOptions();
 						that.myChart.setOption(that.option);
 					}
 				}).catch(function() {
-					that.$axios.get('/static/testData/getByWeek.json').then(function(res) {
-						if(res.data.code === 'C0000') {
-							var list = res.data.data.map(function(item, index) {
-								var newitem = item;
-								newitem.date = new Date(item.create_date.replace('-', '/')).getDay() - 1;
-								if(newitem.date == -1) {
-									newitem.date = 6;
-								}
-								return newitem;
-							}).sort(function(a, b) {
-								return a.date - b.date;
-							});
-							list = that.fillThisWeekArr(list);
-							that.sleeplengthtimes = list.map(function(item, index) {
-								that.sleepstarttimes.push(that.dealtime(item.sleepTime));
-								that.sleependtimes.push(that.dealtime(item.wakeTime) + 24);
-								return(item.sleepTimeLang / 60).toFixed(1);
-							});
-							that.setOptions();
-							that.myChart.setOption(that.option);
-						}
-					});
+					if (process.env.NODE_ENV == 'development') {
+						that.$axios.get('/static/testData/getByWeek.json').then(function(res) {
+							if (res.data.code === 'C0000') {
+								var list = res.data.data.map(function(item, index) {
+									var newitem = item;
+									newitem.date = new Date(item.create_date.replace('-', '/')).getDay() - 1;
+									if (newitem.date == -1) {
+										newitem.date = 6;
+									}
+									return newitem;
+								}).sort(function(a, b) {
+									return a.date - b.date;
+								});
+								list = that.fillThisWeekArr(list);
+								that.sleeplengthtimes = list.map(function(item, index) {
+									that.sleepstarttimes.push(that.dealtime(item.sleepTime));
+									that.sleependtimes.push(that.dealtime(item.wakeTime) + 24);
+									return (item.sleepTimeLang / 60).toFixed(1);
+								});
+								that.setOptions();
+								that.myChart.setOption(that.option);
+							}
+						});
+					}
 				})
 			},
 			thisYear() { //本年
@@ -396,11 +404,11 @@
 					begin_date: this.year + '-01-01 00:00:00',
 					end_date: this.year + '-' + (this.month > 9 ? this.month : '0' + this.month) + '-' + (this.date > 9 ? this.date : '0' + this.date) + ' 23:59:59'
 				}).then(function(res) {
-					if(res.data.code === 'C0000') {
+					if (res.data.code === 'C0000') {
 						var list = res.data.data.map(function(item, index) {
 							var newitem = item;
 							newitem.date = new Date(item.create_date.replace('-', '/')).getDay() - 1;
-							if(newitem.date == -1) {
+							if (newitem.date == -1) {
 								newitem.date = 6;
 							}
 							return newitem;
@@ -411,50 +419,52 @@
 						that.sleeplengthtimes = list.map(function(item, index) {
 							that.sleepstarttimes.push(that.dealtime(item.sleepTime));
 							that.sleependtimes.push(that.dealtime(item.wakeTime) + 24);
-							return(item.sleepTimeLang / 60).toFixed(1);
+							return (item.sleepTimeLang / 60).toFixed(1);
 						});
 						that.setOptions();
 						that.myChart.setOption(that.option);
 					}
 				}).catch(function() {
-					that.$axios.get('/static/testData/getByWeek.json').then(function(res) {
-						if(res.data.code === 'C0000') {
-							var list = res.data.data.map(function(item, index) {
-								var newitem = item;
-								newitem.date = new Date(item.create_date.replace('-', '/')).getDay() - 1;
-								if(newitem.date == -1) {
-									newitem.date = 6;
-								}
-								return newitem;
-							}).sort(function(a, b) {
-								return a.date - b.date;
-							});
-							list = that.fillThisWeekArr(list);
-							that.sleeplengthtimes = list.map(function(item, index) {
-								that.sleepstarttimes.push(that.dealtime(item.sleepTime));
-								that.sleependtimes.push(that.dealtime(item.wakeTime) + 24);
-								return(item.sleepTimeLang / 60).toFixed(1);
-							});
-							that.setOptions();
-							that.myChart.setOption(that.option);
-						}
-					});
+					if (process.env.NODE_ENV == 'development') {
+						that.$axios.get('/static/testData/getByWeek.json').then(function(res) {
+							if (res.data.code === 'C0000') {
+								var list = res.data.data.map(function(item, index) {
+									var newitem = item;
+									newitem.date = new Date(item.create_date.replace('-', '/')).getDay() - 1;
+									if (newitem.date == -1) {
+										newitem.date = 6;
+									}
+									return newitem;
+								}).sort(function(a, b) {
+									return a.date - b.date;
+								});
+								list = that.fillThisWeekArr(list);
+								that.sleeplengthtimes = list.map(function(item, index) {
+									that.sleepstarttimes.push(that.dealtime(item.sleepTime));
+									that.sleependtimes.push(that.dealtime(item.wakeTime) + 24);
+									return (item.sleepTimeLang / 60).toFixed(1);
+								});
+								that.setOptions();
+								that.myChart.setOption(that.option);
+							}
+						});
+					}
 				})
 			},
 			getAxisFormatter(val, index) { //计算x轴坐标
-				if(index == 0) {
+				if (index == 0) {
 					return '周一'
-				} else if(index == 1) {
+				} else if (index == 1) {
 					return '周二'
-				} else if(index == 2) {
+				} else if (index == 2) {
 					return '周三'
-				} else if(index == 3) {
+				} else if (index == 3) {
 					return '周四'
-				} else if(index == 4) {
+				} else if (index == 4) {
 					return '周五'
-				} else if(index == 5) {
+				} else if (index == 5) {
 					return '周六'
-				} else if(index == 6) {
+				} else if (index == 6) {
 					return '周日'
 				}
 			},
@@ -464,7 +474,7 @@
 				var dateArray = [];
 				var dateTemp;
 				var flag = 1;
-				for(var i = 0; i < 7; i++) {
+				for (var i = 0; i < 7; i++) {
 					dateTemp = myDate.getFullYear() + '年' + (myDate.getMonth() + 1) + "月" + myDate.getDate() + '日';
 					dateArray.push(dateTemp);
 					myDate.setDate(myDate.getDate() + flag);
@@ -501,7 +511,7 @@
 						},
 						formatter: function(params) {
 							var tar;
-							if(params[1].value != '-') {
+							if (params[1].value != '-') {
 								tar = params[1];
 							} else {
 								tar = params[0];
@@ -515,11 +525,11 @@
 							startM = Math.round((params[0].data - startH) * 60);
 							endH = Math.floor(params[3].data) - 24;
 							endM = Math.round((params[3].data - 24 - endH) * 60);
-							if(window.sleep_charts_active == 0) {
+							if (window.sleep_charts_active == 0) {
 								time = window.sleep_xaxis_arr[params[0].axisValue];
-							} else if(window.sleep_charts_active == 2) {
+							} else if (window.sleep_charts_active == 2) {
 								time = params[0].axisValueLabel;
-							} else if(window.sleep_charts_active == 3) {
+							} else if (window.sleep_charts_active == 3) {
 								time = params[0].axisValueLabel;
 							}
 							startH = startH > 9 ? startH : '0' + startH;
@@ -581,9 +591,8 @@
 							color: '#333',
 							rotate: 90,
 							formatter: function(val, index) {
-								var num = (index + 1) * 8 % 48;
-								num = num > 24 ? 48 - num : num;
-								return num + '时'
+								var num = (index + 1) * 8 % 24;
+								return (num == 0 ? 24 : num) + '时'
 							}
 						},
 						axisLine: {
