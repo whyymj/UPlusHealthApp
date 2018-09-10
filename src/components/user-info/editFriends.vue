@@ -3,20 +3,20 @@
 		<div>
 			<!--<div @click="showActionSheet()">-->
 			<div>
-				<mt-cell class="headerImg" title="头像" is-link >
+				<mt-cell class="headerImg" title="头像" is-link>
 					<img id="img" :src="headImg" />
 				</mt-cell>
 			</div>
-			<div >
+			<div>
 				<mt-cell title="昵称" is-link>
 					<span>{{nickName||'请填写昵称'}}</span>
 				</mt-cell>
 			</div>
 			<!-- <div @click="showAdditionInfo()" style='background: #FFFFFF;' class='addtion'>
-				<label for="">备注</label>
-				<p>{{addition||'请填写备注'}}</p>
-				<span class='el-icon-arrow-right'></span>
-			</div> -->
+							<label for="">备注</label>
+							<p>{{addition||'请填写备注'}}</p>
+							<span class='el-icon-arrow-right'></span>
+						</div> -->
 		</div>
 		<!--上传头像-->
 		<div>
@@ -36,7 +36,7 @@
 	export default {
 		data() {
 			return {
-				headImg:'',
+				headImg: '',
 				// action sheet 选项内容
 				headerAction: [{
 					name: "拍照",
@@ -71,21 +71,24 @@
 			}
 		},
 		created() {
-			this.memberId = this.$route.params.member_id
+			this.memberId = window._member_id;
 		},
 		mounted() {
-			var query=this.$route.query;
-			this.headImg=query.img;
-			this.nickName=query.nickname
-			this.addition=query.addition;
+			var query = this.$route.query;
+			this.headImg = query.img;
+			this.nickName = query.nickname
+			this.addition = query.addition;
 			var that = this;
 			this.route = this.$route.path;
 			this.getUserInfo(function() {
 				var data = that.$route.query;
 				that[data.name] = data.value;
-				that.save(function() {
-					that.getUserInfo();
-				});
+				console.log('saving data?>>', data)
+				if (data.name != 'allergy' && data.name != 'disease') { //慢病与过敏史直
+					that.save(function() {
+						that.getUserInfo();
+					});
+				}
 			});
 		},
 		methods: {
@@ -122,14 +125,15 @@
 				this.isDeleteShow = false
 			},
 			deleteFamily() {
+				var that = this;
 				var memberID = this.$route.params.member_id
 				axios.post('/api/member/delete', {
 						member_id: memberID
 					})
 					.then(function(res) {
 						console.log(res);
-						this.isDeleteShow = false
-						this
+						that.isDeleteShow = false
+						that
 							.$router
 							.replace({
 								path: '/familyManagement'
@@ -299,8 +303,8 @@
 			async getUserInfo(fn) {
 				try {
 					var that = this;
-					const result = await axios.post('api/member', {
-						member_id: that.memberId
+					const result = await axios.post('/api/checkMemberInfo', {
+						member_id: window._member_id
 					})
 					var data = result.data.data;
 					if (result.data.code === 'C0000') {
@@ -332,17 +336,18 @@
 			save(fn) {
 				var that = this;
 				let saveData = {
-					member_id: that.memberId,
+					member_id: window._member_id,
 					height: parseInt(that.heightValue),
 					weight: parseInt(that.weightValue),
 					sex: that.sex,
 					birthday: that.birthday.replace('年', '-').replace('月', '-').replace('日', ''),
 					nick_name: that.nickName,
 					target_weight: parseInt(that.targetWeightValue),
-					diseas: that.diseas, //慢病
+					disease: that.disease, //慢病
 					allergy: that.allergy, //过敏
 				}
-				axios.post('api/member/info', saveData)
+				console.log('fasong>>>>', saveData)
+				axios.post('/api/changeMemberInfo', saveData)
 					.then(function(res) {
 						console.log(res);
 						if (fn) {
@@ -378,7 +383,6 @@
 				float: left;
 				width: 2.5rem;
 				text-align: center;
-
 			}
 			p {
 				text-align: right;

@@ -583,13 +583,13 @@
                 }
                 if (saveData.nick_name && saveData.sex && saveData.birthday && saveData.height && saveData.weight) {
                     //新增家庭成员
+                    console.log('save saveData', saveData);
                     axios.post('/api/member', saveData)
                         .then(function(res) {
                             if (res.data && res.data.code == 'C0000') {
-                                this.toast = Toast('保存成功');
-                                setTimeout(() => {
-                                    toast.close();
-                                }, 2000);
+                                console.log('success!!!!!!!!!!');
+                                console.log('closing modal ?????????', that.route);
+                                console.log('tiaozhuan ?????????', that.route);
                                 if (that.route) {
                                     that.$router.push({
                                         path: that.route
@@ -599,6 +599,10 @@
                                         path: '/healthArchives'
                                     })
                                 }
+                                that.toast = Toast('保存成功');
+                                setTimeout(() => {
+                                    that.toast.close();
+                                }, 2000);
                             }
                         })
                         .catch(function(err) {
@@ -617,7 +621,7 @@
                 } else {
                     this.toast = Toast('请先填写完必填信息');
                     setTimeout(() => {
-                        toast.close();
+                        that.toast.close();
                     }, 2000);
                 }
             }

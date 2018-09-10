@@ -13,10 +13,10 @@
 				</mt-cell>
 			</div>
 			<!--<div @click="openPicker(4)">
-			        <mt-cell title="性别" is-link>
-			          <span>{{sex}}</span>
-			        </mt-cell>
-			      </div>-->
+				        <mt-cell title="性别" is-link>
+				          <span>{{sex}}</span>
+				        </mt-cell>
+				      </div>-->
 			<div @click="openBirthDay('pickerBD')">
 				<mt-cell title="生日" is-link>
 					<span>{{birthday}}</span>
@@ -49,8 +49,8 @@
 			</mt-cell>
 		</div>
 		<!--<div class="div_magin">
-			      <mt-cell title="隐私设置" is-link :to="{ name: 'privacySet' }"/>
-			    </div>-->
+				      <mt-cell title="隐私设置" is-link :to="{ name: 'privacySet' }"/>
+				    </div>-->
 		<div class="deleteFamily" @click="openDeleteFamily">
 			删除家人
 		</div>
@@ -132,46 +132,49 @@
 			}
 		},
 		created() {
-			this.memberId = this.$route.params.member_id
+			this.memberId = window._member_id;
 		},
 		mounted() {
 			// document.getElementsByTagName('title')[0].innerHTML=''
 			var that = this;
 			this.route = this.$route.path;
+			this.memberId = window._member_id;
 			this.getUserInfo(function() {
-				 that.loadingmodal.close();
+				that.loadingmodal.close();
 				var data = that.$route.query;
 				that[data.name] = data.value;
-				that.save(function() {
-					that.getUserInfo();
-				});
+				if (data.name != 'allergy' && data.name != 'disease') {//慢病与过敏史直接在对应选择页面保存
+					that.save(function() {
+						that.getUserInfo();
+					});
+				}
 			});
 		},
 		methods: {
 			//慢病 过敏截取
 			sliceStr(data) {
 				let str = ""
-				if(data) { 
+				if (data) {
 					let firstIndex = data.indexOf(",")
-					if(firstIndex == -1) { 
+					if (firstIndex == -1) {
 						str = data
-					} else { 
+					} else {
 						let secondIndex = data.indexOf(",", firstIndex + 1)
-						if(secondIndex == -1) { 
-							if(firstIndex > 3) {
+						if (secondIndex == -1) {
+							if (firstIndex > 3) {
 								str = data.substring(0, firstIndex) + "等"
 							} else {
-								if(data.length - firstIndex - 1 > 3) {
+								if (data.length - firstIndex - 1 > 3) {
 									str = data.substring(firstIndex + 1) + "等"
 								} else {
 									str = data
 								}
 							}
-						} else { 
-							if(firstIndex > 3) {
+						} else {
+							if (firstIndex > 3) {
 								str = data.substring(0, firstIndex) + "等"
 							} else {
-								if(secondIndex - firstIndex - 1 > 3) {
+								if (secondIndex - firstIndex - 1 > 3) {
 									str = data.substring(firstIndex + 1, secondIndex) + "等"
 								} else {
 									str = data.substring(0, secondIndex) + "等"
@@ -192,13 +195,14 @@
 				this.isDeleteShow = false
 			},
 			deleteFamily() {
-				var memberID = this.$route.params.member_id
+				var that = this;
+				var memberID = window._member_id
 				axios.post('/api/member/delete', {
 						member_id: memberID
 					})
 					.then(function(res) {
-						this.isDeleteShow = false
-						this
+						that.isDeleteShow = false
+						that
 							.$router
 							.replace({
 								path: '/familyManagement'
@@ -357,8 +361,8 @@
 			async getUserInfo(fn) {
 				try {
 					var that = this;
-					const result = await axios.post('api/member', {
-						member_id: that.memberId
+					const result = await axios.post('/api/checkMemberInfo', {
+						member_id: window._member_id
 					})
 					var data = result.data.data;
 					if (result.data.code === 'C0000') {
@@ -390,17 +394,17 @@
 			save(fn) {
 				var that = this;
 				let saveData = {
-					member_id: that.memberId,
+					member_id: window._member_id,
 					height: parseInt(that.heightValue),
 					weight: parseInt(that.weightValue),
 					sex: that.sex,
 					birthday: that.birthday.replace('年', '-').replace('月', '-').replace('日', ''),
 					nick_name: that.nickName,
 					target_weight: parseInt(that.targetWeightValue),
-					diseas: that.diseas, //慢病
+					disease: that.disease, //慢病
 					allergy: that.allergy, //过敏
 				}
-				axios.post('api/member/info', saveData)
+				axios.post('/api/changeMemberInfo', saveData)
 					.then(function(res) {
 						console.log(res);
 						if (fn) {

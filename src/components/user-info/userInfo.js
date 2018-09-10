@@ -257,7 +257,7 @@ export default {
 			let saveData = {
 				height: parseInt(that.heightValue),
 				weight: parseInt(that.weightValue),
-				sex: that.sex,
+				sex: that.sex=='男'?'male':'female',
 				birthday: that.birthday.replace('年','-').replace('月','-').replace('日',''),
 				nick_name: that.nickName,
 				headPic:that.headPic,

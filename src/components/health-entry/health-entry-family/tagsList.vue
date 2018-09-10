@@ -50,7 +50,6 @@
             }
         },
         mounted() {
-            console.log('clear22222', this.clear);
             this.showlist = this.tags;
         }
     }
