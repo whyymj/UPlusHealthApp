@@ -7,6 +7,7 @@
         <myDatePicker @checkDateData='checkDateData' flag='2'></myDatePicker>
       </div>
     </mycollapse2>
+    
     <div class="container has-footer">
       <div :class="['background', {'open' : calendarOpen}]" id="calendarBg" @click="toggleOpenCalendar"></div>
       <div :class="['calendar-below', {'open' : calendarOpen}]" id="calendarBelow">

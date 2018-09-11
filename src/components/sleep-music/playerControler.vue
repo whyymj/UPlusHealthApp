@@ -8,8 +8,8 @@
         </div>
         <div class="control">
             <img src="/static/musicPlayer/left.png" id='backThirtySec' alt="" class='left'>
-            <img src="/static/musicPlayer/play.png" alt="" class='play' v-show='playing' id="playSleepMusic">
-            <img src="/static/musicPlayer/pause.png" id="pauseSleepMusic" alt="" class='pause' v-show='!playing'>
+            <img src="/static/musicPlayer/play.png" alt="" class='play' v-if='playing' @click='playAudio' id="playSleepMusic">
+            <img src="/static/musicPlayer/pause.png" id="pauseSleepMusic" alt="" class='pause' @click='pauseAudio' v-else>
             <img src="/static/musicPlayer/right.png" id='goThirtySec' alt="" class='right'>
         </div>
     </div>
@@ -79,12 +79,31 @@
                 position: 0,
                 timerDur: 0,
                 duration: 0,
-                loadingmodal: ''
+                loadingmodal: '',
+                audioSrc: ''
             }
         },
         methods: {
             $$(id) {
                 return document.getElementById(id);
+            },
+            playAudio() {
+                that.playing = !that.playing;
+                var that = this;
+                if (!that.my_media) {
+                    // 初始化Media对象
+                    that.my_media = new Media(that.audioSrc, function() {}, function() {});
+                }
+                // 播放音频
+                that.my_media.play();
+                getDuration();
+            },
+            pauseAudio() {
+                var that = this;
+                if (that.my_media) {
+                    that.my_media.pause();
+                }
+                that.playing = !that.playing;
             },
             receivedEvent(src) {
                 var that = this;
@@ -143,15 +162,15 @@
                         }
                     }, 100);
                 }
-                this.$$("playSleepMusic").onclick = function() {
-                    that.playing = !that.playing;
-                    playAudio();
-                    getDuration();
-                }
-                this.$$("pauseSleepMusic").onclick = function() {
-                    pauseAudio();
-                    that.playing = !that.playing;
-                }
+                // this.$$("playSleepMusic").onclick = function() {
+                //     that.playing = !that.playing;
+                //     playAudio();
+                //     getDuration();
+                // }
+                // this.$$("pauseSleepMusic").onclick = function() {
+                //     pauseAudio();
+                //     that.playing = !that.playing;
+                // }
                 this.$$("goThirtySec").onclick = function() {
                     var time = that.position + 30;
                     time = time > that.duration ? that.duration : time;
@@ -168,43 +187,18 @@
                 getDuration();
                 getCurrent();
             },
-            // play() {
-            //     this.wxAudio.audioPlay();
-            //     this.playing = !this.playing;
-            // },
-            // pause() {
-            //     this.wxAudio.audioPause();
-            //     this.playing = !this.playing;
-            // },
-            // back() {
-            //     var curtime = this.wxAudio.currentT;
-            //     curtime = curtime - 30 <= 0 ? 0 : curtime - 30;
-            //     this.wxAudio.wxAudio.currentTime = this.wxAudio.currentT = curtime;
-            //     this.wxAudio.currentP = curtime / this.wxAudio.durationT;
-            //     this.wxAudio.dragProgressTo = this.wxAudio.wxAudioDetail.offsetWidth * this.wxAudio.currentP;
-            //     this.wxAudio.wxAudioCurrent.innerText = this.wxAudio.formartTime(this.wxAudio.wxAudio.currentTime);
-            //     this.wxAudio.updatePorgress();
-            //     this.wxAudio.audioPlay();
-            // },
-            // go() {
-            //     var curtime = this.wxAudio.currentT;
-            //     curtime = curtime + 30 >= this.wxAudio.durationT ? this.wxAudio.durationT : curtime + 30;
-            //     this.wxAudio.wxAudio.currentTime = this.wxAudio.currentT = curtime;
-            //     this.wxAudio.currentP = curtime / this.wxAudio.durationT;
-            //     this.wxAudio.dragProgressTo = this.wxAudio.wxAudioDetail.offsetWidth * this.wxAudio.currentP;
-            //     this.wxAudio.wxAudioCurrent.innerText = this.wxAudio.formartTime(this.wxAudio.wxAudio.currentTime);
-            //     this.wxAudio.updatePorgress();
-            //     this.wxAudio.audioPlay();
-            // }
         },
         beforeDestroy() {
-            this.my_media.stop();
-            this.my_media.release();
+            if (this.my_media) {
+                this.my_media.stop();
+                this.my_media.release();
+            }
         },
         mounted() { //h5实现的方式
             this.params = this.$route.query;
             var that = this;
             //初始化音频插件
+            that.audioSrc = that.params.musicurl;
             this.$nextTick(function() {
                 that.receivedEvent(that.params.musicurl || "https://huiai.sleepeazz.com/vod/QinanSleepTraining_01.mp3");
             })
