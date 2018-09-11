@@ -11,6 +11,11 @@
                         <myDatePicker @checkDateData='checkDateData'></myDatePicker>
                     </div>
                 </mycollapse2>
+                <div class='tipDeleteData' v-if='tipDeleteData&&todayManuInputData'>
+                    <i class='el-icon-info'></i>
+                    <span>可以左滑动删除不必要的数据</span>
+                    <i class='el-icon-close' @click='closeTipDeleteButton'></i>
+                </div>
                 <!-- 有手动录入的数据就显示今天录入的 -->
                 <sleepanalysis :sleepTimeLang='sleepTimeLang' :paramslist='paramslist' :detailAnalysis='detailAnalysis' @deleteThis='deleteThis' :level='sleepQuality' v-if='todayManuInputData'></sleepanalysis>
                 <!-- 如果无手动录入，且有苹果健康数据就显示从apple health获取的数据 -->
@@ -37,7 +42,6 @@
                 </div>
             </div>
         </div>
-  
         <bigechart @showbig='showbig' v-if='showBigEcharts'></bigechart>
     </div>
 </template>
@@ -58,6 +62,9 @@
     import {
         Loading
     } from 'element-ui';
+    import {
+        Toast
+    } from 'mint-ui';
     export default {
         name: "sleepMusicList",
         components: {
@@ -73,10 +80,13 @@
             mycollapse2,
             iosdatashower,
             Loading,
-            bigechart
+            bigechart,
+            Toast
         },
         data() {
             return {
+                myToast: '',
+                tipDeleteData: true,
                 loadingmodal: '',
                 haveAuthor: false, //是否有权限
                 isios: false,
@@ -112,10 +122,13 @@
             };
         },
         methods: {
+            closeTipDeleteButton() {
+                this.tipDeleteData = !this.tipDeleteData;
+            },
             deleteThis() {
                 var that = this;
                 this.$axios.post('/api/sleep/delete', {
-                    sleep_id: that.sleep_id
+                    sleep_id: that.sleepid
                 }).then(function(res) {
                     if (res.data.code == 'C0000') {
                         that.paramslist = [];
@@ -142,8 +155,10 @@
                 this.appleHealthData = '';
                 var check = val.year + '/' + (val.month > 9 ? val.month : '0' + val.month) + '/' + (val.date > 9 ? val.date : '0' + val.date);
                 this.saveSleepInfo(check);
+                
                 this.$axios.post('/api/sleep/getByDay', {
-                    Date: val.year + '-' + (val.month > 9 ? val.month : '0' + val.month) + '-' + (val.date > 9 ? val.date : '0' + val.date)
+                    Date: val.year + '-' + (val.month > 9 ? val.month : '0' + val.month) + '-' + (val.date > 9 ? val.date : '0' + val.date),
+                     member_id:window._member_id
                 }).then(function(res) {
                     if (res.data.code === 'C0000' && res.data.data) {
                         var data = res.data.data;
@@ -272,13 +287,13 @@
                 if (this.iosshowdata) { //如果有数据就上传后台
                     that.$axios.post('/api/insertByIphone', {
                         sleepTime: that.iosshowdata.startDate.replace('T', ' ').split('+')[0],
-                        wakeTime: that.iosshowdata.endDate.replace('T', ' ').split('+')[0]
+                        wakeTime: that.iosshowdata.endDate.replace('T', ' ').split('+')[0],
+                         member_id:window._member_id
                     }).then(function(res) {
                         if (res.data.code == 'C0000') {
                             that.sleep_id = res.data.data.sleep_id
                         }
-                    }).catch(function() {
-                    });
+                    }).catch(function() {});
                 }
             },
             //打开苹果健康权限
@@ -349,10 +364,19 @@
                 // }
             },
             toManuInput() {
-                this.$router.push({
-                    path: '/sleepManuInput',
-                    query: {}
-                });
+                var that = this;
+                if (!this.todayManuInputData) { //如果今天还没有手动录入
+                    this.$router.push({
+                        path: '/sleepManuInput',
+                        query: {}
+                    });
+                } else if (!this.myToast) {//防止反复点击
+                    this.myToast = Toast('请先删除今天的数据,再录入');
+                    setTimeout(() => {
+                        that.myToast.close();
+                        that.myToast = ''
+                    }, 2000);
+                }
             },
             handleClick() {},
             clickSpan(index) {
@@ -371,7 +395,6 @@
             }
         },
         mounted() {
-            
             if (window.localStorage.UPlusApp_getAppleHealthData && (window.localStorage.UPlusApp_getAppleHealthData == 'true' || window.localStorage.UPlusApp_getAppleHealthData == true)) {
                 this.haveAuthor = true;
             }
@@ -433,7 +456,9 @@
                 }
                 that.loadingmodal.close();
             });
-            this.$axios.post('/api/sleep/getLast').then(function(res) {
+            this.$axios.post('/api/sleep/getLast',{
+                member_id:window._member_id
+            }).then(function(res) {
                 if (res.data.code === 'C0000') {
                     var data = res.data.data;
                     var createTime = data.create_date.split(' ')[0].split('-');
@@ -560,7 +585,7 @@
                 pageSize: 10,
                 currentPage: 1
             }).then(function(res) {
-                that.sleepnewslist = res.data;
+                that.sleepnewslist = res.data.data;
                 that.loadingmodal.close();
             }).catch(function(res) {
                 if (process.env.NODE_ENV == 'development') {
@@ -579,6 +604,22 @@
 <style lang='scss'>
     .page1 {
         padding-bottom: 3rem;
+        .tipDeleteData {
+            width: 17.15rem;
+            height: 1.2rem;
+            background: #fff;
+            border-radius: 0.6rem;
+            margin: 0.5rem auto 0;
+            line-height: 1.2rem;
+            font-size: 0.7rem;
+            color: #666;
+            box-sizing: border-box;
+            padding: 0 0.5rem;
+        }
+        .el-icon-close {
+            float: right;
+            margin-top: 0.3rem;
+        }
     }
     .page2 {
         position: fixed;

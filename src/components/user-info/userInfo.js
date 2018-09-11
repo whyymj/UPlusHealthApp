@@ -260,7 +260,7 @@ export default {
 				sex: that.sex=='男'?'male':'female',
 				birthday: that.birthday.replace('年','-').replace('月','-').replace('日',''),
 				nick_name: that.nickName,
-				headPic:that.headPic,
+				// headPic:that.headPic,
 				target_weight:parseInt(that.targetWeightValue),
 				disease:that.disease,//慢病
 				allergy:that.allergy,//过敏

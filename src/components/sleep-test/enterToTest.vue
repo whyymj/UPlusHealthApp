@@ -42,6 +42,7 @@
                 var that = this;
                 if (!that.questionslist[title]) {
                     this.$axios.post('/api/getTemplateList', {
+                         member_id: window._member_id,
                         templateTerm: title
                     }).then(function(res) {
                         that.loadingmodal.close();
@@ -70,20 +71,22 @@
                             showClose: false
                         });
                         that.loadingmodal.close();
-                        that.$axios.get('/static/testData/getTemplateList.json').then(function(res) {
-                            if (res.data.code == 'C0000') {
-                                that.showlist = that.questionslist[title] = res.data.data.map(function(item, index) {
-                                    return {
-                                        title: item.templateTitle,
-                                        detail: item.templateSubTitle,
-                                        meta: item,
-                                        time: item.createTime,
-                                        result: (item.status === null || item.status === 'null') ? '' : (item.status == '0' ? '未完成' : (item.status == '1' ? (item.result || '已完成') : "未知")),
-                                        status: item.status //null未答题，0答一半，1完成
-                                    }
-                                });
-                            }
-                        })
+                        if (process.env.NODE_ENV == 'development') {
+                            that.$axios.get('/static/testData/getTemplateList.json').then(function(res) {
+                                if (res.data.code == 'C0000') {
+                                    that.showlist = that.questionslist[title] = res.data.data.map(function(item, index) {
+                                        return {
+                                            title: item.templateTitle,
+                                            detail: item.templateSubTitle,
+                                            meta: item,
+                                            time: item.createTime,
+                                            result: (item.status === null || item.status === 'null') ? '' : (item.status == '0' ? '未完成' : (item.status == '1' ? (item.result || '已完成') : "未知")),
+                                            status: item.status //null未答题，0答一半，1完成
+                                        }
+                                    });
+                                }
+                            })
+                        }
                     });
                 } else {
                     this.showlist = that.questionslist[title];
@@ -99,7 +102,9 @@
                 text: 'loading',
                 spinner: 'el-icon-loading',
             });
-            this.$axios.post('/api/getTemplateTerms').then(function(res) {
+            this.$axios.post('/api/getTemplateTerms',{
+                  member_id: window._member_id,
+            }).then(function(res) {
                 that.loadingmodal.close();
                 if (res.data.code == 'C0000') {
                     that.titlelist = res.data.data;
@@ -107,12 +112,14 @@
                 }
             }).catch(function() {
                 that.loadingmodal.close();
-                that.$axios.get('/static/testData/getTemplateTerms.json').then(function(res) {
-                    if (res.data.code == 'C0000') {
-                        that.titlelist = res.data.data;
-                        that.getTemplateList(that.titlelist[0])
-                    }
-                })
+                if (process.env.NODE_ENV == 'development') {
+                    that.$axios.get('/static/testData/getTemplateTerms.json').then(function(res) {
+                        if (res.data.code == 'C0000') {
+                            that.titlelist = res.data.data;
+                            that.getTemplateList(that.titlelist[0])
+                        }
+                    })
+                }
             });
         }
     }

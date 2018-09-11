@@ -1,8 +1,14 @@
 import axios from 'axios'
 import LZString from 'lz-string'
 
+import myDatePicker from '../pressure/myDatePicker.vue';
+import mycollapse2 from '../sleep-music/mycollapse2.vue';
 export default {
   name: 'ecg',
+  components : {
+    myDatePicker,
+    mycollapse2
+  },
   data () {
     return {
       ChooseTypePopupVisible: false,
@@ -55,6 +61,14 @@ export default {
     })
   },
   methods: {
+    checkDateData(date) {
+      var str = date.year + '-' + (date.month > 9
+        ? date.month
+        : ('0' + date.month)) + '-' + (date.date > 9
+        ? date.date
+        : ('0' + date.date));
+      this.onChange(str);
+    },
     addNewDevice () {
       this.$router.push({path: '/deviceType'})
     },

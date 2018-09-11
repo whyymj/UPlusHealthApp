@@ -38,7 +38,7 @@
 <script>
     import caldate from "../sleep-music/calDate.js";
     export default {
-        props: ['hidetop','flag'],
+        props: ['hidetop', 'flag'],
         data() {
             return {
                 haveDataDays: [],
@@ -114,10 +114,10 @@
                     label: i + 1 + "年"
                 });
             }
-            this.$axios.post('/api/health/list', { //获取睡眠模块某个时间段有数据记录的时间序列
-                begin_date: '1970-01-01 00:00:00',
-                end_date: this.year + '-' + (this.month > 9 ? this.month : '0' + this.month) + '-' + (this.date > 9 ? this.date : '0' + this.date) + ' 23:59:59',
-                flag: that.flag||3,
+            this.$axios.get('/api/health/list?begin=1970-01-01&end=' + that.year + '-' + (that.month > 9 ? that.month : '0' + that.month) + '-' + (that.date > 9 ? that.date : '0' + that.date) + '&flag=' + (that.flag || 1) + '&member_id=' + window._member_id, { //获取睡眠模块某个时间段有数据记录的时间序列
+                begin: '1970-01-01',
+                end: that.year + '-' + (that.month > 9 ? that.month : '0' + that.month) + '-' + (that.date > 9 ? that.date : '0' + that.date),
+                flag: that.flag || 1,
                 member_id: window._member_id
             }).then(function(res) {
                 if (res.data.code == 'C0000') {

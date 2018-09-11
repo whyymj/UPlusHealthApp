@@ -109,7 +109,7 @@
                             });
                         } else {
                             this.$axios.post('/api/sleep/insert', {
-                                member_id: "",
+                                member_id: window._member_id,
                                 startTime: startTime,
                                 sleepTime: sleepTime,
                                 wakeTime: wakeTime,
@@ -118,7 +118,7 @@
                                 influence: that.sleepfactors
                             }).then(function(res) {
                                 that.loadingModal.close();
-                                if (res.data.data && res.data.data.code == 'C0000') {
+                                if (res.data.code && res.data.code == 'C0000') {
                                     that.$router.push('/sleepMusicList');
                                 } else {
                                     MessageBox.alert('请稍后重试', '请求失败');

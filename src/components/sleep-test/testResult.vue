@@ -22,25 +22,28 @@
                 // this.$router.push({
                 //     path: '/enterToTest'
                 // })
-                 this.$router.go(-2)
+                this.$router.go(-2)
             },
             reTest() {
                 var that = this;
                 this.params.from = 'retest'
-                // this.$router.push({
-                //     path: '/sleepTest?from=retest',
-                //     query: that.params
-                // })
-                this.$router.go(-1)
+                var str = this.allResult.split('|').map(function(item) {
+                    var newitem = item.split('&')[0] + '&';
+                    return newitem;
+                }).join('|');
+                localStorage['saveUsersleepTemplate' + that.params.tuId] = str;//刷新记录
+                that.$router.go(-1)
             }
         },
         mounted() {
             var params = this.$route.query;
             this.params = params;
+            this.allResult = params.allResult;
             var that = this;
             this.totalscore = params.totalScore;
             this.$axios.post('/api/getUserTemplateAnalysis', { //获取用户睡眠量表分析数据
-                tuId: params.tuId
+                tuId: params.tuId,
+                 member_id: window._member_id
             }).then(function(res) {
                 if (res.data.code == 'C0000') {
                     that.testScore = res.data.data.gradesStr.split('分')[0];
@@ -82,6 +85,7 @@
         },
         data() {
             return {
+                allResult: '',
                 params: '',
                 analysis: {
                     title: '',

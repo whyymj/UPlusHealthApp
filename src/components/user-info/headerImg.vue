@@ -57,21 +57,24 @@
 				data: {
 					'loginCode':'15712783211'
 				},
-				router: ''
+				router: '',
+				uploadimg:'http://10.130.94.227:9020/healthcare/upload/uploadPic'
 			};
 		},
 		created() {
 			this.data.member_id = this.$route.params.member_id
 			this.router = this.$route.params.from
+			console.log(this.data)
 		},
 		mounted() {
 			this.getUserInfo()
 		},
 		methods: {
-				async getUserInfo() {
+			async getUserInfo() {
 				try {
 					var that = this;
 					var result = {};
+					console.log("memberid", that.data)
 					//获取个人的信息
 					if(!that.memberId) {
 						result = await axios.post('/api/user/info', {
@@ -82,9 +85,11 @@
 							member_id: that.memberId
 						})
 					}
+					console.log(result)
 					that.imageUrl = result.data.data.head_pic
-					that.openId = result.data.openId
-					that.loginCode = result.data.data.login_code
+					that.data.openId = result.data.openId
+					that.data.loginCode = result.data.data.login_code
+					console.log(that.data)
 				} catch(err) {
 					console.log(err)
 				}
@@ -98,6 +103,7 @@
 					})
 			},
 			beforeAvatarUpload(file) {
+				var that = this
 				const isJPG = file.type === 'image/png' || file.type === 'image/gif' || file.type === 'image/jpg' || file.type === 'image/jpeg'
 				const isLt2M = file.size / 1024 / 1024 < 2;
 
@@ -107,6 +113,7 @@
 				if(!isLt2M) {
 					this.$message.error('上传头像图片大小不能超过 2MB!');
 				}
+				console.log(that.data)
 				return isJPG && isLt2M;
 
 			}
