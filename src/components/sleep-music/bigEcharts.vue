@@ -3,7 +3,7 @@
 		<div class="button nearest" :class="{active:active==0}" @click='getdata(0)'>最近七次</div>
 		<div class="button week" :class="{active:active==1}" @click='getdata(1)'>周</div>
 		<!-- <div class="button month" :class="{active:active==2}" @click='getdata(2)'>月</div>
-								<div class="button year" :class="{active:active==3}" @click='getdata(3)'>年</div> -->
+									<div class="button year" :class="{active:active==3}" @click='getdata(3)'>年</div> -->
 		<div id='main2' ref='echarts'>
 		</div>
 		<div class="legend">
@@ -39,6 +39,14 @@
 			fillThisWeekArr(arr) { //用于填充数组两个时间之间的空白
 				var a, b;
 				var len = arr.length;
+				var first = arr[0].date;
+				for (var i = 0; i < first; i++) {
+					arr.unshift({
+						"sleepTime": "",
+						"wakeTime": "",
+						"sleepTimeLang": ""
+					})
+				}
 				for (var i = 0; i < len - 1; i++) {
 					a = arr[i];
 					b = arr[i + 1];

@@ -1,6 +1,6 @@
 <template>
 	<div class="uploadimg">
-		<el-upload class="avatar-uploader" headers='{method:"POST"}' :action="uploadimg" name="file" :data="data" :with-credentials=true :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+		<el-upload class="avatar-uploader"  :action="uploadimg" name="file" :data="data" :with-credentials=true :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
 			<img v-if="imageUrl" :src="imageUrl" class="avatar">
 			<i v-else class="el-icon-plus avatar-uploader-icon"></i>
 		</el-upload>
@@ -50,10 +50,10 @@
 				data: {
 					member_id: '',
 					openId: '',
-					loginCode: ''
+					loginCode: 15288987083
 				},
 				router: '',
-				uploadimg:'http://123.103.113.201:8085/api/uploadPic'
+				uploadimg:'http://10.130.94.227:9020/healthcare/upload/uploadPic'
 			};
 		},
 		created() {

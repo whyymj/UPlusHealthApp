@@ -43,7 +43,7 @@
             this.totalscore = params.totalScore;
             this.$axios.post('/api/getUserTemplateAnalysis', { //获取用户睡眠量表分析数据
                 tuId: params.tuId,
-                 member_id: window._member_id,
+                 member_id: window._member_id
             }).then(function(res) {
                 if (res.data.code == 'C0000') {
                     that.testScore = res.data.data.gradesStr.split('分')[0];

@@ -585,7 +585,7 @@
                 pageSize: 10,
                 currentPage: 1
             }).then(function(res) {
-                that.sleepnewslist = res.data;
+                that.sleepnewslist = res.data.data;
                 that.loadingmodal.close();
             }).catch(function(res) {
                 if (process.env.NODE_ENV == 'development') {
