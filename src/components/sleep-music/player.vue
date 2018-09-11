@@ -5,7 +5,7 @@
         <h3>{{willPlay.name}}</h3>
         <h4>剩余{{willPlay.time}}</h4>
         <img src="/static/sleepMusicList/img2.png" alt="" class="img2" v-if='pausemusic' @click='pause'>
-        <img src="/static/sleepMusicList/img4.png" alt="" class="img2" v-else='pausemusic' @click='pause'>
+        <img src="/static/sleepMusicList/img4.png" alt="" class="img2" v-else @click='pause'>
     </div>
 </template>
 
