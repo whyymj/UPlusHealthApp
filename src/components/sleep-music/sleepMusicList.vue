@@ -136,7 +136,7 @@
                         that.todayManuInputData = false;
                         that.sleepid = '';
                     }
-                }).catch(function() {
+                }).catch(function(e) {
                     that.paramslist = [];
                     that.detailAnalysis = "";
                     that.todayManuInputData = false;
@@ -155,10 +155,9 @@
                 this.appleHealthData = '';
                 var check = val.year + '/' + (val.month > 9 ? val.month : '0' + val.month) + '/' + (val.date > 9 ? val.date : '0' + val.date);
                 this.saveSleepInfo(check);
-                
                 this.$axios.post('/api/sleep/getByDay', {
                     Date: val.year + '-' + (val.month > 9 ? val.month : '0' + val.month) + '-' + (val.date > 9 ? val.date : '0' + val.date),
-                     member_id:window._member_id
+                    member_id: window._member_id
                 }).then(function(res) {
                     if (res.data.code === 'C0000' && res.data.data) {
                         var data = res.data.data;
@@ -211,6 +210,9 @@
                     that.loadingmodal.close()
                 }).catch(function(res) { //获取用户最近一条测量记录,判断今天是否有记录信息
                     that.loadingmodal.close();
+                    for (var k in res) {
+                        console.log(k, '=>>>>', res[k]);
+                    }
                     if (process.env.NODE_ENV == 'development') {
                         that.$axios.get('/static/testData/checkSomeDay.json').then(function(res) {
                             if (res.data.code === 'C0000') {
@@ -270,7 +272,8 @@
             },
             getAppleHealthData(val, check) { //例子数据，获取苹果健康数据
                 var that = this;
-                var data = this.appleHealthData = val || [];
+                var data = val || [];
+                this.appleHealthData = val || [];
                 var today = new Date(),
                     todaydata = '';
                 if (check) { //查询某天的数据
@@ -288,7 +291,7 @@
                     that.$axios.post('/api/insertByIphone', {
                         sleepTime: that.iosshowdata.startDate.replace('T', ' ').split('+')[0],
                         wakeTime: that.iosshowdata.endDate.replace('T', ' ').split('+')[0],
-                         member_id:window._member_id
+                        member_id: window._member_id
                     }).then(function(res) {
                         if (res.data.code == 'C0000') {
                             that.sleep_id = res.data.data.sleep_id
@@ -344,7 +347,7 @@
                     }, function(value) {
                         that.getAppleHealthData(value, check);
                     })
-                    if (!that.haveAuthor) {
+                    if (!that.haveAuthor) { //这里只是用来判断是否有权限的
                         window.plugins.healthkit.querySampleType({ //判断是否有权限
                             'startDate': 0, // 开始时间
                             'endDate': endDate, // now 结束时间
@@ -370,7 +373,7 @@
                         path: '/sleepManuInput',
                         query: {}
                     });
-                } else if (!this.myToast) {//防止反复点击
+                } else if (!this.myToast) { //防止反复点击
                     this.myToast = Toast('请先删除今天的数据,再录入');
                     setTimeout(() => {
                         that.myToast.close();
@@ -395,12 +398,18 @@
             }
         },
         mounted() {
+            // 判断是否是ios系统
+            var u = navigator.userAgent,
+                app = navigator.appVersion;
+            var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //g
+            var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+            this.isios = isIOS;
+            // 判断是否已经获取过苹果健康数据权限
             if (window.localStorage.UPlusApp_getAppleHealthData && (window.localStorage.UPlusApp_getAppleHealthData == 'true' || window.localStorage.UPlusApp_getAppleHealthData == true)) {
                 this.haveAuthor = true;
             }
-            //测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++//测试用的+++++++s++++++++++++++++
-            this.getHealth(); //获取权限
-            this.loadingmodal = Loading.service({
+            this.getHealth(); //获取苹果健康数据权限
+            this.loadingmodal = Loading.service({ //遮罩
                 fullscreen: true,
                 background: 'rgba(0, 0, 0, 0.7)',
                 lock: true,
@@ -411,7 +420,7 @@
             var month = today.getMonth() + 1;
             var date = today.getDate();
             var str = today.getFullYear() + '/' + (month > 9 ? month : '0' + month) + '/' + (date > 9 ? date : '0' + date);
-            this.saveSleepInfo(str); //获取苹果健康数据 
+            this.saveSleepInfo(str); //获取今天的苹果健康数据 
             // }
             if (window.localStorage.wh_fromPage == 'music') { //是否直接进入音乐页面
                 this.activeSpan = 1;
@@ -419,11 +428,6 @@
             if (window.localStorage.UPlusApp_firstLogin_sleepMusicList === undefined || window.localStorage.UPlusApp_firstLogin_sleepMusicList === 'undefined') { //第一次登陆
                 window.localStorage.UPlusApp_firstLogin_sleepMusicList = true;
             }
-            var u = navigator.userAgent,
-                app = navigator.appVersion;
-            var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //g
-            var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-            this.isios = isIOS;
             var that = this;
             this.$axios.post('/api/getSleepPractice').then(function(res) {
                 if (res.data.code == 'C0000') {
@@ -456,8 +460,8 @@
                 }
                 that.loadingmodal.close();
             });
-            this.$axios.post('/api/sleep/getLast',{
-                member_id:window._member_id
+            this.$axios.post('/api/sleep/getLast', {
+                member_id: window._member_id
             }).then(function(res) {
                 if (res.data.code === 'C0000') {
                     var data = res.data.data;

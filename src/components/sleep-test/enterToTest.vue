@@ -42,7 +42,7 @@
                 var that = this;
                 if (!that.questionslist[title]) {
                     this.$axios.post('/api/getTemplateList', {
-                         member_id: window._member_id,
+                        member_id: window._member_id,
                         templateTerm: title
                     }).then(function(res) {
                         that.loadingmodal.close();
@@ -67,7 +67,7 @@
                     }).catch(function() {
                         that.$notify.error({
                             title: '错误',
-                            message: 'getTemplateList接口报错',
+                            message: '请求试题列表出错了',
                             showClose: false
                         });
                         that.loadingmodal.close();
@@ -90,6 +90,7 @@
                     });
                 } else {
                     this.showlist = that.questionslist[title];
+                    that.loadingmodal.close();
                 }
             }
         },
@@ -102,8 +103,8 @@
                 text: 'loading',
                 spinner: 'el-icon-loading',
             });
-            this.$axios.post('/api/getTemplateTerms',{
-                  member_id: window._member_id,
+            this.$axios.post('/api/getTemplateTerms', {
+                member_id: window._member_id,
             }).then(function(res) {
                 that.loadingmodal.close();
                 if (res.data.code == 'C0000') {
