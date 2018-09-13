@@ -18,7 +18,7 @@
           </el-badge>
           <div class="name">{{item.nick_name}}</div>
           <div class="delete-wrap" v-show="isDelete">
-            <img class="u-minus" src="../../assets/reduce.png" @click="deleteItem(item.member_id, index)" alt="">
+            <img class="u-minus" :src="item.head_pic" @click="deleteItem(item.member_id, index)" alt="">
           </div>
         </div>
         <!-- associate -->
@@ -31,7 +31,7 @@
           <div class="family-img haveNoRelation" style='border:none;' @click='clickNoRelation(item)' v-else>未关联</div>
           <div class="name">{{item.nick_name}}</div>
           <div class="delete-wrap" v-show="isDelete">
-            <img class="u-minus" src="../../assets/reduce.png" @click="deleteItem(item.member_id, index)" alt="">
+            <img class="u-minus" src="../../assets/newFile.png" @click="deleteItem(item.member_id, index)" alt="">
           </div>
         </div>
       </div>
@@ -214,7 +214,7 @@
       deleteItem(id, index) {
         MessageBox.confirm('确定删除吗?').then(action => {
           this.memberList += id + ','
-          console.log(this.memberList)
+          
           this.createdList.splice(index, 1)
         }).catch(err => {
           console.log(err)

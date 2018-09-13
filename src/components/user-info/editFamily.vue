@@ -4,7 +4,7 @@
 			<!--<div @click="showActionSheet()">-->
 			<div>
 				<mt-cell class="headerImg" title="头像" is-link :to="{ name: 'headerImg',params:{member_id:memberId,from:'/editFamily'}}">
-					<img id="img" src="#" />
+					<img id="img" :src="headPic" />
 				</mt-cell>
 			</div>
 			<div @click="showNickName()">
@@ -122,7 +122,7 @@
 				heightValue: "181cm", //身高
 				weightValue: "75kg", //体重
 				targetWeightValue: "74kg", //目标体重
-				headPic: null, //头像
+				headPic: '', //头像
 				disease: null, //慢病
 				allergy: null, //过敏
 				isDeleteShow: false,
