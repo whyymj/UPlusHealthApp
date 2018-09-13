@@ -715,4 +715,91 @@ router.get('/api/health/status', (req, res, next) => {
   })
   _req.end()
 })
+// 获取云平台上的关联用户
+router.post('/api/user/getUHomeFamilyMember', (req, res, next) => {
+  const postData = querystring.stringify({})
+  const options = {
+    host: config.host,
+    port: config.port,
+    path: `${config.path}/user/getUHomeFamilyMember`,
+    method: 'POST',
+    headers: Object.assign(config.headers, {
+      openId: req.session.token,
+      loginCode: req.session.loginCode
+    })
+  }
+
+  const _req = http.request(options, _res => {
+    console.log(`请求地址: ${options.path}`)
+    console.log(`状态码: ${_res.statusCode}`)
+    console.log(`响应头: ${JSON.stringify(_res.headers)}`)
+    _res.setEncoding('utf8')
+    let rawData = ''
+    _res.on('data', (chunk) => {
+      rawData += chunk
+    })
+    _res.on('end', () => {
+      try {
+        const result = JSON.parse(rawData)
+        if (result.openId) {
+          req.session.token = result.openId // 设置认证信息
+        } // 设置认证信息
+        console.log(`响应中数据: ${JSON.stringify(result)}`)
+        res.send(global.handle(result))
+      } catch (e) {
+        console.log(e.message)
+      }
+    })
+  })
+
+  _req.write(postData)
+  _req.on('error', (e) => {
+    console.error(`请求遇到问题: ${e.message}`)
+  })
+  _req.end()
+})
+// 授予用户可观看档案的权限,传入flag表示关闭权限
+router.post('/api/user/grantUserInfoAuthority', (req, res, next) => {
+  const postData = querystring.stringify({mobile: req.body.mobile,flag: req.body.flag})
+
+  const options = {
+    host: config.host,
+    port: config.port,
+    path: `${config.path}/user/grantUserInfoAuthority`,
+    method: 'POST',
+    headers: Object.assign(config.headers, {
+      openId: req.session.token,
+      loginCode: req.session.loginCode
+    })
+  }
+
+  const _req = http.request(options, _res => {
+    console.log(`请求地址: ${options.path}`)
+    console.log(`状态码: ${_res.statusCode}`)
+    console.log(`响应头: ${JSON.stringify(_res.headers)}`)
+    _res.setEncoding('utf8')
+    let rawData = ''
+    _res.on('data', (chunk) => {
+      rawData += chunk
+    })
+    _res.on('end', () => {
+      try {
+        const result = JSON.parse(rawData)
+        if (result.openId) {
+          req.session.token = result.openId // 设置认证信息
+        } // 设置认证信息
+        console.log(`响应中数据: ${JSON.stringify(result)}`)
+        res.send(global.handle(result))
+      } catch (e) {
+        console.log(e.message)
+      }
+    })
+  })
+
+  _req.write(postData)
+  _req.on('error', (e) => {
+    console.error(`请求遇到问题: ${e.message}`)
+  })
+  _req.end()
+})
 module.exports = router

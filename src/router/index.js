@@ -375,7 +375,7 @@ const router = new Router({
       path: '/headerImg',
       name: 'headerImg',
       meta: {
-        title: '上传图片'
+        title: '上传头像'
       },
       component: headerImg
     }, {
