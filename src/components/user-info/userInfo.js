@@ -43,9 +43,11 @@ export default {
 	mounted() {		
 		var that=this;
 		this.route=this.$route.path;
+		console.log(window.location)
 		this.getUserInfo(function(){
 			that.loadingmodal.close();
 			 var data=that.$route.query;
+			 
 			 if (window.history.replaceState) {
 				window.history.replaceState({
 					data: ''
@@ -57,7 +59,13 @@ export default {
 			}
 			if (data.name && data.name != 'allergy' && data.name != 'disease') { //慢病与过敏史直接在对应选择页面保存
 			 that.save(function(){
-				window.history.go(-2)
+			
+				if(!window.history.replaceState){
+					var origin=window.location.origin;
+					window.location.replace(origin+'/userInfo')
+				}else{
+						window.history.go(-2);
+				}
 				//  that.getUserInfo();
 			 });
 			}

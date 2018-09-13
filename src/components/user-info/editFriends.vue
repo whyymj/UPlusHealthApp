@@ -13,10 +13,10 @@
 				</mt-cell>
 			</div>
 			<!-- <div @click="showAdditionInfo()" style='background: #FFFFFF;' class='addtion'>
-															<label for="">备注</label>
-															<p>{{addition||'请填写备注'}}</p>
-															<span class='el-icon-arrow-right'></span>
-														</div> -->
+																<label for="">备注</label>
+																<p>{{addition||'请填写备注'}}</p>
+																<span class='el-icon-arrow-right'></span>
+															</div> -->
 		</div>
 		<!--上传头像-->
 		<div>
@@ -92,7 +92,12 @@
 				}
 				if (data.name && data.name != 'allergy' && data.name != 'disease') { //慢病与过敏史直
 					that.save(function() {
-						window.history.go(-2)
+						if (!window.history.replaceState) {
+							var origin = window.location.origin;
+							window.location.replace(origin + '/userInfo')
+						} else {
+							window.history.go(-2)
+						}
 						// that.getUserInfo();
 					});
 				}

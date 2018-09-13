@@ -13,10 +13,10 @@
 				</mt-cell>
 			</div>
 			<!--<div @click="openPicker(4)">
-									        <mt-cell title="性别" is-link>
-									          <span>{{sex}}</span>
-									        </mt-cell>
-									      </div>-->
+										        <mt-cell title="性别" is-link>
+										          <span>{{sex}}</span>
+										        </mt-cell>
+										      </div>-->
 			<div @click="openBirthDay('pickerBD')">
 				<mt-cell title="生日" is-link>
 					<span>{{birthday}}</span>
@@ -49,8 +49,8 @@
 			</mt-cell>
 		</div>
 		<!--<div class="div_magin">
-									      <mt-cell title="隐私设置" is-link :to="{ name: 'privacySet' }"/>
-									    </div>-->
+										      <mt-cell title="隐私设置" is-link :to="{ name: 'privacySet' }"/>
+										    </div>-->
 		<div class="deleteFamily" @click="openDeleteFamily">
 			删除家人
 		</div>
@@ -152,7 +152,12 @@
 				}
 				if (data.name && data.name != 'allergy' && data.name != 'disease') { //慢病与过敏史直接在对应选择页面保存
 					that.save(function() {
-						window.history.go(-2)
+						if (!window.history.replaceState) {
+							var origin = window.location.origin;
+							window.location.replace(origin + '/userInfo')
+						} else {
+							window.history.go(-2)
+						}
 						// that.getUserInfo();
 					});
 				}
