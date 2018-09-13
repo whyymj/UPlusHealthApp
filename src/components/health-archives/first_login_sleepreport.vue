@@ -20,6 +20,7 @@
         },
         mounted() {
             this.show = window.localStorage.UPlusApp_firstLogin_sleepReport === undefined || window.localStorage.UPlusApp_firstLogin_sleepReport === "undefined" || window.localStorage.UPlusApp_firstLogin_sleepReport === true || window.localStorage.UPlusApp_firstLogin_sleepReport === "true";
+            window.localStorage.UPlusApp_firstLogin_sleepReport = false; //在首次登录组件里改变
         }
     }
 </script>

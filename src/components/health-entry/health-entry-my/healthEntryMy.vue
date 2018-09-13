@@ -64,7 +64,7 @@
             </div>
         </div>
         <div class="bottom">
-            <input type='button' :class="{ 'bottom_text':true, 'bottom_text_bg': !isSave}" @click="save" v-bind:disabled="isSave" value="完成">
+           <div :class="{ 'bottom_text':true, 'bottom_text_bg': !isSave}" @click="save" >完成</div>
         </div>
         <!-- 生日选择 -->
         <mt-popup v-model="birthday_picker" position="bottom">

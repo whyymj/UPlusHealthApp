@@ -13,10 +13,10 @@
 				</mt-cell>
 			</div>
 			<!--<div @click="openPicker(4)">
-				        <mt-cell title="性别" is-link>
-				          <span>{{sex}}</span>
-				        </mt-cell>
-				      </div>-->
+					        <mt-cell title="性别" is-link>
+					          <span>{{sex}}</span>
+					        </mt-cell>
+					      </div>-->
 			<div @click="openBirthDay('pickerBD')">
 				<mt-cell title="生日" is-link>
 					<span>{{birthday}}</span>
@@ -36,7 +36,7 @@
 			</div>
 			<div @click="openPicker(3)">
 				<mt-cell title="目标体重" is-link>
-					<span>{{targetWeightValue}}</span>
+					<span>{{targetWeightValue||'请设置目标体重'}}</span>
 				</mt-cell>
 			</div>
 		</div>
@@ -49,8 +49,8 @@
 			</mt-cell>
 		</div>
 		<!--<div class="div_magin">
-				      <mt-cell title="隐私设置" is-link :to="{ name: 'privacySet' }"/>
-				    </div>-->
+					      <mt-cell title="隐私设置" is-link :to="{ name: 'privacySet' }"/>
+					    </div>-->
 		<div class="deleteFamily" @click="openDeleteFamily">
 			删除家人
 		</div>
@@ -143,7 +143,7 @@
 				that.loadingmodal.close();
 				var data = that.$route.query;
 				that[data.name] = data.value;
-				if (data.name != 'allergy' && data.name != 'disease') {//慢病与过敏史直接在对应选择页面保存
+				if (data.name != 'allergy' && data.name != 'disease') { //慢病与过敏史直接在对应选择页面保存
 					that.save(function() {
 						that.getUserInfo();
 					});
@@ -373,7 +373,7 @@
 						this.birthday = data.birthday.replace('-', '年').replace('-', '月') + '日'; //生日
 						this.heightValue = data.height + '厘米'; //身高
 						this.weightValue = data.weight + "公斤"; //体重
-						this.targetWeightValue = data.target_weight + "公斤"; //目标体重
+						this.targetWeightValue =( data.target_weight == null )? '' : (data.target_weight + "公斤"); //目标体重
 						this.headPic = data.head_pic
 						this.disease = data.disease //慢病
 						this.allergy = data.allergy //过敏

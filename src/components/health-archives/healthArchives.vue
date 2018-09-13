@@ -557,8 +557,7 @@
 						}
 					}).catch(function(res) {})
 				} catch (err) {
-					if (process.env.NODE_ENV == 'development') {
-					}
+					if (process.env.NODE_ENV == 'development') {}
 				}
 			},
 			async initList() { //获取成员的健康指标列表
@@ -674,7 +673,7 @@
 		},
 		mounted() {
 			window.localStorage.uplus_sleep_user_info_cache = ''; //个人信息存储清空
-			if (window.localStorage.UPlusAPP_agree_privacyPlan && (window.localStorage.UPlusAPP_agree_privacyPlan == 'true' || window.localStorage.UPlusAPP_agree_privacyPlan == true)) {
+			if (window.localStorage.UPlusAPP_agree_privacyPlan && (window.localStorage.UPlusAPP_agree_privacyPlan == 'true' || window.localStorage.UPlusAPP_agree_privacyPlan == true)) {//存储获取苹果健康数据的权限
 				this.show = false;
 			} else {
 				this.show = true;
@@ -694,65 +693,15 @@
 				})
 			}
 			//如果是首次登录  则调用免登陆接口 否则调用/api/user/info根据id查询用户信息
-			if (window.localStorage.UPlusApp_firstLogin_sleepReport == undefined || window.localStorage.UPlusApp_firstLogin_sleepReport == "undefined") { //判断是否首次登陆
-				window.localStorage.UPlusApp_firstLogin_sleepReport = true; //在首次登录组件里改变
-				(async() => {
-					let obj = {
-						code: this.$route.query.code || window.location.href.substring(window.location.href.indexOf('=') + 1, window.location.href.indexOf('&')),
-						url: config.url
-					}
-					if (obj.code !== '') {
-						try {
-							const result = await this.$axios.post('/api/info', obj)
-							if (result.data.code == 'C0000') {
-								window.localStorage.uplus_sleep_user_id = result.data.data.login_code; //暂存个人id
-								window.localStorage.uplus_sleep_user_disease = result.data.data.disease; //暂存个人慢病
-								window.localStorage.uplus_sleep_user_allergy = result.data.data.allergy; //暂存个人过敏
-							}
-							if (result.data.data && result.data.data.need_guide == 'Y') {
-								this.$router.push({
-									path: '/newAddReport'
-								})
-							}
-							if (result.data.data.user_flag === 'Y') { // new user
-								this.$router.replace({
-									path: '/introduction'
-								}) // 介绍页面
-							} else {
-								this.memberID = window._member_id
-								if (window._member_id === '') {
-									this.getUserInfo() //获取用户信息，判断性别，获取健康数据
-								} else {
-									this.getMemberInfo() //获取家庭成员信息，判断性别，获取健康数据
-								}
-								this.getFamilyList() //请求全部家庭成员列表
-							}
-							that.loadingmodal.close();
-						} catch (err) {
-							that.loadingmodal.close();
-							if (process.env.NODE_ENV == 'development') {
-								this.$axios.get('/static/testData/checkOthersLogin.json').then(function(result) {
-									window.localStorage.uplus_sleep_user_id = result.data.data.login_code; //暂存个人id
-									window.localStorage.uplus_sleep_user_disease = result.data.data.disease; //暂存个人慢病
-									window.localStorage.uplus_sleep_user_allergy = result.data.data.allergy; //暂存个人过敏
-								})
-							}
-						}
-					} else {
-						that.loadingmodal.close();
-						this.memberID = window._member_id
-						if (window._member_id === '') {
-							this.getUserInfo()
-						} else {
-							this.getMemberInfo()
-						}
-						this.getFamilyList()
-					}
-				})()
-			} else {
-				(async() => {
+			(async() => {
+				let obj = {
+					code: this.$route.query.code || window.location.href.substring(window.location.href.indexOf('=') + 1, window.location.href.indexOf('&')),
+					url: config.url
+				}
+				if (obj.code !== '') {
 					try {
-						const result = await this.$axios.post('/api/user/info', '')
+					
+						const result = await this.$axios.post('/api/info', obj)
 						if (result.data.code == 'C0000') {
 							window.localStorage.uplus_sleep_user_id = result.data.data.login_code; //暂存个人id
 							window.localStorage.uplus_sleep_user_disease = result.data.data.disease; //暂存个人慢病
@@ -779,20 +728,18 @@
 						that.loadingmodal.close();
 					} catch (err) {
 						that.loadingmodal.close();
-						if (process.env.NODE_ENV == 'development') {
-							this.$axios.get('/static/testData/checkOthersLogin.json').then(function(result) {
-								window.localStorage.uplus_sleep_user_id = result.data.data.login_code; //暂存个人id
-								window.localStorage.uplus_sleep_user_disease = result.data.data.disease; //暂存个人慢病
-								window.localStorage.uplus_sleep_user_allergy = result.data.data.allergy; //暂存个人过敏
-							})
-						}
 					}
-				})()
-			} // this.$nextTick(function() {
-			//     let winH = document.documentElement.clientHeight || document.body.clientHeight;
-			//     let pageTag = document.querySelector('.health-records')
-			//     pageTag.style.minHeight = winH + 'px'
-			// })
+				} else {
+					that.loadingmodal.close();
+					this.memberID = window._member_id
+					if (window._member_id === '') {
+						this.getUserInfo()
+					} else {
+						this.getMemberInfo()
+					}
+					this.getFamilyList()
+				}
+			})()
 		},
 	}
 </script>
