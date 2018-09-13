@@ -1,14 +1,17 @@
 import axios from 'axios'
 import myDatePicker from '../pressure/myDatePicker.vue';
 import mycollapse2 from '../sleep-music/mycollapse2.vue';
+import {Loading} from 'element-ui';
 export default {
-  name: 'sugar',
+  name : 'sugar',
   components : {
     myDatePicker,
-    mycollapse2
+    mycollapse2,
+    Loading
   },
-  data () {
+  data() {
     return {
+      loadingmodal: '',
       ChooseTypePopupVisible: false,
       bluetoothVisible: false,
       popupSuccess: false,
@@ -18,7 +21,9 @@ export default {
       newsResult: [],
       calendarOpen: false,
       sugarRecordData: [],
-      recordOptions: ['最近七次', '周', '月', '年'],
+      recordOptions: [
+        '最近七次', '周', '月', '年'
+      ],
       selectedRecordOption: '最近七次',
       selectedRecordArgs: 'seven',
       sugarChartsOption: this.getLastSevenChart([], []),
@@ -46,12 +51,19 @@ export default {
       disablePast: false,
       disableFuture: true,
       disableWeekend: false,
-      disableDateFunction (date) {
+      disableDateFunction(date) {
         return false
       }
     }
   },
-  mounted () {
+  mounted() {
+    var that = this;
+    this.loadingmodal = Loading.service({fullscreen: true, background: 'rgba(0, 0, 0, 0.7)', lock: true, text: 'Loading', spinner: 'el-icon-loading'});
+    setTimeout(function () {
+      that
+        .loadingmodal
+        .close();
+    }, 10000)
     this.initList()
     this.$nextTick(function () {
       this.chartOption('seven')
@@ -62,7 +74,7 @@ export default {
       }
     })
   },
-  methods: {
+  methods : {
     checkDateData(date) {
       var str = date.year + '-' + (date.month > 9
         ? date.month
@@ -71,22 +83,24 @@ export default {
         : ('0' + date.date));
       this.onChange(str);
     },
-    goManualEntry (type) {
-      this.$router.push({path: `/manualEntry/${type}`})
+    goManualEntry(type) {
+      this
+        .$router
+        .push({path: `/manualEntry/${type}`})
     },
-    addNewDevice () {
-      this.$router.push({
-        path: '/deviceType'
-      })
+    addNewDevice() {
+      this
+        .$router
+        .push({path: '/deviceType'})
     },
-    addRecentlyDevice () {
+    addRecentlyDevice() {
       this.bluetoothVisible = true
     },
-    openBluetooth () {
+    openBluetooth() {
       this.bluetoothVisible = false
       this.popupVisible = true
     },
-    toggleOpenCalendar () {
+    toggleOpenCalendar() {
       this.calendarOpen = !this.calendarOpen
       if (document.getElementsByClassName('calendar-header')[0].style.display === 'none') {
         document.getElementsByClassName('calendar-header')[0].style.display = 'block'
@@ -97,18 +111,20 @@ export default {
         this.onlyShowCurrentOrToday(this.calendarOpen)
       }, 0)
     },
-    onChange (val) {
+    onChange(val) {
       console.log('on-change', val)
       window._suger_selected_date = val
       this.sugarDate = val
       this.initList()
 
     },
-    onViewChange (val, count) {
+    onViewChange(val, count) {
       console.log('on view change', val, count)
       this.firstDate = val.firstDate
       this.lastDate = val.lastDate
-      this.month = val.month < 10 ? '0' + val.month : val.month
+      this.month = val.month < 10
+        ? '0' + val.month
+        : val.month
       this.year = val.year
       setTimeout(() => {
         this.initDateList()
@@ -116,11 +132,15 @@ export default {
         this.setTomorrowColor()
       }, 150)
     },
-    setTomorrowColor () {
+    setTomorrowColor() {
       let dayNum = new Date().getDate()
-      let dayStr = dayNum < 10 ? '0' + dayNum : '' + dayNum
+      let dayStr = dayNum < 10
+        ? '0' + dayNum
+        : '' + dayNum
       let monthNum = new Date().getMonth() + 1
-      let monthStr = monthNum < 10 ? '0' + monthNum : '' + monthNum
+      let monthStr = monthNum < 10
+        ? '0' + monthNum
+        : '' + monthNum
       let yearStr = new Date().getFullYear()
       let todayV = yearStr + '' + monthStr + '' + dayStr
       let nodes = document.getElementsByTagName('td')
@@ -133,7 +153,7 @@ export default {
         }
       }
     },
-    onlyShowCurrentOrToday (isShow) {
+    onlyShowCurrentOrToday(isShow) {
       if (isShow) {
         for (let tr of document.querySelectorAll('.inline-calendar.inline-calendar-demo tbody tr')) {
           tr.style.display = ''
@@ -164,21 +184,21 @@ export default {
         }
       }
     },
-    switchTab (option) {
+    switchTab(option) {
       // 切换图表标签页
       this.selectedRecordOption = option
       switch (option) {
         case '最近七次':
-          this.selectedRecordArgs = 'seven'
+          this.selectedRecordArgs = 'seven';
           break
         case '周':
-          this.selectedRecordArgs = 'week'
+          this.selectedRecordArgs = 'week';
           break
         case '月':
-          this.selectedRecordArgs = 'month'
+          this.selectedRecordArgs = 'month';
           break
         case '年':
-          this.selectedRecordArgs = 'year'
+          this.selectedRecordArgs = 'year';
           break
         default:
           break
@@ -190,7 +210,7 @@ export default {
         })
       })
     },
-    async initNews () {
+    async initNews() {
       try {
         const result = await axios.get(`/api/news?id=4&level=${this.sugarLevel}`)
         console.log(result)
@@ -199,7 +219,7 @@ export default {
         console.log('err: ', err)
       }
     },
-    async initList () {
+    async initList() {
       try {
         const result = await axios.get(`/api/sugar/three?member_id=${window._member_id}&date=${this.sugarDate}&limit=N`)
         if (result.data.code === 'C0000') {
@@ -211,7 +231,10 @@ export default {
           } else {
             this.$refs.noData.style.display = 'none'
             if (result.data.data.length > 3) {
-              result.data.data.splice(3)
+              result
+                .data
+                .data
+                .splice(3)
               this.$refs.allData.style.display = 'block'
               this.sugarRecordData = result.data.data
             } else {
@@ -225,8 +248,11 @@ export default {
       } catch (err) {
         console.log('Whoops: ', err)
       }
+      this
+        .loadingmodal
+        .close();
     },
-    async initDateList () {
+    async initDateList() {
       try {
         const result = await axios.get(`/api/health/list?member_id=${window._member_id}&flag=4&begin=${this.firstDate}&end=${this.lastDate}`)
         if (result.data.code === 'C0000') {
@@ -238,13 +264,17 @@ export default {
           let calendarData = document.getElementsByClassName('calendar-data')
           let calendarDataLen = calendarData.length
           for (let i = 0; i < calendarDataLen; i++) {
-            calendarData[0].parentNode.removeChild(calendarData[0])
+            calendarData[0]
+              .parentNode
+              .removeChild(calendarData[0])
           }
 
           for (let j = 0; j < _result.length; j++) {
             for (let i = 0; i < nodesLen; i++) {
               let span = document.createElement('span')
-              span.classList.add('calendar-data')
+              span
+                .classList
+                .add('calendar-data')
               if (nodes[i].getAttribute('data-date') === _result[j]) {
                 nodes[i].appendChild(span)
                 break
@@ -256,16 +286,29 @@ export default {
         console.log('err: ', err)
       }
     },
-    async chartOption (args, callback) {
+    async chartOption(args, callback) {
       try {
         const result = await axios.get(`/api/sugar/${args}?member_id=${window._member_id}`)
         if (result.data.code === 'C0000') {
-          let s = args === 'seven' ? result.data.data.map((_, i) => {
-            return [i, +_[1], _[2]]
-          }) : result.data.data
-          let d = args === 'seven' ? result.data.data.map((_, i) => {
-            return _[0].split(' ')[0]
-          }) : result.data.data
+          let s = args === 'seven'
+            ? result
+              .data
+              .data
+              .map((_, i) => {
+                return [
+                  i, + _[1],
+                  _[2]
+                ]
+              })
+            : result.data.data
+          let d = args === 'seven'
+            ? result
+              .data
+              .data
+              .map((_, i) => {
+                return _[0].split(' ')[0]
+              })
+            : result.data.data
           if (d.length === 0 && s.length === 0) {
             // TODO: no record
             if (args === 'seven') {
@@ -273,22 +316,37 @@ export default {
               this.$refs.sugar.$el.style.display = 'none'
             } else {
               if (this.$refs.noSugar.style.display === 'none') {
-                this.sugarChartsOption = args === 'seven' ? this.getLastSevenChart([], []) : this.getChartsOption([])
+                this.sugarChartsOption = args === 'seven'
+                  ? this.getLastSevenChart([], [])
+                  : this.getChartsOption([])
               }
             }
           } else {
             this.$nextTick(() => {
               this.$refs.noSugar.style.display = 'none'
               this.$refs.sugar.$el.style.display = 'block'
-              this.sugarChartsOption = args === 'seven' ? this.getLastSevenChart(d, s) : this.getChartsOption(d)
+              this.sugarChartsOption = args === 'seven'
+                ? this.getLastSevenChart(d, s)
+                : this.getChartsOption(d)
             })
           }
           if (this.$refs.sugar.$children.length !== 0) {
-            this.$refs.sugar.$children[0].chart._api.getZr().on('mouseup', () => {
-              this.$refs.sugar.$children[0].chart._api.dispatchAction({
-                type: 'hideTip'
+            this
+              .$refs
+              .sugar
+              .$children[0]
+              .chart
+              ._api
+              .getZr()
+              .on('mouseup', () => {
+                this
+                  .$refs
+                  .sugar
+                  .$children[0]
+                  .chart
+                  ._api
+                  .dispatchAction({type: 'hideTip'})
               })
-            })
           }
         }
       } catch (err) {
@@ -297,12 +355,10 @@ export default {
 
       callback && callback()
     },
-    async deleteRecord (index, item) {
+    async deleteRecord(index, item) {
       console.log(item)
       try {
-        const result = await axios.post('/api/sugar/delete', {
-          bloodsugar_id: item.bloodSugar.bloodSugar_id
-        })
+        const result = await axios.post('/api/sugar/delete', {bloodsugar_id: item.bloodSugar.bloodSugar_id})
         if (result.data.code === 'C0000') {
           this.chartOption(this.selectedRecordArgs)
           this.initDateList()
@@ -315,7 +371,7 @@ export default {
         console.log('Whoops: ', err)
       }
     },
-    getLastSevenChart (x, data) {
+    getLastSevenChart(x, data) {
       let option = {
         grid: {
           left: '0',
@@ -387,9 +443,10 @@ export default {
               type: 'solid'
             }
           },
-          boundaryGap: [0, '50%'],
-          // min: 0,
-          // max: 15,
+          boundaryGap: [
+            0, '50%'
+          ],
+          // min: 0, max: 15,
           minInterval: 5,
           maxIntervaL: 5,
           axisLine: {
@@ -399,31 +456,33 @@ export default {
             length: 8
           }
         },
-        series: [{
-          name: '血糖',
-          type: 'scatter',
-          itemStyle: {
-            normal: {
-              color: '#26A5FD'
-            }
-          },
-          label: {
-            emphasis: {
-              show: false,
-              position: 'left',
-              textStyle: {
-                color: 'blue',
-                fontSize: 16
+        series: [
+          {
+            name: '血糖',
+            type: 'scatter',
+            itemStyle: {
+              normal: {
+                color: '#26A5FD'
               }
-            }
-          },
-          data: data
-        }]
+            },
+            label: {
+              emphasis: {
+                show: false,
+                position: 'left',
+                textStyle: {
+                  color: 'blue',
+                  fontSize: 16
+                }
+              }
+            },
+            data: data
+          }
+        ]
       }
 
       return option
     },
-    getChartsOption (data) {
+    getChartsOption(data) {
       let option = {
         grid: {
           left: '0',
@@ -451,7 +510,9 @@ export default {
               }
               let res = foo[0].date + '<br/>'
               for (let i = 0, length = params.length; i < length; i++) {
-                params[i].value = params[i].value === '' ? '--' : params[i].value + 'mmol/L'
+                params[i].value = params[i].value === ''
+                  ? '--'
+                  : params[i].value + 'mmol/L'
                 res += params[i].seriesName + ': ' + params[i].value + '<br/>'
               }
               return res
@@ -515,7 +576,9 @@ export default {
               color: '#26A5FD'
             }
           },
-          data: data.map(_ => { return _.time })
+          data: data.map(_ => {
+            return _.time
+          })
         },
         yAxis: {
           type: 'value',
@@ -539,8 +602,12 @@ export default {
             let minNum = data.map(_ => {
               return _.min
             })
-            let minLine = Math.min.apply(null, minNum) - 2
-            return Math.round(minLine) > 0 ? Math.round(minLine) : 0
+            let minLine = Math
+              .min
+              .apply(null, minNum) - 2
+            return Math.round(minLine) > 0
+              ? Math.round(minLine)
+              : 0
           }
         },
         series: [
@@ -565,19 +632,20 @@ export default {
                 position: 'bottom',
                 color: '#26A5FD',
                 formatter: (params) => {
-                  return '最低' + '\n' + params.value
+                  return '最低\n' + params.value
                 }
               },
-              data: [{
-                type: 'min',
-                name: '最低'
-              }]
+              data: [
+                {
+                  type: 'min',
+                  name: '最低'
+                }
+              ]
             },
             data: data.map(d => {
               return d.min
             })
-          },
-          {
+          }, {
             name: '最高',
             type: 'scatter',
             symbolSize: 6, // 空心标记的大小
@@ -598,25 +666,28 @@ export default {
                 position: 'top',
                 color: '#26A5FD',
                 formatter: (params) => {
-                  return '最高' + '\n' + params.value
+                  return '最高\n' + params.value
                 }
               },
-              data: [{
-                type: 'max',
-                name: '最高'
-              }]
+              data: [
+                {
+                  type: 'max',
+                  name: '最高'
+                }
+              ]
             },
             data: data.map(d => {
               return d.max
             })
-          },
-          {
+          }, {
             name: '起始点',
             stack: true,
             type: 'bar',
             barGap: '0',
             barWidth: 6,
-            data: data.map(d => { return d.min }),
+            data: data.map(d => {
+              return d.min
+            }),
             itemStyle: {
               normal: {
                 color: 'transparent'
@@ -625,8 +696,7 @@ export default {
             tooltip: {
               show: false
             }
-          },
-          {
+          }, {
             name: '范围',
             stack: true,
             type: 'bar',
@@ -653,24 +723,30 @@ export default {
 
       return option
     },
-    openHealthTips (index) {
-      this.sugarIndex = this.sugarIndex === index ? -index : index
+    openHealthTips(index) {
+      this.sugarIndex = this.sugarIndex === index
+        ? -index
+        : index
     },
-    openDetail (item) {
+    openDetail(item) {
       window.open(`http://lifehaier.com/News/Advisory/detail/id/${item.news_id}.html`)
     },
-    fnGetAllData () {
+    fnGetAllData() {
       if (this.sugarDate === '') {
         let _date = new Date()
-        let day = _date.getDate() < 10 ? '0' + _date.getDate() : _date.getDate()
+        let day = _date.getDate() < 10
+          ? '0' + _date.getDate()
+          : _date.getDate()
         this.sugarDate = this.year + '-' + this.month + '-' + day
       }
-      this.$router.push({ path: `/bloodSugar/history/${this.sugarDate}` })
+      this
+        .$router
+        .push({path: `/bloodSugar/history/${this.sugarDate}`})
     },
-    setOpacity (ele, opacity) {
+    setOpacity(ele, opacity) {
       ele.style.opacity = opacity
     },
-    fadeout (ele, time, callback) {
+    fadeout(ele, time, callback) {
       window.fadeTimer = window.fadeTimer || 0
       clearInterval(window.fadeTimer)
       if (ele) {
@@ -691,7 +767,7 @@ export default {
         }, 50)
       }
     },
-    fadein (ele, time, callback) {
+    fadein(ele, time, callback) {
       window.fadeTimer = window.fadeTimer || 0
       clearInterval(window.fadeTimer)
       if (ele) {

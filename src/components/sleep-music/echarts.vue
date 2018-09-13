@@ -3,7 +3,7 @@
         <div class="button nearest" :class="{active:active==0}" @click='getdata(0)'>最近七次</div>
         <div class="button week" :class="{active:active==1}" @click='getdata(1)'>周</div>
         <!-- <div class="button month" :class="{active:active==2}" @click='getdata(2)'>月</div>
-                                                    <div class="button year" :class="{active:active==3}" @click='getdata(3)'>年</div> -->
+                                                                    <div class="button year" :class="{active:active==3}" @click='getdata(3)'>年</div> -->
         <div id='main' ref='echarts'>
         </div>
         <div class="legend">
@@ -563,6 +563,7 @@
                                 endH,
                                 endM;
                             var time = tar.name;
+                            console.log(tar,'?????????????????????????')
                             startH = Math.floor(params[0].data);
                             startM = Math.round((params[0].data - startH) * 60);
                             endH = Math.floor(params[3].data) - 24;
@@ -574,8 +575,10 @@
                             } else if (window.sleep_charts_active == 3) {
                                 time = params[0].axisValueLabel;
                             }
+                            startH = startH > 24 ? startH - 24 : startH;
                             startH = startH > 9 ? startH : '0' + startH;
                             startM = startM > 9 ? startM : '0' + startM;
+                            endH = endH > 24 ? endH - 24 : endH;
                             endH = endH > 9 ? endH : '0' + endH;
                             endM = endM > 9 ? endM : '0' + endM;
                             return time + '<br/>' + tar.seriesName + ' : ' + tar.value + '小时' + '<span style="width:8px;height:8px;border-radius:50%;background:#2283E2;display:inline-block;margin:0 3px 0 10px;border:1px solid #fff;"></span>' + startH + ':' + startM + '<span style="width:8px;height:8px;border-radius:50%;background:#F5B616;display:inline-block;margin:0 3px 0 10px;border:1px solid #fff;"></span>' + endH + ":" + endM;
@@ -722,6 +725,9 @@
             window.sleep_charts_active = 0;
             this.nearestSeven();
             this.myChart.showLoading();
+            setTimeout(function() {
+                that.myChart.hideLoading();
+            }, 4000)
         }
     }
 </script>

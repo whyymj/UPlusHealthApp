@@ -1,14 +1,17 @@
 import axios from 'axios'
 import myDatePicker from '../pressure/myDatePicker.vue';
 import mycollapse2 from '../sleep-music/mycollapse2.vue';
+import {Loading} from 'element-ui';
 export default {
-  name: 'weight',
+  name : 'weight',
   components : {
     myDatePicker,
-    mycollapse2
+    mycollapse2,
+    Loading
   },
-  data () {
+  data() {
     return {
+      loadingmodal: '',
       ChooseTypePopupVisible: false,
       weightRecordData: [],
       weightLevel: '',
@@ -18,7 +21,9 @@ export default {
       popupSuccess: false,
       popupVisible: false,
       bluetoothFail: false,
-      recordOptions: ['BMI', '体重'],
+      recordOptions: [
+        'BMI', '体重'
+      ],
       selectedRecordOption: '体重',
       weightChartsOption: this.getChartsOption([], [], ''),
       weightDate: '',
@@ -42,12 +47,19 @@ export default {
       disablePast: false,
       disableFuture: true,
       disableWeekend: false,
-      disableDateFunction (date) {
+      disableDateFunction(date) {
         return false
       }
     }
   },
-  mounted () {
+  mounted() {
+    var that = this;
+    this.loadingmodal = Loading.service({fullscreen: true, background: 'rgba(0, 0, 0, 0.7)', lock: true, text: 'Loading', spinner: 'el-icon-loading'});
+    setTimeout(function () {
+      that
+        .loadingmodal
+        .close();
+    }, 10000)
     this.initList()
     this.$nextTick(function () {
       this.chartOption()
@@ -58,7 +70,7 @@ export default {
       }
     })
   },
-  methods: {
+  methods : {
     checkDateData(date) {
       var str = date.year + '-' + (date.month > 9
         ? date.month
@@ -67,20 +79,24 @@ export default {
         : ('0' + date.date));
       this.onChange(str);
     },
-    goManualEntry (type) {
-      this.$router.push({path: `/manualEntry/${type}`})
+    goManualEntry(type) {
+      this
+        .$router
+        .push({path: `/manualEntry/${type}`})
     },
-    addNewDevice () {
-      this.$router.push({path: '/deviceType'})
+    addNewDevice() {
+      this
+        .$router
+        .push({path: '/deviceType'})
     },
-    addRecentlyDevice () {
+    addRecentlyDevice() {
       this.bluetoothVisible = true
     },
-    openBluetooth () {
+    openBluetooth() {
       this.bluetoothVisible = false
       this.popupVisible = true
     },
-    toggleOpenCalendar () {
+    toggleOpenCalendar() {
       this.calendarOpen = !this.calendarOpen
       if (document.getElementsByClassName('calendar-header')[0].style.display === 'none') {
         document.getElementsByClassName('calendar-header')[0].style.display = 'block'
@@ -91,7 +107,7 @@ export default {
         this.onlyShowCurrentOrToday(this.calendarOpen)
       }, 0)
     },
-    async initNews () {
+    async initNews() {
       try {
         const result = await axios.get(`/api/news?id=1&level=${this.weightLevel}`)
         console.log('result: ', result)
@@ -100,7 +116,7 @@ export default {
         console.log('err: ', err)
       }
     },
-    async initList () {
+    async initList() {
       try {
         const result = await axios.get(`/api/weight/three?member_id=${window._member_id}&date=${this.weightDate}&limit=N`)
         if (result.data.code === 'C0000') {
@@ -111,7 +127,10 @@ export default {
           } else {
             this.$refs.noData.style.display = 'none'
             if (result.data.data.length > 3) {
-              result.data.data.splice(3)
+              result
+                .data
+                .data
+                .splice(3)
               this.$refs.allData.style.display = 'block'
               this.weightRecordData = result.data.data
             } else {
@@ -125,8 +144,11 @@ export default {
       } catch (err) {
         console.log('Whoops: ', err)
       }
+      this
+        .loadingmodal
+        .close();
     },
-    async initDateList () {
+    async initDateList() {
       try {
         const result = await axios.get(`/api/health/list?member_id=${window._member_id}&flag=1&begin=${this.firstDate}&end=${this.lastDate}`)
         if (result.data.code === 'C0000') {
@@ -138,12 +160,16 @@ export default {
           let calendarData = document.getElementsByClassName('calendar-data')
           let calendarDataLen = calendarData.length
           for (let i = 0; i < calendarDataLen; i++) {
-            calendarData[0].parentNode.removeChild(calendarData[0])
+            calendarData[0]
+              .parentNode
+              .removeChild(calendarData[0])
           }
           for (let j = 0; j < _result.length; j++) {
             for (let i = 0; i < nodesLen; i++) {
               let span = document.createElement('span')
-              span.classList.add('calendar-data')
+              span
+                .classList
+                .add('calendar-data')
               if (nodes[i].getAttribute('data-date') === _result[j]) {
                 nodes[i].appendChild(span)
                 break
@@ -155,7 +181,7 @@ export default {
         console.log('err: ', err)
       }
     },
-    async chartOption (callback) {
+    async chartOption(callback) {
       // 渲染图表
       try {
         const result = await axios.get(`/api/weight/type?member_id=${window._member_id}&date=${this.weightDate}`)
@@ -167,94 +193,139 @@ export default {
           } else {
             this.$refs.noWeight.style.display = 'none'
             this.$refs.weight.$el.style.display = 'block'
-            let d = result.data.data.map(_ => {
-              return _.create_date
-            })
+            let d = result
+              .data
+              .data
+              .map(_ => {
+                return _.create_date
+              })
             let type
             switch (this.selectedRecordOption) {
               case '水分':
-                type = result.data.data.map(_ => {
-                  return _.water_percent
-                })
-                break
+                type = result
+                  .data
+                  .data
+                  .map(_ => {
+                    return _.water_percent
+                  });
+                break;
               case '肌肉率':
-                type = result.data.data.map(_ => {
-                  return _.muscle_percent
-                })
-                break
+                type = result
+                  .data
+                  .data
+                  .map(_ => {
+                    return _.muscle_percent
+                  });break;
               case '体重':
-                type = result.data.data.map(_ => {
-                  return _.weight
-                })
-                break
+                type = result
+                  .data
+                  .data
+                  .map(_ => {
+                    return _.weight
+                  });break;
               case '体脂率':
-                type = result.data.data.map(_ => {
-                  return _.axunge_percent
-                })
-                break
+                type = result
+                  .data
+                  .data
+                  .map(_ => {
+                    return _.axunge_percent
+                  });break;
               case 'BMI':
-                type = result.data.data.map(_ => {
-                  return _.bmi
-                })
-                break
+                type = result
+                  .data
+                  .data
+                  .map(_ => {
+                    return _.bmi
+                  });break;
               case '基础代谢':
-                type = result.data.data.map(_ => {
-                  return _.basal_metabolic
-                })
-                break
+                type = result
+                  .data
+                  .data
+                  .map(_ => {
+                    return _.basal_metabolic
+                  });break;
               case '水含量':
-                type = result.data.data.map(_ => {
-                  return _.water
-                })
-                break
+                type = result
+                  .data
+                  .data
+                  .map(_ => {
+                    return _.water
+                  });break;
               case '骨量':
-                type = result.data.data.map(_ => {
-                  return _.bone
-                })
-                break
+                type = result
+                  .data
+                  .data
+                  .map(_ => {
+                    return _.bone
+                  });break;
               case '身体年龄':
-                type = result.data.data.map(_ => {
-                  return _.body_age
-                })
-                break
+                type = result
+                  .data
+                  .data
+                  .map(_ => {
+                    return _.body_age
+                  });break;
               case '内脏脂肪等级':
-                type = result.data.data.map(_ => {
-                  return _.viscera
-                })
-                break
+                type = result
+                  .data
+                  .data
+                  .map(_ => {
+                    return _.viscera
+                  });break;
               case '脂肪重量':
-                type = result.data.data.map(_ => {
-                  return _.axunge
-                })
-                break
+                type = result
+                  .data
+                  .data
+                  .map(_ => {
+                    return _.axunge
+                  });break;
               case '肌肉重量':
-                type = result.data.data.map(_ => {
-                  return _.muscle
-                })
-                break
+                type = result
+                  .data
+                  .data
+                  .map(_ => {
+                    return _.muscle
+                  });break;
               case '肥胖度':
-                type = result.data.data.map(_ => {
-                  return _.obesity
-                })
-                break
+                type = result
+                  .data
+                  .data
+                  .map(_ => {
+                    return _.obesity
+                  });break;
               case '去脂体重':
-                type = result.data.data.map(_ => {
-                  return _.fat_free_weight
-                })
-                break
+                type = result
+                  .data
+                  .data
+                  .map(_ => {
+                    return _.fat_free_weight
+                  });break;
               case '蛋白质':
-                type = result.data.data.map(_ => {
-                  return _.protein
-                })
-                break
+                type = result
+                  .data
+                  .data
+                  .map(_ => {
+                    return _.protein
+                  });break;
             }
             this.weightChartsOption = this.getChartsOption(d, type, this.selectedRecordOption)
             if (this.$refs.weight.$children.length !== 0) {
-              this.$refs.weight.$children[0].chart._api.getZr().on('mouseup', () => {
-                this.$refs.weight.$children[0].chart._api.dispatchAction({
-                  type: 'hideTip'
+              this
+                .$refs
+                .weight
+                .$children[0]
+                .chart
+                ._api
+                .getZr()
+                .on('mouseup', () => {
+                  this
+                    .$refs
+                    .weight
+                    .$children[0]
+                    .chart
+                    ._api
+                    .dispatchAction({type: 'hideTip'})
                 })
-              })
             }
           }
         }
@@ -263,7 +334,7 @@ export default {
       }
       callback && callback()
     },
-    changeOption (params) {
+    changeOption(params) {
       console.log(params)
       this.selectedRecordOption = params
       this.fadeout(this.$refs.weight.$el, 150, () => {
@@ -272,7 +343,7 @@ export default {
         })
       })
     },
-    async deleteRecord (index, item) {
+    async deleteRecord(index, item) {
       // 删除健康档案记录
       try {
         const result = await axios.post('/api/weight/delete', {weight_id: item.weight.weight_id})
@@ -286,15 +357,24 @@ export default {
         console.log('Whoops: ', err)
       }
     },
-    onChange (val) {
+    onChange(val) {
       console.log('on-change', val)
       window._weight_selected_date = val
       this.weightDate = val
       this.initList()
       this.chartOption()
-      document.getElementById('calendarTop').classList.remove('open')
-      document.getElementById('calendarBg').classList.remove('open')
-      document.getElementById('calendarBelow').classList.remove('open')
+      document
+        .getElementById('calendarTop')
+        .classList
+        .remove('open')
+      document
+        .getElementById('calendarBg')
+        .classList
+        .remove('open')
+      document
+        .getElementById('calendarBelow')
+        .classList
+        .remove('open')
       this.calendarOpen = !this.calendarOpen
       if (document.getElementsByClassName('calendar-header')[0].style.display === 'none') {
         document.getElementsByClassName('calendar-header')[0].style.display = 'block'
@@ -305,11 +385,13 @@ export default {
         this.onlyShowCurrentOrToday(this.calendarOpen)
       }, 0)
     },
-    onViewChange (val, count) {
+    onViewChange(val, count) {
       console.log('on view change', val, count)
       this.firstDate = val.firstDate
       this.lastDate = val.lastDate
-      this.month = val.month < 10 ? '0' + val.month : val.month
+      this.month = val.month < 10
+        ? '0' + val.month
+        : val.month
       this.year = val.year
       setTimeout(() => {
         this.initDateList()
@@ -317,11 +399,15 @@ export default {
         this.setTomorrowColor()
       }, 150)
     },
-    setTomorrowColor () {
+    setTomorrowColor() {
       let dayNum = new Date().getDate()
-      let dayStr = dayNum < 10 ? '0' + dayNum : '' + dayNum
+      let dayStr = dayNum < 10
+        ? '0' + dayNum
+        : '' + dayNum
       let monthNum = new Date().getMonth() + 1
-      let monthStr = monthNum < 10 ? '0' + monthNum : '' + monthNum
+      let monthStr = monthNum < 10
+        ? '0' + monthNum
+        : '' + monthNum
       let yearStr = new Date().getFullYear()
       let todayV = yearStr + '' + monthStr + '' + dayStr
       let nodes = document.getElementsByTagName('td')
@@ -334,7 +420,7 @@ export default {
         }
       }
     },
-    onlyShowCurrentOrToday (isShow) {
+    onlyShowCurrentOrToday(isShow) {
       if (isShow) {
         for (let tr of document.querySelectorAll('.inline-calendar.inline-calendar-demo tbody tr')) {
           tr.style.display = ''
@@ -365,7 +451,7 @@ export default {
         }
       }
     },
-    getChartsOption (data, weight, args) {
+    getChartsOption(data, weight, args) {
       let option = {
         grid: {
           left: '0',
@@ -382,7 +468,9 @@ export default {
             if (Object.prototype.toString.call(params) === '[object Array]') { // is array
               let res = params[0].name + '<br/>'
               for (let i = 0, length = params.length; i < length; i++) {
-                params[i].value = params[i].value === '' ? '--' : params[i].value
+                params[i].value = params[i].value === ''
+                  ? '--'
+                  : params[i].value
                 if (this.selectedRecordOption === 'BMI') { // 控制显示单位
                   res += params[i].seriesName + ': ' + params[i].value + '<br/>'
                 } else {
@@ -446,48 +534,56 @@ export default {
             }
           }
         },
-        series: [{
-          name: args,
-          type: 'scatter',
-          itemStyle: {
-            normal: {
-              color: '#26A5FD'
-            }
-          },
-          label: {
-            emphasis: {
-              show: false,
-              position: 'left',
-              textStyle: {
-                color: 'blue',
-                fontSize: 16
+        series: [
+          {
+            name: args,
+            type: 'scatter',
+            itemStyle: {
+              normal: {
+                color: '#26A5FD'
               }
-            }
-          },
-          data: weight
-        }]
+            },
+            label: {
+              emphasis: {
+                show: false,
+                position: 'left',
+                textStyle: {
+                  color: 'blue',
+                  fontSize: 16
+                }
+              }
+            },
+            data: weight
+          }
+        ]
       }
 
       return option
     },
-    openHealthTips (event) {
-      this.$router.push({path: `/weightDetail/${event}`})
+    openHealthTips(event) {
+      this
+        .$router
+        .push({path: `/weightDetail/${event}`})
     },
-    openDetail (item) {
+    openDetail(item) {
       window.open(`http://lifehaier.com/News/Advisory/detail/id/${item.news_id}.html`)
     },
-    fnGetAllData () {
+    fnGetAllData() {
       if (this.weightDate === '') {
         let _date = new Date()
-        let day = _date.getDate() < 10 ? '0' + _date.getDate() : _date.getDate()
+        let day = _date.getDate() < 10
+          ? '0' + _date.getDate()
+          : _date.getDate()
         this.weightDate = this.year + '-' + this.month + '-' + day
       }
-      this.$router.push({ path: `/weight/history/${this.weightDate}` })
+      this
+        .$router
+        .push({path: `/weight/history/${this.weightDate}`})
     },
-    setOpacity (ele, opacity) {
+    setOpacity(ele, opacity) {
       ele.style.opacity = opacity
     },
-    fadeout (ele, time, callback) {
+    fadeout(ele, time, callback) {
       window.fadeTimer = window.fadeTimer || 0
       clearInterval(window.fadeTimer)
       if (ele) {
@@ -508,7 +604,7 @@ export default {
         }, 50)
       }
     },
-    fadein (ele, time, callback) {
+    fadein(ele, time, callback) {
       window.fadeTimer = window.fadeTimer || 0
       clearInterval(window.fadeTimer)
       if (ele) {

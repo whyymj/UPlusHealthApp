@@ -1,14 +1,17 @@
 import axios from 'axios'
 import myDatePicker from '../pressure/myDatePicker.vue';
 import mycollapse2 from '../sleep-music/mycollapse2.vue';
+import {Loading} from 'element-ui';
 export default {
   name : 'oxygen',
   components : {
     myDatePicker,
-    mycollapse2
+    mycollapse2,
+    Loading
   },
   data() {
     return {
+      loadingmodal: '',
       ChooseTypePopupVisible: false,
       bluetoothVisible: false,
       popupSuccess: false,
@@ -54,6 +57,13 @@ export default {
     }
   },
   mounted() {
+    var that = this;
+    this.loadingmodal = Loading.service({fullscreen: true, background: 'rgba(0, 0, 0, 0.7)', lock: true, text: 'Loading', spinner: 'el-icon-loading'});
+    setTimeout(function () {
+      that
+        .loadingmodal
+        .close();
+    }, 10000)
     this.initList()
     this.$nextTick(function () {
       this.chartOption('seven')
@@ -194,16 +204,16 @@ export default {
       this.selectedRecordOption = option
       switch (option) {
         case '最近七次':
-          this.selectedRecordArgs = 'seven'
+          this.selectedRecordArgs = 'seven';
           break
         case '周':
-          this.selectedRecordArgs = 'week'
+          this.selectedRecordArgs = 'week';
           break
         case '月':
-          this.selectedRecordArgs = 'month'
+          this.selectedRecordArgs = 'month';
           break
         case '年':
-          this.selectedRecordArgs = 'year'
+          this.selectedRecordArgs = 'year';
           break
         default:
           break
@@ -253,6 +263,9 @@ export default {
       } catch (err) {
         console.log('Whoops: ', err)
       }
+      this
+      .loadingmodal
+      .close();
     },
     async initDateList() {
       try {

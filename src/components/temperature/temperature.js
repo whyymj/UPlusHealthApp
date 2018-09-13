@@ -1,15 +1,17 @@
 import axios from 'axios'
-
+import {Loading} from 'element-ui';
 import myDatePicker from '../pressure/myDatePicker.vue';
 import mycollapse2 from '../sleep-music/mycollapse2.vue';
 export default {
   name: 'temperature',
   components : {
     myDatePicker,
-    mycollapse2
+    mycollapse2,
+    Loading
   },
   data () {
     return {
+      loadingmodal: '',
       ChooseTypePopupVisible: false,
       bluetoothVisible: false,
       popupSuccess: false,
@@ -55,6 +57,13 @@ export default {
     }
   },
   mounted () {
+    var that = this;
+    this.loadingmodal = Loading.service({fullscreen: true, background: 'rgba(0, 0, 0, 0.7)', lock: true, text: 'Loading', spinner: 'el-icon-loading'});
+    setTimeout(function () {
+      that
+        .loadingmodal
+        .close();
+    }, 10000)
     this.initList()
     this.$nextTick(function () {
       this.chartOption('seven')
@@ -259,6 +268,9 @@ export default {
       } catch (err) {
         console.log('Whoops: ', err)
       }
+      this
+      .loadingmodal
+      .close();
     },
     async chartOption (args, callback) {
       try {

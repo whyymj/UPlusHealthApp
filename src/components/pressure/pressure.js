@@ -1,14 +1,17 @@
 import axios from 'axios'
 import myDatePicker from './myDatePicker.vue';
 import mycollapse2 from '../sleep-music/mycollapse2.vue';
+import {Loading} from 'element-ui';
 export default {
   name : 'pressure',
   components : {
     myDatePicker,
-    mycollapse2
+    mycollapse2,
+    Loading
   },
   data() {
     return {
+      loadingmodal: '',
       ChooseTypePopupVisible: false,
       bluetoothVisible: false,
       popupVisible: false,
@@ -54,14 +57,20 @@ export default {
     }
   },
   mounted() {
-    this
-      .$nextTick(function () {
-        this.chartOption('seven')
-        
-        if (window._pressure_selected_date) {
-          this.value = window._pressure_selected_date
-        }
-      })
+    var that = this;
+    this.loadingmodal = Loading.service({fullscreen: true, background: 'rgba(0, 0, 0, 0.7)', lock: true, text: 'Loading', spinner: 'el-icon-loading'});
+    setTimeout(function () {
+      that
+        .loadingmodal
+        .close();
+    }, 10000)
+    this.$nextTick(function () {
+      this.chartOption('seven')
+
+      if (window._pressure_selected_date) {
+        this.value = window._pressure_selected_date
+      }
+    })
     this.initList()
   },
   methods : {
@@ -90,12 +99,12 @@ export default {
       this.bluetoothVisible = false
       this.popupVisible = true
     },
-   
+
     onChange(val) {
       window._pressure_selected_date = val
       this.pressureDate = val
       this.initList()
-     
+
     },
     switchTab(option) {
       // 切换图表标签页
@@ -130,10 +139,13 @@ export default {
       } catch (err) {
         console.log('err: ', err)
       }
+   
+
     },
     async initList() {
       try {
         const result = await axios.get(`/api/pressure/three?member_id=${window._member_id}&date=${this.pressureDate}&limit=N`)
+
         if (result.data.code === 'C0000') {
           console.log(result)
           if (result.data.data.length === 0) {
@@ -161,10 +173,14 @@ export default {
       } catch (err) {
         console.log('Whoops: ', err)
       }
+      this
+        .loadingmodal
+        .close();
     },
     async chartOption(args, callback) {
       try {
         const result = await axios.get(`/api/pressure/${args}?member_id=${window._member_id}`)
+
         if (result.data.code === 'C0000') {
           let d = result.data.data.diastolic_data
           let s = result.data.data.systolic_data
@@ -220,11 +236,13 @@ export default {
       } catch (err) {
         console.log('Whoops: ', err)
       }
+    
       callback && callback()
     },
     async deleteRecord(index, item) {
       try {
         const result = await axios.post('/api/pressure/delete', {bloodPressure_id: item.bloodPressure.bloodPressure_id})
+
         if (result.data.code === 'C0000') {
           this.chartOption(this.selectedRecordArgs)
           this.initList()

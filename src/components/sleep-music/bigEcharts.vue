@@ -3,7 +3,7 @@
 		<div class="button nearest" :class="{active:active==0}" @click='getdata(0)'>最近七次</div>
 		<div class="button week" :class="{active:active==1}" @click='getdata(1)'>周</div>
 		<!-- <div class="button month" :class="{active:active==2}" @click='getdata(2)'>月</div>
-									<div class="button year" :class="{active:active==3}" @click='getdata(3)'>年</div> -->
+														<div class="button year" :class="{active:active==3}" @click='getdata(3)'>年</div> -->
 		<div id='main2' ref='echarts'>
 		</div>
 		<div class="legend">
@@ -62,6 +62,7 @@
 				return arr;
 			},
 			getdata(index) {
+				this.myChart.showLoading();
 				this.sleepstarttimes = [];
 				this.sleependtimes = [];
 				this.sleeplengthtimes = [];
@@ -245,7 +246,9 @@
 						that.setOptions();
 						that.myChart.setOption(that.option);
 					}
+					that.myChart.hideLoading();
 				}).catch(function() {
+					that.myChart.hideLoading();
 					if (process.env.NODE_ENV == 'development') {
 						that.$axios.get('/static/testData/getByLastSeven.json').then(function(res) {
 							if (res.data.code === 'C0000') {
@@ -331,7 +334,9 @@
 						that.setOptions();
 						that.myChart.setOption(that.option);
 					}
+					that.myChart.hideLoading();
 				}).catch(function() {
+					that.myChart.hideLoading();
 					if (process.env.NODE_ENV == 'development') {
 						that.$axios.get('/static/testData/getByWeek.json').then(function(res) {
 							if (res.data.code === 'C0000') {
@@ -373,6 +378,7 @@
 					begin_date: this.year + (this.month > 9 ? this.month : '0' + this.month) + '-01 00:00:00',
 					end_date: this.year + '-' + (this.month > 9 ? this.month : '0' + this.month) + '-' + (this.date > 9 ? this.date : '0' + this.date) + ' 23:59:59'
 				}).then(function(res) {
+					that.myChart.hideLoading();
 					if (res.data.code === 'C0000') {
 						var list = res.data.data.map(function(item, index) {
 							var newitem = item;
@@ -397,6 +403,7 @@
 						that.myChart.setOption(that.option);
 					}
 				}).catch(function() {
+					that.myChart.hideLoading();
 					if (process.env.NODE_ENV == 'development') {
 						that.$axios.get('/static/testData/getByWeek.json').then(function(res) {
 							if (res.data.code === 'C0000') {
@@ -434,6 +441,7 @@
 					begin_date: this.year + '-01-01 00:00:00',
 					end_date: this.year + '-' + (this.month > 9 ? this.month : '0' + this.month) + '-' + (this.date > 9 ? this.date : '0' + this.date) + ' 23:59:59'
 				}).then(function(res) {
+					that.myChart.hideLoading();
 					if (res.data.code === 'C0000') {
 						var list = res.data.data.map(function(item, index) {
 							var newitem = item;
@@ -458,6 +466,7 @@
 						that.myChart.setOption(that.option);
 					}
 				}).catch(function() {
+					that.myChart.hideLoading();
 					if (process.env.NODE_ENV == 'development') {
 						that.$axios.get('/static/testData/getByWeek.json').then(function(res) {
 							if (res.data.code === 'C0000') {
@@ -565,8 +574,10 @@
 							} else if (window.sleep_charts_active == 3) {
 								time = params[0].axisValueLabel;
 							}
+							startH = startH > 24 ? startH - 24 : startH;
 							startH = startH > 9 ? startH : '0' + startH;
 							startM = startM > 9 ? startM : '0' + startM;
+							endH = endH > 24 ? endH - 24 : endH;
 							endH = endH > 9 ? endH : '0' + endH;
 							endM = endM > 9 ? endM : '0' + endM;
 							return time + '<br/>' + tar.seriesName + ' : ' + tar.value + '小时' + '<span style="width:8px;height:8px;border-radius:50%;background:#2283E2;display:inline-block;margin:0 3px 0 10px;border:1px solid #fff;"></span>' + startH + ':' + startM + '<span style="width:8px;height:8px;border-radius:50%;background:#F5B616;display:inline-block;margin:0 3px 0 10px;border:1px solid #fff;"></span>' + endH + ":" + endM;
@@ -715,6 +726,10 @@
 			this.active = 0;
 			window.sleep_charts_active = 0;
 			this.nearestSeven();
+			this.myChart.showLoading();
+			setTimeout(function() {
+				that.myChart.hideLoading();
+			}, 4000)
 		}
 	}
 </script>
