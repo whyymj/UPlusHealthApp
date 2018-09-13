@@ -36,9 +36,9 @@
         </div>
       </div>
       <!-- <div class="associated-create add-friends " @click="openCreate()">
-                                                    <img class="addFriends" src='/static/familyManage/link.png'>
-                                                    <span class="add" id='addf'>添加好友<i>（已有U+账号）</i></span>
-                                                  </div> -->
+                                                          <img class="addFriends" src='/static/familyManage/link.png'>
+                                                          <span class="add" id='addf'>添加好友<i>（已有U+账号）</i></span>
+                                                        </div> -->
       <p class='additionTips'>注：无法查看未启用健康档案的用户信息</p>
       <div class="associated-create" @click="openCreate()">
         <i class="create fa fa-plus"></i> <span class="create">创建家人</span>
@@ -81,6 +81,8 @@
       }
     },
     mounted() {
+    
+   
       if (process.env.NODE_ENV == 'development') {
         this.createdList = []
       }
@@ -134,7 +136,6 @@
           that.loadingmodal.close();
         } catch (err) {
           that.loadingmodal.close();
-          console.log(err)
         }
       },
       async getFamilyList() {
@@ -142,7 +143,11 @@
         try {
           const result = await axios.get('/api/family')
           if (result.data.code === 'C0000') {
-            this.createdList = result.data.data[0];
+            this.createdList = result.data.data[0].map(function(item) {
+              var newitem = item;
+              newitem.head_pic = item.head_pic || '/static/familyManage/newFile.png'
+              return newitem;
+            });
             this.$axios.get('/api/getUHomeFamilyMember').then(function(res) {
               if (res.data.code == 'C0000') {
                 that.associatedList = res.data.data.UHomeList.map(function(item, index) {
@@ -214,7 +219,6 @@
       deleteItem(id, index) {
         MessageBox.confirm('确定删除吗?').then(action => {
           this.memberList += id + ','
-          
           this.createdList.splice(index, 1)
         }).catch(err => {
           console.log(err)
@@ -222,7 +226,6 @@
       },
       skipTo(item) { //根据是否关联了用户
         var id = item.member_id;
-        
         window._member_id = id;
         if (!id) {
           this.$router.push({
