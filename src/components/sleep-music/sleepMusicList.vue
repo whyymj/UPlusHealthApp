@@ -713,7 +713,7 @@
                         box-sizing: border-box;
                         line-height: 2rem;
                         text-align: center;
-                        background: rgba(16, 214, 226, 1);
+                        background: #26A6FF;
                     }
                     .equipinput {
                         right: 0;

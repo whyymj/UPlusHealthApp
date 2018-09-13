@@ -557,7 +557,8 @@
 						}
 					}).catch(function(res) {})
 				} catch (err) {
-					console.log(err)
+					if (process.env.NODE_ENV == 'development') {
+					}
 				}
 			},
 			async initList() { //获取成员的健康指标列表
@@ -697,7 +698,7 @@
 				window.localStorage.UPlusApp_firstLogin_sleepReport = true; //在首次登录组件里改变
 				(async() => {
 					let obj = {
-						code: this.$route.query.code||window.location.href.substring(window.location.href.indexOf('=') + 1, window.location.href.indexOf('&')),
+						code: this.$route.query.code || window.location.href.substring(window.location.href.indexOf('=') + 1, window.location.href.indexOf('&')),
 						url: config.url
 					}
 					if (obj.code !== '') {

@@ -47,6 +47,7 @@
                     notNextTick: true,
                     // swiper configs 所有的配置同swiper官方api配置
                     autoplay: 3000,
+                    speed:300,
                     // direction : 'vertical',
                     // effect: "coverflow",
                     // loop : true,
