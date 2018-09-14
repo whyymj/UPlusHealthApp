@@ -358,7 +358,7 @@ export default {
       }
     },
     onChange(val) {
-      console.log('on-change', val)
+      
       window._weight_selected_date = val
       this.weightDate = val
       this.initList()

@@ -189,8 +189,10 @@
 			},
 			blink(item) {
 				var obj = colorJudger(item.moudle_name, item.level);
+				console.log('>>>>>>s',item,obj)
+
 				return {
-					background: obj.bg,
+					background: obj&&obj.bg,
 					animation: 's-red-animation 1s infinit'
 				}
 			},
