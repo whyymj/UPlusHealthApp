@@ -459,7 +459,9 @@
 	}
 	.deleteFamilybox {
 		width: 17.15rem;
-		margin: 25.1rem auto 0
+		position:absolute;
+		bottom: 5rem;
+		left: 0.85rem;
 	}
 	.noDelete {
 		background: #FFFFFF;
@@ -467,11 +469,12 @@
 		height: 2.35rem;
 		line-height: 2.35rem;
 		border-radius: 0.4rem;
-		margin: 0 auto;
+		position:absolute;
+		bottom:2rem;
+		left:0.85rem;
 		font-size: 0.75rem;
 		font-family: PingFangSC-Regular;
 		color: rgba(34, 131, 226, 1);
-		margin-top: 0.4rem;
 		text-align: center;
 	}
 	.texttip {
