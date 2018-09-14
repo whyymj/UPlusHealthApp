@@ -134,7 +134,7 @@ router.get('/api/pressure/year', (req, res, next) => {
   const options = {
     host: config.host,
     port: config.port,
-    path: `${config.path}/bloodPressure/getByYearRange?member_id=${req.query.member_id}`,
+    path: `${config.path}/bloodPressure/getByYearWithLevel?member_id=${req.query.member_id}`,
     method: 'GET',
     headers: Object.assign(config.headers, {
       openId: req.session.token,
@@ -172,7 +172,7 @@ router.get('/api/pressure/seven', (req, res, next) => {
   const options = {
     host: config.host,
     port: config.port,
-    path: `${config.path}/bloodPressure/getLastSevenRange?member_id=${req.query.member_id}`,
+    path: `${config.path}/bloodPressure/getLastSevenWithLevel?member_id=${req.query.member_id}`,
     method: 'GET',
     headers: Object.assign(config.headers, {
       openId: req.session.token,
@@ -209,7 +209,7 @@ router.get('/api/pressure/week', (req, res, next) => {
   const options = {
     host: config.host,
     port: config.port,
-    path: `${config.path}/bloodPressure/getByWeekRange?member_id=${req.query.member_id}`,
+    path: `${config.path}/bloodPressure/getByWeekWithLevel?member_id=${req.query.member_id}`,
     method: 'GET',
     headers: Object.assign(config.headers, {
       openId: req.session.token,
@@ -247,7 +247,7 @@ router.get('/api/pressure/month', (req, res, next) => {
   const options = {
     host: config.host,
     port: config.port,
-    path: `${config.path}/bloodPressure/getByMonthRange?member_id=${req.query.member_id}`,
+    path: `${config.path}/bloodPressure/getByMonthWithLevel?member_id=${req.query.member_id}`,
     method: 'GET',
     headers: Object.assign(config.headers, {
       openId: req.session.token,
