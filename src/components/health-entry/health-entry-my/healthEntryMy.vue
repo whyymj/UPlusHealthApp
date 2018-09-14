@@ -64,7 +64,7 @@
             </div>
         </div>
         <div class="bottom">
-           <div :class="{ 'bottom_text':true, 'bottom_text_bg': !isSave}" @click="save" >完成</div>
+            <div :class="{ 'bottom_text':true, 'bottom_text_bg': !isSave}" @click="save">完成</div>
         </div>
         <!-- 生日选择 -->
         <mt-popup v-model="birthday_picker" position="bottom">
@@ -118,6 +118,7 @@
 <script>
     import tagslist from "../health-entry-family/tagsList";
     import axios from "axios";
+    import config from '../../../../config/global.config'
     import myloading from '../../global/Loading.vue';
     export default {
         components: {
@@ -219,6 +220,7 @@
         },
         mounted() {
             this.route = this.$route.query.from || '';
+            var userinfo = JSON.parse(window.localStorage.uplus_sleep_user_info)
             var that = this;
             var years = [];
             var months = [];
@@ -276,9 +278,10 @@
                 textAlign: "center"
             }];
             this.birthdayarr = [thisYear, thisMonth, today];
-            this.tall = '';
-            this.weight = '';
-            this.birthday = ''
+            this.tall = userinfo.height+'厘米';
+            this.weight = userinfo.weight+'公斤';
+            this.birthday = userinfo.birthday.replace('-','年').replace('-','月');
+            this.sex = userinfo.sex=='male'?'男':'女';
             this.$axios.post('/api/getDiseaseList').then(function(res) {
                 that.loadingmodal.close();
                 if (res.data.code == 'C0000') {
@@ -312,39 +315,6 @@
                 }
             }).catch(function(res) { //慢病标签
                 that.loadingmodal.close();
-                if (process.env.NODE_ENV == 'development') {
-                    that.$axios.get('/static/testData/getDiseaseList.json').then(function(res) {
-                        if (res.data.code == 'C0000') {
-                            that.chromiclist = res.data.data.map(function(item) {
-                                return {
-                                    name: item.dict_name,
-                                    selected: false,
-                                    "dict_id": item.dict_id,
-                                    "dict_name": item.dict_name,
-                                    "dict_name_en": item.dict_name_en,
-                                    "dict_type_id": item.dict_type_id,
-                                    "status": item.status,
-                                    "note": item.note
-                                }
-                            })
-                            var diseasedata = window.localStorage.uplus_sleep_user_disease;
-                            that.disease = diseasedata || '' //慢病
-                            var newchromiclist = that.chromiclist;
-                            if (typeof diseasedata == 'string') {
-                                diseasedata = diseasedata.split(",")
-                                for (let i = 0; i < newchromiclist.length; i++) {
-                                    for (let j = 0; j < diseasedata.length; j++) {
-                                        if (newchromiclist[i].name == diseasedata[j]) {
-                                            that.chronDiseaseHistory = true;
-                                            newchromiclist[i].selected = true;
-                                        }
-                                    }
-                                }
-                            }
-                            that.chromiclist = newchromiclist;
-                        }
-                    })
-                }
             })
             this.$axios.post('/api/getAllergyList').then(function(res) {
                 that.loadingmodal.close();
@@ -517,7 +487,6 @@
                     }
                 }
                 this.chromicListResult = dataSelected;
-                console.log('this.chromicListResult', this.chromicListResult);
             },
             chooseAllergy(data) {
                 var dataSelected1 = []
@@ -601,26 +570,6 @@
             height: 3rem;
             overflow: hidden;
             position: relative;
-            /*.input_nick_name {
-                                                                            position: absolute;
-                                                                            width: 14rem;
-                                                                            top: 0;
-                                                                            bottom: 0;
-                                                                            left: 0;
-                                                                            right: 0;
-                                                                            margin: auto;
-                                                                            height: 2rem;
-                                                                            border-radius: 0.2rem;
-                                                                            display: block;
-                                                                            margin: auto;
-                                                                            border: 1px solid #eee;
-                                                                            box-sizing: border-box;
-                                                                            padding: 0 0.5rem;
-                                                                            font-size: 0.7rem;
-                                                                            font-family: "PingFangSC-Regular";
-                                                                            color: #666;
-                                                                            line-height: 2rem;
-                                                                        }*/
         }
         .sex_radio {
             padding: 0.5rem 5rem;
