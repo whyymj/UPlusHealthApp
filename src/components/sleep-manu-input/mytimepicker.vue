@@ -14,7 +14,7 @@
 </template>
 
 <script>
-    import bus from './bus.js';
+    import bus from '../eventbus.js';
     export default {
         props: ['time_gap'],
         watch: {

@@ -13,7 +13,7 @@
 
 <script>
     import timepicker from './mytimepicker';
-    import bus from './bus.js';
+    import bus from '../eventbus.js';
     import {
         Toast
     } from 'mint-ui';

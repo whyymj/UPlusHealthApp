@@ -50,7 +50,7 @@
         },
         watch: {
             initialindex() {
-                console.log(this.initialindex, 'initialindex');
+                
             },
             list() {
                 var that = this;
@@ -338,20 +338,6 @@
             top: 0;
             z-index: 10;
         }
-    } // .nextbutton {
-    //     width: 5rem;
-    //     height: 1.7rem;
-    //     border-radius: 1rem;
-    //     text-align: left;
-    //     padding: 0 0.5rem;
-    //     line-height: 1.7rem;
-    //     color: #fff;
-    //     font-size: 0.75rem;
-    //     font-family: 'PingFangSC-Regular';
-    //     font-weight: 500;
-    //     background: rgba(50, 182, 230, 1);
-    //     position: absolute;
-    //     right: -2rem;
-    //     bottom: 4rem;
-    // }
+    } 
+    
 </style>

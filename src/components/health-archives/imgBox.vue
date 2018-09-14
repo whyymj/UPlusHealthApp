@@ -14,7 +14,7 @@
 
 <script>
     import colorJudger from './color.js';
-    import bus from './bus.js';
+    import bus from '../eventbus.js';
     import {
         setTimeout
     } from 'timers';
@@ -23,10 +23,7 @@
             toReport() {
                 var that = this;
                 this.goPages(this.meta)
-                // this.$router.push({
-                //     path: '/sleepMusicList',
-                //     query: that.meta
-                // })
+                
             },
             async goPages(item) {
                 var that = this;

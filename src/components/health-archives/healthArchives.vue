@@ -58,7 +58,7 @@
 
 <script>
 	import imgbox from './imgBox';
-	import bus from './bus.js';
+	import bus from '../eventbus.js';
 	import mynav from './myNavigator.vue';
 	import myreq from '../../assets/healthSleep/myreq.js';
 	import paginator from '../new-add-report/myPagination.vue';

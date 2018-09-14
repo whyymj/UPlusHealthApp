@@ -36,7 +36,7 @@
 </template>
 
 <script>
-    import bus from './evetbus.js';
+    import bus from '../eventbus.js';
     import showmodal from './myModal';
     import mycollapse from './mycollapse.vue';
     import mymenu from './mycollapse3.vue';

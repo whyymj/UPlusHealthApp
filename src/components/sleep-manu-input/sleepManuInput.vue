@@ -9,7 +9,7 @@
 <script>
     import sleeptime from './sleepTime';
     import sleepquality from './sleepQuality.vue';
-    import bus from './bus.js';
+    import bus from '../eventbus.js';
     import {
         Loading
     } from 'element-ui';

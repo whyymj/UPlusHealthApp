@@ -15,7 +15,7 @@
 </template>
 
 <script>
-    import bus from './evetbus.js';
+    import bus from '../eventbus.js';
     export default {
         props: ['musiclist'],
         methods: {

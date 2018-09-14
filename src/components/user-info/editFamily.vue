@@ -94,7 +94,6 @@
 		MessageBox
 	} from 'mint-ui'
 	import axios from "axios"
-	// import new from './../../assets/healthSleep/bus';
 	export default {
 		mixins: [myloading],
 		data() {
