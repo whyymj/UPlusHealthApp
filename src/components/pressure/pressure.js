@@ -182,18 +182,20 @@ export default {
         const result = await axios.get(`/api/pressure/${args}?member_id=${window._member_id}`)
 
         if (result.data.code === 'C0000') {
-          let d = result.data.data.diastolic_data
-          let s = result.data.data.systolic_data
-          let c = args !== 'seven'
-            ? result.data.data.create_date
-            : result
-              .data
-              .data
-              .create_date
-              .map(_ => {
-                return _.split(' ')[0]
-              })
-          let t = result.data.data.time_list
+//        let d = result.data.data.diastolic_data
+//        let s = result.data.data.systolic_data
+//        let c = args !== 'seven' ? result.data.data.create_date : result.data.data.create_date.map(_ => {
+//          return _.split(' ')[0]
+//        })
+//        let t = result.data.data.time_list
+					let d = args !== 'seven' ?result.data.data.map(item=>{return item.diastolic_data}):result.data.data.map(item=>{return [item.diastolic_pressure,item.diastolic_pressure]})
+					let s = args !== 'seven' ?result.data.data.map(item=>{return item.systolic_data}):result.data.data.map(item=>{return [item.systolic_pressure,item.systolic_pressure]})
+					let c = args !== 'seven' ?result.data.data.map(item=>{return item.time}) : result.data.data.map(item=> {
+            return item.create_date.split(' ')[0]
+          })
+					let t = args !== 'seven' ?result.data.data.map(item=>{return item.date}) : result.data.data.map(item=> {
+            return item.create_date
+         })
           // this.$refs.pressure.$children[0] && this.$refs.pressure.$children[0].clear()
           if (d.length === 0 && s.length === 0) {
             if (args === 'seven') {
