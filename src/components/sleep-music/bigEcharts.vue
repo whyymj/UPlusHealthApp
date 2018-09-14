@@ -3,7 +3,7 @@
 		<div class="button nearest" :class="{active:active==0}" @click='getdata(0)'>最近七次</div>
 		<div class="button week" :class="{active:active==1}" @click='getdata(1)'>周</div>
 		<!-- <div class="button month" :class="{active:active==2}" @click='getdata(2)'>月</div>
-														<div class="button year" :class="{active:active==3}" @click='getdata(3)'>年</div> -->
+															<div class="button year" :class="{active:active==3}" @click='getdata(3)'>年</div> -->
 		<div id='main2' ref='echarts'>
 		</div>
 		<div class="legend">
@@ -19,6 +19,18 @@
 <script>
 	export default {
 		methods: {
+			deleteRepeatDate(arr) { //去除同一天的数据
+				var obj = {};
+				var newarr = arr.reverse().filter(function(item, index) {
+					var date = item.create_date.split(' ')[0];
+					if (!obj[date]) {
+						obj[date] = date;
+						return true;
+					}
+					return false;
+				}).reverse();
+				return newarr;
+			},
 			scaleEcharts() {
 				this.$emit('showbig')
 			},
@@ -196,11 +208,11 @@
 					member_id: window._member_id,
 				}).then(function(res) {
 					if (res.data.code === 'C0000') {
-						var list = res.data.data.map(function(item, index) {
+						var list = that.deleteRepeatDate(res.data.data.map(function(item, index) {
 							var newitem = item;
 							newitem.date = new Date(item.create_date.replace('-', '/')).getTime();
 							return newitem;
-						}).sort(function(a, b) {
+						})).sort(function(a, b) {
 							return a.date - b.date;
 						});
 						var formate = list.map(function(item, index) {
@@ -312,14 +324,14 @@
 					member_id: window._member_id,
 				}).then(function(res) {
 					if (res.data.code === 'C0000') {
-						var list = res.data.data.map(function(item, index) {
+						var list =that.deleteRepeatDate(res.data.data.map(function(item, index) {
 							var newitem = item;
 							newitem.date = new Date(item.create_date.replace('-', '/')).getDay() - 1;
 							if (newitem.date == -1) {
 								newitem.date = 6;
 							}
 							return newitem;
-						}).sort(function(a, b) {
+						})) .sort(function(a, b) {
 							return a.date - b.date;
 						});
 						list = that.fillThisWeekArr(list);
@@ -512,7 +524,7 @@
 			},
 			getAxisData() { //本周的
 				var myDate = new Date(); //获取今天日期
-				myDate.setDate(myDate.getDate() - 7);
+				myDate.setDate(myDate.getDate() - myDate.getDay()+1);
 				var dateArray = [];
 				var dateTemp;
 				var flag = 1;

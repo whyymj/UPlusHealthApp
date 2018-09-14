@@ -982,7 +982,7 @@ router.post('/api/sleep/delete', (req, res, next) => {
 })
 // 获取某一天的测量记录
 router.post('/api/sleep/getByDay', (req, res, next) => {
-  const postData = querystring.stringify({member_id: req.body.member_id, Date: req.body.Date})
+  const postData = querystring.stringify({member_id: req.body.member_id, date: req.body.date})
 
   const options = {
     host: config.host,

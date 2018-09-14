@@ -8,7 +8,7 @@
             <div class="page page1" v-show='activeSpan==0'>
                 <mycollapse2 animateT='500'>
                     <div>
-                        <myDatePicker @checkDateData='checkDateData'></myDatePicker>
+                        <myDatePicker flag='7' @checkDateData='checkDateData'></myDatePicker>
                     </div>
                 </mycollapse2>
                 <div class='tipDeleteData' v-if='tipDeleteData&&todayManuInputData'>
@@ -47,7 +47,7 @@
 </template>
 
 <script>
-    import myDatePicker from './myDatePicker.vue';
+    import myDatePicker from '../pressure/myDatePicker.vue';
     import mycollapse2 from './mycollapse2.vue';
     import musiclist from "./musicList.vue";
     import player from "./player.vue";
@@ -156,11 +156,11 @@
                 var check = val.year + '/' + (val.month > 9 ? val.month : '0' + val.month) + '/' + (val.date > 9 ? val.date : '0' + val.date);
                 this.saveSleepInfo(check);
                 this.$axios.post('/api/sleep/getByDay', {
-                    Date: val.year + '-' + (val.month > 9 ? val.month : '0' + val.month) + '-' + (val.date > 9 ? val.date : '0' + val.date),
+                    date: val.year + '-' + (val.month > 9 ? val.month : '0' + val.month) + '-' + (val.date > 9 ? val.date : '0' + val.date),
                     member_id: window._member_id
                 }).then(function(res) {
                     if (res.data.code === 'C0000' && res.data.data) {
-                        var data = res.data.data;
+                        var data = res.data.data[res.data.data.length - 1];
                         that.todayManuInputData = true;
                         that.paramslist = [{
                             title: '当日作息',
@@ -698,6 +698,7 @@
                     width: 100%;
                     height: 2rem;
                     position: fixed;
+                    z-index:10000;
                     bottom: 0;
                     margin: 1rem auto 0;
                     .manuinput,
