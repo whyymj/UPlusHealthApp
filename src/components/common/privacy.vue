@@ -8,7 +8,7 @@
                     <router-link to="/privacy">《海尔家电隐私权政策》</router-link>
                 </p>
                 <x-button style="width: 90%;margin-top: 1rem" @click.native="$_quit">不同意并退出</x-button>
-                <x-button type="primary" style="width: 90%" @click.native="$_agree">同意</x-button>
+                <x-button type="primary" style="width: 90%;margin-bottom:0.5rem;" @click.native="$_agree">同意</x-button>
             </div>
         </x-dialog>
         <x-dialog v-model="privacy_again" class="dialog-demo">
@@ -73,7 +73,8 @@ export default {
 <style lang="scss" scoped>
 .dialog-demo {
     .dialog-content {
-        height: 20rem;
+       box-sizing: border-box;
+       padding:0 0.5rem 0.6rem;
         overflow: hidden;
     }
     h2 {

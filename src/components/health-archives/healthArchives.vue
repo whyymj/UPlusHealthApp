@@ -189,8 +189,9 @@
 			},
 			blink(item) {
 				var obj = colorJudger(item.moudle_name, item.level);
+				console.log('>>>>>>s', item, obj)
 				return {
-					background: obj.bg,
+					background: obj && obj.bg,
 					animation: 's-red-animation 1s infinit'
 				}
 			},
@@ -646,7 +647,6 @@
 						Indicator.close();
 					}
 				} catch (err) {
-					console.log('err: ', err)
 					Indicator.close();
 				}
 			},
@@ -673,7 +673,7 @@
 		},
 		mounted() {
 			window.localStorage.uplus_sleep_user_info_cache = ''; //个人信息存储清空
-			if (window.localStorage.UPlusAPP_agree_privacyPlan && (window.localStorage.UPlusAPP_agree_privacyPlan == 'true' || window.localStorage.UPlusAPP_agree_privacyPlan == true)) {//存储获取苹果健康数据的权限
+			if (window.localStorage.UPlusAPP_agree_privacyPlan && (window.localStorage.UPlusAPP_agree_privacyPlan == 'true' || window.localStorage.UPlusAPP_agree_privacyPlan == true)) { //存储获取苹果健康数据的权限
 				this.show = false;
 			} else {
 				this.show = true;
@@ -700,16 +700,24 @@
 				}
 				if (obj.code !== '') {
 					try {
-					
 						const result = await this.$axios.post('/api/info', obj)
 						if (result.data.code == 'C0000') {
 							window.localStorage.uplus_sleep_user_id = result.data.data.login_code; //暂存个人id
 							window.localStorage.uplus_sleep_user_disease = result.data.data.disease; //暂存个人慢病
 							window.localStorage.uplus_sleep_user_allergy = result.data.data.allergy; //暂存个人过敏
+							window.localStorage.uplus_sleep_user_info = JSON.stringify({
+								sex: result.data.data.sex,
+								birthday: result.data.data.birthday,
+								height: result.data.data.height,
+								weight: result.data.data.weight
+							});
 						}
 						if (result.data.data && result.data.data.need_guide == 'Y') {
 							this.$router.push({
-								path: '/newAddReport'
+								path: '/newAddReport',
+								// query: {
+								// code: that.$route.query.code
+								// }
 							})
 						}
 						if (result.data.data.user_flag === 'Y') { // new user
@@ -725,7 +733,10 @@
 							}
 							this.getFamilyList() //请求全部家庭成员列表
 						}
-						that.loadingmodal.close();
+						that.$router.replace({
+							path: '/healthRecordsB'
+						}) // 介绍页面
+						
 					} catch (err) {
 						that.loadingmodal.close();
 					}
@@ -749,7 +760,6 @@
 	.healthArchives {
 		.dialog-demo {
 			.dialog-content {
-				height: 400px;
 				overflow: hidden;
 			}
 			h2 {

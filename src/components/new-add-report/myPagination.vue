@@ -1,5 +1,5 @@
 <template>
-    <div class='pagination' :style="{bottom:bottom||'4rem'}">
+    <div class='pagination' :style="{bottom:bottom||'17%'}">
         <ul class="box">
             <li v-for='(item,index) in pagenum' :key='index' :class="{curpage:(pageindex==index)}"></li>
         </ul>

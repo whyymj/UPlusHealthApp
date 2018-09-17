@@ -10,7 +10,7 @@
                     </div>
                 </mt-swipe-item>
                 <mt-swipe-item>
-                    <div class="page2">
+                    <div class="page2" style='top:0'>
                         <h1>新增慢病标签</h1>
                         <span>优化健康的同时，帮您规避健康隐形风险</span>
                         <img src="/static/newAddReport/new-disease-tag.png" alt="">
@@ -48,18 +48,23 @@
                 this.pageindex = index;
             },
             jump(type) {
+                var that = this;
                 if (type == 1) {
                     this.$router.push({
-                        path: '/healthEntryMy'
+                        path: '/healthEntryMy',
+                        query: that.$route.query
                     })
                 } else {
                     this.$router.push({
-                        path: '/healthRecordsB'
+                        path: '/healthRecordsB',
+                        // query: that.$route.query
                     })
                 }
             }
         },
         mounted() {
+            window.localStorage.uplus_sleep_user_disease = '';
+            window.localStorage.uplus_sleep_user_allergy = '';
             if (window.localStorage.UPlusAPP_agree_privacyPlan && (window.localStorage.UPlusAPP_agree_privacyPlan == 'true' || window.localStorage.UPlusAPP_agree_privacyPlan == true)) {
                 this.show = false;
             } else {
@@ -77,7 +82,7 @@
             text-align: center;
             font-family: 'PingFangSC-Medium';
             line-height: 2rem;
-            margin-top: 4rem;
+            margin-top: 3rem;
             color: #333;
         }
         span {
@@ -104,7 +109,7 @@
             text-align: center;
             font-family: 'PingFangSC-Medium';
             line-height: 2rem;
-            margin-top: 4rem;
+            margin-top: 3rem;
             color: #333;
         }
         span {

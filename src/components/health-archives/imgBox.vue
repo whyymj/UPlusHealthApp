@@ -4,10 +4,10 @@
         <p class="tips-r" :class='{active:activebox}' v-if="position=='right'">{{tips}}</p>
         <p class="tips" :class='{active:activebox}' v-else>{{tips}}</p>
         <div class='box' :class='{active:activebox}' :style="{background:bgcolor}" @click='toReport'><i :class='[icon]' :style='{color:color}'>
-            <i class="path2" v-if='icon=="ico-sleep_icon"'></i><i class="path3" v-if='icon=="ico-sleep_icon"'></i><i class="path4" v-if='icon=="ico-sleep_icon"'></i><i class="path5" v-if='icon=="ico-sleep_icon"'></i></i><span :style="{color:color}">{{meta.moudle_name}}</span></div>
+                <i class="path2" v-if='icon=="ico-sleep_icon"'></i><i class="path3" v-if='icon=="ico-sleep_icon"'></i><i class="path4" v-if='icon=="ico-sleep_icon"'></i><i class="path5" v-if='icon=="ico-sleep_icon"'></i></i><span :style="{color:color}">{{meta.moudle_name}}</span></div>
         <div class='detail' v-if='icon!="ico-sleep_icon"'><span class='cont' :style="{display:display}">{{meta.value}}</span><span class='unit' :style="{display:display}">{{unit}}</span></div>
         <!-- 下面是睡眠时间的显示 -->
-        <div class='detail sleepdetail' v-else><span class='cont' :style="{display:display}" >{{Math.floor(meta.value/60)}}<span class='unit' :style="{display:display}">小时</span></span><span class='cont' :style="{display:display}">{{Math.floor(meta.value%60)}}<span class='unit' :style="{display:display}">分</span></span>
+        <div class='detail sleepdetail' v-else><span class='cont' :style="{display:display}">{{Math.floor(meta.value/60)}}<span class='unit' :style="{display:display}">小时</span></span><span class='cont' :style="{display:display}">{{Math.floor(meta.value%60)}}<span class='unit' :style="{display:display}">分</span></span>
         </div>
     </div>
 </template>
@@ -23,7 +23,6 @@
             toReport() {
                 var that = this;
                 this.goPages(this.meta)
-                
             },
             async goPages(item) {
                 var that = this;
@@ -139,6 +138,7 @@
         watch: {
             meta() {
                 var obj = colorJudger(this.meta.moudle_name, this.meta.level);
+                console.log('*******', this.meta.moudle_name, '>>>>>>>>>>>>>>', this.meta.level, '>>>>>>>>>', obj);
                 this.tips = obj.tips;
                 this.color = obj.color;
                 this.bgcolor = obj.bg;
@@ -157,6 +157,7 @@
                 }
             })
             var obj = colorJudger(this.meta.moudle_name, this.meta.level);
+            console.log(this.meta.moudle_name, '>>>>>>>>>>>>>>', this.meta.level, '>>>>>>>>>', obj);
             this.tips = obj.tips;
             this.color = obj.color;
             this.bgcolor = obj.bg;
@@ -269,7 +270,7 @@
             opacity: 1;
         }
         80% {
-            width:8rem;
+            width: 8rem;
             opacity: 1;
         }
         100% {
