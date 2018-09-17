@@ -15,7 +15,7 @@ const news = require('./news/index')
 const sleep = require('./sleep/index')
 const app = express()
 
-const PORT = 8088 || process.env.PORT
+const PORT = 3000 || process.env.PORT
 
 // parse application/json
 app.use(bodyParser.json({
