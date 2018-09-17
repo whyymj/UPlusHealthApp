@@ -10,31 +10,31 @@
                         <span class="body_1211">昵称</span>
                         <span class="body_1212">&middot;</span>
                         <el-input v-model="input_nick_name" placeholder="请输入昵称（不超过16字符）" maxlength=16 @change='input_nick'></el-input>
-                        <span class="body_1213"><span></span>&nbsp&nbsp<i class="el-icon-arrow-right" style='color:#DADADA;'></i></span>
+                        <span class="body_1213"><span></span>&nbsp;&nbsp;<i class="el-icon-arrow-right" style='color:#DADADA;'></i></span>
                     </div>
                     <div class="body_121" @click='choose_sex'>
                         <span class="body_1211">性别</span>
                         <span class="body_1212">&middot;</span>
                         <el-input v-model="sex" placeholder="请选择性别" readonly></el-input>
-                        <span class="body_1213"><span></span>&nbsp&nbsp<i class="el-icon-arrow-right" style='color:#DADADA;'></i></span>
+                        <span class="body_1213"><span></span>&nbsp;&nbsp;<i class="el-icon-arrow-right" style='color:#DADADA;'></i></span>
                     </div>
                     <div class="body_121" @click='pick_birthday'>
                         <span class="body_1211">生日</span>
                         <span class="body_1212">&middot;</span>
                         <el-input v-model="birthday" placeholder="请选择生日" readonly></el-input>
-                        <span class="body_1213"><span></span>&nbsp&nbsp<i class="el-icon-arrow-right" style='color:#DADADA;'></i></span>
+                        <span class="body_1213"><span></span>&nbsp;&nbsp;<i class="el-icon-arrow-right" style='color:#DADADA;'></i></span>
                     </div>
                     <div class="body_121" @click='pick_height'>
                         <span class="body_1211">身高</span>
                         <span class="body_1212">&middot;</span>
                         <el-input v-model="tall" placeholder="请选择身高" readonly></el-input>
-                        <span class="body_1213"><span></span>&nbsp&nbsp<i class="el-icon-arrow-right" style='color:#DADADA;'></i></span>
+                        <span class="body_1213"><span></span>&nbsp;&nbsp;<i class="el-icon-arrow-right" style='color:#DADADA;'></i></span>
                     </div>
                     <div class="body_121" @click='pick_weight'>
                         <span class="body_1211">体重</span>
                         <span class="body_1212">&middot;</span>
                         <el-input v-model="weight" placeholder="请选择体重" readonly></el-input>
-                        <span class="body_1213"><span></span>&nbsp&nbsp<i class="el-icon-arrow-right" style='color:#DADADA;'></i></span>
+                        <span class="body_1213"><span></span>&nbsp;&nbsp;<i class="el-icon-arrow-right" style='color:#DADADA;'></i></span>
                     </div>
                     <div class="body_122">
                         <div class="body_1221">

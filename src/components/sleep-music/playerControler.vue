@@ -93,8 +93,7 @@
                 if (!that.my_media) {
                     // 初始化Media对象
                     that.my_media = new Media(that.audioSrc, function() {}, function() {});
-                }else{
-
+                } else {
                 }
                 // 播放音频
                 that.my_media.play();
@@ -185,17 +184,14 @@
                     that.position = time;
                     that.my_media.seekTo(time * 1000);
                 }
-
                 playAudio();
                 getDuration();
                 getCurrent();
             },
         },
         beforeDestroy() {
-            if (this.my_media) {
-                this.my_media.stop();
-                this.my_media.release();
-            }
+            this.my_media.stop();
+            this.my_media.release();
         },
         mounted() { //h5实现的方式
             this.params = this.$route.query;
