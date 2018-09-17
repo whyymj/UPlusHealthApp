@@ -681,7 +681,7 @@
 			var that = this;
 			setTimeout(function() {
 				that.loadingmodal.close();
-			}, 100000)
+			}, 5000)
 			this.showdata = _.chunk(this.healthProResult, 3);
 			if (window._member_id === '') {
 				this.pageindex = this.initnum = 0;
@@ -733,10 +733,10 @@
 							}
 							this.getFamilyList() //请求全部家庭成员列表
 						}
+						that.loadingmodal.close();
 						that.$router.replace({
 							path: '/healthRecordsB'
 						}) // 介绍页面
-						
 					} catch (err) {
 						that.loadingmodal.close();
 					}

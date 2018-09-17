@@ -8,7 +8,7 @@
         </div>
         <div class="control">
             <img src="/static/musicPlayer/left.png" id='backThirtySec' alt="" class='left'>
-            <img src="/static/musicPlayer/play.png" alt="" class='play' v-if='playing' @click='playAudio' id="playSleepMusic">
+            <img src="/static/musicPlayer/play.png" alt="" class='play' v-if='!playing' @click='playAudio' id="playSleepMusic">
             <img src="/static/musicPlayer/pause.png" id="pauseSleepMusic" alt="" class='pause' @click='pauseAudio' v-else>
             <img src="/static/musicPlayer/right.png" id='goThirtySec' alt="" class='right'>
         </div>
@@ -88,22 +88,23 @@
                 return document.getElementById(id);
             },
             playAudio() {
-                that.playing = !that.playing;
+                this.playing = true;
                 var that = this;
                 if (!that.my_media) {
                     // 初始化Media对象
                     that.my_media = new Media(that.audioSrc, function() {}, function() {});
                 }
                 // 播放音频
-                that.my_media.play();
-                getDuration();
+                if (that.my_media && that.my_media.play) {
+                    that.my_media.play();
+                }
             },
             pauseAudio() {
                 var that = this;
                 if (that.my_media) {
                     that.my_media.pause();
                 }
-                that.playing = !that.playing;
+                that.playing = false;
             },
             receivedEvent(src) {
                 var that = this;
@@ -119,12 +120,16 @@
                         that.my_media = new Media(src, mediaSuccess, mediaError);
                     }
                     // 播放音频
-                    that.my_media.play();
+                    if (that.my_media && that.my_media.play) {
+                        that.my_media.play();
+                        that.playing = true;
+                    }
                 }
                 // 暂停播放音频文件
                 function pauseAudio() {
-                    if (that.my_media) {
+                    if (that.my_media && that.my_media.pause) {
                         that.my_media.pause();
+                        that.playing = false;
                     }
                 }
                 // 返回在音频文件的当前位置。
@@ -189,19 +194,18 @@
             },
         },
         beforeDestroy() {
-            if (this.my_media) {
-                this.my_media.stop();
-                this.my_media.release();
-            }
+            console.log('页面销毁');
+            this.my_media.stop();
+            this.my_media.release();
         },
         mounted() { //h5实现的方式
             this.params = this.$route.query;
             var that = this;
             //初始化音频插件
             that.audioSrc = that.params.musicurl;
-            this.$nextTick(function() {
-                that.receivedEvent(that.params.musicurl || "https://huiai.sleepeazz.com/vod/QinanSleepTraining_01.mp3");
-            })
+            // this.$nextTick(function() {
+            //     that.receivedEvent(that.params.musicurl || "https://huiai.sleepeazz.com/vod/QinanSleepTraining_01.mp3");
+            // })
             document.addEventListener('deviceready', function() {
                 that.receivedEvent(that.params.musicurl || "https://huiai.sleepeazz.com/vod/QinanSleepTraining_01.mp3")
             }, false);
