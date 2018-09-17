@@ -290,6 +290,31 @@ export default {
       try {
         const result = await axios.get(`/api/sugar/${args}?member_id=${window._member_id}`)
         if (result.data.code === 'C0000') {
+        	if(args != 'seven' ){
+        		let sugarData = result.data.data.map(item=>{
+                return item.empty_min+','+item.eaten_min+','+item.empty_max+','+item.eaten_max
+            })
+            sugarData=sugarData.map(item=>{
+                item=item.split(',')
+                item.sort(function(a,b){return a- b})
+                for(let i = 0;i<item.length;i++){
+                    if(item[i]==""||item[i]==undefined){
+                        item.splice(i, 1);
+                        i=i-1
+                    }
+                }
+                return item
+            })
+            let minSugar = sugarData.map(item=>{return item&&item.length?item[0]:""})
+            let maxSuger = sugarData.map(item=>{return item&&item.length?item[item.length-1]:''})
+            result.data.data = result.data.data.map((item,index)=>{
+                return {
+                    ...item,
+                    min:minSugar[index],
+                    max:maxSuger[index]
+                }
+            })
+        	}
           let s = args === 'seven'
             ? result
               .data
