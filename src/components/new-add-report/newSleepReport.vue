@@ -57,7 +57,7 @@
                 } else {
                     this.$router.push({
                         path: '/healthRecordsB',
-                        query: that.$route.query
+                        // query: that.$route.query
                     })
                 }
             }

@@ -75,10 +75,16 @@
         border-radius: 2.5rem;
         background-color: #10D6E2;
         &.up-bg{
-          background: #FF6E00;
+          background: #F65261;
         }
         &.low-bg{
-          background: #FF445A;
+          background: #2889B8;
+        }
+        &.little-up-bg{
+          background: #FF7E10;
+        }
+        &.little-low-bg{
+          background: #5DA2C5;
         }
         &.Standard-bg{
           background: #26A5FD;
@@ -133,10 +139,16 @@
           background-color: #26A5FD;
           border-radius: 4px;
           &.up-bg{
-            background: #FF6E00;
+            background: #F65261;
           }
           &.low-bg{
-            background: #FF445A;
+            background: #2889B8;
+          }
+          &.little-up-bg{
+            background: #FF7E10;
+          }
+          &.little-low-bg{
+            background: #5DA2C5;
           }
           &.Standard-bg{
             background: #26A5FD;

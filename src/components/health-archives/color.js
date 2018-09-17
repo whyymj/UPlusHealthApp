@@ -266,7 +266,7 @@ const weight = { //体重
     },
     '3': {
         level: 3,
-        status: '正常',
+        status: '标准',
         bg: '#26A5FD',
         tips: '体重正常',
         unit: "KG",
@@ -294,7 +294,7 @@ const weight = { //体重
 }
 
 export default function (name, level) {
-    level = Math.abs(level)
+    level = Math.abs(level);
     if (name == '血糖') {
         return sugar[level || 0];
     } else if (name == '体温') {

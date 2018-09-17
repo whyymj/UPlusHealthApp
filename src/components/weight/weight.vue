@@ -21,20 +21,23 @@
         <div class="weight-list-c">
           <div v-for="(item, index) in weightRecordData" :key="index" :class="['weight-record-list', 'card-container']" @click="openHealthTips(item.weight.weight_id)">
             <mt-cell-swipe :right="[
-                      {
-                          content: '<div class='+'record-delete'+'>'+
-                                    '<i class='+'icon-delete'+'></i>'+
-                                    '<span>不可恢复</span>'+
-                                  '</div>',
-                          style: { background: '#FF475D', color: '#fff'},
-                          handler: () => deleteRecord(index, item)
-                      }
-                  ]">
+                          {
+                              content: '<div class='+'record-delete'+'>'+
+                                        '<i class='+'icon-delete'+'></i>'+
+                                        '<span>不可恢复</span>'+
+                                      '</div>',
+                              style: { background: '#FF475D', color: '#fff'},
+                              handler: () => deleteRecord(index, item)
+                          }
+                      ]">
               <div :class="['record-item']">
                 <div class="record-mmHg">
-                  <div :class="[{'Standard-bg': item.suggestion.level === '1'},
-                                {'up-bg': item.suggestion.level === '2' || item.suggestion.level === '-2'},
-                                {'low-bg': item.suggestion.level === '3' || item.suggestion.level === '-3'},'icon-weight-c', 'text-center']">
+                  <div :class="[{'low-bg': item.suggestion.level === '1' ||item.suggestion.level === '-1'},
+                                    {'little-low-bg': item.suggestion.level === '2' || item.suggestion.level === '-2'},
+                                    {'Standard-bg': item.suggestion.level === '3' || item.suggestion.level === '-3'},
+                                      {'little-up-bg': item.suggestion.level === '4' || item.suggestion.level === '-4'},
+                                    {'up-bg': item.suggestion.level === '5' || item.suggestion.level === '-5'},
+                                    'icon-weight-c', 'text-center']">
                     <i class="icon-weight"></i>
                   </div>
                   <div class="mmHg">
@@ -45,13 +48,14 @@
                 </div>
                 <div class="record-heart text-right">
                   <div class="record-heart-value">
-                    <span :class="[{'Standard-bg': item.suggestion.level === '1'},
-                                {'up-bg': item.suggestion.level === '2' || item.suggestion.level === '-2'},
-                                {'low-bg': item.suggestion.level === '3' || item.suggestion.level === '-3'},
-                                  {'low-bg': item.suggestion.level === '4' || item.suggestion.level === '-4'},
-                                ]">
-                            {{item.suggestion.symptom}}
-                          </span>
+                    <span :class="[{'low-bg': item.suggestion.level === '1' ||item.suggestion.level === '-1'},
+                                    {'little-low-bg': item.suggestion.level === '2' || item.suggestion.level === '-2'},
+                                    {'Standard-bg': item.suggestion.level === '3' || item.suggestion.level === '-3'},
+                                      {'little-up-bg': item.suggestion.level === '4' || item.suggestion.level === '-4'},
+                                    {'up-bg': item.suggestion.level === '5' || item.suggestion.level === '-5'}
+                                    ]">
+                                {{item.suggestion.symptom}}
+                              </span>
                   </div>
                   <div class="record-heart-time">
                     <span>测量时间</span><span>{{item.weight.create_date.split(' ')[1].slice(0, -3)}}</span>
@@ -75,12 +79,12 @@
           <h2>趋势图</h2>
           <div class="chart-button-container clearfix">
             <span v-for="(option, index) in recordOptions" :key="index">
-                    <button :class="{active: option === selectedRecordOption}" @click="changeOption(option)">{{option}}</button>
-                  </span>
+                        <button :class="{active: option === selectedRecordOption}" @click="changeOption(option)">{{option}}</button>
+                      </span>
           </div>
           <!-- <div>
-                  <span>最近七次数据</span>
-                </div> -->
+                      <span>最近七次数据</span>
+                    </div> -->
           <div class="chart">
             <chart ref="weight" :options="weightChartsOption" :autoResize="true">
             </chart>
