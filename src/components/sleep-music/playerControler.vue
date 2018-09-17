@@ -88,23 +88,23 @@
                 return document.getElementById(id);
             },
             playAudio() {
-                this.playing = !this.playing;
+                this.playing = true;
                 var that = this;
                 if (!that.my_media) {
                     // 初始化Media对象
                     that.my_media = new Media(that.audioSrc, function() {}, function() {});
-                } else {
                 }
                 // 播放音频
-                that.my_media.play();
-                getDuration();
+                if (that.my_media && that.my_media.play) {
+                    that.my_media.play();
+                }
             },
             pauseAudio() {
                 var that = this;
                 if (that.my_media) {
                     that.my_media.pause();
                 }
-                that.playing = !that.playing;
+                that.playing = false;
             },
             receivedEvent(src) {
                 var that = this;
@@ -120,12 +120,16 @@
                         that.my_media = new Media(src, mediaSuccess, mediaError);
                     }
                     // 播放音频
-                    that.my_media.play();
+                    if (that.my_media && that.my_media.play) {
+                        that.my_media.play();
+                        that.playing = true;
+                    }
                 }
                 // 暂停播放音频文件
                 function pauseAudio() {
-                    if (that.my_media) {
+                    if (that.my_media && that.my_media.pause) {
                         that.my_media.pause();
+                        that.playing = false;
                     }
                 }
                 // 返回在音频文件的当前位置。
@@ -190,6 +194,7 @@
             },
         },
         beforeDestroy() {
+            console.log('页面销毁');
             this.my_media.stop();
             this.my_media.release();
         },
