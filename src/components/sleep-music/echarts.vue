@@ -3,7 +3,7 @@
         <div class="button nearest" :class="{active:active==0}" @click='getdata(0)'>最近七次</div>
         <div class="button week" :class="{active:active==1}" @click='getdata(1)'>周</div>
         <!-- <div class="button month" :class="{active:active==2}" @click='getdata(2)'>月</div>
-                                                                                                    <div class="button year" :class="{active:active==3}" @click='getdata(3)'>年</div> -->
+                                                                                                                    <div class="button year" :class="{active:active==3}" @click='getdata(3)'>年</div> -->
         <div id='main' ref='echarts'>
         </div>
         <div class="legend">
@@ -17,6 +17,7 @@
 </template>
 
 <script>
+    import bus from '../eventbus.js';
     export default {
         methods: {
             deleteRepeatDate(arr) { //去除同一天的数据
@@ -32,7 +33,13 @@
                 return newarr;
             },
             scaleEcharts() {
-                this.$emit('showbig')
+                this.$emit('showbig');
+                this.hideToolTips();
+            },
+            hideToolTips() {
+                this.myChart.dispatchAction({
+                    type: 'hideTip'
+                })
             },
             dealtime(time) { //将时间字符串化为小数
                 if (time) {
@@ -518,7 +525,7 @@
             },
             getAxisData() { //本周的
                 var myDate = new Date(); //获取今天日期
-                myDate.setDate(myDate.getDate() - myDate.getDay()+1);
+                myDate.setDate(myDate.getDate() - myDate.getDay() + 1);
                 var dateArray = [];
                 var dateTemp;
                 var flag = 1;
@@ -563,6 +570,7 @@
                         axisPointer: { // 坐标轴指示器，坐标轴触发有效
                             type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
                         },
+                        alwaysShowContent: false,
                         formatter: function(params) {
                             var tar;
                             if (params[1].value != '-') {
@@ -575,7 +583,6 @@
                                 endH,
                                 endM;
                             var time = tar.name;
-                            console.log(tar, '?????????????????????????')
                             startH = Math.floor(params[0].data);
                             startM = Math.round((params[0].data - startH) * 60);
                             endH = Math.floor(params[3].data) - 24;
@@ -729,6 +736,9 @@
         },
         mounted() {
             var that = this;
+            bus.$on('hideToolTips', function() {
+                that.hideToolTips();
+            })
             var echarts = require('echarts');
             // 基于准备好的dom，初始化echarts实例
             this.myChart = echarts.init(document.getElementById('main'));
