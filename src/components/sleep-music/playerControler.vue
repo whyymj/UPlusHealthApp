@@ -8,7 +8,7 @@
         </div>
         <div class="control">
             <img src="/static/musicPlayer/left.png" id='backThirtySec' alt="" class='left'>
-            <img src="/static/musicPlayer/play.png" alt="" class='play' v-if='playing' @click='playAudio' id="playSleepMusic">
+            <img src="/static/musicPlayer/play.png" alt="" class='play' v-if='!playing' @click='playAudio' id="playSleepMusic">
             <img src="/static/musicPlayer/pause.png" id="pauseSleepMusic" alt="" class='pause' @click='pauseAudio' v-else>
             <img src="/static/musicPlayer/right.png" id='goThirtySec' alt="" class='right'>
         </div>
@@ -88,11 +88,13 @@
                 return document.getElementById(id);
             },
             playAudio() {
-                that.playing = !that.playing;
+                this.playing = !this.playing;
                 var that = this;
                 if (!that.my_media) {
                     // 初始化Media对象
                     that.my_media = new Media(that.audioSrc, function() {}, function() {});
+                }else{
+
                 }
                 // 播放音频
                 that.my_media.play();
@@ -183,6 +185,7 @@
                     that.position = time;
                     that.my_media.seekTo(time * 1000);
                 }
+
                 playAudio();
                 getDuration();
                 getCurrent();
@@ -199,9 +202,9 @@
             var that = this;
             //初始化音频插件
             that.audioSrc = that.params.musicurl;
-            this.$nextTick(function() {
-                that.receivedEvent(that.params.musicurl || "https://huiai.sleepeazz.com/vod/QinanSleepTraining_01.mp3");
-            })
+            // this.$nextTick(function() {
+            //     that.receivedEvent(that.params.musicurl || "https://huiai.sleepeazz.com/vod/QinanSleepTraining_01.mp3");
+            // })
             document.addEventListener('deviceready', function() {
                 that.receivedEvent(that.params.musicurl || "https://huiai.sleepeazz.com/vod/QinanSleepTraining_01.mp3")
             }, false);
