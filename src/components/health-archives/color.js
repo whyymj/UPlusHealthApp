@@ -8,7 +8,7 @@ const sugar = { //血糖
         icon: "icon-blood-sugar",
         color: '#A3D0FF'
     },
-    '1': {
+    '-3': {
         level: 1,
         status: '最低',
         bg: '#2889B8',
@@ -17,7 +17,7 @@ const sugar = { //血糖
         icon: "icon-blood-sugar",
         color: '#fff'
     },
-    '2': {
+    '-2': {
         level: 2,
         status: '偏低',
         bg: '#5DA2C5',
@@ -26,7 +26,7 @@ const sugar = { //血糖
         icon: "icon-blood-sugar",
         color: '#fff'
     },
-    '3': {
+    '1': {
         level: 3,
         status: '正常',
         bg: '#26A5FD',
@@ -35,7 +35,7 @@ const sugar = { //血糖
         icon: "icon-blood-sugar",
         color: '#fff'
     },
-    '4': {
+    '2': {
         level: 4,
         status: '稍高',
         bg: '#FF7E10',
@@ -44,7 +44,7 @@ const sugar = { //血糖
         icon: "icon-blood-sugar",
         color: '#fff'
     },
-    '5': {
+    '3': {
         level: 5,
         status: '偏高',
         bg: '#F65261',
@@ -64,7 +64,7 @@ const sleep = { //睡眠
         icon: "ico-sleep_icon",
         color: '#A3D0FF'
     },
-    '1': {
+    '-2': {
         level: 1,
         status: '偏少',
         bg: '#5DA2C5',
@@ -73,7 +73,7 @@ const sleep = { //睡眠
         icon: "ico-sleep_icon",
         color: '#fff'
     },
-    '2': {
+    '1': {
         level: 2,
         status: '正常',
         bg: '#26A5FD',
@@ -82,7 +82,7 @@ const sleep = { //睡眠
         icon: "ico-sleep_icon",
         color: '#fff'
     },
-    '3': {
+    '2': {
         level: 3,
         status: '偏多',
         bg: '#FF7E10',
@@ -102,7 +102,7 @@ const temperature = { //体温
         icon: "icon-temperature",
         color: '#A3D0FF'
     },
-    '1': {
+    '-2': {
         level: 1,
         status: '偏低',
         bg: '#5DA2C5',
@@ -111,7 +111,7 @@ const temperature = { //体温
         icon: "icon-temperature",
         color: '#fff'
     },
-    '2': {
+    '1': {
         level: 2,
         status: '正常',
         bg: '#26A5FD',
@@ -120,7 +120,7 @@ const temperature = { //体温
         icon: "icon-temperature",
         color: '#fff'
     },
-    '3': {
+    '2': {
         level: 3,
         status: '偏高',
         bg: '#F65261',
@@ -139,6 +139,15 @@ const heartEle = { //心电
         unit: "/min",
         icon: "icon-ecg",
         color: '#A3D0FF'
+    },
+    '-2': {
+        level: 2,
+        status: '异常',
+        bg: '#FF7E10',
+        tips: '心电异常，请注意',
+        unit: "/min",
+        icon: "icon-ecg",
+        color: '#fff'
     },
     '1': {
         level: 1,
@@ -170,7 +179,7 @@ const oxy = { //血氧
         icon: 'icon-oxygen',
         color: '#A3D0FF'
     },
-    '1': {
+    '-2': {
         level: 1,
         status: '偏低',
         bg: '#5DA2C5',
@@ -179,7 +188,7 @@ const oxy = { //血氧
         icon: 'icon-oxygen',
         color: '#fff'
     },
-    '2': {
+    '1': {
         level: 2,
         status: '正常',
         bg: '#26A5FD',
@@ -188,7 +197,7 @@ const oxy = { //血氧
         icon: 'icon-oxygen',
         color: '#fff'
     },
-    '3': {
+    '2': {
         level: 3,
         status: '偏高',
         bg: '#F65261',
@@ -208,7 +217,7 @@ const pressure = { //血压
         icon: 'icon-pressure',
         color: '#A3D0FF'
     },
-    '1': {
+    '-2': {
         level: 1,
         status: '低压',
         bg: '#5DA2C5',
@@ -217,7 +226,7 @@ const pressure = { //血压
         icon: 'icon-pressure',
         color: '#fff'
     },
-    '2': {
+    '1': {
         level: 2,
         status: '正常',
         bg: '#26A5FD',
@@ -226,7 +235,7 @@ const pressure = { //血压
         icon: 'icon-pressure',
         color: '#fff'
     },
-    '3': {
+    '2': {
         level: 3,
         status: '高压',
         bg: '#F65261',
@@ -246,7 +255,7 @@ const weight = { //体重
         icon: 'icon-weight',
         color: '#A3D0FF'
     },
-    '1': {
+    '-3': {
         level: 1,
         status: '消瘦',
         bg: '#2889B8',
@@ -255,7 +264,7 @@ const weight = { //体重
         icon: 'icon-weight',
         color: '#fff'
     },
-    '2': {
+    '-2': {
         level: 2,
         status: '偏瘦',
         bg: '#5DA2C5',
@@ -264,7 +273,7 @@ const weight = { //体重
         icon: 'icon-weight',
         color: '#fff'
     },
-    '3': {
+    '1': {
         level: 3,
         status: '标准',
         bg: '#26A5FD',
@@ -273,7 +282,7 @@ const weight = { //体重
         icon: 'icon-weight',
         color: '#fff'
     },
-    '4': {
+    '2': {
         level: 4,
         status: '偏胖',
         bg: '#FF7E10',
@@ -282,7 +291,7 @@ const weight = { //体重
         icon: 'icon-weight',
         color: '#fff'
     },
-    '5': {
+    '3': {
         level: 5,
         status: '肥胖',
         bg: '#F65261',
@@ -294,21 +303,26 @@ const weight = { //体重
 }
 
 export default function (name, level) {
-    level = Math.abs(level);
+
+    var res = '';
     if (name == '血糖') {
-        return sugar[level || 0];
+        res = sugar[level || 0];
+        
     } else if (name == '体温') {
-        return temperature[level || 0]
+        res = temperature[level || 0]
     } else if (name == '心电') {
-        return heartEle[level || 0]
+        res = heartEle[level || 0]
     } else if (name == '血氧') {
-        return oxy[level || 0]
+        res = oxy[level || 0]
     } else if (name == '血压') {
-        return pressure[level || 0]
+        res = pressure[level || 0]
     } else if (name == '体重') {
-        return weight[level || 0]
+        res = weight[level || 0]
     } else if (name == '睡眠') {
-        return sleep[level || 0]
+        res = sleep[level || 0]
+    }
+    if (res) {
+        return res
     } else {
         return {
             level: 0,

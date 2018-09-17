@@ -32,11 +32,11 @@
                       ]">
               <div :class="['record-item']">
                 <div class="record-mmHg">
-                  <div :class="[{'low-bg': item.suggestion.level === '1' ||item.suggestion.level === '-1'},
-                                    {'little-low-bg': item.suggestion.level === '2' || item.suggestion.level === '-2'},
-                                    {'Standard-bg': item.suggestion.level === '3' || item.suggestion.level === '-3'},
-                                      {'little-up-bg': item.suggestion.level === '4' || item.suggestion.level === '-4'},
-                                    {'up-bg': item.suggestion.level === '5' || item.suggestion.level === '-5'},
+                  <div :class="[{'low-bg': item.suggestion.level === '-3'},
+                                    {'little-low-bg': item.suggestion.level === '-2'},
+                                    {'Standard-bg': item.suggestion.level === '1' },
+                                      {'little-up-bg': item.suggestion.level === '2'},
+                                    {'up-bg': item.suggestion.level === '3' },
                                     'icon-weight-c', 'text-center']">
                     <i class="icon-weight"></i>
                   </div>
@@ -48,11 +48,11 @@
                 </div>
                 <div class="record-heart text-right">
                   <div class="record-heart-value">
-                    <span :class="[{'low-bg': item.suggestion.level === '1' ||item.suggestion.level === '-1'},
-                                    {'little-low-bg': item.suggestion.level === '2' || item.suggestion.level === '-2'},
-                                    {'Standard-bg': item.suggestion.level === '3' || item.suggestion.level === '-3'},
-                                      {'little-up-bg': item.suggestion.level === '4' || item.suggestion.level === '-4'},
-                                    {'up-bg': item.suggestion.level === '5' || item.suggestion.level === '-5'}
+                    <span :class="[{'low-bg': item.suggestion.level === '-3'},
+                                    {'little-low-bg': item.suggestion.level === '-2'},
+                                    {'Standard-bg': item.suggestion.level === '1' },
+                                      {'little-up-bg': item.suggestion.level === '2'},
+                                    {'up-bg': item.suggestion.level === '3' },
                                     ]">
                                 {{item.suggestion.symptom}}
                               </span>

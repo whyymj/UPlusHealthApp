@@ -736,7 +736,7 @@
 						that.$router.replace({
 							path: '/healthRecordsB'
 						}) // 介绍页面
-						that.loadingmodal.close();
+						
 					} catch (err) {
 						that.loadingmodal.close();
 					}
