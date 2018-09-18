@@ -48,7 +48,7 @@
 					</div>
 				</mt-swipe-item>
 			</mt-swipe>
-			<p class='floatButton' @click="goFamilyManage"><img class='img' src="/static/healthArchives/index8.png" alt=""></p>
+			<p class='floatButton' @click="goFamilyManage"><img class='img' src="/static/healthArchives/index8.svg" alt=""></p>
 		</div>
 		<paginator :pagenum='pagenum' :pageindex='pageindex'></paginator>
 		<privacy :show="show"></privacy>

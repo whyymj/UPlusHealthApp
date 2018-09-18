@@ -147,22 +147,22 @@
                 sleepid: "",
                 items: [{
                         title: "上床",
-                        url: "/static/sleep-manue-input/img1.png",
+                        url: "/static/sleep-manue-input/img1.svg",
                         content: "00:00"
                     },
                     {
                         title: "睡着",
-                        url: "/static/sleep-manue-input/img2.png",
+                        url: "/static/sleep-manue-input/img2.svg",
                         content: "00:00"
                     },
                     {
                         title: "睡醒",
-                        url: "/static/sleep-manue-input/img3.png",
+                        url: "/static/sleep-manue-input/img3.svg",
                         content: "8:00"
                     },
                     {
                         title: "起床",
-                        url: "/static/sleep-manue-input/img4.png",
+                        url: "/static/sleep-manue-input/img4.svg",
                         content: "8:00"
                     }
                 ]

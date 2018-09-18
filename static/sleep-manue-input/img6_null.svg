@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>Rectangle 9</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="睡眠手动录入-icon未选择" transform="translate(-301.000000, -645.000000)">
+            <g id="Group-2" transform="translate(301.000000, 644.000000)">
+                <rect id="Rectangle-9" fill="#D8D8D8" opacity="0" x="0" y="0" width="30" height="30"></rect>
+                <ellipse id="Oval-Copy-7" fill="#DDDDDD" cx="13.6551724" cy="26.7586207" rx="6.27586207" ry="2.24137931"></ellipse>
+                <circle id="Oval-12" stroke="#999999" stroke-width="1.25" cx="13.6551724" cy="14.6551724" r="11.6551724"></circle>
+                <path d="M12.5072856,21.1490554 C13.8457095,20.5513543 15.1841334,20.2525037 16.5225574,20.2525037 C17.8609813,20.2525037 19.1994053,20.5513543 20.5378292,21.1490554" id="Path-56" stroke="#999999" stroke-width="1.12068966" stroke-linecap="round"></path>
+                <circle id="Oval-13" stroke="#999999" stroke-width="1.25" fill="#DDDDDD" cx="11.862069" cy="12.862069" r="1.79310345"></circle>
+                <circle id="Oval-13-Copy" stroke="#999999" stroke-width="1.25" fill="#DDDDDD" cx="20.8275862" cy="12.862069" r="1.79310345"></circle>
+                <path d="M23.463798,12.0353856 L23.5891075,12.0353856 C24.0150528,12.0353856 24.3603498,12.3806826 24.3603498,12.8066279 C24.3603498,12.845205 24.3574554,12.8837277 24.351691,12.9218717 L23.0319171,21.6549922 C22.965659,22.0934305 22.5888476,22.4175756 22.145431,22.4175756 L21.1235698,22.4175756 L22.577312,12.7979691 C22.6435701,12.3595308 23.0203815,12.0353856 23.463798,12.0353856 Z" id="Rectangle-7" stroke="#999999" stroke-width="1.25" fill="#DDDDDD" transform="translate(22.741960, 17.226481) rotate(-315.000000) translate(-22.741960, -17.226481) "></path>
+                <circle id="Oval-14" stroke="#999999" stroke-width="1.25" fill="#DDDDDD" cx="25.7586207" cy="15.1034483" r="2.24137931"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="44px" height="44px" viewBox="0 0 44 44" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>Rectangle 2</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Button/Color" transform="translate(-68.000000, -754.000000)">
+            <g id="Group-3" transform="translate(68.000000, 753.000000)">
+                <g id="Group-Copy" transform="translate(0.000000, 1.000000)">
+                    <rect id="Rectangle-2" fill="#D8D8D8" opacity="0" x="0" y="0" width="44" height="44"></rect>
+                    <g id="Group-2" transform="translate(29.500000, 22.000000) scale(-1, 1) translate(-29.500000, -22.000000) translate(18.000000, 13.000000)">
+                        <rect id="Rectangle" x="0" y="0" width="18" height="18"></rect>
+                        <path d="M2.66428125,16.4552947 L12.1412812,9.80498438 C12.7830703,9.35465379 12.7842891,8.62219369 12.1412812,8.1709793 L2.66428125,1.520669 C2.02251563,1.07033841 1.5,1.27957542 1.5,1.99000106 L1.5,15.9859827 C1.5,16.7019722 2.02125,16.9065292 2.66428125,16.4552947 Z" id="Shape" fill="#1E74C9" fill-rule="nonzero"></path>
+                        <path d="M3.61457812,17.4499187 C1.99457812,18.5867323 0,17.7893137 0,15.9859827 L0,1.98998097 C0,0.192655724 1.99546875,-0.610105765 3.61457812,0.526044985 L13.0915781,7.17635529 C14.4673594,8.1417741 14.4664687,9.83481226 13.0915781,10.7996084 L3.61457813,17.4499187 Z" id="Path" fill="#1E74C9"></path>
+                        <path d="M11.6145781,17.4499187 C9.99457813,18.5867323 8,17.7893137 8,15.9859827 L8,1.98998097 C8,0.192655724 9.99546875,-0.610105765 11.6145781,0.526044985 L21.0915781,7.17635529 C22.4673594,8.1417741 22.4664687,9.83481226 21.0915781,10.7996084 L11.6145781,17.4499187 Z" id="Path" fill="#1E74C9"></path>
+                        <path d="M10.6642813,16.4552947 L20.1412812,9.80498438 C20.7830703,9.35465379 20.7842891,8.62219369 20.1412812,8.1709793 L10.6642813,1.520669 C10.0225156,1.07033841 9.5,1.27957542 9.5,1.99000106 L9.5,15.9859827 C9.5,16.7019722 10.02125,16.9065292 10.6642813,16.4552947 Z" id="Shape-Copy" fill="#FFFFFF" fill-rule="nonzero"></path>
+                    </g>
+                    <text id="30" font-family="PingFangSC-Medium, PingFang SC" font-size="12" font-weight="400" fill="#1E74C9">
+                        <tspan x="3" y="26">30</tspan>
+                    </text>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

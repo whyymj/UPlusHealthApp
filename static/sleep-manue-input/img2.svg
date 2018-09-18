@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>Rectangle 4</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="睡眠手动录入" transform="translate(-16.000000, -179.000000)">
+            <g id="Group-15" transform="translate(16.000000, 179.000000)">
+                <rect id="Rectangle-4" x="0" y="0" width="30" height="30"></rect>
+                <ellipse id="Oval" fill="#81C1FF" cx="13" cy="24.5" rx="7" ry="2.5"></ellipse>
+                <path d="M18.5559589,5.68421338 C18.0148706,5.32198237 17.4364589,5.01116063 16.8277119,4.75873625 C15.6486797,4.26983615 14.3558516,4 13,4 C7.4771525,4 3,8.4771525 3,14 C3,19.5228475 7.4771525,24 13,24 C18.5228475,24 23,19.5228475 23,14 C23,13.3321702 22.9345353,12.6796306 22.809673,12.0484482 C22.7457311,11.7252201 22.6662125,11.4075928 22.5719318,11.0963812" id="Oval-6" stroke="#2283E2" stroke-width="1.25" stroke-linecap="round"></path>
+                <polyline id="Path-41" stroke="#2283E2" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" points="21.922656 5.81133407 25.2010595 4.08160278 23.7879758 8.21921385 26.605296 6.88760675"></polyline>
+                <polyline id="Path-40" stroke="#2283E2" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" points="14.2856367 10.8293552 16.1373941 9.79649594 15.2115154 12.0863775 17.0227414 11.3333773"></polyline>
+                <polyline id="Path-40-Copy" stroke="#2283E2" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" points="18.0088998 8.23217604 20.329542 7.14685041 19.3798049 10.1890542 21.5214456 9.06072699"></polyline>
+                <path d="M9.69227809,14.3016236 C11.3267421,15.0014843 12.7506657,15.0014843 13.9640487,14.3016236" id="Path-39" stroke="#2283E2" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M16.6922781,14.3016236 C18.3267421,15.0014843 19.7506657,15.0014843 20.9640487,14.3016236" id="Path-39-Copy" stroke="#2283E2" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path>
+                <circle id="Oval-7" stroke="#2283E2" stroke-width="1.25" fill="#81C1FF" cx="15.5" cy="19.5" r="1.5"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

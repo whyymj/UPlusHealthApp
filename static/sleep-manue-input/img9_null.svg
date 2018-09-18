@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>Rectangle 14</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="睡眠手动录入-icon未选择" transform="translate(-36.000000, -461.000000)">
+            <g id="Group-17" transform="translate(36.000000, 461.000000)">
+                <rect id="Rectangle-14" x="0" y="0" width="30" height="30"></rect>
+                <ellipse id="Oval" fill="#DDDDDD" cx="15" cy="27.5" rx="7" ry="2.5"></ellipse>
+                <circle id="Oval-8" stroke="#999999" stroke-width="1.25" cx="15" cy="14" r="13"></circle>
+                <path d="M18.5455371,11.4036394 L23.8866206,9.08347913" id="Path-42" stroke="#999999" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M18.2400207,14.5646735 C18.6516808,15.6430766 19.3344025,16.0669681 20.288186,15.836348 C21.2419694,15.6057279 21.7780564,14.6002662 21.8964468,12.819963 L18.2400207,14.5646735 Z" id="Path-43" stroke="#999999" stroke-width="1.25" fill="#DDDDDD"></path>
+                <path d="M6.11337942,11.4036394 L11.4544629,9.08347913" id="Path-42" stroke="#999999" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" transform="translate(8.783921, 10.243559) scale(-1, 1) translate(-8.783921, -10.243559) "></path>
+                <path d="M8.10355318,14.5646735 C8.51521322,15.6430766 9.19793495,16.0669681 10.1517184,15.836348 C11.1055018,15.6057279 11.6415888,14.6002662 11.7599793,12.819963 L8.10355318,14.5646735 Z" id="Path-43" stroke="#999999" stroke-width="1.25" fill="#DDDDDD" transform="translate(9.931766, 14.358628) scale(-1, 1) translate(-9.931766, -14.358628) "></path>
+                <path d="M12.7617588,22.8214298 C13.280522,21.4667059 14.0888573,20.7844109 15.1867648,20.7745447 C16.2846722,20.7646786 17.0759884,21.4469736 17.5607134,22.8214298" id="Path-44" stroke="#999999" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path>
+            </g>
+        </g>
+    </g>
+</svg>

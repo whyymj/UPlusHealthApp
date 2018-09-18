@@ -125,7 +125,8 @@ export default {
 				path:'/userInfoNickName',
 				query:{
 					from :that.route,
-					row:"nickName"
+					row:"nickName",
+					val:that.nickName
 				}
 			})
 		},
@@ -147,7 +148,8 @@ export default {
 				path:'/userInfoBirthday',
 				query:{
 					from:that.route,
-					row:"birthday"
+					row:"birthday",
+					val:that.birthday
 				}
 			})
 		},
@@ -199,7 +201,8 @@ export default {
 						path:'/userInfoSex',
 						query:{
 							from:that.route,
-							row:"sex"
+							row:"sex",
+							val:that.sex
 						}
 					})
 					break;

@@ -31,7 +31,6 @@
             },
             confirm(index) {
                 var that = this;
-            
                 this.$router.push({
                     path: that.params.from,
                     query: {
@@ -43,6 +42,7 @@
         },
         mounted() {
             this.params = this.$route.query;
+            this.sextmp = this.params.val == '男' ? 0 : 1;
         }
     }
 </script>

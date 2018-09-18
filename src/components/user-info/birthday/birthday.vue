@@ -40,7 +40,7 @@
                     path: that.params.from,
                     query: {
                         name: that.params.row,
-                        value: that.birthday  
+                        value: that.birthday
                     }
                 })
             },
@@ -55,6 +55,7 @@
                 if (this.birthdayarr[0] != this.thisyear) {
                     this.slots2 = [{
                         flex: 1,
+                        defaultIndex: (that.firstM < 1) ? (12 - that.defaultM) : 0,
                         values: [12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
                         className: "slot2",
                         textAlign: "center"
@@ -65,12 +66,15 @@
                         arr.push(i);
                         this.slots2 = [{
                             flex: 1,
+                            defaultIndex: (that.firstM < 1) ? (that.thismonth - that.defaultM) : 0,
                             values: arr,
                             className: "slot2",
                             textAlign: "center"
                         }]
                     }
                 }
+                
+                that.firstM = that.firstM + 1;
                 this.slots3 = [{
                     flex: 1,
                     values: days,
@@ -130,7 +134,10 @@
                 thisyear: '',
                 thismonth: "",
                 thisdate: "",
-                params:{}
+                defaultY: 0,
+                defaultM: 0,
+                defaultD: 0,
+                params: {}
             }
         },
         mounted() {
@@ -145,7 +152,13 @@
             this.thisyear = thisYear;
             this.thismonth = thisMonth;
             this.thisdate = today;
-            this.params=this.$route.query;
+            this.params = this.$route.query;
+            var tmp = '';
+            this.defaultY = this.params.val.split('年')[0] || thisYear;
+            tmp = this.params.val.split('年')[1];
+            this.defaultM = tmp.split('月')[0] || thisMonth;
+            tmp = tmp.split('月')[1];
+            this.defaultD = tmp.split('日')[0] || today;
             for (var i = thisYear; i >= 1900; i--) {
                 years.push(i);
             }
@@ -157,12 +170,14 @@
             }
             this.slots1 = [{
                 flex: 1,
+                defaultIndex: that.thisyear - that.defaultY || 0,
                 values: years,
                 className: "slot1",
                 textAlign: "center"
             }];
             this.slots2 = [{
                 flex: 1,
+                defaultIndex: that.thismonth - that.defaultM || 0,
                 values: months,
                 className: "slot2",
                 textAlign: "center"
@@ -170,6 +185,7 @@
             this.slots3 = [{
                 flex: 1,
                 values: days,
+                defaultIndex: that.thisdate - that.defaultD || 0,
                 className: "slot3",
                 textAlign: "center"
             }];

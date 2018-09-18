@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>Rectangle 9</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="睡眠手动录入" transform="translate(-300.000000, -645.000000)">
+            <g id="Group-2" transform="translate(300.000000, 645.000000)">
+                <rect id="Rectangle-9" fill="#D8D8D8" opacity="0" x="0" y="0" width="30" height="30"></rect>
+                <ellipse id="Oval-Copy-7" fill="#81C1FF" cx="14.6551724" cy="25.7586207" rx="6.27586207" ry="2.24137931"></ellipse>
+                <circle id="Oval-12" stroke="#2283E2" stroke-width="1.25" cx="14.6551724" cy="13.6551724" r="11.6551724"></circle>
+                <path d="M13.5072856,20.1490554 C14.8457095,19.5513543 16.1841334,19.2525037 17.5225574,19.2525037 C18.8609813,19.2525037 20.1994053,19.5513543 21.5378292,20.1490554" id="Path-56" stroke="#2283E2" stroke-width="1.12068966" stroke-linecap="round"></path>
+                <circle id="Oval-13" stroke="#2283E2" stroke-width="0.896551724" fill="#81C1FF" cx="12.862069" cy="11.862069" r="1.79310345"></circle>
+                <circle id="Oval-13-Copy" stroke="#2283E2" stroke-width="0.896551724" fill="#81C1FF" cx="21.8275862" cy="11.862069" r="1.79310345"></circle>
+                <path d="M24.463798,11.0353856 L24.5891075,11.0353856 C25.0150528,11.0353856 25.3603498,11.3806826 25.3603498,11.8066279 C25.3603498,11.845205 25.3574554,11.8837277 25.351691,11.9218717 L24.0319171,20.6549922 C23.965659,21.0934305 23.5888476,21.4175756 23.145431,21.4175756 L22.1235698,21.4175756 L23.577312,11.7979691 C23.6435701,11.3595308 24.0203815,11.0353856 24.463798,11.0353856 Z" id="Rectangle-7" stroke="#2283E2" stroke-width="0.896551724" fill="#81C1FF" transform="translate(23.741960, 16.226481) rotate(-315.000000) translate(-23.741960, -16.226481) "></path>
+                <circle id="Oval-14" stroke="#2283E2" stroke-width="0.896551724" fill="#81C1FF" cx="26.7586207" cy="14.1034483" r="2.24137931"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

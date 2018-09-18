@@ -7,10 +7,10 @@
             <span class='starttime'>{{getPosition}}</span><span class='endtime'>{{getDurationTime}}</span>
         </div>
         <div class="control">
-            <img src="/static/musicPlayer/left.png" id='backThirtySec' alt="" class='left'>
-            <img src="/static/musicPlayer/play.png" alt="" class='play' v-if='!playing' @click='playAudio' id="playSleepMusic">
+            <img src="/static/musicPlayer/left.svg" id='backThirtySec' alt="" class='left'>
+            <img src="/static/musicPlayer/play.svg" alt="" class='play' v-if='!playing' @click='playAudio' id="playSleepMusic">
             <img src="/static/musicPlayer/pause.png" id="pauseSleepMusic" alt="" class='pause' @click='pauseAudio' v-else>
-            <img src="/static/musicPlayer/right.png" id='goThirtySec' alt="" class='right'>
+            <img src="/static/musicPlayer/right.svg" id='goThirtySec' alt="" class='right'>
         </div>
     </div>
 </template>
