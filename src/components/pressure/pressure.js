@@ -318,7 +318,10 @@ export default {
                 foo[0] = params[0].name
               }
               let res = foo[0] + '<br/>'
-              for (let i = 0, length = params.length; i < length; i++) {
+              if(this.selectedRecordArgs == 'seven'){
+	                  res += params[0].seriesName + ': ' + params[0].value + 'mmHg'+ '<br/>'+params[2].seriesName + ': ' + params[2].value + 'mmHg'
+              }else{
+              	 for (let i = 0, length = params.length; i < length; i++) {
                 if (i % 2 === 0) {
                   params[i].value = !params[i].value
                     ? '--'
@@ -329,6 +332,8 @@ export default {
                   res += params[i].seriesName + ': ' + params[i].value + ' ~ ' + params[i + 1].value + '<br/>'
                 }
               }
+              }
+
               return res
             } else {
               if (this.selectedRecordArgs !== 'year' && this.selectedRecordArgs !== 'seven') {

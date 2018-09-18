@@ -290,6 +290,31 @@ export default {
       try {
         const result = await axios.get(`/api/sugar/${args}?member_id=${window._member_id}`)
         if (result.data.code === 'C0000') {
+        	if(args != 'seven' ){
+        		let sugarData = result.data.data.map(item=>{
+                return item.empty_min+','+item.eaten_min+','+item.empty_max+','+item.eaten_max
+            })
+            sugarData=sugarData.map(item=>{
+                item=item.split(',')
+                item.sort(function(a,b){return a- b})
+                for(let i = 0;i<item.length;i++){
+                    if(item[i]==""||item[i]==undefined){
+                        item.splice(i, 1);
+                        i=i-1
+                    }
+                }
+                return item
+            })
+            let minSugar = sugarData.map(item=>{return item&&item.length?item[0]:""})
+            let maxSuger = sugarData.map(item=>{return item&&item.length?item[item.length-1]:''})
+            result.data.data = result.data.data.map((item,index)=>{
+                return {
+                    ...item,
+                    min:minSugar[index],
+                    max:maxSuger[index]
+                }
+            })
+        	}
           let s = args === 'seven'
             ? result
               .data
@@ -509,12 +534,21 @@ export default {
                 foo[0].date = params[0].name
               }
               let res = foo[0].date + '<br/>'
-              for (let i = 0, length = params.length; i < length; i++) {
-                params[i].value = params[i].value === ''
-                  ? '--'
-                  : params[i].value + 'mmol/L'
-                res += params[i].seriesName + ': ' + params[i].value + '<br/>'
-              }
+//            for (let i = 0, length = params.length; i < length; i++) {
+//              params[i].value = params[i].value === ''
+//                ? '--'
+//                : params[i].value + 'mmol/L'
+//              res += params[i].seriesName + ': ' + params[i].value + '<br/>'
+//            }
+            
+              	let clickIndex = params[0].dataIndex
+              	let ee ={
+              		a:data[clickIndex].empty_min?data[clickIndex].empty_min:'--',
+              		b:data[clickIndex].empty_max?data[clickIndex].empty_max:'--',
+              		c:data[clickIndex].eaten_min?data[clickIndex].eaten_min:'--',
+              		d:data[clickIndex].eaten_max?data[clickIndex].eaten_max:'--',
+              	}
+              	res +=  "餐前：" + ee.a+'~'+ee.b+'mmol/L'+"<br/>"+"餐后："+ ee.c+'~'+ee.d+'mmol/L'
               return res
             } else {
               if (this.selectedRecordArgs !== 'year') {
