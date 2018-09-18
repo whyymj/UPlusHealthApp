@@ -1,10 +1,10 @@
 <template>
     <div class='sleepList'>
-        <h1>记录睡眠时间</h1>
+        <h1 style='width:17rem;padding:0;text-aligin:left;margin:auto;'>记录睡眠时间</h1>
         <div class='row' v-for='(item,index) in list' :key='index' @click='openPicker(index)'>
             <img :src="item.url" alt="">
             <span class="title">{{item.title}}</span>
-            <span class="cont">{{item.content}}</span>
+            <span class="cont">{{item.content|formater}}</span>
             <span></span>
         </div>
         <timepicker @confirm='confirm' :time_gap='time_gap'></timepicker>
@@ -20,6 +20,19 @@
     export default {
         components: {
             timepicker
+        },
+        filters: {
+            formater(str) {
+                var h, m, tmp;
+                if (typeof str == 'string') {
+                    tmp = str.split(':');
+                    h = tmp[0] * 1;
+                    m = tmp[1] * 1;
+                }
+                h = h > 9 ? h : ('0' + h);
+                m = m > 9 ? m : '0' + m;
+                return h + ':' + m;
+            }
         },
         props: ['list'],
         data() {
@@ -196,7 +209,6 @@
             bus.$on('whycannotsub', function() {
                 that.whycannotsub();
             })
-           
         }
     }
 </script>

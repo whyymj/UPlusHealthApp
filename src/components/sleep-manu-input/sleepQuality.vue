@@ -1,6 +1,6 @@
 <template>
     <div class='sleepList'>
-        <h1>记录睡眠质量</h1>
+        <h1 style='width:17rem;padding:0;text-aligin:left;margin:auto;'>记录睡眠质量</h1>
         <h2>睡眠质量</h2>
         <div class='row'>
             <ul>

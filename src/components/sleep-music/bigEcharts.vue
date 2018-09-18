@@ -3,7 +3,7 @@
 		<div class="button nearest" :class="{active:active==0}" @click='getdata(0)'>最近七次</div>
 		<div class="button week" :class="{active:active==1}" @click='getdata(1)'>周</div>
 		<!-- <div class="button month" :class="{active:active==2}" @click='getdata(2)'>月</div>
-															<div class="button year" :class="{active:active==3}" @click='getdata(3)'>年</div> -->
+																			<div class="button year" :class="{active:active==3}" @click='getdata(3)'>年</div> -->
 		<div id='main2' ref='echarts'>
 		</div>
 		<div class="legend">
@@ -257,9 +257,70 @@
 						});
 						that.setOptions();
 						that.myChart.setOption(that.option);
+					} else {
+						var list = [];
+						var formate = [];
+						that.option.yAxis = {
+							type: 'category',
+							inverse: true,
+							splitLine: {
+								show: true,
+								lineStyle: {
+									type: 'dashed'
+								}
+							},
+							axisLine: {
+								lineStyle: {
+									color: '#ccc'
+								}
+							},
+							splitNumber: list.length,
+							axisLabel: {
+								color: '#333',
+								rotate: -90,
+								formatter: function(item, index) {
+									return ''
+								}
+							},
+							data: ''
+						}
+						that.sleeplengthtimes = [];
+						window.sleep_xaxis_arr = [];
+						that.setOptions();
+						that.myChart.setOption(that.option);
 					}
 					that.myChart.hideLoading();
 				}).catch(function() {
+					var list = [];
+					var formate = [];
+					that.option.yAxis = {
+						type: 'category',
+						inverse: true,
+						splitLine: {
+							show: true,
+							lineStyle: {
+								type: 'dashed'
+							}
+						},
+						axisLine: {
+							lineStyle: {
+								color: '#ccc'
+							}
+						},
+						splitNumber: list.length,
+						axisLabel: {
+							color: '#333',
+							rotate: -90,
+							formatter: function(item, index) {
+								return ''
+							}
+						},
+						data: ''
+					}
+					that.sleeplengthtimes = [];
+					window.sleep_xaxis_arr = [];
+					that.setOptions();
+					that.myChart.setOption(that.option);
 					that.myChart.hideLoading();
 					if (process.env.NODE_ENV == 'development') {
 						that.$axios.get('/static/testData/getByLastSeven.json').then(function(res) {
@@ -324,14 +385,14 @@
 					member_id: window._member_id,
 				}).then(function(res) {
 					if (res.data.code === 'C0000') {
-						var list =that.deleteRepeatDate(res.data.data.map(function(item, index) {
+						var list = that.deleteRepeatDate(res.data.data.map(function(item, index) {
 							var newitem = item;
 							newitem.date = new Date(item.create_date.replace('-', '/')).getDay() - 1;
 							if (newitem.date == -1) {
 								newitem.date = 6;
 							}
 							return newitem;
-						})) .sort(function(a, b) {
+						})).sort(function(a, b) {
 							return a.date - b.date;
 						});
 						list = that.fillThisWeekArr(list);
@@ -345,9 +406,18 @@
 						});
 						that.setOptions();
 						that.myChart.setOption(that.option);
+					} else {
+						var list = [];
+						that.sleeplengthtimes = [];
+						that.setOptions();
+						that.myChart.setOption(that.option);
 					}
 					that.myChart.hideLoading();
 				}).catch(function() {
+					var list = [];
+					that.sleeplengthtimes = [];
+					that.setOptions();
+					that.myChart.setOption(that.option);
 					that.myChart.hideLoading();
 					if (process.env.NODE_ENV == 'development') {
 						that.$axios.get('/static/testData/getByWeek.json').then(function(res) {
@@ -524,7 +594,7 @@
 			},
 			getAxisData() { //本周的
 				var myDate = new Date(); //获取今天日期
-				myDate.setDate(myDate.getDate() - myDate.getDay()+1);
+				myDate.setDate(myDate.getDate() - myDate.getDay() + 1);
 				var dateArray = [];
 				var dateTemp;
 				var flag = 1;

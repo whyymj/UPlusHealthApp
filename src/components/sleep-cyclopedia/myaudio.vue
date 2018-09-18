@@ -1,7 +1,7 @@
 <template>
     <div class='playerController'>
         <div id="textaudio1" style="margin-top: 60px"></div>
-        <h2>{{level}}</h2>
+        <img src="/static/musicPlayer/bigImg.jpg" alt="" class='bigImg'>
         <div class='progressBar'>
             <el-progress :percentage="percent" style='margin-top:2rem;' :show-text=false></el-progress>
             <span class='starttime'>{{getPosition}}</span><span class='endtime'>{{getDurationTime}}</span>
@@ -29,18 +29,6 @@
             Loading
         },
         computed: {
-            level() {
-                var title = this.params.name;
-                var level = '';
-                if (this.params.level == 1) {
-                    level = '初级'
-                } else if (this.params.level == 2) {
-                    level = '中级'
-                } else if (this.params.level == 3) {
-                    level = '高级'
-                }
-                return title + "(" + level + ")"
-            },
             getPosition() {
                 var h = 0,
                     m = 0,
@@ -70,7 +58,6 @@
         },
         data() {
             return {
-                wxAudio: '',
                 playing: true,
                 audio: '',
                 params: '',
@@ -194,21 +181,37 @@
             },
         },
         beforeDestroy() {
-            console.log('页面销毁');
             this.my_media.stop();
             this.my_media.release();
         },
+        props: ['musicparams'],
+        watch: {
+            musicparams() {
+                if (this.my_media) {
+                    this.my_media.stop();
+                    this.my_media.release();
+                }
+                this.params = this.musicparams;
+                var that = this;
+                //初始化音频插件
+                that.audioSrc = that.params.musicurl;
+                if (typeof that.audioSrc == 'string' && that.audioSrc !== '') {
+                    this.$nextTick(function() {
+                        that.receivedEvent(that.params.musicurl)
+                    })
+                }
+            }
+        },
         mounted() { //h5实现的方式
-            this.params = this.$route.query;
+            this.params = this.musicparams;
             var that = this;
             //初始化音频插件
             that.audioSrc = that.params.musicurl;
-            // this.$nextTick(function() {
-            //     that.receivedEvent(that.params.musicurl || "https://huiai.sleepeazz.com/vod/QinanSleepTraining_01.mp3");
-            // })
-            document.addEventListener('deviceready', function() {
-                that.receivedEvent(that.params.musicurl || "https://huiai.sleepeazz.com/vod/QinanSleepTraining_01.mp3")
-            }, false);
+            if (typeof that.audioSrc == 'string' && that.audioSrc !== '') {
+                document.addEventListener('deviceready', function() {
+                    that.receivedEvent(that.params.musicurl)
+                }, false);
+            }
             this.loadingmodal = Loading.service({
                 fullscreen: true,
                 background: 'rgba(0, 0, 0, 0.7)',
@@ -228,6 +231,13 @@
         width: 16rem;
         position: relative;
         margin: auto;
+        .bigImg {
+            width: 15rem;
+            height: 15rem;
+            margin: 2rem auto 1rem;
+            display: block;
+            box-shadow: 0.3rem 0.3rem 2rem #bbb;
+        }
         .progressBar {
             position: relative;
             width: 100%;

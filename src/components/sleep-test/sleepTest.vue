@@ -58,7 +58,7 @@
             this.$axios.post('/api/setUserTemplate', {
                 templateId: params.templateId,
                 tuId: params.tuId,
-                 member_id: window._member_id,
+                member_id: window._member_id,
             }).then(function(res) {
                 that.loadingmodal.close();
                 if (params.status === 0 || params.status === '0') { //中途退出
@@ -69,6 +69,7 @@
                     });
                 }
                 if (res.data.code === 'C0000') {
+                    params.tuId=res.data.data.tuId;
                     that.questions = res.data.data.templateLineList.map(function(item, index) {
                         var options = item.selectItemList;
                         var tmp = tempArr[index];
@@ -107,14 +108,14 @@
                             tuId: params.tuId
                         }
                     });
-                    console.log('questions:::', that.questions, '>>>', localStorage['saveUsersleepTemplate' + params.tuId]);
+                    
                     if (initArr.length > 0) {
                         localStorage['saveUsersleepTemplate' + params.tuId] = initArr.join('|'); //刷新缓存
                     }
                 }
             }).catch(function(res) {
                 that.loadingmodal.close();
-                console.log(res)
+                
                 if (process.env.NODE_ENV == 'development') {
                     that.$axios.get('/static/testData/setUserTemplate.json').then(function(res) {
                         if (params.status === 0 || params.status === '0') { //中途退出

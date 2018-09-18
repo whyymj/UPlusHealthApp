@@ -5,7 +5,7 @@
                 <img :src="item.img" alt="" class='bgimg'>
                 <h6>{{item.title}}</h6>
                 <span>{{item.type||'图文'}}</span>
-                <img :src="turnimg(item.type)"  alt="" class='iconimg'>
+                <img :src="turnimg(item.type)" alt="" class='iconimg'>
             </li>
         </ul>
     </div>
@@ -16,21 +16,27 @@
         props: ['list'],
         methods: {
             turnimg(item) {
-                
                 if (item.indexOf('漫画') != -1) {
                     return '/static/sleep_cyclopedia/news.png'
                 } else if (item.indexOf('音频') != -1) {
                     return '/static/sleep_cyclopedia/music.png'
                 } else if (item.indexOf('视频') != -1) {
                     return '/static/sleep_cyclopedia/audio.png'
-                }else{
-                     return '/static/sleep_cyclopedia/news.png'
+                } else {
+                    return '/static/sleep_cyclopedia/news.png'
                 }
             },
             turnTo(url) {
+                var newurl = url;
+                newurl.name = url.title.split('|')[1] || url.title;
+                newurl.time = 0;
+                newurl.level = '';
+                newurl.imgurl = '';
+                newurl.musicurl = '';
+                
                 this.$router.push({
-                    path:'/getSleepWiki',
-                    query:url
+                    path: '/getSleepWiki',
+                    query: newurl
                 })
                 // window.location.href = url;
             }
@@ -69,7 +75,6 @@
                     width: 100%;
                     height: 100%;
                 }
-              
                 .iconimg {
                     width: 2.5rem;
                     height: 2.5rem;

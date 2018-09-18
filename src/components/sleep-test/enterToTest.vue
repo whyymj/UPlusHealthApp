@@ -49,6 +49,7 @@
                         if (res.data.code == 'C0000') {
                             that.showlist = that.questionslist[title] = res.data.data.map(function(item, index) {
                                 return {
+                                    tuId:item.tuId,
                                     title: item.templateTitle,
                                     detail: item.templateSubTitle,
                                     meta: item,
@@ -134,6 +135,7 @@
         left: 0;
         right: 0;
         background: #fff;
+        -webkit-overflow-scrolling: touch;
         .el-tabs__nav-scroll {
             position: relative;
             height: 2rem;

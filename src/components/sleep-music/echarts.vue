@@ -3,7 +3,7 @@
         <div class="button nearest" :class="{active:active==0}" @click='getdata(0)'>最近七次</div>
         <div class="button week" :class="{active:active==1}" @click='getdata(1)'>周</div>
         <!-- <div class="button month" :class="{active:active==2}" @click='getdata(2)'>月</div>
-                                                                                                                    <div class="button year" :class="{active:active==3}" @click='getdata(3)'>年</div> -->
+                                                                                                                                                <div class="button year" :class="{active:active==3}" @click='getdata(3)'>年</div> -->
         <div id='main' ref='echarts'>
         </div>
         <div class="legend">
@@ -263,8 +263,69 @@
                         that.setOptions();
                         that.myChart.setOption(that.option);
                         that.myChart.hideLoading();
+                    } else {
+                        var list = [];
+                        var formate = [];
+                        that.option.xAxis = {
+                            type: 'category',
+                            splitLine: {
+                                show: true,
+                                lineStyle: {
+                                    type: 'dashed'
+                                }
+                            },
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#ccc'
+                                }
+                            },
+                            splitNumber: list.length,
+                            axisLabel: {
+                                color: '#333',
+                                rotate: -70,
+                                formatter: function(item, index) {
+                                    return ''
+                                }
+                            },
+                            data: ''
+                        }
+                        that.sleeplengthtimes = [];
+                        window.sleep_xaxis_arr = [];
+                        that.setOptions();
+                        that.myChart.setOption(that.option);
+                        that.myChart.hideLoading();
                     }
                 }).catch(function() {
+                    var list = [];
+                    var formate = [];
+                    that.option.xAxis = {
+                        type: 'category',
+                        splitLine: {
+                            show: true,
+                            lineStyle: {
+                                type: 'dashed'
+                            }
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: '#ccc'
+                            }
+                        },
+                        splitNumber: list.length,
+                        axisLabel: {
+                            color: '#333',
+                            rotate: -70,
+                            formatter: function(item, index) {
+                                return ''
+                            }
+                        },
+                        data: ''
+                    }
+                    that.sleeplengthtimes = [];
+                    window.sleep_xaxis_arr = [];
+                    that.setOptions();
+                    that.myChart.setOption(that.option);
+                    that.myChart.hideLoading();
                     if (process.env.NODE_ENV == 'development') {
                         that.$axios.get('/static/testData/getByLastSeven.json').then(function(res) {
                             if (res.data.code === 'C0000') {
@@ -350,8 +411,17 @@
                         that.setOptions();
                         that.myChart.setOption(that.option);
                         that.myChart.hideLoading();
+                    } else {
+                        that.sleeplengthtimes = [];
+                        that.setOptions();
+                        that.myChart.setOption(that.option);
+                        that.myChart.hideLoading();
                     }
                 }).catch(function() {
+                    that.sleeplengthtimes = [];
+                    that.setOptions();
+                    that.myChart.setOption(that.option);
+                    that.myChart.hideLoading();
                     if (process.env.NODE_ENV == 'development') {
                         that.$axios.get('/static/testData/getByWeek.json').then(function(res) {
                             if (res.data.code === 'C0000') {
@@ -373,7 +443,6 @@
                                 });
                                 that.setOptions();
                                 that.myChart.setOption(that.option);
-                                that.myChart.hideLoading();
                             }
                         });
                     }

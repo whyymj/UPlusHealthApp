@@ -65,6 +65,7 @@
     import {
         Toast
     } from 'mint-ui';
+    import bus from '../eventbus.js';
     export default {
         name: "sleepMusicList",
         components: {
@@ -107,13 +108,13 @@
                 activeSpan: 0,
                 paramslist: [],
                 sleepAboutData: [{
-                    title: '睡眠测试(本服务由寝安睡眠提供)',
+                    title: '睡眠测试',
                     content: '睡眠小测试，了解自己的睡眠问题。',
                     src: "/static/sleepMusicList/exm1.jpg",
                     link: '测一测',
                     linkurl: '/enterToTest'
                 }, {
-                    title: '睡眠百科（本服务由寝安睡眠提供',
+                    title: '睡眠百科',
                     content: '睡眠小百科，睡眠知识全收录。',
                     src: "/static/sleepMusicList/exm2.jpg",
                     link: '立刻围观',
@@ -429,6 +430,9 @@
                 window.localStorage.UPlusApp_firstLogin_sleepMusicList = true;
             }
             var that = this;
+            bus.$on('toManuInput', function() {
+                that.toManuInput();
+            })
             this.$axios.post('/api/getSleepPractice').then(function(res) {
                 if (res.data.code == 'C0000') {
                     that.list = res.data.data.map(function(item) {
@@ -607,6 +611,7 @@
 
 <style lang='scss'>
     .page1 {
+        
         padding-bottom: 3rem;
         .tipDeleteData {
             width: 17.15rem;
@@ -626,6 +631,7 @@
         }
     }
     .page2 {
+
         position: fixed;
         top: 3rem;
         bottom: 0;
@@ -655,6 +661,7 @@
         }
     }
     .sleepMusic {
+        -webkit-overflow-scrolling: touch;
         background: #fff;
         width: 100%;
         .tabbars {
@@ -681,6 +688,7 @@
             }
         }
         .content {
+            -webkit-overflow-scrolling: touch;
             width: 100%;
             position: absolute;
             top: 3rem;
@@ -689,6 +697,7 @@
             right: 0;
             .page {
                 position: absolute;
+                -webkit-overflow-scrolling: touch;
                 top: 0;
                 bottom: 0;
                 left: 0;
@@ -696,9 +705,9 @@
                 overflow: auto;
                 .buttons {
                     width: 100%;
-                    height: 2rem;
+                    height: 2.5rem;
                     position: fixed;
-                    z-index:10000;
+                    z-index: 10000;
                     bottom: 0;
                     margin: 1rem auto 0;
                     .manuinput,
@@ -712,7 +721,7 @@
                         color: rgba(255, 255, 255, 1);
                         text-align: center;
                         box-sizing: border-box;
-                        line-height: 2rem;
+                        line-height: 2.5rem;
                         text-align: center;
                         background: #26A6FF;
                     }

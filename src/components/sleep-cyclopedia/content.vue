@@ -1,28 +1,42 @@
 <template>
     <div class='sleep_cyclopedia_content'>
         <h1>{{title}}</h1>
-        <div class='body' v-html="cont"></div>
+        <myAudio v-if='isAudio' :musicparams='audioUrl'></myAudio>
+        <div class='body' v-html="cont" v-else></div>
     </div>
 </template>
 
 <script>
+    import myAudio from './myaudio';
     export default {
         props: [],
+        components: {
+            myAudio
+        },
         data() {
             return {
                 title: '',
-                cont: ''
+                cont: '',
+                isAudio: false, //判断是否是音频
+                audioUrl: ''
             }
         },
         mounted() {
             var that = this;
             var params = this.$route.query;
             this.title = params.title;
-            this.$axios.post('/api/getSleepWiki',{
-                postId:params.postId
+            this.$axios.post('/api/getSleepWiki', {
+                postId: params.postId
             }).then(function(res) {
+                var reg = /.*src="(.*?)".*/;
                 if (res.data.code == 'C0000') {
-                    that.cont = res.data.data.wikiContent
+                    that.cont = res.data.data.wikiContent;
+                    if (that.cont.indexOf('<audio') != -1) {
+                        that.isAudio = true;
+                        that.audioUrl = {
+                            musicurl: reg.exec(that.cont)[1]
+                        }
+                    }
                 }
             }).catch(function(res) {
                 that.$axios.get('/static/testData/getSleepWiki.json').then(function(res) {
