@@ -534,12 +534,21 @@ export default {
                 foo[0].date = params[0].name
               }
               let res = foo[0].date + '<br/>'
-              for (let i = 0, length = params.length; i < length; i++) {
-                params[i].value = params[i].value === ''
-                  ? '--'
-                  : params[i].value + 'mmol/L'
-                res += params[i].seriesName + ': ' + params[i].value + '<br/>'
-              }
+//            for (let i = 0, length = params.length; i < length; i++) {
+//              params[i].value = params[i].value === ''
+//                ? '--'
+//                : params[i].value + 'mmol/L'
+//              res += params[i].seriesName + ': ' + params[i].value + '<br/>'
+//            }
+            
+              	let clickIndex = params[0].dataIndex
+              	let ee ={
+              		a:data[clickIndex].empty_min?data[clickIndex].empty_min:'--',
+              		b:data[clickIndex].empty_max?data[clickIndex].empty_max:'--',
+              		c:data[clickIndex].eaten_min?data[clickIndex].eaten_min:'--',
+              		d:data[clickIndex].eaten_max?data[clickIndex].eaten_max:'--',
+              	}
+              	res +=  "餐前：" + ee.a+'~'+ee.b+'mmol/L'+"<br/>"+"餐后："+ ee.c+'~'+ee.d+'mmol/L'
               return res
             } else {
               if (this.selectedRecordArgs !== 'year') {
