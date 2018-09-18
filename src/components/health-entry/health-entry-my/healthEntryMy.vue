@@ -95,20 +95,22 @@
         </el-dialog>
         <!-- 身高选择 -->
         <mt-popup v-model="height_picker" class='height_picker' position="bottom">
-            <div style='width:18.75rem;'>
+            <div style='width:18.75rem;position:relative;overflow:hidden;'>
                 <ul class=' confirmbutton confirm_birthday'>
                     <li @click="cancel('height')">取消</li>
                     <li @click="confirm('height')">确认</li>
                 </ul>
+                <span class="height_unit">厘米</span>
                 <mt-picker :slots="tallarr" @change="select_tall"></mt-picker>
             </div>
         </mt-popup>
         <mt-popup v-model="weight_picker" class='weight_picker' position="bottom">
-            <div style='width:18.75rem;'>
+            <div style='width:18.75rem;position:relative;overflow:hidden;'>
                 <ul class=' confirmbutton confirm_birthday'>
                     <li @click="cancel('weight')">取消</li>
                     <li @click="confirm('weight')">确认</li>
                 </ul>
+                <span class="weight_unit">公斤</span>
                 <mt-picker :slots="weightarr1" @change="select_weight1"></mt-picker>
                 <mt-picker :slots="weightarr2" @change="select_weight2"></mt-picker>
             </div>
@@ -220,7 +222,12 @@
         },
         mounted() {
             this.route = this.$route.query.from || '';
-            var userinfo = JSON.parse(window.localStorage.uplus_sleep_user_info)
+            var userinfo = (typeof window.localStorage.uplus_sleep_user_info == 'string') ? JSON.parse(window.localStorage.uplus_sleep_user_info) : {
+                height: '',
+                weight: '',
+                birthday: '',
+                sex: ''
+            };
             var that = this;
             var years = [];
             var months = [];
@@ -278,10 +285,10 @@
                 textAlign: "center"
             }];
             this.birthdayarr = [thisYear, thisMonth, today];
-            this.tall = userinfo.height+'厘米';
-            this.weight = userinfo.weight+'公斤';
-            this.birthday = userinfo.birthday.replace('-','年').replace('-','月');
-            this.sex = userinfo.sex=='male'?'男':'女';
+            this.tall = userinfo.height + '厘米';
+            this.weight = userinfo.weight + '公斤';
+            this.birthday = userinfo.birthday.replace('-', '年').replace('-', '月');
+            this.sex = userinfo.sex == 'male' ? '男' : '女';
             this.$axios.post('/api/getDiseaseList').then(function(res) {
                 that.loadingmodal.close();
                 if (res.data.code == 'C0000') {
@@ -614,6 +621,18 @@
             .picker {
                 width: 100%;
             }
+             .height_unit {
+                position: absolute;
+                bottom: 81px;
+                right: 28%;
+                height: 1rem;
+                line-height: 1rem;
+                width: 2.5rem;
+                font-size: 0.8rem;
+                font-family: 'PingFangSC-Regular';
+                font-weight: 400;
+                color: rgba(51, 51, 51, 1);
+            }
         }
         .body_121 {
             position: relative;
@@ -707,6 +726,18 @@
         }
         .weight_picker {
             width: 18.75rem;
+            .weight_unit {
+                position: absolute;
+                bottom: 81px;
+                right: 1.1rem;
+                height: 1rem;
+                line-height: 1rem;
+                width: 2.5rem;
+                font-size: 0.8rem;
+                font-family: 'PingFangSC-Regular';
+                font-weight: 400;
+                color: rgba(51, 51, 51, 1);
+            }
             .picker {
                 width: 50%;
                 float: left;

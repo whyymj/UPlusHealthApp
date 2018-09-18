@@ -2,7 +2,7 @@
     <div class="sleepManuInput">
         <sleeptime :list='items' @getSleepTimes='getSleepTimes'></sleeptime>
         <sleepquality :quality='quality' :factors='factors' @chooseQuality='chooseQuality' @chooseFactor='chooseFactor'></sleepquality>
-        <div class="button" :class='{canSubmit:(cansub&&sleepfactors!==""&&sleepqualityres!=="")}' @click='submitResult'>保存</div>
+        <div class="button" :class='{canSubmit:(cansub&&sleepqualityres!=="")}' @click='submitResult'>保存</div>
     </div>
 </template>
 
@@ -77,8 +77,8 @@
                     } else {
                         getupTime = that.today + ' ' + getupTime;
                     }
-                    if (that.sleepqualityres === '' || that.sleepfactors === '') {
-                        MessageBox.alert('请选择睡眠质量与影响因素', '请完成内容选择');
+                    if (that.sleepqualityres === '' ) {
+                        MessageBox.alert('请选择睡眠质量', '请完成内容选择');
                     } else {
                         this.loadingModal = Loading.service({
                             fullscreen: true,

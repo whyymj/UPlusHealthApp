@@ -13,10 +13,10 @@
 				</mt-cell>
 			</div>
 			<!--<div @click="openPicker(4)">
-										        <mt-cell title="性别" is-link>
-										          <span>{{sex}}</span>
-										        </mt-cell>
-										      </div>-->
+														        <mt-cell title="性别" is-link>
+														          <span>{{sex}}</span>
+														        </mt-cell>
+														      </div>-->
 			<div @click="openBirthDay('pickerBD')">
 				<mt-cell title="生日" is-link>
 					<span>{{birthday}}</span>
@@ -49,8 +49,8 @@
 			</mt-cell>
 		</div>
 		<!--<div class="div_magin">
-										      <mt-cell title="隐私设置" is-link :to="{ name: 'privacySet' }"/>
-										    </div>-->
+														      <mt-cell title="隐私设置" is-link :to="{ name: 'privacySet' }"/>
+														    </div>-->
 		<div class="deleteFamily" @click="openDeleteFamily">
 			删除家人
 		</div>
@@ -96,6 +96,9 @@
 	import axios from "axios"
 	export default {
 		mixins: [myloading],
+		filters: {
+			formater(val) {}
+		},
 		data() {
 			return {
 				// action sheet 选项内容
@@ -112,15 +115,15 @@
 				dateSlots: [],
 				valuePicker: null,
 				pickerIndex: null,
-				nickName: "nick", //昵称
+				nickName: "请输入昵称", //昵称
 				sex: "男", //性别
 				startDate: new Date('1920-01-01'),
 				endDate: new Date(),
-				defaultBirthday: "1980-1-1", //默认生日
-				birthday: "1980-1-1", //生日
-				heightValue: "181cm", //身高
-				weightValue: "75kg", //体重
-				targetWeightValue: "74kg", //目标体重
+				defaultBirthday: "请选择生日", //默认生日
+				birthday: "请选择生日", //生日
+				heightValue: "请选择身高", //身高
+				weightValue: "请选择体重", //体重
+				targetWeightValue: "请选择目标体重", //目标体重
 				headPic: '', //头像
 				disease: null, //慢病
 				allergy: null, //过敏
@@ -234,7 +237,8 @@
 					path: '/userInfoNickName',
 					query: {
 						from: that.route,
-						row: "nickName"
+						row: "nickName",
+						val: that.nickName == '请输入昵称' ? '' : that.nickName
 					}
 				})
 			},
@@ -256,7 +260,8 @@
 					path: '/userInfoBirthday',
 					query: {
 						from: that.route,
-						row: "birthday"
+						row: "birthday",
+						val: that.birthday == '请选择生日' ? '' : that.birthday
 					}
 				})
 			},
@@ -281,7 +286,8 @@
 							path: '/userInfoHeight',
 							query: {
 								from: that.route,
-								row: "heightValue"
+								row: "heightValue",
+								val: that.heightValue == '请选择身高' ? "" : that.heightValue
 							}
 						})
 						break
@@ -290,7 +296,8 @@
 							path: '/userInfoWeight',
 							query: {
 								from: that.route,
-								row: "weightValue"
+								row: "weightValue",
+								val: that.weightValue == "请选择体重" ? "" : that.weightValue
 							}
 						})
 						break
@@ -299,7 +306,8 @@
 							path: '/userInfoWeight',
 							query: {
 								from: that.route,
-								row: "targetWeightValue"
+								row: "targetWeightValue",
+								val: that.targetWeightValue == '请选择目标体重' ? "" : that.targetWeightValue
 							}
 						})
 						break;
@@ -459,7 +467,7 @@
 	}
 	.deleteFamilybox {
 		width: 17.15rem;
-		position:absolute;
+		position: absolute;
 		bottom: 5rem;
 		left: 0.85rem;
 	}
@@ -469,9 +477,9 @@
 		height: 2.35rem;
 		line-height: 2.35rem;
 		border-radius: 0.4rem;
-		position:absolute;
-		bottom:2rem;
-		left:0.85rem;
+		position: absolute;
+		bottom: 2rem;
+		left: 0.85rem;
 		font-size: 0.75rem;
 		font-family: PingFangSC-Regular;
 		color: rgba(34, 131, 226, 1);

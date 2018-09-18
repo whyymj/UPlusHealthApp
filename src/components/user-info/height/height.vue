@@ -3,6 +3,7 @@
         <h3>身高</h3>
         <div style='width:18.75rem;' class='height_box'>
             <mt-picker :slots="tallarr" @change="select_tall"></mt-picker>
+            <span class="unit">厘米</span>
         </div>
         <div class="save" @click='confirm'>保存</div>
     </div>
@@ -12,10 +13,10 @@
     export default {
         data() {
             return {
-                talltmp: 180+'厘米',
-                tall: 180+'厘米',
+                talltmp: 180 + '厘米',
+                tall: 180 + '厘米',
                 tallarr: [],
-                params:{}
+                params: {}
             }
         },
         methods: {
@@ -31,18 +32,21 @@
                 })
             },
             select_tall(picker, value) {
-                this.talltmp =( value[0] || 180) + '厘米'
+                this.talltmp = (value[0] || 180) + '厘米'
             },
         },
         mounted() {
-            this.params=this.$route.query;
+            var that = this;
+            this.params = this.$route.query;
+            this.talltmp = this.params.val||'180厘米';
+            this.tall = this.params.val||'180厘米';
             var tall = [];
             for (var i = 250; i > 100; i--) {
                 tall.push(i);
             }
             this.tallarr = [{
                 flex: 1,
-                defaultIndex: 70,
+                defaultIndex: 250 - that.params.val.split('厘米')[0],
                 values: tall,
                 className: "slot1",
                 textAlign: "center"
@@ -70,6 +74,20 @@
         .height_box {
             border-top: 1px solid #f5f5f5;
             border-bottom: 1px solid #f5f5f5;
+            position: relative;
+            .unit {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                right:30%;
+                margin: auto;
+                height: 2rem;
+                line-height: 2rem;
+                font-size: 0.8rem;
+                font-family: 'PingFangSC-Regular';
+                font-weight: 400;
+                color: rgba(51, 51, 51, 1);
+            }
         }
     }
     .save {

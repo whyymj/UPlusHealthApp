@@ -3,11 +3,11 @@
     <div>
       <!--<div @click="showActionSheet()">-->
       <div>
-        <mt-cell class="headerImg" title="头像" is-link :to="{ name: 'headerImg',params:{member_id:'',from:'/userInfo'}}">
+        <mt-cell class="headerImg" title="头像" is-link>
           <img id="img" :src="headPic" />
         </mt-cell>
       </div>
-      <div @click="showNickName()" :to="{ name: 'userInfoNickName',params:{member_id:''}}">
+      <div @click="showNickName()">
         <mt-cell title="昵称" is-link>
           <span>{{nickName}}</span>
         </mt-cell>
@@ -41,12 +41,16 @@
       </div>
     </div>
     <div class="div_magin">
-      <mt-cell title="过敏史" is-link :to="{ name: 'allergic' ,query:{member_id:'',from:'/userInfo'}}">
-        <span>{{userallergy}}</span>
-      </mt-cell>
-      <mt-cell title="慢病史" is-link :to="{ name: 'chronicDisease' ,query:{member_id:'',from:'/userInfo'}}">
-        <span style='overflow:hidden;'>{{userdisease}}</span>
-      </mt-cell>
+      <div @click='toAllergy'>
+        <mt-cell title="过敏史" is-link>
+          <span>{{userallergy}}</span>
+        </mt-cell>
+      </div>
+      <div @click='toDisease'>
+        <mt-cell title="慢病史" is-link>
+          <span style='overflow:hidden;'>{{userdisease}}</span>
+        </mt-cell>
+      </div>
     </div>
     <div class="div_magin">
       <mt-cell title="隐私设置" is-link :to="{ name: 'privacySet' }" />
@@ -56,7 +60,6 @@
       <mt-actionsheet :actions="headerAction" v-model="sheetVisible" cancel-text="取消">
       </mt-actionsheet>
     </div>
-  
   </div>
 </template>
 
