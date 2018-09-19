@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>Rectangle 5</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="睡眠手动录入" transform="translate(-16.000000, -231.000000)">
+            <g id="Group-15-Copy" transform="translate(16.000000, 231.000000)">
+                <rect id="Rectangle-5" x="0" y="0" width="30" height="30"></rect>
+                <ellipse id="Oval" fill="#81C1FF" cx="13" cy="25.5" rx="7" ry="2.5"></ellipse>
+                <path d="M18.1416138,6.42130334 C18.0014954,6.3371431 17.8591452,6.25631852 17.714673,6.17893944 C17.427136,6.02493503 17.1311937,5.88457867 16.8277119,5.75873625 C15.6486797,5.26983615 14.3558516,5 13,5 C7.4771525,5 3,9.4771525 3,15 C3,20.5228475 7.4771525,25 13,25 C18.5228475,25 23,20.5228475 23,15 C23,14.3321702 22.9345353,13.6796306 22.809673,13.0484482 C22.7457311,12.7252201 22.6662125,12.4075928 22.5719318,12.0963812 C22.5243523,11.9393255 22.4730132,11.7839037 22.4180192,11.6302206" id="Oval-6" stroke="#2283E2" stroke-width="1.25" stroke-linecap="round"></path>
+                <path d="M9.69227809,14.3016236 C11.3267421,15.0014843 12.7506657,15.0014843 13.9640487,14.3016236" id="Path-39" stroke="#2283E2" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" transform="translate(11.828163, 14.801624) scale(1, -1) translate(-11.828163, -14.801624) "></path>
+                <path d="M12.6922781,20.3016236 C14.3267421,21.0014843 15.7506657,21.0014843 16.9640487,20.3016236" id="Path-39-Copy-2" stroke="#2283E2" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M16.6922781,14.3016236 C18.3267421,15.0014843 19.7506657,15.0014843 20.9640487,14.3016236" id="Path-39-Copy" stroke="#2283E2" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" transform="translate(18.828163, 14.801624) scale(1, -1) translate(-18.828163, -14.801624) "></path>
+                <rect id="Rectangle-13" stroke="#2283E2" stroke-width="1.5" fill="#81C1FF" x="21.75" y="3.75" width="4.5" height="4.5" rx="2.25"></rect>
+                <rect id="Rectangle-13-Copy" stroke="#2283E2" stroke-width="1.33333333" fill="#81C1FF" x="17.6666667" y="8.66666667" width="2.66666667" height="2.66666667" rx="1.33333333"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

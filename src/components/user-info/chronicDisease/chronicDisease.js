@@ -1,5 +1,6 @@
 import tagslist from '../../health-entry/health-entry-family/tagsList';
-import axios from "axios"
+import axios from "axios";
+import { Toast } from 'mint-ui';
 export default {
 	components: {
 		tagslist
@@ -147,6 +148,19 @@ export default {
 			//保存个人
 			if(!this.memberId){
 				window.localStorage.uplus_sleep_user_disease=this.disease;
+				var saveData=this.$route.query;
+				saveData.disease=that.chronDiseaseHistory?that.disease:''
+				this.$axios.post('/api/user',saveData).then(function(res) {
+					if(res.data.code=='C0000'){
+					that.$route.go(-1)
+					}
+				})
+				.catch(function(err) {
+					
+				
+				})
+
+
 			}else{
 				//保存家庭成员信息
 				let saveData = {
@@ -162,7 +176,9 @@ export default {
 				}
 				axios.post('/api/changeMemberInfo', saveData)
 					.then(function(res) {
-						console.log(res);
+						if(res.data.code=='C0000'){
+							that.$route.go(-1)
+							}
 						if (fn) {
 							fn();
 						}

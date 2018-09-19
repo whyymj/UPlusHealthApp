@@ -97,6 +97,7 @@
         },
         mounted() {
             var that = this;
+             window.__retest__ =false;//是否需要重新测试
             that.loadingmodal = Loading.service({
                 fullscreen: true,
                 background: 'rgba(0, 0, 0, 0.7)',

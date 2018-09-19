@@ -1,7 +1,7 @@
 <template>
     <div class='sleepTest'>
-        <h1>睡眠状况测试-匹兹堡睡眠质量指数<img src="/static/sleepMusicList/img6.png" alt=""></h1>
-        <list :list='questions' @turnQestion='turnQestion'></list>
+        <h1>{{firstTitle}}-{{secondTitle}}<img src="/static/sleepMusicList/img6.png" alt=""></h1>
+        <list :list='questions' :tuIdTmp='tuId' @turnQestion='turnQestion'></list>
         <div class="submit" v-show='canSubmit' @click='submitResult'>提交测试</div>
     </div>
 </template>
@@ -39,7 +39,10 @@
                 loadingmodal: '',
                 canSubmit: false,
                 questions: [],
-                tmpCache: ''
+                tmpCache: '',
+                tuId: '',
+                firstTitle: '',
+                secondTitle: ""
             }
         },
         mounted() {
@@ -51,7 +54,16 @@
                 spinner: 'el-icon-loading',
             });
             var params = this.$route.query;
+            if (params.status == 1 && !window.__retest__) {
+                window.__retest__ = false;
+                this.$router.push({
+                    path: '/sleepTestResult',
+                    query: params
+                })
+            }
             var that = this;
+            this.secondTitle = params.templateSubTitle;
+            this.firstTitle = params.templateTitle;
             this.tmpCache = localStorage['saveUsersleepTemplate' + params.tuId] || ''; //暂存的答题结果
             var tempArr = this.tmpCache.split('|');
             var initArr = [];
@@ -69,7 +81,8 @@
                     });
                 }
                 if (res.data.code === 'C0000') {
-                    params.tuId=res.data.data.tuId;
+                    params.tuId = res.data.data.tuId;
+                    that.tuId = res.data.data.tuId;
                     that.questions = res.data.data.templateLineList.map(function(item, index) {
                         var options = item.selectItemList;
                         var tmp = tempArr[index];
@@ -108,14 +121,12 @@
                             tuId: params.tuId
                         }
                     });
-                    
                     if (initArr.length > 0) {
                         localStorage['saveUsersleepTemplate' + params.tuId] = initArr.join('|'); //刷新缓存
                     }
                 }
             }).catch(function(res) {
                 that.loadingmodal.close();
-                
                 if (process.env.NODE_ENV == 'development') {
                     that.$axios.get('/static/testData/setUserTemplate.json').then(function(res) {
                         if (params.status === 0 || params.status === '0') { //中途退出

@@ -70,69 +70,69 @@
         data() {
             return {
                 imgs: [{
-                    url: '/static/sleep-manue-input/img9.png',
-                    url_null: '/static/sleep-manue-input/img9_null.png',
+                    url: '/static/sleep-manue-input/img9.svg',
+                    url_null: '/static/sleep-manue-input/img9_null.svg',
                     title: '十分差',
                     level: 1
                 }, {
-                    url: '/static/sleep-manue-input/img10.png',
-                    url_null: '/static/sleep-manue-input/img10_null.png',
+                    url: '/static/sleep-manue-input/img10.svg',
+                    url_null: '/static/sleep-manue-input/img10_null.svg',
                     title: '较差',
                     level: 2
                 }, {
-                    url: '/static/sleep-manue-input/img11.png',
-                    url_null: '/static/sleep-manue-input/img11_null.png',
+                    url: '/static/sleep-manue-input/img11.svg',
+                    url_null: '/static/sleep-manue-input/img11_null.svg',
                     title: '正常',
                     level: 3
                 }, {
-                    url: '/static/sleep-manue-input/img12.png',
-                    url_null: '/static/sleep-manue-input/img12_null.png',
+                    url: '/static/sleep-manue-input/img12.svg',
+                    url_null: '/static/sleep-manue-input/img12_null.svg',
                     title: '比较好',
                     level: 4
                 }, {
-                    url: '/static/sleep-manue-input/img13.png',
-                    url_null: '/static/sleep-manue-input/img13_null.png',
+                    url: '/static/sleep-manue-input/img13.svg',
+                    url_null: '/static/sleep-manue-input/img13_null.svg',
                     title: '超级棒',
                     level: 5
                 }],
                 imgs2: [{
-                    url: '/static/sleep-manue-input/img5.png',
-                    url_null: '/static/sleep-manue-input/img5_null.png',
+                    url: '/static/sleep-manue-input/img5.svg',
+                    url_null: '/static/sleep-manue-input/img5_null.svg',
                     title: '光亮',
                     level: 1
                 }, {
-                    url: '/static/sleep-manue-input/img15.png',
-                    url_null: '/static/sleep-manue-input/img15_null.png',
+                    url: '/static/sleep-manue-input/img15.svg',
+                    url_null: '/static/sleep-manue-input/img15_null.svg',
                     title: '噪音',
                     level: 2
                 }, {
-                    url: '/static/sleep-manue-input/img16.png',
-                    url_null: '/static/sleep-manue-input/img16_null.png',
+                    url: '/static/sleep-manue-input/img16.svg',
+                    url_null: '/static/sleep-manue-input/img16_null.svg',
                     title: '温度',
                     level: 3
                 }, {
-                    url: '/static/sleep-manue-input/img6.png',
-                    url_null: '/static/sleep-manue-input/img6_null.png',
+                    url: '/static/sleep-manue-input/img6.svg',
+                    url_null: '/static/sleep-manue-input/img6_null.svg',
                     title: '不适',
                     level: 4
                 }, {
-                    url: '/static/sleep-manue-input/img7.png',
-                    url_null: '/static/sleep-manue-input/img7_null.png',
+                    url: '/static/sleep-manue-input/img7.svg',
+                    url_null: '/static/sleep-manue-input/img7_null.svg',
                     title: '压力',
                     level: 5
                 }, {
-                    url: '/static/sleep-manue-input/img14.png',
-                    url_null: '/static/sleep-manue-input/img14_null.png',
+                    url: '/static/sleep-manue-input/img14.svg',
+                    url_null: '/static/sleep-manue-input/img14_null.svg',
                     title: '认床',
                     level: 6
                 }, {
-                    url: '/static/sleep-manue-input/img8.png',
-                    url_null: '/static/sleep-manue-input/img8_null.png',
+                    url: '/static/sleep-manue-input/img8.svg',
+                    url_null: '/static/sleep-manue-input/img8_null.svg',
                     title: '床伴',
                     level: 7
                 }, {
-                    url: '/static/sleep-manue-input/img17.png',
-                    url_null: '/static/sleep-manue-input/img17_null.png',
+                    url: '/static/sleep-manue-input/img17.svg',
+                    url_null: '/static/sleep-manue-input/img17_null.svg',
                     title: '饱餐',
                     level: 8
                 }],

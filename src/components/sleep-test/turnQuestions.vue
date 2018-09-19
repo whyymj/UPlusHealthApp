@@ -25,7 +25,7 @@
         Toast
     } from 'mint-ui';
     export default {
-        props: ['list'],
+        props: ['list', 'tuIdTmp'],
         components: {
             bar,
             questionlist,
@@ -49,9 +49,13 @@
             }
         },
         watch: {
-            initialindex() {
-                
+            tuIdTmp() {
+                if (this.tuIdTmp !== '') {
+                    localStorage['saveUsersleepTemplate' + this.tuIdTmp] = localStorage['saveUsersleepTemplate' + this.tuId]
+                    this.tuId = this.tuIdTmp;
+                }
             },
+            initialindex() {},
             list() {
                 var that = this;
                 this.showlist = this.list;
@@ -259,6 +263,8 @@
                             showClose: false
                         });
                         that.loadingmodal.close()
+                          that.params.totalScore = 22;
+                          
                         that.$router.push({
                             path: '/sleepTestResult',
                             query: that.params
@@ -338,6 +344,5 @@
             top: 0;
             z-index: 10;
         }
-    } 
-    
+    }
 </style>

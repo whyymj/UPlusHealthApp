@@ -138,10 +138,21 @@ export default {
 		//保存
 		save() {
 			var that=this;
+			
 			//保存个人
+				
 			if(!window._member_id) {
 				window.localStorage.uplus_sleep_user_allergy=this.allergy;
-			} else {
+				var saveData=this.$route.query;
+				saveData.allergy=that.clearAllergyHistory?that.allergy:''
+				this.$axios.post('/api/user',saveData).then(function(res) {
+				
+				})
+				.catch(function(err) {
+					
+				
+				})
+			} else{
 				//保存家庭成员信息
 				let saveData = {
 					member_id: window._member_id,
@@ -153,23 +164,19 @@ export default {
 					target_weight: parseInt(that.targetWeightValue),
 					disease: that.disease, //慢病
 					allergy: that.clearAllergyHistory?that.allergy:'', //过敏
-				}
+				}	
 				axios.post('/api/changeMemberInfo', saveData)
-					.then(function(res) {
-						console.log(res);
-						if (fn) {
-							fn();
-						}
-					})
-					.catch(function(err) {
-						console.log(err);
-						if (fn) {
-							fn();
-						}
-					})
+				.then(function(res) {
+				
+				})
+				.catch(function(err) {
+				
+				})
+
 			}
+				
+			
 			//调用接口保存过敏史数据 返回主页面
-			console.log('allergy>>',that.allergy);
 			this
 				.$router
 				.replace({

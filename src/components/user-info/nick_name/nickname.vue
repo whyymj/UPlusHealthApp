@@ -1,6 +1,7 @@
 <template>
     <div class='userinfo_nickname'>
         <el-input style='border:none;' v-model="input" maxlength=16 placeholder="请输入昵称（不超过16字符）"></el-input>
+        <i class='el-icon-circle-close-outline' @click='input=""'></i>
         <div class='bottomBorder'></div>
         <div class="save" @click='save'>保存</div>
     </div>
@@ -15,7 +16,6 @@
             };
         },
         methods: {
-           
             save() {
                 var that = this;
                 console.log(this.$router);
@@ -30,6 +30,7 @@
         },
         mounted() {
             this.params = this.$route.query;
+            this.input = this.params.val || ''
         }
     };
 </script>
@@ -42,10 +43,18 @@
         width: 100%;
         height: 100%;
         background: #fff;
+
+        .el-icon-circle-close-outline {
+            position: absolute;
+            top:1rem;
+            font-size: 1rem;right:1rem;
+            color:#ccc;
+        }
         .el-input {
             border: none;
             input {
                 border: none;
+                padding:0 1.0rem;
                 margin: 0.5rem 0.2rem;
                 font-size: 0.7rem;
             }

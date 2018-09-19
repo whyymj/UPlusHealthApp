@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>Rectangle 2</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="首页" transform="translate(-311.000000, -595.000000)">
+            <g id="FAB" transform="translate(301.000000, 585.000000)">
+                <g id="Group-14" transform="translate(10.000000, 10.000000)">
+                    <rect id="Rectangle-2" x="0" y="0" width="30" height="30"></rect>
+                    <ellipse id="Oval-23" fill="#FFFFFF" cx="15.0666667" cy="6.125" rx="6.06666667" ry="6.125"></ellipse>
+                    <path d="M14.6150342,14 C20.6150342,14 29.4478499,23.4589803 26.6150342,27 C23.7822184,30.5410197 5.67743285,30.8279983 2.61503418,27 C-0.44736449,23.1720017 8.61503418,14 14.6150342,14 Z" id="Triangle" fill="#FFFFFF"></path>
+                    <path d="M22.6244339,16 C21.5919397,16 20.6318385,17.0198132 20.0000565,17.7852508 C19.3684724,17.0196409 18.4085973,16 17.375552,16 C15.5142193,16 14,17.4839192 14,19.3078719 C14,20.3960448 14.5423894,21.159444 14.9783019,21.7728306 C16.2453279,23.5544065 19.4312563,25.7714497 19.5661789,25.8649169 C19.6961274,25.9548957 19.8482191,26 19.9998022,26 C20.1517809,26 20.3035758,25.9548957 20.4333689,25.8649169 C20.5684611,25.7714497 23.7546721,23.5544065 25.0213025,21.7728306 C25.4574834,21.1594584 26,20.3960448 26,19.3078719 C25.9999859,17.4839049 24.4857524,16 22.6244339,16 Z" id="Shape" fill="#BCDEFF" fill-rule="nonzero"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

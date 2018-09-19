@@ -1,53 +1,27 @@
 <template>
-    <div class='testscore'>
-        <h2>测试得分</h2>
-        <p class="score">{{score}}分(总分{{totalscore}}分)</p>
-        <div class='scoreAxis'>
-            <span class='span8'>{{uplimit1}}</span>
-            <span class='span15'>{{uplimit2}}</span>
-            <span class='span22'>{{uplimit3}}</span>
-            <chart color='#2283E2' type='leftLimit' :uplimit='uplimit1' :downlimit='downlimit1' title='睡眠正常' :score='score' showUp='true' showDown='true'></chart>
-            <chart color='#2DA2CC' :uplimit='uplimit2' :downlimit='downlimit2' title='轻度失眠' :score='score' showUp='true' showDown=''></chart>
-            <chart color='#DBA314' :uplimit='uplimit3' :downlimit='downlimit3' title='中度失眠' :score='score' showUp='true' showDown=''></chart>
-            <chart color='#ED587B' type='rightLimit' :uplimit='uplimit4' :downlimit='downlimit4' title='重度失眠' :score='score' showUp='true' showDown=''></chart>
-        </div>
+    <div>
+        <score2 :score='score' :totalscore='totalscore' :scoreSet='scoreSet' v-if='scoreSet.length==2'></score2>
+        <score3 :score='score' :totalscore='totalscore' :scoreSet='scoreSet' v-if='scoreSet.length==3'></score3>
+        <score4 :score='score' :totalscore='totalscore' :scoreSet='scoreSet' v-if='scoreSet.length==4'></score4>
+        <score5 :score='score' :totalscore='totalscore' :scoreSet='scoreSet' v-if='scoreSet.length==5'></score5>
     </div>
 </template>
 
 <script>
-    import chart from './scoreImg'
+    import score2 from './score2.vue'
+    import score3 from './score3.vue'
+    import score4 from './score4.vue'
+    import score5 from './score5.vue'
     export default {
-        props: ['score', 'totalscore'],
+        props: ['score', 'totalscore', 'scoreSet'],
         components: {
-            chart
+            score2,
+            score3,
+            score4,
+            score5
         },
         data() {
-            return {
-                uplimit1: 0,
-                downlimit1: 0,
-                uplimit2: 0,
-                downlimit2: 0,
-                uplimit3: 0,
-                downlimit3: 0,
-                uplimit4: 0,
-                downlimit4: 0
-            }
-        },
-        watch: {
-            totalscore() {
-                this.downlimit1 = 0;
-                this.uplimit1 = this.downlimit2 = Math.ceil(this.totalscore / 4);
-                this.uplimit2 = this.downlimit3 = Math.ceil(this.totalscore / 2);
-                this.uplimit3 = this.downlimit4 = Math.ceil(this.totalscore / 4 * 3);
-                this.uplimit4 = this.totalscore;
-            }
-        },
-        mounted() {
-            this.downlimit1 = 0;
-            this.uplimit1 = this.downlimit2 = Math.ceil(this.totalscore / 4);
-            this.uplimit2 = this.downlimit3 = Math.ceil(this.totalscore / 2);
-            this.uplimit3 = this.downlimit4 = Math.ceil(this.totalscore / 4 * 3);
-            this.uplimit4 = this.totalscore;
+            return {}
         }
     }
 </script>

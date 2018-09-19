@@ -75,10 +75,40 @@ export default {
 	},
 
 	methods: {
-			//删除家人
-			openDeleteFamily() {
-				this.isDeleteShow = true
-			},
+		toAllergy(){
+			var that=this;
+			this.$router.push({
+				path:'allergic',
+				query:{
+					height:(typeof that.heightValue=='string')?that.heightValue.split('厘米')[0]:'',
+					weight:(typeof that.weightValue=='string')?that.weightValue.split('公斤')[0]:'',
+					birthday:(typeof that.birthday=='string')?that.birthday.replace('年','-').replace('月','-').replace('日',''):'',
+					sex:that.sex=='男'?"male":'female',
+					disease:that.disease||"",
+					from:'/userInfo',
+					member_id:''
+				}
+			})
+		},
+		toDisease(){
+			var that=this;
+			this.$router.push({
+				path:'chronicDisease',
+				query:{
+					height:(typeof that.heightValue=='string')?that.heightValue.split('厘米')[0]:'',
+					weight:(typeof that.weightValue=='string')?that.weightValue.split('公斤')[0]:'',
+					birthday:(typeof that.birthday=='string')?that.birthday.replace('年','-').replace('月','-').replace('日',''):'',
+					sex:that.sex=='男'?"male":'female',
+					allergy:that.allergy||"",
+					from:'/userInfo',
+					member_id:''
+				}
+			})
+		},
+		//删除家人
+		openDeleteFamily() {
+			this.isDeleteShow = true
+		},
 		//慢病 过敏截取
 		sliceStr(data) {
 			let str = ""
@@ -125,7 +155,8 @@ export default {
 				path:'/userInfoNickName',
 				query:{
 					from :that.route,
-					row:"nickName"
+					row:"nickName",
+					val:that.nickName
 				}
 			})
 		},
@@ -147,7 +178,8 @@ export default {
 				path:'/userInfoBirthday',
 				query:{
 					from:that.route,
-					row:"birthday"
+					row:"birthday",
+					val:that.birthday
 				}
 			})
 		},
@@ -172,7 +204,8 @@ export default {
 					path:'/userInfoHeight',
 					query:{
 						from:that.route,
-						row:"heightValue"
+						row:"heightValue",
+						val:that.heightValue
 					}
 				})
 					break
@@ -181,7 +214,8 @@ export default {
 					path:'/userInfoWeight',
 					query:{
 						from:that.route,
-						row:"weightValue"
+						row:"weightValue",
+						val:that.weightValue
 					}
 				})
 					break
@@ -190,7 +224,8 @@ export default {
 					path:'/userInfoWeight',
 					query:{
 						from:that.route,
-						row:"targetWeightValue"
+						row:"targetWeightValue",
+						val:that.targetWeightValue
 					}
 				})
 					break;
@@ -199,7 +234,8 @@ export default {
 						path:'/userInfoSex',
 						query:{
 							from:that.route,
-							row:"sex"
+							row:"sex",
+							val:that.sex
 						}
 					})
 					break;

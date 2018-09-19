@@ -1,5 +1,5 @@
 <template>
-    <div class='scoreimg'>
+    <div class='scoreimg' :style='{width:(setWidth||4)+"rem"}'>
         <span class="detail" :style="{left:left+'rem'}" v-if='show'>{{score}}分 <span class="yaxis"></span></span>
         <p class="bar" :style='{background:color}' :class="[type]"></p>
         <h6>{{title}}</h6>
@@ -8,7 +8,7 @@
 
 <script>
     export default {
-        props: ['color', 'type', 'uplimit', 'downlimit', 'title', 'score', 'showUp', 'showDown'],
+        props: ['color', 'type', 'uplimit', 'downlimit', 'title', 'score', 'showUp', 'showDown', 'setWidth'],
         data() {
             return {}
         },
@@ -26,7 +26,7 @@
             },
             left() {
                 if (this.score >= this.downlimit && this.score <= this.uplimit) {
-                    var left = -1 + (this.score - this.downlimit) / (this.uplimit - this.downlimit) * 4;
+                    var left = -1 + (this.score - this.downlimit) / (this.uplimit - this.downlimit) * parseInt(this.setWidth||4);
                     return left;
                 } else {
                     return 0

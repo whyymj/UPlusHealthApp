@@ -48,7 +48,7 @@
 					</div>
 				</mt-swipe-item>
 			</mt-swipe>
-			<p class='floatButton' @click="goFamilyManage"><img class='img' src="/static/healthArchives/index8.png" alt=""></p>
+			<p class='floatButton' @click="goFamilyManage"><img class='img' src="/static/healthArchives/index8.svg" alt=""></p>
 		</div>
 		<paginator :pagenum='pagenum' :pageindex='pageindex'></paginator>
 		<privacy :show="show"></privacy>
@@ -189,7 +189,7 @@
 			},
 			blink(item) {
 				var obj = colorJudger(item.moudle_name, item.level);
-				console.log('>>>>>>s', item, obj)
+				
 				return {
 					background: obj && obj.bg,
 					animation: 's-red-animation 1s infinit'
@@ -672,6 +672,7 @@
 			}
 		},
 		mounted() {
+			 window.__retest__ =false;
 			window.localStorage.uplus_sleep_user_info_cache = ''; //个人信息存储清空
 			if (window.localStorage.UPlusAPP_agree_privacyPlan && (window.localStorage.UPlusAPP_agree_privacyPlan == 'true' || window.localStorage.UPlusAPP_agree_privacyPlan == true)) { //存储获取苹果健康数据的权限
 				this.show = false;

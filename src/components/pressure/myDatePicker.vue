@@ -72,8 +72,11 @@
                 this.datepicker = caldate(this.year, this.month);
             },
             selectdate(index, key, val) {
-                this.selected = [index, key];
-                this.$emit('checkDateData', val);
+                var tmp = new Date('' + val.year + '/' + val.month + '/' + val.date);
+                if (tmp.getTime() <= new Date().getTime()) {
+                    this.selected = [index, key];
+                    this.$emit('checkDateData', val);
+                }
             },
             getYear(data) {
                 this.year = data;
@@ -90,7 +93,8 @@
                 return false;
             },
             opacity(val) {
-                return (val.year == this.year && val.month == this.month) ? 1 : 0.5
+                var tmp = new Date('' + val.year + '/' + val.month + '/' + val.date);
+                return (val.year == this.year && val.month == this.month && tmp.getTime() <= new Date().getTime()) ? 1 : 0.5
             }
         },
         mounted() {

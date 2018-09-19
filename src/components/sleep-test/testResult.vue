@@ -1,7 +1,7 @@
 <template>
     <div>
-        <h6>匹兹堡睡眠质量指数<img src="/static/sleepMusicList/img6.png" alt=""></h6>
-        <score :score='testScore' :totalscore='totalscore'></score>
+        <h6>{{firstTitle}}-{{secondTitle}}<img src="/static/sleepMusicList/img6.png" alt=""></h6>
+        <score :score='testScore' :totalscore='totalscore' :scoreSet='scoreSet'></score>
         <analysis :analysis='analysis'></analysis>
         <warmTips :tips='tips'></warmTips>
         <div class="button">
@@ -18,35 +18,37 @@
     export default {
         methods: {
             save() {
-                this.hadSaved = true
-                // this.$router.push({
-                //     path: '/enterToTest'
-                // })
+                this.hadSaved = true;
                 this.$router.go(-2)
             },
             reTest() {
                 var that = this;
-                this.params.from = 'retest'
+                this.params.from = 'retest';
                 var str = this.allResult.split('|').map(function(item) {
                     var newitem = item.split('&')[0] + '&';
                     return newitem;
                 }).join('|');
-                localStorage['saveUsersleepTemplate' + that.params.tuId] = str;//刷新记录
-                that.$router.go(-1)
+                localStorage['saveUsersleepTemplate' + that.params.tuId] = str; //刷新记录
+                window.__retest__ = true;
+                that.$router.go(-1);
             }
         },
         mounted() {
-            var params = this.$route.query;
-            this.params = params;
-            this.allResult = params.allResult;
             var that = this;
-            this.totalscore = params.totalScore;
+            window.__retest__ = false;
+            var params = this.$route.query;
+            this.secondTitle = params.templateSubTitle;
+            this.firstTitle = params.templateTitle;
+            this.params = params;
+            this.allResult = params.allResult || localStorage['saveUsersleepTemplate' + that.params.tuId] || '';
             this.$axios.post('/api/getUserTemplateAnalysis', { //获取用户睡眠量表分析数据
                 tuId: params.tuId,
-                 member_id: window._member_id
+                member_id: window._member_id
             }).then(function(res) {
                 if (res.data.code == 'C0000') {
                     that.testScore = res.data.data.gradesStr.split('分')[0];
+                    that.scoreSet = res.data.data.scoreNormal;
+                    that.totalscore = res.data.data.total;
                     that.analysis = {
                         title: res.data.data.scoreInfo,
                         detail: res.data.data.scoreSuggest
@@ -59,16 +61,13 @@
                     });
                 }
             }).catch(function(res) {
-                that.$notify.error({
-                    title: '错误',
-                    message: 'getUserTemplateAnalysis接口报错',
-                    showClose: false
-                });
                 that.$axios.get('/static/testData/testResult.json', {
                     tuId: params.tuId
                 }).then(function(res) {
                     if (res.data.code == 'C0000') {
                         that.testScore = res.data.data.gradesStr.split('分')[0];
+                        that.scoreSet = res.data.data.scoreNormal;
+                        that.totalscore = res.data.data.total;
                         that.analysis = {
                             title: res.data.data.scoreInfo,
                             detail: res.data.data.scoreSuggest
@@ -85,6 +84,9 @@
         },
         data() {
             return {
+                scoreSet: '',
+                firstTitle: '',
+                secondTitle: '',
                 allResult: '',
                 params: '',
                 analysis: {
