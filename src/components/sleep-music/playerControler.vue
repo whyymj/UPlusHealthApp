@@ -54,7 +54,7 @@
                 return str;
             },
             getDurationTime() {
-                console.log('duration>>',this.duration);
+                console.log(this.duration, 'yyyyyyyyyyyy')
                 var h = 0,
                     m = 0,
                     str = '',
@@ -168,14 +168,15 @@
                     var counter = 0;
                     that.timerDur = setInterval(function() {
                         counter = counter + 100;
-                        if (counter > 2000) {
-                            clearInterval(that.timerDur);
+                        if (counter > 20000) {
+                            // clearInterval(that.timerDur);
                         }
                         that.duration = Math.round(that.my_media.getDuration());
+                        
                         if (that.duration > 0) {
                             clearInterval(that.timerDur);
                         }
-                    }, 100);
+                    }, 1000);
                 }
                 // this.$$("playSleepMusic").onclick = function() {
                 //     that.playing = !that.playing;
@@ -210,7 +211,7 @@
         mounted() { //h5实现的方式
             this.params = this.$route.query;
             this.defaultT = this.params.time;
-            console.log(  this.defaultT ,'ttttttt')
+            console.log(this.defaultT, 'ttttttt')
             var that = this;
             //初始化音频插件
             that.audioSrc = that.params.musicurl;
