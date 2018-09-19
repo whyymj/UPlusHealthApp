@@ -51,7 +51,7 @@
         watch: {
             tuIdTmp() {
                 if (this.tuIdTmp !== '') {
-                    localStorage['saveUsersleepTemplate' + that.tuIdTmp] = localStorage['saveUsersleepTemplate' + that.tuId]
+                    localStorage['saveUsersleepTemplate' + this.tuIdTmp] = localStorage['saveUsersleepTemplate' + this.tuId]
                     this.tuId = this.tuIdTmp;
                 }
             },
@@ -263,6 +263,8 @@
                             showClose: false
                         });
                         that.loadingmodal.close()
+                          that.params.totalScore = 22;
+                          
                         that.$router.push({
                             path: '/sleepTestResult',
                             query: that.params

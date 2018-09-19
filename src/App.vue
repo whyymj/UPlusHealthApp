@@ -40,6 +40,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+
   .content {
     height: 4rem;
     width: 100%;

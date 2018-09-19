@@ -1,6 +1,6 @@
 <template>
     <div class='sleepTest'>
-        <h1>睡眠状况测试-匹兹堡睡眠质量指数<img src="/static/sleepMusicList/img6.png" alt=""></h1>
+        <h1>{{firstTitle}}-{{secondTitle}}<img src="/static/sleepMusicList/img6.png" alt=""></h1>
         <list :list='questions' :tuIdTmp='tuId' @turnQestion='turnQestion'></list>
         <div class="submit" v-show='canSubmit' @click='submitResult'>提交测试</div>
     </div>
@@ -40,7 +40,9 @@
                 canSubmit: false,
                 questions: [],
                 tmpCache: '',
-                tuId: ''
+                tuId: '',
+                firstTitle: '',
+                secondTitle: ""
             }
         },
         mounted() {
@@ -52,7 +54,16 @@
                 spinner: 'el-icon-loading',
             });
             var params = this.$route.query;
+            if (params.status == 1 && !window.__retest__) {
+                window.__retest__ = false;
+                this.$router.push({
+                    path: '/sleepTestResult',
+                    query: params
+                })
+            }
             var that = this;
+            this.secondTitle = params.templateSubTitle;
+            this.firstTitle = params.templateTitle;
             this.tmpCache = localStorage['saveUsersleepTemplate' + params.tuId] || ''; //暂存的答题结果
             var tempArr = this.tmpCache.split('|');
             var initArr = [];

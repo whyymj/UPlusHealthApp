@@ -177,6 +177,7 @@
                 text: 'Loading',
                 spinner: 'el-icon-loading',
             });
+            
             var date = new Date();
             var month = date.getMonth() + 1;
             var day = date.getDate();
