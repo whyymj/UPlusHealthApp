@@ -54,6 +54,7 @@
                 return str;
             },
             getDurationTime() {
+                console.log('duration>>',this.duration);
                 var h = 0,
                     m = 0,
                     str = '',
