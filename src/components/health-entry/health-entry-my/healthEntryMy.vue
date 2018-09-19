@@ -199,6 +199,7 @@
                 }
             },
             tall(value) {
+                this.tall = this.formatTall(this.tall);
                 if (this.birthday && this.tall && this.weight && this.sex) {
                     this.isSave = false
                 } else {
@@ -392,6 +393,13 @@
             })
         },
         methods: {
+            formatTall(val) {
+                if ((typeof val == 'string' && val.indexOf('厘米') == -1) || typeof val == 'number') {
+                    return val + '厘米'
+                } else {
+                    return val;
+                }
+            },
             confirm_sex(sex) {
                 this.sextmp = sex;
                 if (sex == 0) {
@@ -530,6 +538,14 @@
                     disease: that.chromicListResult[0] ? that.chromicListResult.join(",") : "",
                     allergy: that.allergyListResult[0] ? that.allergyListResult.join(',') : '',
                 }
+                window.localStorage.uplus_sleep_user_disease = saveData.disease;
+                window.localStorage.uplus_sleep_user_allergy = saveData.allergy;
+                window.localStorage.uplus_sleep_user_info = JSON.stringify({
+                    "sex": saveData.sex,
+                    "birthday": saveData.birthday,
+                    "height": saveData.height,
+                    "weight": saveData.weight
+                })
                 if (!this.chronDiseaseHistory) {
                     saveData.disease = ''
                 }
@@ -621,7 +637,7 @@
             .picker {
                 width: 100%;
             }
-             .height_unit {
+            .height_unit {
                 position: absolute;
                 bottom: 81px;
                 right: 28%;

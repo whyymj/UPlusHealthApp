@@ -590,7 +590,7 @@
                 }
             })
             this.$axios.post('/api/getSleepInfo', { //获取睡眠资讯
-                pageSize: 10,
+                pageSize: 2,
                 currentPage: 1
             }).then(function(res) {
                 that.sleepnewslist = res.data.data;
@@ -598,7 +598,6 @@
             }).catch(function(res) {
                 if (process.env.NODE_ENV == 'development') {
                     that.$axios.get('/static/testData/getSleepInfo.json').then(function(res) {
-                        console.log('aboutnews', res);
                         that.sleepnewslist = res.data;
                     });
                 }

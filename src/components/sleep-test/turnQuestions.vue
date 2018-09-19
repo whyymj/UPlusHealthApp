@@ -25,7 +25,7 @@
         Toast
     } from 'mint-ui';
     export default {
-        props: ['list'],
+        props: ['list', 'tuIdTmp'],
         components: {
             bar,
             questionlist,
@@ -49,9 +49,13 @@
             }
         },
         watch: {
-            initialindex() {
-                
+            tuIdTmp() {
+                if (this.tuIdTmp !== '') {
+                    localStorage['saveUsersleepTemplate' + that.tuIdTmp] = localStorage['saveUsersleepTemplate' + that.tuId]
+                    this.tuId = this.tuIdTmp;
+                }
             },
+            initialindex() {},
             list() {
                 var that = this;
                 this.showlist = this.list;
@@ -338,6 +342,5 @@
             top: 0;
             z-index: 10;
         }
-    } 
-    
+    }
 </style>

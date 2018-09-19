@@ -9,7 +9,7 @@
         <div class="control">
             <img src="/static/musicPlayer/left.svg" id='backThirtySec' alt="" class='left'>
             <img src="/static/musicPlayer/play.svg" alt="" class='play' v-if='!playing' @click='playAudio' id="playSleepMusic">
-            <img src="/static/musicPlayer/pause.png" id="pauseSleepMusic" alt="" class='pause' @click='pauseAudio' v-else>
+            <div id="pauseSleepMusic" alt="" class='pause' @click='pauseAudio' v-else></div>
             <img src="/static/musicPlayer/right.svg" id='goThirtySec' alt="" class='right'>
         </div>
     </div>
@@ -58,11 +58,19 @@
                     m = 0,
                     str = '',
                     s = 0;
-                h = Math.floor(this.duration / 3600) > 9 ? Math.floor(this.duration / 3600) : ('0' + Math.floor(this.duration / 3600));
-                m = Math.floor(this.duration % 3600 / 60) > 9 ? Math.floor(this.duration % 3600 / 60) : ('0' + Math.floor(this.duration % 3600 / 60));
-                s = (this.duration % 3600 % 60 > 9) ? (this.duration % 3600 % 60) : ('0' + this.duration % 3600 % 60);
-                str = '' + ((h == '00') ? '' : (h + ':')) + m + ':' + s
-                return str;
+                if (typeof this.duration * 1 == 'number') {
+                    h = Math.floor(this.duration / 3600) > 9 ? Math.floor(this.duration / 3600) : ('0' + Math.floor(this.duration / 3600));
+                    m = Math.floor(this.duration % 3600 / 60) > 9 ? Math.floor(this.duration % 3600 / 60) : ('0' + Math.floor(this.duration % 3600 / 60));
+                    s = (this.duration % 3600 % 60 > 9) ? (this.duration % 3600 % 60) : ('0' + this.duration % 3600 % 60);
+                    str = '' + ((h == '00') ? '' : (h + ':')) + m + ':' + s
+                    return str;
+                } else {
+                    h = Math.floor(this.duration / 3600) > 9 ? Math.floor(this.duration / 3600) : ('0' + Math.floor(this.duration / 3600));
+                    m = Math.floor(this.duration % 3600 / 60) > 9 ? Math.floor(this.duration % 3600 / 60) : ('0' + Math.floor(this.duration % 3600 / 60));
+                    s = (this.duration % 3600 % 60 > 9) ? (this.duration % 3600 % 60) : ('0' + this.duration % 3600 % 60);
+                    str = '' + ((h == '00') ? '' : (h + ':')) + m + ':' + s
+                    return str;
+                }
             },
             percent() {
                 return Math.round(this.position / (this.duration || 1) * 100)
@@ -80,7 +88,8 @@
                 timerDur: 0,
                 duration: 0,
                 loadingmodal: '',
-                audioSrc: ''
+                audioSrc: '',
+                defaultT: 0
             }
         },
         methods: {
@@ -194,20 +203,18 @@
             },
         },
         beforeDestroy() {
-            console.log('页面销毁');
             this.my_media.stop();
             this.my_media.release();
         },
         mounted() { //h5实现的方式
             this.params = this.$route.query;
+            this.defaultT = this.params.time;
+            console.log(  this.defaultT ,'ttttttt')
             var that = this;
             //初始化音频插件
             that.audioSrc = that.params.musicurl;
-            // this.$nextTick(function() {
-            //     that.receivedEvent(that.params.musicurl || "https://huiai.sleepeazz.com/vod/QinanSleepTraining_01.mp3");
-            // })
             document.addEventListener('deviceready', function() {
-                that.receivedEvent(that.params.musicurl || "https://huiai.sleepeazz.com/vod/QinanSleepTraining_01.mp3")
+                that.receivedEvent(that.params.musicurl)
             }, false);
             this.loadingmodal = Loading.service({
                 fullscreen: true,
@@ -278,6 +285,32 @@
             img {
                 width: 2rem;
                 height: 2rem;
+            }
+            #pauseSleepMusic {
+                width: 2rem;
+                height: 2rem;
+                display: inline-block;
+                position: relative;
+                &:after,
+                &:before {
+                    position: absolute;
+                    background: #2283E2;
+                    width: 4px;
+                    border-radius: 3px;
+                    display: block;
+                    height: 75%;
+                    top: 0;
+                    bottom: 0;
+                    margin: auto;
+                    content: '';
+                    box-shadow: 0 0 1px #ddd;
+                }
+                &:after {
+                    left: 24%;
+                }
+                &::before {
+                    right: 24%;
+                }
             }
             .left {
                 float: left;
