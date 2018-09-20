@@ -168,9 +168,9 @@ export default {
         }
       },
       entryWeight: { // 体重标尺
-        slidesPerView: 200,
+        slidesPerView: 50,
         centeredSlides: true,
-        initialSlide: 700 - 300,
+        initialSlide: 699 - 300,
         pagination: {
           el: '.swiper-pagination',
           type: 'custom',
@@ -184,11 +184,11 @@ export default {
           cache: true,
           slides: (function () {
             const slides = []
-            for (let i = 300; i < 2000; i++) {
+            for (let i = 300; i < 1000; i++) {
               let ruler = ``
-              if ((i + 1) % 50 === 0) {
+              if ((i + 1) % 10 === 0) {
                 ruler = `<span class="ruler-long"></span><span class="ruler-num">${(i + 1) / 10}</span>`
-              } else if (((i + 1) % 10 === 0) && ((i + 1) % 50 !== 0)) {
+              } else {
                 ruler = `<span class="ruler-short"></span>`
               }
               slides.push(ruler)
