@@ -1,7 +1,7 @@
 <template>
 	<div class="uploadimg">
 		<el-upload class="avatar-uploader" 
-			action="http://123.103.113.201:8085/healthcare/upload/uploadPic" 
+			action="http://127.0.0.1:8088/healthcare/upload/uploadPic" 
 			name="file" 
 			:data="data" 
 			:with-credentials="true" 
@@ -110,11 +110,11 @@
 				if(!isJPG) {
 					this.$message.error('上传头像图片只能是 JPG,gif,png 格式!');
 				}
-				if(!isLt2M) {
+				if(!isLt4M) {
 					this.$message.error('上传头像图片大小不能超过 4MB!');
 				}
 				console.log(that.data)
-				return isJPG && isLt2M;
+				return isJPG && isLt4M;
 
 			}
 		}
