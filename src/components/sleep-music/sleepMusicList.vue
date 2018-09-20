@@ -28,10 +28,10 @@
                 <!-- 睡眠百科 -->
                 <aboutSleep v-for='(item,index) in sleepAboutData' :data='item' :key='index'></aboutSleep>
                 <aboutNews :newslist='sleepnewslist'></aboutNews>
-                <div class="buttons">
-                    <div class="manuinput" @click='toManuInput'>手动录入</div>
-                    <!-- <div class="equipinput">设备录入</div> -->
-                </div>
+            </div>
+            <div class="buttons" v-show='activeSpan==0'>
+                <div class="manuinput" @click='toManuInput'>手动录入</div>
+                <!-- <div class="equipinput">设备录入</div> -->
             </div>
             <div class="page page2" v-show='activeSpan==1'>
                 <musiclist :musiclist='list'></musiclist>
@@ -439,7 +439,7 @@
                         return {
                             name: item.lineTitle,
                             time: item.lineValues,
-                            level: item.resourceType - 1,
+                            level: item.resourceType ,
                             imgurl: item.imgUrl,
                             musicurl: item.audioUrl
                         }
@@ -610,7 +610,6 @@
 
 <style lang='scss'>
     .page1 {
-        
         padding-bottom: 3rem;
         .tipDeleteData {
             width: 17.15rem;
@@ -630,7 +629,6 @@
         }
     }
     .page2 {
-
         position: fixed;
         top: 3rem;
         bottom: 0;
