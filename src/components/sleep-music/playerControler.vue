@@ -38,6 +38,8 @@
                     level = '中级'
                 } else if (this.params.level == 3) {
                     level = '高级'
+                }else{
+                    return title
                 }
                 return title + "(" + level + ")"
             },
@@ -64,7 +66,6 @@
                     m = 0,
                     str = '',
                     s = 0;
-                    
                 if (this.duration * 1 > 0) {
                     var tmp = Math.floor(this.duration / 3600);
                     h = this.formatNum(tmp);
@@ -73,7 +74,6 @@
                     tmp = this.duration % 3600 % 60;
                     s = this.formatNum(tmp);
                     str = '' + ((h == '00') ? '' : (h + ':')) + m + ':' + s;
-                    
                     return str;
                 } else {
                     return '00:00:00';
@@ -96,7 +96,6 @@
                 duration: 0,
                 loadingmodal: '',
                 audioSrc: '',
-                defaultT: 0
             }
         },
         methods: {
@@ -180,7 +179,6 @@
                     // Get duration
                     that.timerDur = setInterval(function() {
                         that.duration = Math.round(that.my_media.getDuration());
-                        
                     }, 1000);
                 }
                 // this.$$("playSleepMusic").onclick = function() {
@@ -219,7 +217,6 @@
         },
         mounted() { //h5实现的方式
             this.params = this.$route.query;
-            this.defaultT = this.params.time;
             var that = this;
             //初始化音频插件
             that.audioSrc = that.params.musicurl;

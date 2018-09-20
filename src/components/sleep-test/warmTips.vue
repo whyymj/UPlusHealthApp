@@ -21,6 +21,13 @@
         props: ['tips'],
         methods: {
             toMusic(url) {
+                this.$router.push({
+                    path: '/sleepMusicPlayerPanel',
+                    query: {
+                        musicurl: url.audioUrl || '',
+                        name: url.lineTitle || ''
+                    }
+                })
                 console.log(url);
             }
         },

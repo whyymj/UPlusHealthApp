@@ -1,16 +1,16 @@
 <template>
     <div class='playerController'>
-        <div id="textaudio1" style="margin-top: 60px"></div>
+        
         <img src="/static/musicPlayer/bigImg.jpg" alt="" class='bigImg'>
         <div class='progressBar'>
             <el-progress :percentage="percent" style='margin-top:2rem;' :show-text=false></el-progress>
             <span class='starttime'>{{getPosition}}</span><span class='endtime'>{{getDurationTime}}</span>
         </div>
         <div class="control">
-            <img src="/static/musicPlayer/left.png" id='backThirtySec' alt="" class='left'>
-            <img src="/static/musicPlayer/play.png" alt="" class='play' v-if='!playing' @click='playAudio' id="playSleepMusic">
-            <img src="/static/musicPlayer/pause.png" id="pauseSleepMusic" alt="" class='pause' @click='pauseAudio' v-else>
-            <img src="/static/musicPlayer/right.png" id='goThirtySec' alt="" class='right'>
+            <img src="/static/musicPlayer/left.svg" id='backThirtySec' alt="" class='left'>
+            <img src="/static/musicPlayer/play.svg" alt="" class='play' v-if='!playing' @click='playAudio' id="playSleepMusic">
+            <div id="pauseSleepMusic" alt="" class='pause' @click='pauseAudio' v-else></div>
+            <img src="/static/musicPlayer/right.svg" id='goThirtySec' alt="" class='right'>
         </div>
     </div>
 </template>
@@ -34,23 +34,36 @@
                     m = 0,
                     str = '',
                     s = 0;
-                h = Math.floor(this.position / 3600) > 9 ? Math.floor(this.position / 3600) : ('0' + Math.floor(this.position / 3600));
-                m = Math.floor(this.position % 3600 / 60) > 9 ? Math.floor(this.position % 3600 / 60) : ('0' + Math.floor(this.position % 3600 / 60));
-                s = Math.round(this.position % 3600 % 60);
-                s = s > 9 ? s : ('0' + s);
-                str = '' + ((h == '00') ? '' : (h + ':')) + m + ':' + s
-                return str;
+                if (this.position > 0) {
+                    var tmp = Math.floor(this.position / 3600);
+                    h = this.formatNum(tmp);
+                    tmp = Math.floor(this.position % 3600 / 60);
+                    m = this.formatNum(tmp);
+                    tmp = Math.round(this.position % 3600 % 60);
+                    s = this.formatNum(tmp);
+                    str = ((h == '00') ? '' : (h + ':')) + m + ':' + s;
+                    return str;
+                } else {
+                    return '00:00:00';
+                }
             },
             getDurationTime() {
                 var h = 0,
                     m = 0,
                     str = '',
                     s = 0;
-                h = Math.floor(this.duration / 3600) > 9 ? Math.floor(this.duration / 3600) : ('0' + Math.floor(this.duration / 3600));
-                m = Math.floor(this.duration % 3600 / 60) > 9 ? Math.floor(this.duration % 3600 / 60) : ('0' + Math.floor(this.duration % 3600 / 60));
-                s = (this.duration % 3600 % 60 > 9) ? (this.duration % 3600 % 60) : ('0' + this.duration % 3600 % 60);
-                str = '' + ((h == '00') ? '' : (h + ':')) + m + ':' + s
-                return str;
+                if (this.duration * 1 > 0) {
+                    var tmp = Math.floor(this.duration / 3600);
+                    h = this.formatNum(tmp);
+                    tmp = Math.floor(this.duration % 3600 / 60);
+                    m = this.formatNum(tmp);
+                    tmp = this.duration % 3600 % 60;
+                    s = this.formatNum(tmp);
+                    str = '' + ((h == '00') ? '' : (h + ':')) + m + ':' + s;
+                    return str;
+                } else {
+                    return '00:00:00';
+                }
             },
             percent() {
                 return Math.round(this.position / (this.duration || 1) * 100)
@@ -71,6 +84,13 @@
             }
         },
         methods: {
+            formatNum(num) {
+                if (num > 0) {
+                    return num > 9 ? ('' + Math.round(num)) : ('0' + Math.round(num));
+                } else {
+                    return '00';
+                }
+            },
             $$(id) {
                 return document.getElementById(id);
             },
@@ -126,7 +146,7 @@
                             that.my_media.getCurrentPosition(
                                 // success callback
                                 function(position) {
-                                    if (position > -1) {
+                                    if (position > 0) {
                                         that.loadingmodal.close()
                                         that.position = Math.round(position);
                                     }
@@ -142,17 +162,9 @@
                 // 返回一个音频文件的持续时间。
                 function getDuration() {
                     // Get duration
-                    var counter = 0;
                     that.timerDur = setInterval(function() {
-                        counter = counter + 100;
-                        if (counter > 2000) {
-                            clearInterval(that.timerDur);
-                        }
                         that.duration = Math.round(that.my_media.getDuration());
-                        if (that.duration > 0) {
-                            clearInterval(that.timerDur);
-                        }
-                    }, 100);
+                    }, 1000);
                 }
                 // this.$$("playSleepMusic").onclick = function() {
                 //     that.playing = !that.playing;
@@ -165,9 +177,11 @@
                 // }
                 this.$$("goThirtySec").onclick = function() {
                     var time = that.position + 30;
-                    time = time > that.duration ? that.duration : time;
-                    that.position = time;
-                    that.my_media.seekTo(time * 1000);
+                    if (that.duration > 0) {
+                        time = time > that.duration ? that.duration : time;
+                        that.position = time;
+                        that.my_media.seekTo(time * 1000);
+                    }
                 }
                 this.$$("backThirtySec").onclick = function() {
                     var time = that.position - 30;
@@ -183,6 +197,8 @@
         beforeDestroy() {
             this.my_media.stop();
             this.my_media.release();
+            clearInterval(this.mediaTimer);
+            clearInterval(this.timerDur);
         },
         props: ['musicparams'],
         watch: {
