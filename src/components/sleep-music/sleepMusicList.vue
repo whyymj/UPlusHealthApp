@@ -439,7 +439,7 @@
                         return {
                             name: item.lineTitle,
                             time: item.lineValues,
-                            level: item.resourceType ,
+                            level: item.resourceType,
                             imgurl: item.imgUrl,
                             musicurl: item.audioUrl
                         }
@@ -726,6 +726,33 @@
                         right: 0;
                         background: rgba(38, 166, 255, 1);
                     }
+                }
+            }
+            .buttons {
+                width: 100%;
+                height: 2.5rem;
+                position: fixed;
+                z-index: 10000;
+                bottom: 0;
+                margin: 1rem auto 0;
+                .manuinput,
+                .equipinput {
+                    width: 100%;
+                    height: 100%;
+                    position: absolute;
+                    top: 0;
+                    font-size: 0.7rem;
+                    font-family: 'PingFangSC-Semibold';
+                    color: rgba(255, 255, 255, 1);
+                    text-align: center;
+                    box-sizing: border-box;
+                    line-height: 2.5rem;
+                    text-align: center;
+                    background: #26A6FF;
+                }
+                .equipinput {
+                    right: 0;
+                    background: rgba(38, 166, 255, 1);
                 }
             }
         }
