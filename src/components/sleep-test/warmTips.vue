@@ -1,16 +1,17 @@
 <template>
     <div class='warmTips'>
         <h1>温馨建议</h1>
-        <mt-swipe :show-indicators="false" :auto="auto">
-            <mt-swipe-item v-for='(item,index) in list' :key='index'>
-                <div class="container">
+        <swiper :options="option" ref="swiperOption" v-if='list.length>0'>
+            <!-- slides -->
+            <swiper-slide v-for='(item,index) in list' :key='index'>
+                <div class="container" @click='toMusic(item)'>
                     <div v-for='(val,key) in item' :key='key' :class="{left:key==0,right:key==1}">
                         <h6>{{val.title}}</h6>
                         <p class="body">{{val.body}}</p>
                     </div>
                 </div>
-            </mt-swipe-item>
-        </mt-swipe>
+            </swiper-slide>
+        </swiper>
     </div>
 </template>
 
@@ -18,14 +19,57 @@
     import _ from 'lodash'
     export default {
         props: ['tips'],
+        methods: {
+            toMusic(url) {
+                console.log(url);
+            }
+        },
         data() {
             return {
-                auto:5000,
+                option: {
+                    // NotNextTick is a component's own property, and if notNextTick is set to true, the component will not instantiate the swiper through NextTick, which means you can get the swiper object the first time (if you need to use the get swiper object to do what Things, then this property must be true)
+                    // notNextTick是一个组件自有属性，如果notNextTick设置为true，组件则不会通过NextTick来实例化swiper，也就意味着你可以在第一时间获取到swiper对象，假如你需要刚加载遍使用获取swiper对象来做什么事，那么这个属性一定要是true
+                    notNextTick: true,
+                    // swiper configs 所有的配置同swiper官方api配置
+                    autoplay: {
+                        delay: 3000,
+                        disableOnInteraction: false,
+                        // stopOnLastSlide: true
+                    },
+                    // direction : 'vertical',
+                    // effect: "coverflow",
+                    speed: 1000,
+                    loop: true,
+                    grabCursor: true,
+                    setWrapperSize: true,
+                    slidesPerView: 2,
+                    // spaceBetween: 20,
+                    centeredSlides: false,
+                    // centeredSlides: true,
+                    // autoHeight: true,
+                    // paginationType:"bullets",
+                    paginationClickable: true,
+                    // scrollbar:'.swiper-scrollbar',
+                    mousewheelControl: true,
+                    observer: true, //修改swiper自己或子元素时，自动初始化swiper
+                    observeParents: true,
+                    // if you need use plugins in the swiper, you can config in here like this
+                    // 如果自行设计了插件，那么插件的一些配置相关参数，也应该出现在这个对象中，如下debugger
+                    // debugger: true,
+                    // swiper callbacks
+                    // swiper的各种回调函数也可以出现在这个对象中，和swiper官方一样
+                    // onTransitionStart(swiper){
+                    //   console.log(swiper)
+                    // },
+                    // more Swiper configs and callbacks...
+                    // ...
+                },
+                auto: 5000,
                 list: []
             }
         },
         mounted() {
-            this.list = _.chunk(this.tips, 2);
+            this.list = _.chunk(this.tips, 1);
         }
     }
 </script>
@@ -47,7 +91,6 @@
         }
         .container {
             position: relative;
-            width: 17.5rem;
             height: 5rem;
             .left,
             .right {

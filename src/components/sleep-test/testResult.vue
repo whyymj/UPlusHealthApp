@@ -53,6 +53,13 @@
                         title: res.data.data.scoreInfo,
                         detail: res.data.data.scoreSuggest
                     }
+                    // that.tips = res.data.data.ttLineAudioSubList.map(function(item) {
+                    //     return {
+                    //         title: item.lineTitle,
+                    //         body: "关注身体的每个部位，缓解躯体不适",
+                    //         audio:item.audioUrl
+                    //     }
+                    // })
                 } else {
                     that.$notify.error({
                         title: '错误',

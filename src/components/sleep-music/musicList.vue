@@ -23,16 +23,16 @@
                 if (typeof str == 'string') {
                     var arr = str.split(':');
                     return arr[0] * 1 + Math.round(arr[1] / 60)
-                }else{
+                } else {
                     return 0
                 }
             },
             level(index) {
-                if (index == 0) {
+                if (index == 1) {
                     return '初级'
-                } else if (index == 1) {
+                } else if (index == 2) {
                     return '中级'
-                } else {
+                } else if(index == 3) {
                     return '高级'
                 }
             },

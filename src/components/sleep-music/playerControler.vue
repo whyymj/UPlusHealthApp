@@ -46,31 +46,37 @@
                     m = 0,
                     str = '',
                     s = 0;
-                h = Math.floor(this.position / 3600) > 9 ? Math.floor(this.position / 3600) : ('0' + Math.floor(this.position / 3600));
-                m = Math.floor(this.position % 3600 / 60) > 9 ? Math.floor(this.position % 3600 / 60) : ('0' + Math.floor(this.position % 3600 / 60));
-                s = Math.round(this.position % 3600 % 60);
-                s = s > 9 ? s : ('0' + s);
-                str = '' + ((h == '00') ? '' : (h + ':')) + m + ':' + s
-                return str;
+                if (this.position > 0) {
+                    var tmp = Math.floor(this.position / 3600);
+                    h = this.formatNum(tmp);
+                    tmp = Math.floor(this.position % 3600 / 60);
+                    m = this.formatNum(tmp);
+                    tmp = Math.round(this.position % 3600 % 60);
+                    s = this.formatNum(tmp);
+                    str = ((h == '00') ? '' : (h + ':')) + m + ':' + s;
+                    return str;
+                } else {
+                    return '00:00:00';
+                }
             },
             getDurationTime() {
-                console.log('duration>>',this.duration);
                 var h = 0,
                     m = 0,
                     str = '',
                     s = 0;
-                if (typeof this.duration * 1 == 'number') {
-                    h = Math.floor(this.duration / 3600) > 9 ? Math.floor(this.duration / 3600) : ('0' + Math.floor(this.duration / 3600));
-                    m = Math.floor(this.duration % 3600 / 60) > 9 ? Math.floor(this.duration % 3600 / 60) : ('0' + Math.floor(this.duration % 3600 / 60));
-                    s = (this.duration % 3600 % 60 > 9) ? (this.duration % 3600 % 60) : ('0' + this.duration % 3600 % 60);
-                    str = '' + ((h == '00') ? '' : (h + ':')) + m + ':' + s
+                    
+                if (this.duration * 1 > 0) {
+                    var tmp = Math.floor(this.duration / 3600);
+                    h = this.formatNum(tmp);
+                    tmp = Math.floor(this.duration % 3600 / 60);
+                    m = this.formatNum(tmp);
+                    tmp = this.duration % 3600 % 60;
+                    s = this.formatNum(tmp);
+                    str = '' + ((h == '00') ? '' : (h + ':')) + m + ':' + s;
+                    
                     return str;
                 } else {
-                    h = Math.floor(this.duration / 3600) > 9 ? Math.floor(this.duration / 3600) : ('0' + Math.floor(this.duration / 3600));
-                    m = Math.floor(this.duration % 3600 / 60) > 9 ? Math.floor(this.duration % 3600 / 60) : ('0' + Math.floor(this.duration % 3600 / 60));
-                    s = (this.duration % 3600 % 60 > 9) ? (this.duration % 3600 % 60) : ('0' + this.duration % 3600 % 60);
-                    str = '' + ((h == '00') ? '' : (h + ':')) + m + ':' + s
-                    return str;
+                    return '00:00:00';
                 }
             },
             percent() {
@@ -94,6 +100,13 @@
             }
         },
         methods: {
+            formatNum(num) {
+                if (num > 0) {
+                    return num > 9 ? ('' + Math.round(num)) : ('0' + Math.round(num));
+                } else {
+                    return '00';
+                }
+            },
             $$(id) {
                 return document.getElementById(id);
             },
@@ -149,7 +162,7 @@
                             that.my_media.getCurrentPosition(
                                 // success callback
                                 function(position) {
-                                    if (position > -1) {
+                                    if (position > 0) {
                                         that.loadingmodal.close()
                                         that.position = Math.round(position);
                                     }
@@ -165,17 +178,10 @@
                 // 返回一个音频文件的持续时间。
                 function getDuration() {
                     // Get duration
-                    var counter = 0;
                     that.timerDur = setInterval(function() {
-                        counter = counter + 100;
-                        if (counter > 2000) {
-                            clearInterval(that.timerDur);
-                        }
                         that.duration = Math.round(that.my_media.getDuration());
-                        if (that.duration > 0) {
-                            clearInterval(that.timerDur);
-                        }
-                    }, 100);
+                        
+                    }, 1000);
                 }
                 // this.$$("playSleepMusic").onclick = function() {
                 //     that.playing = !that.playing;
@@ -188,9 +194,11 @@
                 // }
                 this.$$("goThirtySec").onclick = function() {
                     var time = that.position + 30;
-                    time = time > that.duration ? that.duration : time;
-                    that.position = time;
-                    that.my_media.seekTo(time * 1000);
+                    if (that.duration > 0) {
+                        time = time > that.duration ? that.duration : time;
+                        that.position = time;
+                        that.my_media.seekTo(time * 1000);
+                    }
                 }
                 this.$$("backThirtySec").onclick = function() {
                     var time = that.position - 30;
@@ -206,11 +214,12 @@
         beforeDestroy() {
             this.my_media.stop();
             this.my_media.release();
+            clearInterval(this.mediaTimer);
+            clearInterval(this.timerDur);
         },
         mounted() { //h5实现的方式
             this.params = this.$route.query;
             this.defaultT = this.params.time;
-            console.log(  this.defaultT ,'ttttttt')
             var that = this;
             //初始化音频插件
             that.audioSrc = that.params.musicurl;

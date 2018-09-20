@@ -28,10 +28,10 @@
                 <!-- 睡眠百科 -->
                 <aboutSleep v-for='(item,index) in sleepAboutData' :data='item' :key='index'></aboutSleep>
                 <aboutNews :newslist='sleepnewslist'></aboutNews>
-                <div class="buttons">
-                    <div class="manuinput" @click='toManuInput'>手动录入</div>
-                    <!-- <div class="equipinput">设备录入</div> -->
-                </div>
+            </div>
+            <div class="buttons" v-show='activeSpan==0'>
+                <div class="manuinput" @click='toManuInput'>手动录入</div>
+                <!-- <div class="equipinput">设备录入</div> -->
             </div>
             <div class="page page2" v-show='activeSpan==1'>
                 <musiclist :musiclist='list'></musiclist>
@@ -439,7 +439,7 @@
                         return {
                             name: item.lineTitle,
                             time: item.lineValues,
-                            level: item.resourceType - 1,
+                            level: item.resourceType,
                             imgurl: item.imgUrl,
                             musicurl: item.audioUrl
                         }
@@ -610,7 +610,6 @@
 
 <style lang='scss'>
     .page1 {
-        
         padding-bottom: 3rem;
         .tipDeleteData {
             width: 17.15rem;
@@ -630,7 +629,6 @@
         }
     }
     .page2 {
-
         position: fixed;
         top: 3rem;
         bottom: 0;
@@ -728,6 +726,33 @@
                         right: 0;
                         background: rgba(38, 166, 255, 1);
                     }
+                }
+            }
+            .buttons {
+                width: 100%;
+                height: 2.5rem;
+                position: fixed;
+                z-index: 10000;
+                bottom: 0;
+                margin: 1rem auto 0;
+                .manuinput,
+                .equipinput {
+                    width: 100%;
+                    height: 100%;
+                    position: absolute;
+                    top: 0;
+                    font-size: 0.7rem;
+                    font-family: 'PingFangSC-Semibold';
+                    color: rgba(255, 255, 255, 1);
+                    text-align: center;
+                    box-sizing: border-box;
+                    line-height: 2.5rem;
+                    text-align: center;
+                    background: #26A6FF;
+                }
+                .equipinput {
+                    right: 0;
+                    background: rgba(38, 166, 255, 1);
                 }
             }
         }

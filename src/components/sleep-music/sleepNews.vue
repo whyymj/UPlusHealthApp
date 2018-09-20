@@ -4,7 +4,6 @@
         <div class='newsbox' v-for='(item,index) in newslist' :key='index' @click='toUrl(item.gotoUrl)'>
             <img :src="item.attachmentPath||'/static/sleepMusicList/exm3.jpg'" alt="">
             <div class="title">{{item.postTitle}}</div>
-           
         </div>
     </div>
 </template>
@@ -23,10 +22,9 @@
 <style lang='scss' scoped>
     .aboutNews {
         width: 17rem;
-        margin: 0.5rem auto 2rem;
         background: #fff;
-        margin: 0.5rem auto 0;
-        border-bottom: 1px solid white;
+        margin: 0.5rem auto ;
+        border-bottom:1px solid #fff;
         h3 {
             font-size: 0.8rem;
             font-family: 'PingFangSC-Medium';
