@@ -3,6 +3,10 @@
 		<div class="tabs">
 			<!-- 导航条 -->
 			<mynav :navigateList='memberlist' :initnum='initnum' @clickNav='clickNav'></mynav>
+			<div class='bgHumanImg'>
+				<img src="/static/healthArchives/bg-human.png" alt="" v-if='maleShow'>
+				<img src="/static/healthArchives/bg-woman.png" alt="" v-else>
+			</div>
 			<mt-swipe :auto="0" :show-indicators="false" @change="handleChange" :continuous='false' ref='swipe'>
 				<!-- 第一页 -->
 				<mt-swipe-item>
@@ -16,8 +20,8 @@
 							</li>
 							<!-- 中间人体图 -->
 							<li class="col2">
-								<img src="/static/healthArchives/bg-human.png" alt="" v-if='maleShow'>
-								<img src="/static/healthArchives/bg-woman.png" alt="" v-else>
+								<!-- <img src="/static/healthArchives/bg-human.png" alt="" v-if='maleShow'>
+										<img src="/static/healthArchives/bg-woman.png" alt="" v-else> -->
 								<span v-for='(item,index) in showdata[0]' :key='index+"1"' :style='blink(item)' :class='setClass(item)' @click='scalebox(item)'></span>
 								<span v-for='(item,index) in showdata[1]' :key='index+"2"' :style='blink(item)' :class='setClass(item)' @click='scalebox(item)'></span>
 							</li>
@@ -40,8 +44,8 @@
 								</div>
 							</li>
 							<li class="col2">
-								<img src="/static/healthArchives/bg-human.png" alt="" v-if='maleShow'>
-								<img src="/static/healthArchives/bg-woman.png" alt="" v-else>
+								<!-- <img src="/static/healthArchives/bg-human.png" alt="" v-if='maleShow'>
+										<img src="/static/healthArchives/bg-woman.png" alt="" v-else> -->
 								<span v-for='(item,index) in showdata[2]' :key='index' :style='blink(item)' :class='setClass(item)' @click='scalebox(item)'></span>
 							</li>
 						</ul>
@@ -189,7 +193,6 @@
 			},
 			blink(item) {
 				var obj = colorJudger(item.moudle_name, item.level);
-				
 				return {
 					background: obj && obj.bg,
 					animation: 's-red-animation 1s infinit'
@@ -672,7 +675,7 @@
 			}
 		},
 		mounted() {
-			 window.__retest__ =false;
+			window.__retest__ = false;
 			window.localStorage.uplus_sleep_user_info_cache = ''; //个人信息存储清空
 			if (window.localStorage.UPlusAPP_agree_privacyPlan && (window.localStorage.UPlusAPP_agree_privacyPlan == 'true' || window.localStorage.UPlusAPP_agree_privacyPlan == true)) { //存储获取苹果健康数据的权限
 				this.show = false;
@@ -774,6 +777,23 @@
 		}
 		.tabs {
 			position: relative;
+			.bgHumanImg {
+				position: fixed;
+				top: 4.4rem;
+				height: 19.2rem;
+				left: 0;
+				width: 100%;
+				img {
+					width: 7rem;
+					height: 19.2rem;
+					position: absolute;
+					top: 0;
+					bottom: 0;
+					left: 0;
+					right: 0;
+					margin: auto;
+				}
+			}
 			.floatButton {
 				position: fixed;
 				width: 2.5rem;
@@ -844,10 +864,6 @@
 					background: rgba(51, 51, 51, .17);
 					box-shadow: 0 0 0 8px rgba(51, 51, 51, .05);
 					border-radius: 50%;
-				}
-				img {
-					width: 100%;
-					height: 100%;
 				}
 			}
 			.col3 {

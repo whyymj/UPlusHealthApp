@@ -12,7 +12,7 @@
             myaudio
         },
         mounted() {
-            var params = this.$route.query;
+            
             window.localStorage.wh_fromPage = 'music';
         }
     }

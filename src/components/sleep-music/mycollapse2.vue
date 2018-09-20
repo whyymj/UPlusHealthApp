@@ -10,6 +10,7 @@
 </template>
 
 <script>
+    import bus from '../eventbus.js';
     export default {
         props: ['endH', 'exportP', 'animateT', 'startH'],
         data() {
@@ -65,12 +66,13 @@
                         that.show = !that.show;
                         that.height = that.start;
                         that.pdtop = that.paddingStart;
+                        bus.$emit('onlyShowThisWeek');
                     }
                 })
             },
             scale(e) {
                 if (!this.show) { //开始变长
-                console.log('>>>>');
+                    bus.$emit('showSelectedDate');
                     this.tall();
                 } else {
                     this.shrink();
@@ -78,11 +80,17 @@
             }
         },
         mounted() {
-            this.height = this.startH * 1 || 3.8;
-            this.start = this.startH * 1 || 3.8;
+            var that = this;
+            bus.$on('autoShrink', function() { //点击日期后收缩
+                if (that.show) {
+                    that.scale()
+                }
+            })
+            this.height = this.startH * 1 || 4.2;
+            this.start = this.startH * 1 || 4.2;
             this.end = this.endH * 1 || 18;
             this.timeGap = this.animateT * 1 || 500; //ms
-            this.paddingEnd = this.exportP * 1 || 2.7;
+            this.paddingEnd = this.exportP * 1 || 2.8;
             window.requestAnimationFrame = window.requestAnimationFrame ||
                 window.webkitRequestAnimationFrame ||
                 window.mozRequestAnimationFrame ||

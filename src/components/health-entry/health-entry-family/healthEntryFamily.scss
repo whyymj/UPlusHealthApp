@@ -7,9 +7,11 @@
   overflow: auto;
   left:0;
   right:0;
+  -webkit-overflow-scrolling: touch;
   background: #fff;
   .body{
        padding-bottom: 3.2rem;
+       -webkit-overflow-scrolling: touch;
     .body_1{
       .body_11{
         height: 2rem;

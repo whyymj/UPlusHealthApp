@@ -39,11 +39,7 @@
                     }
                 }
             }).catch(function(res) {
-                that.$axios.get('/static/testData/getSleepWiki.json').then(function(res) {
-                    if (res.data.code == 'C0000') {
-                        that.cont = res.data.data.wikiContent
-                    }
-                })
+                
             })
         }
     }

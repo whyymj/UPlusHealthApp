@@ -27,8 +27,11 @@
                 </tr>
             </thead>
             <tbody class='body'>
-                <tr v-for='(item,index) in datepicker' :key='index'>
-                    <td v-for='(val,key) in item' :key='key' @click='selectdate(index,key,val)'><span class='havedata' v-if='haveDataDays.indexOf(hasRecord(val))!=-1'></span><span class='today' :class='{active:activeTd(index,key)}' v-if='isToday(val)'>今天</span><span :class='{active:activeTd(index,key)}' :style="{opacity:opacity(val)}">{{val.date}}</span></td>
+                <tr v-if='showThisWeek'>
+                    <td v-for='(val,key) in thisWeekDates' :key='key' @click='selectdate(-1,key,val)'><span class='havedata' v-if='haveDataDays.indexOf(hasRecord(val))!=-1'></span><span class='today' :class='{active:activeTd(val)}' v-if='isToday(val)'>今天</span><span :class='{active:activeTd(val)}' >{{val.date}}</span></td>
+                </tr>
+                <tr v-for='(item,index) in datepicker' :key='index' v-else>
+                    <td v-for='(val,key) in item' :key='key' @click='selectdate(index,key,val)'><span class='havedata' v-if='haveDataDays.indexOf(hasRecord(val))!=-1'></span><span class='today' :class='{active:activeTd(val)}' v-if='isToday(val)'>今天</span><span :class='{active:activeTd(val)}' :style="{opacity:opacity(val)}">{{val.date}}</span></td>
                 </tr>
             </tbody>
         </table>
@@ -37,10 +40,14 @@
 
 <script>
     import caldate from "../sleep-music/calDate.js";
+    import bus from '../eventbus.js';
     export default {
         props: ['hidetop', 'flag'],
         data() {
             return {
+                showThisWeek: true,
+                thisWeekDates: [],
+                selectedDate: '',
                 haveDataDays: [],
                 month: "",
                 year: "",
@@ -57,7 +64,7 @@
         methods: {
             isToday(item) {
                 var arr = this.today.split("-");
-                if (arr[0] == item.year && arr[1] == item.month && arr[2] == item.date) {
+                if (arr[0] * 1 == item.year * 1 && arr[1] * 1 == item.month * 1 && arr[2] * 1 == item.date * 1) {
                     return true;
                 }
                 return false;
@@ -74,7 +81,8 @@
             selectdate(index, key, val) {
                 var tmp = new Date('' + val.year + '/' + val.month + '/' + val.date);
                 if (tmp.getTime() <= new Date().getTime()) {
-                    this.selected = [index, key];
+                    this.selected = [val.year * 1, val.month * 1, val.date * 1];
+                    bus.$emit('autoShrink');
                     this.$emit('checkDateData', val);
                 }
             },
@@ -86,8 +94,39 @@
                 this.month = data;
                 this.update();
             },
-            activeTd(index, key) {
-                if (index == this.selected[0] && key == this.selected[1]) {
+            getThisWeek() {
+                this.thisWeekDates = [];
+                var now = new Date(); //当前日期 
+                var nowDayOfWeek = now.getDay(); //今天本周的第几天 
+                var nowDay = now.getDate(); //当前日 
+                var nowMonth = now.getMonth(); //当前月 
+                var nowYear = now.getFullYear(); //当前年 
+                function formatDate(date) {
+                    var myyear = date.getFullYear();
+                    var mymonth = date.getMonth() + 1;
+                    var myweekday = date.getDate();
+                    if (mymonth < 10) {
+                        mymonth = "0" + mymonth;
+                    }
+                    if (myweekday < 10) {
+                        myweekday = "0" + myweekday;
+                    }
+                    return {
+                        year: myyear,
+                        month: mymonth,
+                        date: myweekday,
+                        day: date.getDay()
+                    };
+                }
+                var date, tmpArr = [];
+                for (var i = 0; i < 7; i++) {
+                    date = new Date(nowYear, nowMonth, nowDay - nowDayOfWeek + i);
+                    tmpArr.push(formatDate(date))
+                }
+                this.thisWeekDates = tmpArr;
+            },
+            activeTd(val) {
+                if (val.year * 1 == this.selected[0] && val.month * 1 == this.selected[1] && val.date * 1 == this.selected[2]) {
                     return true
                 }
                 return false;
@@ -100,6 +139,13 @@
         mounted() {
             var date = new Date();
             var that = this;
+            this.getThisWeek();//收缩状态下显示本周的日期
+            bus.$on('onlyShowThisWeek', function() {
+                that.showThisWeek = true
+            });
+            bus.$on('showSelectedDate', function() {
+                that.showThisWeek = false;
+            });
             this.year = date.getFullYear();
             this.month = date.getMonth() + 1;
             this.date = date.getDate();
@@ -159,12 +205,15 @@
             width: 100%;
         }
         #calendar {
-            width: 100%;
-            height: 12rem;
+            width: 100%; // height: 12rem;
+            tr {
+                height: 2rem;
+            }
             td {
                 position: relative;
                 text-align: center;
                 line-height: 2rem;
+                height: 2rem;
                 font-size: 0.7rem;
                 width: 14%;
                 font-family: "PingFangSC-Semibold";
@@ -187,15 +236,15 @@
             .today {
                 background: #fff;
                 position: absolute;
-                width: 2rem;
-                height: 2rem;
+                width: 1.9rem;
+                height: 1.9rem;
                 box-sizing: border-box;
                 border: 1px solid rgba(38, 165, 253, 1);
                 color: rgba(38, 165, 253, 1);
                 text-align: center;
                 font-size: 0.7rem;
                 font-family: "PingFangSC-Regular";
-                line-height: 2rem;
+                line-height: 1.9rem;
                 top: 0;
                 left: 0;
                 bottom: 0;
@@ -206,8 +255,8 @@
             .active {
                 position: absolute;
                 box-sizing: border-box;
-                width: 2rem;
-                height: 2rem;
+                width: 1.8rem;
+                height: 1.8rem;
                 background: rgba(38, 165, 253, 1);
                 text-align: center;
                 top: 0;
