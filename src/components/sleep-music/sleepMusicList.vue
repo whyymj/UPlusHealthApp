@@ -163,6 +163,10 @@
                     if (res.data.code === 'C0000' && res.data.data) {
                         var data = res.data.data[res.data.data.length - 1];
                         that.todayManuInputData = true;
+                        var tmp1 = data.sleepTime,
+                            tmp2 = data.wakeTime
+                        tmp1 = (tmp1.indexOf('-') == -1) ? tmp1 : tmp1.split(' ')[1];
+                        tmp2 = (tmp2.indexOf('-') == -1) ? tmp2 : tmp2.split(' ')[1];
                         that.paramslist = [{
                             title: '当日作息',
                             detail: '当日作息即当日上床歇息至起床时间',
