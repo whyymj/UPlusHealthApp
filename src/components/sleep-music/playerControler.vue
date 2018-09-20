@@ -41,13 +41,6 @@
                 }
                 return title + "(" + level + ")"
             },
-            formatNum(num) {
-                if (num > 0) {
-                    return num > 9 ? ('' + Math.round(num)) : ('0' + Math.round(num));
-                } else {
-                    return '00';
-                }
-            },
             getPosition() {
                 var h = 0,
                     m = 0,
@@ -60,7 +53,7 @@
                     m = this.formatNum(tmp);
                     tmp = Math.round(this.position % 3600 % 60);
                     s = this.formatNum(tmp);
-                    str = ((h == '00') ? '' : (h + ':')) + m + ':' + s
+                    str = ((h == '00') ? '' : (h + ':')) + m + ':' + s;
                     return str;
                 } else {
                     return '00:00:00';
@@ -71,14 +64,16 @@
                     m = 0,
                     str = '',
                     s = 0;
-                if (typeof this.duration * 1 == 'number' && this.duration * 1 > 0) {
+                    
+                if (this.duration * 1 > 0) {
                     var tmp = Math.floor(this.duration / 3600);
                     h = this.formatNum(tmp);
                     tmp = Math.floor(this.duration % 3600 / 60);
                     m = this.formatNum(tmp);
-                    tmp = this.duration % 3600 % 60
+                    tmp = this.duration % 3600 % 60;
                     s = this.formatNum(tmp);
-                    str = '' + ((h == '00') ? '' : (h + ':')) + m + ':' + s
+                    str = '' + ((h == '00') ? '' : (h + ':')) + m + ':' + s;
+                    
                     return str;
                 } else {
                     return '00:00:00';
@@ -105,6 +100,13 @@
             }
         },
         methods: {
+            formatNum(num) {
+                if (num > 0) {
+                    return num > 9 ? ('' + Math.round(num)) : ('0' + Math.round(num));
+                } else {
+                    return '00';
+                }
+            },
             $$(id) {
                 return document.getElementById(id);
             },
@@ -128,7 +130,6 @@
                 that.playing = false;
             },
             receivedEvent(src) {
-                console.log('进入', src, Media);
                 var that = this;
                 this.my_media = null;
                 this.mediaTimer = null;
@@ -137,16 +138,13 @@
                 function mediaError(err) {}
                 // 开始或恢复播放一个音频文件
                 function playAudio() {
-                    console.log('playAudio>>>>>>', that.my_media);
                     if (!that.my_media) {
                         // 初始化Media对象
                         that.my_media = new Media(src, mediaSuccess, mediaError);
                     }
-                    console.log('that.my_media', that.my_media);
                     // 播放音频
                     if (that.my_media && that.my_media.play) {
                         that.my_media.play();
-                        console.log('开始播放');
                         that.playing = true;
                     }
                 }
@@ -164,10 +162,9 @@
                             that.my_media.getCurrentPosition(
                                 // success callback
                                 function(position) {
-                                    if (position > -1) {
+                                    if (position > 0) {
                                         that.loadingmodal.close()
                                         that.position = Math.round(position);
-                                        console.log(' that.position ', that.position);
                                     }
                                 },
                                 // error callback
@@ -181,14 +178,9 @@
                 // 返回一个音频文件的持续时间。
                 function getDuration() {
                     // Get duration
-                    var counter = 0;
                     that.timerDur = setInterval(function() {
-                        counter = counter + 1000;
                         that.duration = Math.round(that.my_media.getDuration());
-                        console.log('meida  duration >>', that.duration);
-                        // if (that.duration > 0) {
-                        //     clearInterval(that.timerDur);
-                        // }
+                        
                     }, 1000);
                 }
                 // this.$$("playSleepMusic").onclick = function() {
@@ -200,7 +192,6 @@
                 //     pauseAudio();
                 //     that.playing = !that.playing;
                 // }
-                console.log('开始添加事件', this.$$("goThirtySec"), this.$$("backThirtySec"));
                 this.$$("goThirtySec").onclick = function() {
                     var time = that.position + 30;
                     if (that.duration > 0) {
@@ -223,6 +214,8 @@
         beforeDestroy() {
             this.my_media.stop();
             this.my_media.release();
+            clearInterval(this.mediaTimer);
+            clearInterval(this.timerDur);
         },
         mounted() { //h5实现的方式
             this.params = this.$route.query;
@@ -230,9 +223,7 @@
             var that = this;
             //初始化音频插件
             that.audioSrc = that.params.musicurl;
-            console.log(this.defaultT, 'ttttttt', that.params)
             document.addEventListener('deviceready', function() {
-                console.log("deviceready1111111111111",that.params.musicurl,that.receivedEvent);
                 that.receivedEvent(that.params.musicurl)
             }, false);
             this.loadingmodal = Loading.service({
