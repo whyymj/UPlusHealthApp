@@ -7,7 +7,7 @@
                 </div>
                 <div class="title">睡眠时长</div>
                 <div class="time"><span>{{Math.floor(sleepTimeLang/60)}}</span>小时<span>{{sleepTimeLang%60}}</span>分</div>
-                <div class="level">{{sleepQuality}}
+                <div class="level">
                 </div><i class="el-icon-arrow-down rightarrow " v-if='rotateArr'></i><i class="el-icon-arrow-right rightarrow" v-else></i>
             </div>
         </mycollapse>
