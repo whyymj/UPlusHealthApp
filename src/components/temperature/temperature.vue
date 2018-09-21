@@ -85,9 +85,9 @@
               <div class="title">记录体温后将在此看到变化曲线</div>
             </div>
             <!---->
-            <div class="toggle-temperature">
+            <!--<div class="toggle-temperature">
               <div class="temperature" v-for="(option, index) in temperatureType" :key="index" :class="{active: option == selectTemperature}" @click="toggleTemperature(option)">{{option}}</div>
-            </div>
+            </div>-->
           </div>
         </div>
         <div v-if="newsResult.length !== 0" class="card-container news">
