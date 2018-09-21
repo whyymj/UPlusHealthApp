@@ -1,7 +1,8 @@
 <template>
     <div class='wh_userinfo_tall'>
-        <h3>身高</h3>
+        
         <div style='width:18.75rem;' class='height_box'>
+        	<h3>身高</h3>
             <mt-picker :slots="tallarr" @change="select_tall"></mt-picker>
             <span class="unit">厘米</span>
         </div>
@@ -75,13 +76,14 @@
             border-top: 1px solid #f5f5f5;
             border-bottom: 1px solid #f5f5f5;
             position: relative;
+            margin-top:7rem;
             .unit {
                 position: absolute;
                 top: 0;
                 bottom: 0;
                 right:30%;
                 margin: auto;
-                height: 2rem;
+                height: 0rem;
                 line-height: 2rem;
                 font-size: 0.8rem;
                 font-family: 'PingFangSC-Regular';
@@ -101,7 +103,7 @@
         font-size: 0.8rem;
         font-family: "PingFangSC-Regular";
         color: #fff;
-        border: 1px solid #f5f5f5;
+        /*border: 1px solid #f5f5f5;*/
         font-weight: 500;
     }
 </style>
