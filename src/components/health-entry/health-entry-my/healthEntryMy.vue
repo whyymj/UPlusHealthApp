@@ -585,6 +585,7 @@
 <style lang="scss">
     @import "./healthEntryMy.scss";
     .healthEntryFamily {
+        
         .nick_name,
         .sex_radio {
             width: 17.15rem;

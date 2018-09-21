@@ -53,7 +53,7 @@
                                     title: item.templateTitle,
                                     detail: item.templateSubTitle,
                                     meta: item,
-                                    time: item.createTime,
+                                    time: item.updateTime,
                                     result: (item.status === null || item.status === 'null') ? '' : (item.status == '0' ? '未完成' : (item.status == '1' ? (item.result || '已完成') : "未知")),
                                     status: item.status //null未答题，0答一半，1完成
                                 }
@@ -80,7 +80,7 @@
                                             title: item.templateTitle,
                                             detail: item.templateSubTitle,
                                             meta: item,
-                                            time: item.createTime,
+                                            time: item.updateTime,
                                             result: (item.status === null || item.status === 'null') ? '' : (item.status == '0' ? '未完成' : (item.status == '1' ? (item.result || '已完成') : "未知")),
                                             status: item.status //null未答题，0答一半，1完成
                                         }

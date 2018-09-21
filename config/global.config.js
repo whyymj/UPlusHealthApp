@@ -10,5 +10,7 @@ module.exports = {
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         'originType': 'UHOME'
-    }
+    },
+    uploadimgAction:'http://123.103.113.201:8085/healthcare/upload/uploadPic'
+    
 }

@@ -36,9 +36,9 @@
         </div>
       </div>
       <!-- <div class="associated-create add-friends " @click="openCreate()">
-                                                          <img class="addFriends" src='/static/familyManage/link.png'>
-                                                          <span class="add" id='addf'>添加好友<i>（已有U+账号）</i></span>
-                                                        </div> -->
+                                                                  <img class="addFriends" src='/static/familyManage/link.png'>
+                                                                  <span class="add" id='addf'>添加好友<i>（已有U+账号）</i></span>
+                                                                </div> -->
       <p class='additionTips'>注：无法查看未启用健康档案的用户信息</p>
       <div class="associated-create" @click="openCreate()">
         <i class="create fa fa-plus"></i> <span class="create">创建家人</span>
@@ -81,8 +81,6 @@
       }
     },
     mounted() {
-    
-   
       if (process.env.NODE_ENV == 'development') {
         this.createdList = []
       }
@@ -145,8 +143,11 @@
           if (result.data.code === 'C0000') {
             this.createdList = result.data.data[0].map(function(item) {
               var newitem = item;
+              newitem.sortNum = new Date(item.create_date);
               newitem.head_pic = item.head_pic || '/static/familyManage/newFile.png'
               return newitem;
+            }).sort(function(a, b) {
+              return b.sortNum - a.sortNum;
             });
             this.$axios.get('/api/getUHomeFamilyMember').then(function(res) {
               if (res.data.code == 'C0000') {
@@ -272,6 +273,12 @@
 <style lang="scss">
   @import "./familyManagement.scss";
   .associated-family-v {
+    .name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width: 100%;
+    }
     .additionTips {
       background: #fff;
       font-size: 0.6rem;
