@@ -4,8 +4,8 @@
 			<!-- 导航条 -->
 			<mynav :navigateList='memberlist' :initnum='initnum' @clickNav='clickNav'></mynav>
 			<div class='bgHumanImg'>
-				<img src="/static/healthArchives/bg-human.png" alt="" v-if='maleShow'>
-				<img src="/static/healthArchives/bg-woman.png" alt="" v-else>
+				<img src="/static/healthArchives/bg-human.png" alt="" class = 'manBgImg' v-if='maleShow'>
+				<img src="/static/healthArchives/bg-woman.png" alt="" class = 'womanBgImg' v-else>
 			</div>
 			<mt-swipe :auto="0" :show-indicators="false" @change="handleChange" :continuous='false' ref='swipe'>
 				<!-- 第一页 -->
@@ -788,7 +788,7 @@
 				left: 0;
 				width: 100%;
 				img {
-					width: 7rem;
+					
 					height: 19.2rem;
 					position: absolute;
 					top: 0;
@@ -796,6 +796,12 @@
 					left: 0;
 					right: 0;
 					margin: auto;
+				}
+				.womanBgImg{
+					width: 5rem;
+				}
+				.manBgImg{
+					width: 7rem;
 				}
 			}
 			.floatButton {

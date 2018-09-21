@@ -57,7 +57,9 @@
 			return {
 				imageUrl: '',
 				data: {
-					'loginCode':'15712783211'
+					loginCode:'',
+					member_id:'',
+					openId:''
 				},
 				router: '',
 				uploadimgAction:'http://123.103.113.201:8085/healthcare/upload/uploadPic'
@@ -78,14 +80,13 @@
 					var that = this;
 					var result = {};
 					console.log("memberid", that.data)
-					//获取个人的信息
-					if(!that.memberId) {
+					if(that.data.member_id) {//获取家庭成员的信息
+						result = await axios.post('/api/member', {
+							member_id: that.data.member_id
+						})
+					} else { //获取个人的信息
 						result = await axios.post('/api/user/info', {
 							user_id: ''
-						})
-					} else { //获取家庭成员的信息
-						result = await axios.post('/api/member', {
-							member_id: that.memberId
 						})
 					}
 					console.log(result)
