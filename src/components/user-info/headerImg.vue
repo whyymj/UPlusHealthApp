@@ -1,7 +1,7 @@
 <template>
 	<div class="uploadimg">
 		<el-upload class="avatar-uploader" 
-			action="http://127.0.0.1:8088/healthcare/upload/uploadPic" 
+			action="http://123.103.113.201:8085/healthcare/upload/uploadPic" 
 			name="file" 
 			:data="data" 
 			:with-credentials="true" 
