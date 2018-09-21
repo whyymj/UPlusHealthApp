@@ -1,7 +1,7 @@
 <template>
 	<div class="uploadimg">
 		<el-upload class="avatar-uploader" 
-			action="http://127.0.0.1:8088/healthcare/upload/uploadPic" 
+			:action='uploadimgAction' 
 			name="file" 
 			:data="data" 
 			:with-credentials="true" 
@@ -50,6 +50,8 @@
 
 <script>
 	import axios from "axios"
+	import config from '../../../config/global.config'
+	
 	export default {
 		data() {
 			return {
@@ -58,12 +60,13 @@
 					'loginCode':'15712783211'
 				},
 				router: '',
-				uploadimg:'http://10.130.94.227:9020/healthcare/upload/uploadPic'
+				uploadimgAction:'http://123.103.113.201:8085/healthcare/upload/uploadPic'
 			};
 		},
 		created() {
 			this.data.member_id = this.$route.params.member_id
 			this.router = this.$route.params.from
+			this.uploadimgAction=config.uploadimgAction
 			console.log(this.data)
 		},
 		mounted() {
