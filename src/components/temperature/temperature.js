@@ -4,7 +4,7 @@ import myDatePicker from '../pressure/myDatePicker.vue';
 import mycollapse2 from '../sleep-music/mycollapse2.vue';
 export default {
   name: 'temperature',
-  components : {
+  components: {
     myDatePicker,
     mycollapse2,
     Loading
