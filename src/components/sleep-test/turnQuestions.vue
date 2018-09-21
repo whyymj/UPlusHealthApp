@@ -182,7 +182,7 @@
         mounted() {
             var that = this;
             this.params = this.$route.query;
-            var that = this;
+            this.tuId = this.params.tuId;
             document.getElementsByClassName('turnQuestions')[0].onclick = function(e) {
                 if (e.target.className === 'el-radio__original' || e.target.className === 'nextbut') {
                     that.next()
@@ -206,7 +206,6 @@
                         }
                     });
                     that.cacheOptions[index].option = option;
-                    console.log('this  option》》》', option, that.cacheOptions);
                 });
                 this.curnum = lasttestnum == this.list.length - 1 ? 0 : lasttestnum; //是否已经全部测试完毕
                 if (this.curnum > 0) {
@@ -228,7 +227,7 @@
                 that.reStart = false;
             })
             bus.$on('submitResult', function() { //这里提交答案
-                if (that.cacheOptions['' + (that.totalnum - 1)].option.length > 0) {
+                if (that.totalnum > 0 && that.cacheOptions['' + (that.totalnum - 1)].option.length > 0) {
                     that.loadingmodal = Loading.service({
                         fullscreen: true,
                         background: 'rgba(0, 0, 0, 0.7)',
@@ -263,8 +262,7 @@
                             showClose: false
                         });
                         that.loadingmodal.close()
-                          that.params.totalScore = 22;
-                          
+                        that.params.totalScore = 22;
                         that.$router.push({
                             path: '/sleepTestResult',
                             query: that.params

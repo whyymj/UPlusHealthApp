@@ -53,21 +53,18 @@
                         title: res.data.data.scoreInfo,
                         detail: res.data.data.scoreSuggest
                     }
-                    // that.tips = res.data.data.ttLineAudioSubList.map(function(item) {
-                    //     return {
-                    //         title: item.lineTitle,
-                    //         body: "关注身体的每个部位，缓解躯体不适",
-                    //         audio:item.audioUrl
-                    //     }
-                    // })
-                } else {
-                    that.$notify.error({
-                        title: '错误',
-                        message: 'getUserTemplateAnalysis接口报错',
-                        showClose: false
-                    });
-                }
+                    that.tips = res.data.data.ttLineAudioSubList.map(function(item) {
+                        return {
+                            title: item.lineTitle,
+                            body: "关注身体的每个部位，缓解躯体不适",
+                            audio: item.audioUrl,
+                            img: item.imgUrl,
+                            type: item.resourceType
+                        }
+                    })
+                } else {}
             }).catch(function(res) {
+                
                 that.$axios.get('/static/testData/testResult.json', {
                     tuId: params.tuId
                 }).then(function(res) {
@@ -79,8 +76,17 @@
                             title: res.data.data.scoreInfo,
                             detail: res.data.data.scoreSuggest
                         }
+                        that.tips = res.data.data.ttLineAudioSubList.map(function(item) {
+                            return {
+                                title: item.lineTitle,
+                                body: "关注身体的每个部位，缓解躯体不适",
+                                audio: item.audioUrl,
+                                img: item.imgUrl,
+                                type: item.resourceType
+                            }
+                        })
                     }
-                    console.log(res)
+                    console.log('??????', that.tips )
                 })
             })
         },
@@ -103,16 +109,7 @@
                 totalscore: 0,
                 hadSaved: false,
                 testScore: 0,
-                tips: [{
-                    title: "身体扫描",
-                    body: "关注身体的每个部位，缓解躯体不适"
-                }, {
-                    title: "正念呼吸",
-                    body: "关注身体的每个部位，缓解躯体不适"
-                }, {
-                    title: "随意",
-                    body: "关注身体的每个部位，缓解躯体不适"
-                }]
+                tips: []
             }
         },
     }

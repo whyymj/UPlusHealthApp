@@ -47,7 +47,7 @@
                     notNextTick: true,
                     // swiper configs 所有的配置同swiper官方api配置
                     autoplay: 3000,
-                    speed:200,
+                    speed: 200,
                     // direction : 'vertical',
                     // effect: "coverflow",
                     // loop : true,
@@ -100,6 +100,10 @@
             margin: auto;
             height: 100%;
             text-align: center;
+            width: 3rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
             line-height: 2rem;
             font-size: 0.75rem;
             font-family: PingFangSC-Regular;

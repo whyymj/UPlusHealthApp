@@ -4,11 +4,10 @@
         <swiper :options="option" ref="swiperOption" v-if='list.length>0'>
             <!-- slides -->
             <swiper-slide v-for='(item,index) in list' :key='index'>
-                <div class="container" @click='toMusic(item)'>
-                    <div v-for='(val,key) in item' :key='key' :class="{left:key==0,right:key==1}">
-                        <h6>{{val.title}}</h6>
-                        <p class="body">{{val.body}}</p>
-                    </div>
+                <div class="container" @click='toMusic(item)' v-if='item.type!=-1'>
+                    <img :src="item.img" alt="">
+                    <h6 v-if='item.type==2'>{{item.title}}</h6>
+                    <p v-if='item.type==2'>{{item.body}}</p>
                 </div>
             </swiper-slide>
         </swiper>
@@ -19,16 +18,36 @@
     import _ from 'lodash'
     export default {
         props: ['tips'],
+        watch: {
+            tips() {
+                this.list = this.tips;
+                if (this.list.length % 2 == 1) {//填補一個无效的凑数用
+                    this.list.push({
+                        type: -1
+                    })
+                }
+            }
+        },
         methods: {
             toMusic(url) {
-                this.$router.push({
-                    path: '/sleepMusicPlayerPanel',
-                    query: {
-                        musicurl: url.audioUrl || '',
-                        name: url.lineTitle || ''
-                    }
-                })
-                console.log(url);
+                if (url.type == 2) { //跳百科
+                    this.$router.push({
+                        path: '/getSleepWiki',
+                        query: {
+                            postId: url.audio || '',
+                            title: url.title || ''
+                        }
+                    })
+                } else if (url.type == 1) { //跳转音乐播放
+                    this.$router.push({
+                        path: '/sleepMusicPlayerPanel',
+                        query: {
+                            musicurl: url.audio || '',
+                            name: url.title || ''
+                        }
+                    })
+                }
+                console.log('-----------------', url);
             }
         },
         data() {
@@ -43,14 +62,15 @@
                         disableOnInteraction: false,
                         // stopOnLastSlide: true
                     },
+                    // autoplay: false,
                     // direction : 'vertical',
                     // effect: "coverflow",
                     speed: 1000,
-                    loop: true,
+                    // loop: true,
                     grabCursor: true,
                     setWrapperSize: true,
                     slidesPerView: 2,
-                    // spaceBetween: 20,
+                    spaceBetween: 10,
                     centeredSlides: false,
                     // centeredSlides: true,
                     // autoHeight: true,
@@ -76,7 +96,7 @@
             }
         },
         mounted() {
-            this.list = _.chunk(this.tips, 1);
+            this.list = this.tips;
         }
     }
 </script>
@@ -99,6 +119,15 @@
         .container {
             position: relative;
             height: 5rem;
+            overflow: hidden;
+            padding: 0;
+            img {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
             .left,
             .right {
                 width: 8.25rem;
@@ -114,22 +143,28 @@
                 right: 0.5rem
             }
             h6 {
-                font-size: 0.7rem;
-                font-family: 'PingFangSC-Regular';
-                color: rgba(34, 131, 226, 1);
-                width: 100%;
-                padding: 0.5rem 0.5rem 0.1rem;
-                box-sizing: border-box;
-            }
-            p {
-                width: 100%;
                 font-size: 0.6rem;
                 font-family: 'PingFangSC-Regular';
-                color: rgba(102, 102, 102, 1);
-                line-height: 0.97rem;
+                color: #fff;
+                padding: 0.5rem 0.3rem 0 0.3rem;
+                width: 100%;
+                position: relative;
+                z-index: 10;
+                line-height: 0.8rem;
                 box-sizing: border-box;
-                padding: 0 0.5rem 0.5rem;
-                ;
+                font-weight: 100;
+            }
+            p {
+                position: relative;
+                z-index: 10;
+                width: 5rem;
+                padding: 0.2rem 0 0 0.3rem;
+                font-size: 0.4rem;
+                font-family: 'PingFangSC-Regular';
+                color: #fff;
+                font-weight: 100;
+                line-height: 0.7rem;
+                box-sizing: border-box;
             }
         }
     }

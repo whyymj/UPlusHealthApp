@@ -581,9 +581,9 @@
                     disease: this.chromicListResult[0] ? this.chromicListResult.join(",") : "",
                     allergy: this.allergyListResult[0] ? this.allergyListResult.join(',') : '',
                 }
+                window.__newCreateMember__=saveData.nick_name;//为了在首页显示
                 if (saveData.nick_name && saveData.sex && saveData.birthday && saveData.height && saveData.weight) {
                     //新增家庭成员
-                    console.log('save saveData', saveData);
                     axios.post('/api/member', saveData)
                         .then(function(res) {
                             if (res.data && res.data.code == 'C0000') {
