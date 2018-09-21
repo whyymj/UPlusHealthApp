@@ -27,10 +27,10 @@
                 </tr>
             </thead>
             <tbody class='body'>
-                <tr v-if='showThisWeek'>
-                    <td v-for='(val,key) in thisWeekDates' :key='key' @click='selectdate(-1,key,val)'><span class='havedata' v-if='haveDataDays.indexOf(hasRecord(val))!=-1'></span><span class='today' :class='{active:activeTd(val)}' v-if='isToday(val)'>今天</span><span :class='{active:activeTd(val)}' >{{val.date}}</span></td>
+                <tr v-show='showThisWeek'>
+                    <td v-for='(val,key) in thisWeekDates' :key='key' @click='selectdate(-1,key,val)'><span class='havedata' v-if='haveDataDays.indexOf(hasRecord(val))!=-1'></span><span class='today' :class='{active:activeTd(val)}' v-if='isToday(val)'>今天</span><span :class='{active:activeTd(val)}' :style="{opacity:opacity(val)}">{{val.date}}</span></td>
                 </tr>
-                <tr v-for='(item,index) in datepicker' :key='index' v-else>
+                <tr v-for='(item,index) in datepicker' :key='index' v-show='!showThisWeek'>
                     <td v-for='(val,key) in item' :key='key' @click='selectdate(index,key,val)'><span class='havedata' v-if='haveDataDays.indexOf(hasRecord(val))!=-1'></span><span class='today' :class='{active:activeTd(val)}' v-if='isToday(val)'>今天</span><span :class='{active:activeTd(val)}' :style="{opacity:opacity(val)}">{{val.date}}</span></td>
                 </tr>
             </tbody>
@@ -139,7 +139,7 @@
         mounted() {
             var date = new Date();
             var that = this;
-            this.getThisWeek();//收缩状态下显示本周的日期
+            this.getThisWeek(); //收缩状态下显示本周的日期
             bus.$on('onlyShowThisWeek', function() {
                 that.showThisWeek = true
             });

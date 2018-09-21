@@ -1,17 +1,16 @@
 import axios from 'axios'
 import myDatePicker from '../pressure/myDatePicker.vue';
 import mycollapse2 from '../sleep-music/mycollapse2.vue';
-import {Loading} from 'element-ui';
+
 export default {
   name : 'sugar',
   components : {
     myDatePicker,
-    mycollapse2,
-    Loading
+    mycollapse2
   },
   data() {
     return {
-      loadingmodal: '',
+      showMyLoadingModal:true,
       ChooseTypePopupVisible: false,
       bluetoothVisible: false,
       popupSuccess: false,
@@ -58,11 +57,10 @@ export default {
   },
   mounted() {
     var that = this;
-    this.loadingmodal = Loading.service({fullscreen: true, background: 'rgba(0, 0, 0, 0.7)', lock: true, text: 'Loading', spinner: 'el-icon-loading'});
+    this.showMyLoadingModal = true
     setTimeout(function () {
       that
-        .loadingmodal
-        .close();
+        .showMyLoadingModal=false
     }, 10000)
     this.initList()
     this.$nextTick(function () {
@@ -249,8 +247,7 @@ export default {
         console.log('Whoops: ', err)
       }
       this
-        .loadingmodal
-        .close();
+        .showMyLoadingModal=false;
     },
     async initDateList() {
       try {

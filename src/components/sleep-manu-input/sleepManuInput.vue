@@ -3,6 +3,7 @@
         <sleeptime :list='items' @getSleepTimes='getSleepTimes'></sleeptime>
         <sleepquality :quality='quality' :factors='factors' @chooseQuality='chooseQuality' @chooseFactor='chooseFactor'></sleepquality>
         <div class="button" :class='{canSubmit:(cansub&&sleepqualityres!=="")}' @click='submitResult'>保存</div>
+        <myLoadingModal :show='showMyLoadingModal'></myLoadingModal>
     </div>
 </template>
 
@@ -10,9 +11,6 @@
     import sleeptime from './sleepTime';
     import sleepquality from './sleepQuality.vue';
     import bus from '../eventbus.js';
-    import {
-        Loading
-    } from 'element-ui';
     import {
         MessageBox
     } from 'mint-ui';
@@ -22,8 +20,7 @@
     export default {
         components: {
             sleeptime,
-            sleepquality,
-            Loading
+            sleepquality
         },
         methods: {
             chooseFactor(list) {
@@ -77,16 +74,10 @@
                     } else {
                         getupTime = that.today + ' ' + getupTime;
                     }
-                    if (that.sleepqualityres === '' ) {
+                    if (that.sleepqualityres === '') {
                         MessageBox.alert('请选择睡眠质量', '请完成内容选择');
                     } else {
-                        this.loadingModal = Loading.service({
-                            fullscreen: true,
-                            background: 'rgba(0, 0, 0, 0.7)',
-                            lock: true,
-                            text: '正在提交',
-                            spinner: 'el-icon-loading',
-                        });
+                        that.showMyLoadingModal = true;
                         if (this.sleepid) { //有sleep_id为修改，否则为添加
                             this.$axios.post('/api/updateSleepAnalysis', {
                                 sleep_id: that.sleepid,
@@ -97,14 +88,14 @@
                                 quality: that.sleepqualityres,
                                 influence: that.sleepfactors
                             }).then(function(res) {
-                                that.loadingModal.close();
+                                that.showMyLoadingModal = false;
                                 if (res.data && res.data.code == 'C0000') {
                                     that.$router.push('/sleepMusicList');
                                 } else {
                                     MessageBox.alert('请稍后重试', '请求失败');
                                 }
                             }).catch(function() {
-                                that.loadingModal.close();
+                                that.showMyLoadingModal = false;
                                 that.$router.push('/sleepMusicList');
                             });
                         } else {
@@ -117,14 +108,14 @@
                                 quality: that.sleepqualityres,
                                 influence: that.sleepfactors
                             }).then(function(res) {
-                                that.loadingModal.close();
+                                that.showMyLoadingModal = false;
                                 if (res.data.code && res.data.code == 'C0000') {
                                     that.$router.push('/sleepMusicList');
                                 } else {
                                     MessageBox.alert('请稍后重试', '请求失败');
                                 }
                             }).catch(function() {
-                                that.loadingModal.close();
+                                that.showMyLoadingModal = false;
                                 that.$router.push('/sleepMusicList');
                             });
                         }
@@ -136,7 +127,7 @@
         },
         data() {
             return {
-                loadingModal: '',
+                showMyLoadingModal: true,
                 today: '',
                 yesterday: '',
                 cansub: true,
@@ -170,14 +161,7 @@
         },
         mounted() {
             var that = this;
-            this.loadingModal = Loading.service({
-                fullscreen: true,
-                background: 'rgba(0, 0, 0, 0.7)',
-                lock: true,
-                text: 'Loading',
-                spinner: 'el-icon-loading',
-            });
-            
+            this.showMyLoadingModal = true;
             var date = new Date();
             var month = date.getMonth() + 1;
             var day = date.getDate();
@@ -202,9 +186,9 @@
                         that.sleepqualityres = that.quality = data.quality
                         that.sleepfactors = that.factors = data.influence;
                     }
-                    that.loadingModal.close();
+                    that.showMyLoadingModal = false;
                 }).catch(function() {
-                    that.loadingModal.close();
+                    that.showMyLoadingModal = false;
                     that.$axios.get('/static/testData/getAnalysisById.json').then(function(res) {
                         var data;
                         if (res.data.code == 'C0000') {
@@ -219,7 +203,7 @@
                     })
                 })
             } else {
-                that.loadingModal.close();
+                that.showMyLoadingModal = false;
             }
         }
     };

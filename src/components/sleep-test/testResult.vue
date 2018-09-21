@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h6>{{firstTitle}}-{{secondTitle}}<img src="/static/sleepMusicList/img6.png" alt=""></h6>
+        <h6>{{firstTitle}}-{{secondTitle}}</h6>
         <score :score='testScore' :totalscore='totalscore' :scoreSet='scoreSet'></score>
         <analysis :analysis='analysis'></analysis>
         <warmTips :tips='tips'></warmTips>
@@ -8,6 +8,7 @@
             <div class="retry" :class='{saved:hadSaved}' @click='reTest'>重新测试</div>
             <div class="save" @click='save' v-if='!hadSaved'>返回</div>
         </div>
+        <myLoadingModal :show='showMyLoadingModal'></myLoadingModal>
     </div>
 </template>
 
@@ -19,7 +20,7 @@
         methods: {
             save() {
                 this.hadSaved = true;
-                this.$router.go(-2)
+                this.$router.go(-2);
             },
             reTest() {
                 var that = this;
@@ -35,6 +36,10 @@
         },
         mounted() {
             var that = this;
+            this.showMyLoadingModal = true;
+            setTimeout(function() {
+                that.showMyLoadingModal = false;
+            }, 5000)
             window.__retest__ = false;
             var params = this.$route.query;
             this.secondTitle = params.templateSubTitle;
@@ -45,6 +50,7 @@
                 tuId: params.tuId,
                 member_id: window._member_id
             }).then(function(res) {
+                that.showMyLoadingModal = false;
                 if (res.data.code == 'C0000') {
                     that.testScore = res.data.data.gradesStr.split('分')[0];
                     that.scoreSet = res.data.data.scoreNormal;
@@ -64,30 +70,8 @@
                     })
                 } else {}
             }).catch(function(res) {
+                that.showMyLoadingModal = false;
                 
-                that.$axios.get('/static/testData/testResult.json', {
-                    tuId: params.tuId
-                }).then(function(res) {
-                    if (res.data.code == 'C0000') {
-                        that.testScore = res.data.data.gradesStr.split('分')[0];
-                        that.scoreSet = res.data.data.scoreNormal;
-                        that.totalscore = res.data.data.total;
-                        that.analysis = {
-                            title: res.data.data.scoreInfo,
-                            detail: res.data.data.scoreSuggest
-                        }
-                        that.tips = res.data.data.ttLineAudioSubList.map(function(item) {
-                            return {
-                                title: item.lineTitle,
-                                body: "关注身体的每个部位，缓解躯体不适",
-                                audio: item.audioUrl,
-                                img: item.imgUrl,
-                                type: item.resourceType
-                            }
-                        })
-                    }
-                    console.log('??????', that.tips )
-                })
             })
         },
         components: {
@@ -109,7 +93,8 @@
                 totalscore: 0,
                 hadSaved: false,
                 testScore: 0,
-                tips: []
+                tips: [],
+                showMyLoadingModal: true
             }
         },
     }

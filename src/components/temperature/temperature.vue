@@ -7,7 +7,6 @@
         <myDatePicker @checkDateData='checkDateData' flag='2'></myDatePicker>
       </div>
     </mycollapse2>
-    
     <div class="container has-footer">
       <div :class="['background', {'open' : calendarOpen}]" id="calendarBg" @click="toggleOpenCalendar"></div>
       <div :class="['calendar-below', {'open' : calendarOpen}]" id="calendarBelow">
@@ -20,20 +19,20 @@
         <div class="temperature-record-list-c">
           <div v-for="(item, index) in temperatureRecordData" :key="index" :class="['temperature-record-list', 'card-container', {'temperature-toggle': index + 1 === temperatureIndex}]">
             <mt-cell-swipe :right="[
-                    {
-                        content: '<div class='+'record-delete'+'>'+
-                                  '<i class='+'icon-delete'+'></i>'+
-                                  '<span>不可恢复</span>'+
-                                '</div>',
-                        style: { background: '#FF475D', color: '#fff'},
-                        handler: () => deleteRecord(index, item)
-                    }
-                ]">
+                      {
+                          content: '<div class='+'record-delete'+'>'+
+                                    '<i class='+'icon-delete'+'></i>'+
+                                    '<span>不可恢复</span>'+
+                                  '</div>',
+                          style: { background: '#FF475D', color: '#fff'},
+                          handler: () => deleteRecord(index, item)
+                      }
+                  ]">
               <div @click="openHealthTips(index + 1)" :class="['record-item']">
                 <div class="record-mmHg">
                   <div :class="['icon-temperature-c', 'text-center',{'Standard-bg': item.suggestion.level === '1'},
-                              {'up-bg': item.suggestion.level === '2' || item.suggestion.level === '-2'},
-                              {'low-bg': item.suggestion.level === '3' || item.suggestion.level === '-3'}]">
+                                {'up-bg': item.suggestion.level === '2' || item.suggestion.level === '-2'},
+                                {'low-bg': item.suggestion.level === '3' || item.suggestion.level === '-3'}]">
                     <i class="icon-temperature"></i>
                   </div>
                   <div class="mmHg">
@@ -45,10 +44,10 @@
                 <div class="record-heart text-right">
                   <div class="record-heart-value">
                     <span :class="[{'Standard-bg': item.suggestion.level === '1'},
-                              {'up-bg': item.suggestion.level === '2' || item.suggestion.level === '-2'},
-                              {'low-bg': item.suggestion.level === '3' || item.suggestion.level === '-3'}]">
-                          {{item.suggestion.symptom}}
-                        </span>
+                                {'up-bg': item.suggestion.level === '2' || item.suggestion.level === '-2'},
+                                {'low-bg': item.suggestion.level === '3' || item.suggestion.level === '-3'}]">
+                            {{item.suggestion.symptom}}
+                          </span>
                   </div>
                   <div class="record-heart-time">
                     <span>测量时间</span><span>{{item.temperature.create_date.split(' ')[1].slice(0, -3)}}</span>
@@ -72,10 +71,10 @@
           <h2>趋势图</h2>
           <div ref="chartOption" class="chart-button-container">
             <span v-for="(option, index) in recordOptions" :key="index">
-                  <button
-                    :class="{active: option == selectedRecordOption}"
-                    @click="switchTab(option)">{{ option }}</button>
-                </span>
+                    <button
+                      :class="{active: option == selectedRecordOption}"
+                      @click="switchTab(option)">{{ option }}</button>
+                  </span>
           </div>
           <div class="chart">
             <chart ref="temperature" :options="temperatureChartsOption" :autoResize="true">
@@ -165,6 +164,7 @@
       <!-- <button class="device-input" @click="ChooseTypePopupVisible = true">设备录入</button> -->
       <button class="manual-input" @click="goManualEntry('entry-temperature')">手动录入</button>
     </footer>
+    <myLoadingModal :show='showMyLoadingModal'></myLoadingModal>
   </div>
 </template>
 <script type="text/javascript" src="./temperature.js">

@@ -217,6 +217,15 @@ const pressure = { //血压
         icon: 'icon-pressure',
         color: '#A3D0FF'
     },
+    '-3': {
+        level: 1,
+        status: '低压',
+        bg: '#5DA2C5',
+        tips: '血压偏低，请注意',
+        unit: "mmHg",
+        icon: 'icon-pressure',
+        color: '#fff'
+    },
     '-2': {
         level: 1,
         status: '低压',
@@ -236,6 +245,15 @@ const pressure = { //血压
         color: '#fff'
     },
     '2': {
+        level: 3,
+        status: '高压',
+        bg: '#F65261',
+        tips: '血压偏高，请注意',
+        unit: "mmHg",
+        icon: 'icon-pressure',
+        color: '#fff'
+    },
+    '3': {
         level: 3,
         status: '高压',
         bg: '#F65261',
@@ -307,7 +325,7 @@ export default function (name, level) {
     var res = '';
     if (name == '血糖') {
         res = sugar[level || 0];
-        
+
     } else if (name == '体温') {
         res = temperature[level || 0]
     } else if (name == '心电') {

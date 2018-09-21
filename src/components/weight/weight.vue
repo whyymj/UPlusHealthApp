@@ -170,6 +170,7 @@
       <!-- <button class="device-input" @click="ChooseTypePopupVisible = true">设备录入</button> -->
       <button class="manual-input" @click="goManualEntry('entry-weight')">手动录入</button>
     </footer>
+      <myLoadingModal :show='showMyLoadingModal'></myLoadingModal>
   </div>
 </template>
 

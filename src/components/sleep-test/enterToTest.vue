@@ -5,22 +5,19 @@
                 <testlist :testList='showlist'></testlist>
             </el-tab-pane>
         </el-tabs>
+        <myLoadingModal :show='showMyLoadingModal'></myLoadingModal>
     </div>
 </template>
 
 <script>
     import testlist from './testList';
-    import {
-        Loading
-    } from 'element-ui';
     export default {
         components: {
             testlist,
-            Loading
         },
         data() {
             return {
-                loadingmodal: '',
+                showMyLoadingModal: true,
                 activeName: 'title0',
                 titlelist: [],
                 questionslist: {},
@@ -29,13 +26,7 @@
         },
         methods: {
             handleClick(tab, event) {
-                this.loadingmodal = Loading.service({
-                    fullscreen: true,
-                    background: 'rgba(0, 0, 0, 0.7)',
-                    lock: true,
-                    text: 'loading',
-                    spinner: 'el-icon-loading',
-                });
+                this.showMyLoadingModal = true;
                 this.getTemplateList(this.titlelist[tab.index]);
             },
             getTemplateList(title) {
@@ -45,11 +36,11 @@
                         member_id: window._member_id,
                         templateTerm: title
                     }).then(function(res) {
-                        that.loadingmodal.close();
+                        that.showMyLoadingModal = false;
                         if (res.data.code == 'C0000') {
                             that.showlist = that.questionslist[title] = res.data.data.map(function(item, index) {
                                 return {
-                                    tuId:item.tuId,
+                                    tuId: item.tuId,
                                     title: item.templateTitle,
                                     detail: item.templateSubTitle,
                                     meta: item,
@@ -71,7 +62,7 @@
                             message: '请求试题列表出错了',
                             showClose: false
                         });
-                        that.loadingmodal.close();
+                        that.showMyLoadingModal = false;
                         if (process.env.NODE_ENV == 'development') {
                             that.$axios.get('/static/testData/getTemplateList.json').then(function(res) {
                                 if (res.data.code == 'C0000') {
@@ -91,30 +82,24 @@
                     });
                 } else {
                     this.showlist = that.questionslist[title];
-                    that.loadingmodal.close();
+                    that.showMyLoadingModal = false;
                 }
             }
         },
         mounted() {
             var that = this;
-             window.__retest__ =false;//是否需要重新测试
-            that.loadingmodal = Loading.service({
-                fullscreen: true,
-                background: 'rgba(0, 0, 0, 0.7)',
-                lock: true,
-                text: 'loading',
-                spinner: 'el-icon-loading',
-            });
+            window.__retest__ = false; //是否需要重新测试
+            that.showMyLoadingModal = true;
             this.$axios.post('/api/getTemplateTerms', {
                 member_id: window._member_id,
             }).then(function(res) {
-                that.loadingmodal.close();
+                that.showMyLoadingModal = false;
                 if (res.data.code == 'C0000') {
                     that.titlelist = res.data.data;
                     that.getTemplateList(that.titlelist[0])
                 }
             }).catch(function() {
-                that.loadingmodal.close();
+                that.showMyLoadingModal = false;
                 if (process.env.NODE_ENV == 'development') {
                     that.$axios.get('/static/testData/getTemplateTerms.json').then(function(res) {
                         if (res.data.code == 'C0000') {

@@ -1,17 +1,15 @@
 import axios from 'axios'
 import myDatePicker from '../pressure/myDatePicker.vue';
 import mycollapse2 from '../sleep-music/mycollapse2.vue';
-import {Loading} from 'element-ui';
 export default {
   name : 'weight',
   components : {
     myDatePicker,
-    mycollapse2,
-    Loading
+    mycollapse2
   },
   data() {
     return {
-      loadingmodal: '',
+
       ChooseTypePopupVisible: false,
       weightRecordData: [],
       weightLevel: '',
@@ -54,11 +52,9 @@ export default {
   },
   mounted() {
     var that = this;
-    this.loadingmodal = Loading.service({fullscreen: true, background: 'rgba(0, 0, 0, 0.7)', lock: true, text: 'Loading', spinner: 'el-icon-loading'});
+    this.showMyLoadingModal = true
     setTimeout(function () {
-      that
-        .loadingmodal
-        .close();
+      that.showMyLoadingModal = false;
     }, 10000)
     this.initList()
     this.$nextTick(function () {
@@ -215,98 +211,112 @@ export default {
                   .data
                   .map(_ => {
                     return _.muscle_percent
-                  });break;
+                  });
+                break;
               case '体重':
                 type = result
                   .data
                   .data
                   .map(_ => {
                     return _.weight
-                  });break;
+                  });
+                break;
               case '体脂率':
                 type = result
                   .data
                   .data
                   .map(_ => {
                     return _.axunge_percent
-                  });break;
+                  });
+                break;
               case 'BMI':
                 type = result
                   .data
                   .data
                   .map(_ => {
                     return _.bmi
-                  });break;
+                  });
+                break;
               case '基础代谢':
                 type = result
                   .data
                   .data
                   .map(_ => {
                     return _.basal_metabolic
-                  });break;
+                  });
+                break;
               case '水含量':
                 type = result
                   .data
                   .data
                   .map(_ => {
                     return _.water
-                  });break;
+                  });
+                break;
               case '骨量':
                 type = result
                   .data
                   .data
                   .map(_ => {
                     return _.bone
-                  });break;
+                  });
+                break;
               case '身体年龄':
                 type = result
                   .data
                   .data
                   .map(_ => {
                     return _.body_age
-                  });break;
+                  });
+                break;
               case '内脏脂肪等级':
                 type = result
                   .data
                   .data
                   .map(_ => {
                     return _.viscera
-                  });break;
+                  });
+                break;
               case '脂肪重量':
                 type = result
                   .data
                   .data
                   .map(_ => {
                     return _.axunge
-                  });break;
+                  });
+                break;
               case '肌肉重量':
                 type = result
                   .data
                   .data
                   .map(_ => {
                     return _.muscle
-                  });break;
+                  });
+                break;
               case '肥胖度':
                 type = result
                   .data
                   .data
                   .map(_ => {
                     return _.obesity
-                  });break;
+                  });
+                break;
               case '去脂体重':
                 type = result
                   .data
                   .data
                   .map(_ => {
                     return _.fat_free_weight
-                  });break;
+                  });
+                break;
               case '蛋白质':
                 type = result
                   .data
                   .data
                   .map(_ => {
                     return _.protein
-                  });break;
+                  });
+                break;
             }
             this.weightChartsOption = this.getChartsOption(d, type, this.selectedRecordOption)
             if (this.$refs.weight.$children.length !== 0) {
@@ -358,7 +368,7 @@ export default {
       }
     },
     onChange(val) {
-      
+
       window._weight_selected_date = val
       this.weightDate = val
       this.initList()

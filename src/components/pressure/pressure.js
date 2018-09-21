@@ -1,17 +1,15 @@
 import axios from 'axios'
 import myDatePicker from './myDatePicker.vue';
 import mycollapse2 from '../sleep-music/mycollapse2.vue';
-import {Loading} from 'element-ui';
 export default {
   name : 'pressure',
   components : {
     myDatePicker,
-    mycollapse2,
-    Loading
+    mycollapse2
   },
   data() {
     return {
-      loadingmodal: '',
+      showMyLoadingModal: true,
       ChooseTypePopupVisible: false,
       bluetoothVisible: false,
       popupVisible: false,
@@ -58,11 +56,10 @@ export default {
   },
   mounted() {
     var that = this;
-    this.loadingmodal = Loading.service({fullscreen: true, background: 'rgba(0, 0, 0, 0.7)', lock: true, text: 'Loading', spinner: 'el-icon-loading'});
+    this.showMyLoadingModal = true
     setTimeout(function () {
-      that
-        .loadingmodal
-        .close();
+      that.showMyLoadingModal = false;
+
     }, 10000)
     this.$nextTick(function () {
       this.chartOption('seven')
@@ -139,7 +136,6 @@ export default {
       } catch (err) {
         console.log('err: ', err)
       }
-   
 
     },
     async initList() {
@@ -173,29 +169,71 @@ export default {
       } catch (err) {
         console.log('Whoops: ', err)
       }
-      this
-        .loadingmodal
-        .close();
+      this.showMyLoadingModal = false
     },
     async chartOption(args, callback) {
       try {
         const result = await axios.get(`/api/pressure/${args}?member_id=${window._member_id}`)
 
         if (result.data.code === 'C0000') {
-//        let d = result.data.data.diastolic_data
-//        let s = result.data.data.systolic_data
-//        let c = args !== 'seven' ? result.data.data.create_date : result.data.data.create_date.map(_ => {
-//          return _.split(' ')[0]
-//        })
-//        let t = result.data.data.time_list
-					let d = args !== 'seven' ?result.data.data.map(item=>{return item.diastolic_data}):result.data.data.map(item=>{return [item.diastolic_pressure,item.diastolic_pressure]})
-					let s = args !== 'seven' ?result.data.data.map(item=>{return item.systolic_data}):result.data.data.map(item=>{return [item.systolic_pressure,item.systolic_pressure]})
-					let c = args !== 'seven' ?result.data.data.map(item=>{return item.time}) : result.data.data.map(item=> {
-            return item.create_date.split(' ')[0]
-          })
-					let t = args !== 'seven' ?result.data.data.map(item=>{return item.date}) : result.data.data.map(item=> {
-            return item.create_date
-         })
+          //        let d = result.data.data.diastolic_data        let s =
+          // result.data.data.systolic_data        let c = args !== 'seven' ?
+          // result.data.data.create_date : result.data.data.create_date.map(_ => {
+          //   return _.split(' ')[0]        })        let t = result.data.data.time_list
+          let d = args !== 'seven'
+            ? result
+              .data
+              .data
+              .map(item => {
+                return item.diastolic_data
+              })
+            : result
+              .data
+              .data
+              .map(item => {
+                return [item.diastolic_pressure, item.diastolic_pressure]
+              })
+          let s = args !== 'seven'
+            ? result
+              .data
+              .data
+              .map(item => {
+                return item.systolic_data
+              })
+            : result
+              .data
+              .data
+              .map(item => {
+                return [item.systolic_pressure, item.systolic_pressure]
+              })
+          let c = args !== 'seven'
+            ? result
+              .data
+              .data
+              .map(item => {
+                return item.time
+              })
+            : result
+              .data
+              .data
+              .map(item => {
+                return item
+                  .create_date
+                  .split(' ')[0]
+              })
+          let t = args !== 'seven'
+            ? result
+              .data
+              .data
+              .map(item => {
+                return item.date
+              })
+            : result
+              .data
+              .data
+              .map(item => {
+                return item.create_date
+              })
           // this.$refs.pressure.$children[0] && this.$refs.pressure.$children[0].clear()
           if (d.length === 0 && s.length === 0) {
             if (args === 'seven') {
@@ -238,7 +276,7 @@ export default {
       } catch (err) {
         console.log('Whoops: ', err)
       }
-    
+
       callback && callback()
     },
     async deleteRecord(index, item) {
@@ -318,20 +356,20 @@ export default {
                 foo[0] = params[0].name
               }
               let res = foo[0] + '<br/>'
-              if(this.selectedRecordArgs == 'seven'){
-	                  res += params[0].seriesName + ': ' + params[0].value + 'mmHg'+ '<br/>'+params[2].seriesName + ': ' + params[2].value + 'mmHg'
-              }else{
-              	 for (let i = 0, length = params.length; i < length; i++) {
-                if (i % 2 === 0) {
-                  params[i].value = !params[i].value
-                    ? '--'
-                    : params[i].value + 'mmHg'
-                  params[i + 1].value = !params[i + 1].value
-                    ? '--'
-                    : params[i + 1].value + 'mmHg'
-                  res += params[i].seriesName + ': ' + params[i].value + ' ~ ' + params[i + 1].value + '<br/>'
+              if (this.selectedRecordArgs == 'seven') {
+                res += params[0].seriesName + ': ' + params[0].value + 'mmHg<br/>' + params[2].seriesName + ': ' + params[2].value + 'mmHg'
+              } else {
+                for (let i = 0, length = params.length; i < length; i++) {
+                  if (i % 2 === 0) {
+                    params[i].value = !params[i].value
+                      ? '--'
+                      : params[i].value + 'mmHg'
+                    params[i + 1].value = !params[i + 1].value
+                      ? '--'
+                      : params[i + 1].value + 'mmHg'
+                    res += params[i].seriesName + ': ' + params[i].value + ' ~ ' + params[i + 1].value + '<br/>'
+                  }
                 }
-              }
               }
 
               return res

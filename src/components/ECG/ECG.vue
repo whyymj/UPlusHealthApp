@@ -150,6 +150,7 @@
     <footer class="footer">
       <button class="device-input" @click="ChooseTypePopupVisible = true">设备录入</button>
     </footer>
+    	<myLoadingModal :show='showMyLoadingModal'></myLoadingModal>
   </div>
 </template>
 <script type="text/javascript" src="./ECG.js">

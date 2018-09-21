@@ -70,7 +70,7 @@
             </div>
         </div>
         <div class="bottom">
-            <div :class="{ 'bottom_text':true, 'bottom_text_bg': !isSave}" @click="save" >完成</div>
+            <div :class="{ 'bottom_text':true, 'bottom_text_bg': !isSave}" @click="save">完成</div>
         </div>
         <!-- 生日选择 -->
         <mt-popup v-model="birthday_picker" position="bottom">
@@ -119,12 +119,12 @@
                 <mt-picker :slots="weightarr2" @change="select_weight2"></mt-picker>
             </div>
         </mt-popup>
+        <myLoadingModal :show='showMyLoadingModal'></myLoadingModal>
     </div>
 </template>
 <script>
     import tagslist from "./tagsList";
     import axios from "axios"
-    import myloading from '../../global/Loading.vue';
     import {
         Toast
     } from 'mint-ui';
@@ -132,9 +132,9 @@
         components: {
             tagslist
         },
-        mixins: [myloading],
         data() {
             return {
+                showMyLoadingModal: true,
                 weight_picker: false,
                 height_picker: false,
                 birthday_picker: false,
@@ -235,6 +235,10 @@
             this.route = this.$route.query.from || '';
             this.memberId = this.$route.query.memberId || '';
             var that = this;
+            this.showMyLoadingModal = true;
+            setTimeout(function() {
+                that.showMyLoadingModal = false;
+            }, 5000)
             var years = [];
             var months = [];
             var tall = [];
@@ -296,7 +300,7 @@
             this.birthday = ''
             //     console.log(thisYear, thisMonth);
             this.$axios.post('/api/getDiseaseList').then(function(res) {
-                that.loadingmodal.close();
+                that.showMyLoadingModal = false;
                 if (res.data.code == 'C0000') {
                     that.chromiclist = res.data.data.map(function(item) {
                         return {
@@ -333,7 +337,7 @@
                     })
                 }
             }).catch(function(res) { //慢病标签  
-                that.loadingmodal.close();
+                that.showMyLoadingModal = false;
                 if (process.env.NODE_ENV == 'development') {
                     that.$axios.get('/static/testData/getDiseaseList.json').then(function(res) {
                         if (res.data.code == 'C0000') {
@@ -369,7 +373,7 @@
                 }
             })
             that.$axios.post('/api/getAllergyList').then(function(res) {
-                that.loadingmodal.close();
+                that.showMyLoadingModal = false;
                 if (res.data.code == 'C0000') {
                     that.allergylist = res.data.data.map(function(item) {
                         return {
@@ -406,7 +410,7 @@
                     })
                 }
             }).catch(function(res) { //过敏标签 
-                that.loadingmodal.close();
+                that.showMyLoadingModal = false;
                 if (process.env.NODE_ENV == 'development') {
                     that.$axios.get('/static/testData/getAllergyList.json').then(function(res) {
                         if (res.data.code == 'C0000') {
@@ -581,7 +585,7 @@
                     disease: this.chromicListResult[0] ? this.chromicListResult.join(",") : "",
                     allergy: this.allergyListResult[0] ? this.allergyListResult.join(',') : '',
                 }
-                window.__newCreateMember__=saveData.nick_name;//为了在首页显示
+                window.__newCreateMember__ = saveData.nick_name; //为了在首页显示
                 if (saveData.nick_name && saveData.sex && saveData.birthday && saveData.height && saveData.weight) {
                     //新增家庭成员
                     axios.post('/api/member', saveData)
@@ -632,7 +636,6 @@
 <style lang="scss">
     @import "./healthEntryFamily.scss";
     .healthEntryFamily {
-        
         .nick_name,
         .sex_radio {
             width: 17.15rem;

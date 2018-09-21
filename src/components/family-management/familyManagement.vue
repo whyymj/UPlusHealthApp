@@ -36,15 +36,16 @@
         </div>
       </div>
       <!-- <div class="associated-create add-friends " @click="openCreate()">
-                                                                  <img class="addFriends" src='/static/familyManage/link.png'>
-                                                                  <span class="add" id='addf'>添加好友<i>（已有U+账号）</i></span>
-                                                                </div> -->
+                                                                    <img class="addFriends" src='/static/familyManage/link.png'>
+                                                                    <span class="add" id='addf'>添加好友<i>（已有U+账号）</i></span>
+                                                                  </div> -->
       <p class='additionTips'>注：无法查看未启用健康档案的用户信息</p>
       <div class="associated-create" @click="openCreate()">
         <i class="create fa fa-plus"></i> <span class="create">创建家人</span>
       </div>
     </div>
     <firstLogin @firstlogin='first_login'></firstLogin>
+    <myLoadingModal :show='showMyLoadingModal'></myLoadingModal>
   </div>
 </template>
 
@@ -57,18 +58,17 @@
   import {
     MessageBox
   } from 'mint-ui';
-  import myloading from '../global/Loading.vue';
   import {
     clearTimeout
   } from 'timers';
   export default {
-    mixins: [myloading],
     components: {
       firstLogin
     },
     name: 'family-management',
     data() {
       return {
+        showMyLoadingModal: true,
         bar: '',
         toast: '',
         isModel: null,
@@ -81,6 +81,7 @@
       }
     },
     mounted() {
+      that.showMyLoadingModal = true;
       if (process.env.NODE_ENV == 'development') {
         this.createdList = []
       }
@@ -131,9 +132,9 @@
           if (result.data.code === 'C0000') {
             this.headPic = result.data.data.head_pic
           }
-          that.loadingmodal.close();
+          that.showMyLoadingModal = false;
         } catch (err) {
-          that.loadingmodal.close();
+          that.showMyLoadingModal = false;
         }
       },
       async getFamilyList() {
@@ -173,9 +174,9 @@
               }
             }).catch(function(res) {})
           }
-          that.loadingmodal.close();
+          that.showMyLoadingModal = false;
         } catch (err) {
-          that.loadingmodal.close();
+          that.showMyLoadingModal = false;
           that.$axios.get('/static/testData/family.json').then(function(res) {
             that.createdList = res.data.data[0];
             that.$axios.get('/static/testData/getUHomeFamilyMember.json').then(function(res) {

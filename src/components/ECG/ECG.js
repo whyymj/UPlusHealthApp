@@ -1,19 +1,16 @@
 import axios from 'axios'
 import LZString from 'lz-string'
-
-import {Loading} from 'element-ui';
 import myDatePicker from '../pressure/myDatePicker.vue';
 import mycollapse2 from '../sleep-music/mycollapse2.vue';
 export default {
-  name: 'ecg',
+  name : 'ecg',
   components : {
     myDatePicker,
-    mycollapse2,
-    Loading
+    mycollapse2
   },
-  data () {
+  data() {
     return {
-      loadingmodal: '',
+      showMyLoadingModal: true,
       ChooseTypePopupVisible: false,
       bluetoothVisible: false,
       popupSuccess: false,
@@ -48,18 +45,16 @@ export default {
       disablePast: false,
       disableFuture: true,
       disableWeekend: false,
-      disableDateFunction (date) {
+      disableDateFunction(date) {
         return false
       }
     }
   },
-  mounted () {
+  mounted() {
     var that = this;
-    this.loadingmodal = Loading.service({fullscreen: true, background: 'rgba(0, 0, 0, 0.7)', lock: true, text: 'Loading', spinner: 'el-icon-loading'});
+    this.showMyLoadingModal = true;
     setTimeout(function () {
-      that
-        .loadingmodal
-        .close();
+      that.showMyLoadingModal = false;
     }, 10000)
     this.initList()
     this.$nextTick(function () {
@@ -70,7 +65,7 @@ export default {
       }
     })
   },
-  methods: {
+  methods : {
     checkDateData(date) {
       var str = date.year + '-' + (date.month > 9
         ? date.month
@@ -79,17 +74,19 @@ export default {
         : ('0' + date.date));
       this.onChange(str);
     },
-    addNewDevice () {
-      this.$router.push({path: '/deviceType'})
+    addNewDevice() {
+      this
+        .$router
+        .push({path: '/deviceType'})
     },
-    addRecentlyDevice () {
+    addRecentlyDevice() {
       this.bluetoothVisible = true
     },
-    openBluetooth () {
+    openBluetooth() {
       this.bluetoothVisible = false
       this.popupVisible = true
     },
-    toggleOpenCalendar () {
+    toggleOpenCalendar() {
       this.calendarOpen = !this.calendarOpen
       if (document.getElementsByClassName('calendar-header')[0].style.display === 'none') {
         document.getElementsByClassName('calendar-header')[0].style.display = 'block'
@@ -100,14 +97,23 @@ export default {
         this.onlyShowCurrentOrToday(this.calendarOpen)
       }, 0)
     },
-    onChange (val) {
+    onChange(val) {
       console.log('on-change', val)
       window._ecg_selected_date = val
       this.ecgDate = val
       this.initList()
-      document.getElementById('calendarTop').classList.remove('open')
-      document.getElementById('calendarBg').classList.remove('open')
-      document.getElementById('calendarBelow').classList.remove('open')
+      document
+        .getElementById('calendarTop')
+        .classList
+        .remove('open')
+      document
+        .getElementById('calendarBg')
+        .classList
+        .remove('open')
+      document
+        .getElementById('calendarBelow')
+        .classList
+        .remove('open')
       this.calendarOpen = !this.calendarOpen
       if (document.getElementsByClassName('calendar-header')[0].style.display === 'none') {
         document.getElementsByClassName('calendar-header')[0].style.display = 'block'
@@ -118,11 +124,13 @@ export default {
         this.onlyShowCurrentOrToday(this.calendarOpen)
       }, 0)
     },
-    onViewChange (val, count) {
+    onViewChange(val, count) {
       console.log('on view change', val, count)
       this.firstDate = val.firstDate
       this.lastDate = val.lastDate
-      this.month = val.month < 10 ? '0' + val.month : val.month
+      this.month = val.month < 10
+        ? '0' + val.month
+        : val.month
       this.year = val.year
       setTimeout(() => {
         this.initDateList()
@@ -130,11 +138,15 @@ export default {
         this.setTomorrowColor()
       }, 150)
     },
-    setTomorrowColor () {
+    setTomorrowColor() {
       let dayNum = new Date().getDate()
-      let dayStr = dayNum < 10 ? '0' + dayNum : '' + dayNum
+      let dayStr = dayNum < 10
+        ? '0' + dayNum
+        : '' + dayNum
       let monthNum = new Date().getMonth() + 1
-      let monthStr = monthNum < 10 ? '0' + monthNum : '' + monthNum
+      let monthStr = monthNum < 10
+        ? '0' + monthNum
+        : '' + monthNum
       let yearStr = new Date().getFullYear()
       let todayV = yearStr + '' + monthStr + '' + dayStr
       let nodes = document.getElementsByTagName('td')
@@ -147,7 +159,7 @@ export default {
         }
       }
     },
-    onlyShowCurrentOrToday (isShow) {
+    onlyShowCurrentOrToday(isShow) {
       if (isShow) {
         for (let tr of document.querySelectorAll('.inline-calendar.inline-calendar-demo tbody tr')) {
           tr.style.display = ''
@@ -178,7 +190,7 @@ export default {
         }
       }
     },
-    async initNews () {
+    async initNews() {
       try {
         const result = await axios.get(`/api/news?id=5&level=${this.ecgLevel}`)
         console.log(result)
@@ -187,7 +199,7 @@ export default {
         console.log('err: ', err)
       }
     },
-    async initList () {
+    async initList() {
       try {
         const result = await axios.get(`/api/ecg/three?member_id=${window._member_id}&date=${this.ecgDate}&limit=N`)
         if (result.data.code === 'C0000') {
@@ -200,7 +212,10 @@ export default {
           } else {
             this.$refs.noData.style.display = 'none'
             if (result.data.data.length > 3) {
-              result.data.data.splice(3)
+              result
+                .data
+                .data
+                .splice(3)
               this.$refs.allData.style.display = 'block'
               this.ecgRecordData = result.data.data
             } else {
@@ -215,11 +230,9 @@ export default {
       } catch (err) {
         console.log('Whoops: ', err)
       }
-      this
-        .loadingmodal
-        .close();
+      this.showMyLoadingModal = false
     },
-    async getECGDetail (id) {
+    async getECGDetail(id) {
       try {
         const result = await axios.get(`/api/cardiogram/detail?cardiogram_id=${id}`)
         if (result.data.code === 'C0000') {
@@ -231,18 +244,21 @@ export default {
             num = num + obj[i] + ','
           }
           num = num.substring(0, num.length - 1)
-          num = num.split(',').map(n => { // 将数组中的值转为 number
-            return +n
-          })
+          num = num
+            .split(',')
+            .map(n => { // 将数组中的值转为 number
+              return + n
+            })
           let dataArray = LZString.decompressFromUint8Array(num)
           this.ecgChartsOption = this.getChartsOption(JSON.parse(dataArray))
-          // this.$refs.ecg.$children[0].mergeOptions(this.getChartsOption(JSON.parse(dataArray)))
+          // this.$refs.ecg.$children[0].mergeOptions(this.getChartsOption(JSON.parse(data
+          // Array)))
         }
       } catch (err) {
         console.log(err)
       }
     },
-    async initDateList () {
+    async initDateList() {
       try {
         const result = await axios.get(`/api/health/list?member_id=${window._member_id}&flag=5&begin=${this.firstDate}&end=${this.lastDate}`)
         if (result.data.code === 'C0000') {
@@ -254,12 +270,16 @@ export default {
           let calendarData = document.getElementsByClassName('calendar-data')
           let calendarDataLen = calendarData.length
           for (let i = 0; i < calendarDataLen; i++) {
-            calendarData[0].parentNode.removeChild(calendarData[0])
+            calendarData[0]
+              .parentNode
+              .removeChild(calendarData[0])
           }
           for (let j = 0; j < _result.length; j++) {
             for (let i = 0; i < nodesLen; i++) {
               let span = document.createElement('span')
-              span.classList.add('calendar-data')
+              span
+                .classList
+                .add('calendar-data')
               if (nodes[i].getAttribute('data-date') === _result[j]) {
                 nodes[i].appendChild(span)
                 break
@@ -271,7 +291,7 @@ export default {
         console.log('err: ', err)
       }
     },
-    async deleteRecord (index, item) {
+    async deleteRecord(index, item) {
       try {
         const result = await axios.post('/api/cardiogram/delete', {cardiogram_id: item.cardiogram.cardiogram_id})
         if (result.data.code === 'C0000') {
@@ -285,7 +305,7 @@ export default {
         console.log('Whoops: ', err)
       }
     },
-    getChartsOption (data) {
+    getChartsOption(data) {
       let option = {
         visualMap: [
           {
@@ -295,69 +315,86 @@ export default {
             min: 0,
             max: 250,
             color: ['#FFBE40', '#7A98FA']
-          }],
+          }
+        ],
         tooltip: {
           trigger: 'axis'
         },
-        grid: [{
-          top: '10',
-          bottom: '10',
-          right: '5',
-          left: '30'
-        }],
-        xAxis: [{
-          show: false,
-          data: []
-        }],
-        yAxis: [{
-          min: 0,
-          max: 250,
-          type: 'value',
-          data: ['0', '50', '100'],
-          interval: 50,
-          axisLine: {
-            show: false
-          },
-          splitLine: {
-            show: true,
-            lineStyle: {
-              type: 'dashed'
-            }
-          },
-          axisTick: {
-            length: 0
+        grid: [
+          {
+            top: '10',
+            bottom: '10',
+            right: '5',
+            left: '30'
           }
-        }],
-        series: [{
-          type: 'line',
-          symbol: 'circle',
-          symbolSize: 10,
-          showSymbol: true,
-          smooth: true,
-          itemStyle: {
-            normal: {
-              color: '#26A5FD'
+        ],
+        xAxis: [
+          {
+            show: false,
+            data: []
+          }
+        ],
+        yAxis: [
+          {
+            min: 0,
+            max: 250,
+            type: 'value',
+            data: [
+              '0', '50', '100'
+            ],
+            interval: 50,
+            axisLine: {
+              show: false
+            },
+            splitLine: {
+              show: true,
+              lineStyle: {
+                type: 'dashed'
+              }
+            },
+            axisTick: {
+              length: 0
             }
-          },
-          data: data
-        }]
+          }
+        ],
+        series: [
+          {
+            type: 'line',
+            symbol: 'circle',
+            symbolSize: 10,
+            showSymbol: true,
+            smooth: true,
+            itemStyle: {
+              normal: {
+                color: '#26A5FD'
+              }
+            },
+            data: data
+          }
+        ]
       }
 
       return option
     },
-    openHealthTips (index) {
-      this.ecgIndex = this.ecgIndex === index ? -index : index
+    openHealthTips(index) {
+      this.ecgIndex = this.ecgIndex === index
+        ? -index
+        : index
     },
-    openDetail (item) {
+    openDetail(item) {
       window.open(`http://lifehaier.com/News/Advisory/detail/id/${item.news_id}.html`)
     },
-    fnGetAllData () {
+    fnGetAllData() {
       if (this.ecgDate === '') {
         let _date = new Date()
-        let day = _date.getDate() < 10 ? '0' + _date.getDate() : _date.getDate()
+        let day = _date.getDate() < 10
+          ? '0' + _date.getDate()
+          : _date.getDate()
         this.ecgDate = this.year + '-' + this.month + '-' + day
       }
-      this.$router.push({ path: `/ecg/history/${this.ecgDate}` })
+      this
+        .$router
+        .push({path: `/ecg/history/${this.ecgDate}`})
     }
   }
 }

@@ -12,11 +12,7 @@
 					<span>{{nickName}}</span>
 				</mt-cell>
 			</div>
-			<!--<div @click="openPicker(4)">
-														        <mt-cell title="性别" is-link>
-														          <span>{{sex}}</span>
-														        </mt-cell>
-														      </div>-->
+		
 			<div @click="openBirthDay('pickerBD')">
 				<mt-cell title="生日" is-link>
 					<span>{{birthday}}</span>
@@ -84,23 +80,23 @@
 				</mt-picker>
 			</mt-popup>
 		</div>
+		<myLoadingModal :show='showMyLoadingModal'></myLoadingModal>
 	</div>
 </template>
 
 <script type="text/javascript">
 	import webConfig from '../../../config/web.config';
-	import myloading from '../global/Loading.vue';
 	import {
 		MessageBox
 	} from 'mint-ui'
 	import axios from "axios"
 	export default {
-		mixins: [myloading],
 		filters: {
 			formater(val) {}
 		},
 		data() {
 			return {
+				showMyLoadingModal:true,
 				// action sheet 选项内容
 				headerAction: [{
 					name: "拍照",
@@ -139,10 +135,11 @@
 		mounted() {
 			// document.getElementsByTagName('title')[0].innerHTML=''
 			var that = this;
+			this.showMyLoadingModal=true;
 			this.route = this.$route.path;
 			this.memberId = window._member_id;
 			this.getUserInfo(function() {
-				that.loadingmodal.close();
+				that.showMyLoadingModal=false;
 				var data = that.$route.query;
 				if (window.history.replaceState) {
 					window.history.replaceState({

@@ -1,13 +1,12 @@
 import webConfig from '../../../config/web.config'
 import { MessageBox } from 'mint-ui'
 import axios from "axios"
-import myloading from '../global/Loading.vue';
 
 export default {
-	mixins:[myloading],
 	name: 'userInfo',
 	data() {
 		return {
+			showMyLoadingModal:true,
 			isDeleteShow:false,
 			// action sheet 选项内容
 			headerAction: [{
@@ -43,9 +42,9 @@ export default {
 	mounted() {		
 		var that=this;
 		this.route=this.$route.path;
-		
+		this.showMyLoadingModal=true;
 		this.getUserInfo(function(){
-			that.loadingmodal.close();
+			that.showMyLoadingModal=false;
 			 var data=that.$route.query;
 			 
 			 if (window.history.replaceState) {
@@ -66,7 +65,6 @@ export default {
 				}else{
 						window.history.go(-2);
 				}
-				//  that.getUserInfo();
 			 });
 			}
 		});

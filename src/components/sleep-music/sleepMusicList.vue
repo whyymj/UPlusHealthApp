@@ -43,6 +43,7 @@
             </div>
         </div>
         <bigechart @showbig='showbig' v-if='showBigEcharts'></bigechart>
+        <myLoadingModal :show='showMyLoadingModal'></myLoadingModal>
     </div>
 </template>
 
@@ -59,9 +60,6 @@
     import datadeviation from './dataDeviation.vue';
     import nodata from './nodata.vue';
     import bigechart from './bigEcharts.vue';
-    import {
-        Loading
-    } from 'element-ui';
     import {
         Toast
     } from 'mint-ui';
@@ -80,12 +78,13 @@
             nodata,
             mycollapse2,
             iosdatashower,
-            Loading,
             bigechart,
             Toast
         },
         data() {
             return {
+                showMyLoadingModal: true,
+                thisloadingbar: '',
                 myToast: '',
                 tipDeleteData: true,
                 loadingmodal: '',
@@ -145,13 +144,11 @@
                 })
             },
             checkDateData(val) { //查询当天的数据
-                this.loadingmodal = Loading.service({
-                    fullscreen: true,
-                    background: 'rgba(0, 0, 0, 0.7)',
-                    lock: true,
-                    text: 'Loading',
-                    spinner: 'el-icon-loading',
-                });
+                this.showMyLoadingModal = true;
+                clearTimeout(this.thisloadingbar);
+                this.thisloadingbar = setTimeout(function() {
+                    that.showMyLoadingModal = false;
+                }, 5000)
                 var that = this;
                 this.appleHealthData = '';
                 var check = val.year + '/' + (val.month > 9 ? val.month : '0' + val.month) + '/' + (val.date > 9 ? val.date : '0' + val.date);
@@ -171,10 +168,10 @@
                             title: '当日作息',
                             detail: '当日作息即当日上床歇息至起床时间',
                             params: [{
-                                data: data.sleepTime,
+                                data: data.sleepTime.split(' ')[1],
                                 unit: '-'
                             }, {
-                                data: data.wakeTime,
+                                data: data.wakeTime.split(' ')[1],
                                 unit: ''
                             }]
                         }, {
@@ -212,9 +209,11 @@
                         that.todayManuInputData = false;
                         that.sleepid = '';
                     }
-                    that.loadingmodal.close()
+                    clearTimeout(that.thisloadingbar);
+                    that.showMyLoadingModal = false;
                 }).catch(function(res) { //获取用户最近一条测量记录,判断今天是否有记录信息
-                    that.loadingmodal.close();
+                    clearTimeout(that.thisloadingbar);
+                    that.showMyLoadingModal = false;
                     for (var k in res) {
                         console.log(k, '=>>>>', res[k]);
                     }
@@ -414,13 +413,10 @@
                 this.haveAuthor = true;
             }
             this.getHealth(); //获取苹果健康数据权限
-            this.loadingmodal = Loading.service({ //遮罩
-                fullscreen: true,
-                background: 'rgba(0, 0, 0, 0.7)',
-                lock: true,
-                text: 'Loading',
-                spinner: 'el-icon-loading',
-            });
+            this.showMyLoadingModal = true;
+            this.thisloadingbar = setTimeout(function() {
+                that.showMyLoadingModal = false;
+            }, 5000)
             var today = new Date();
             var month = today.getMonth() + 1;
             var date = today.getDate();
@@ -449,7 +445,8 @@
                         }
                     })
                 }
-                that.loadingmodal.close();
+                clearTimeout(that.thisloadingbar);
+                that.showMyLoadingModal = false;
             }).catch(function() { //获取音乐列表
                 if (process.env.NODE_ENV == 'development') {
                     that.$axios.get('/static/testData/getSleepPractice.json').then(function(res) {
@@ -466,7 +463,8 @@
                         }
                     });
                 }
-                that.loadingmodal.close();
+                clearTimeout(that.thisloadingbar);
+                that.showMyLoadingModal = false;
             });
             this.$axios.post('/api/sleep/getLast', {
                 member_id: window._member_id
@@ -528,11 +526,13 @@
                     that.todayManuInputData = false;
                     that.sleepid = '';
                 }
-                that.loadingmodal.close();
+                clearTimeout(that.thisloadingbar);
+                that.showMyLoadingModal = false;
             }).catch(function(res) { //获取用户最近一条测量记录,判断今天是否有记录信息
                 if (process.env.NODE_ENV == 'development') {
                     that.$axios.get('/static/testData/getLast.json').then(function(res) {
-                        that.loadingmodal.close();
+                        clearTimeout(that.thisloadingbar);
+                        that.showMyLoadingModal = false;
                         if (res.data.code === 'C0000') {
                             var data = res.data.data;
                             var createTime = data.create_date.split(' ')[0].split('-');
@@ -598,14 +598,16 @@
                 currentPage: 1
             }).then(function(res) {
                 that.sleepnewslist = res.data.data;
-                that.loadingmodal.close();
+                clearTimeout(that.thisloadingbar);
+                that.showMyLoadingModal = false;
             }).catch(function(res) {
                 if (process.env.NODE_ENV == 'development') {
                     that.$axios.get('/static/testData/getSleepInfo.json').then(function(res) {
                         that.sleepnewslist = res.data;
                     });
                 }
-                that.loadingmodal.close();
+                clearTimeout(that.thisloadingbar);
+                that.showMyLoadingModal = false;
             })
             window.localStorage.UPlusApp_firstLogin_sleepMusicList = false; //非首次登陆
         }

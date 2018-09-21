@@ -8,6 +8,7 @@
             <img src="../../assets/tanhao.png" class="img1" />
             <span class="bottom_1">以上服务由寝安提供</span>
         </div>
+        <myLoadingModal :show='showMyLoadingModal'></myLoadingModal>
     </div>
 </template>
 
@@ -79,10 +80,15 @@
         },
         mounted() {
             var that = this;
+            this.showMyLoadingModal = true;
+            setTimeout(function() {
+                that.showMyLoadingModal = false;
+            }, 10000)
             this
                 .$axios
                 .post('/api/getSleepWikiTerms')
                 .then(function(res) {
+                    that.showMyLoadingModal = false;
                     if (res.data.code == 'C0000') {
                         that.navs = res
                             .data
@@ -97,6 +103,7 @@
                     }
                 })
                 .catch(function(res) {
+                    that.showMyLoadingModal = false;
                     if (process.env.NODE_ENV == 'development') {
                         that
                             .$axios
@@ -123,7 +130,8 @@
             return {
                 curPage: 0,
                 navs: [],
-                contentList: {}
+                contentList: {},
+                showMyLoadingModal: true
             }
         }
     }

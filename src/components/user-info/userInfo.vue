@@ -60,6 +60,7 @@
       <mt-actionsheet :actions="headerAction" v-model="sheetVisible" cancel-text="取消">
       </mt-actionsheet>
     </div>
+     <myLoadingModal :show='showMyLoadingModal'></myLoadingModal>
   </div>
 </template>
 
