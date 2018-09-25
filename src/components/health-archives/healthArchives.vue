@@ -4,8 +4,8 @@
 			<!-- 导航条 -->
 			<mynav :navigateList='memberlist' :initnum='initnum' @clickNav='clickNav'></mynav>
 			<div class='bgHumanImg'>
-				<img src="/static/healthArchives/bg-human.png" alt="" class = 'manBgImg' v-if='maleShow'>
-				<img src="/static/healthArchives/bg-woman.png" alt="" class = 'womanBgImg' v-else>
+				<img src="/static/healthArchives/bg-human.svg" alt="" class='manBgImg' v-if='maleShow'>
+				<img src="/static/healthArchives/bg-woman.svg" alt="" class='womanBgImg' v-else>
 			</div>
 			<mt-swipe :auto="0" :show-indicators="false" @change="handleChange" :continuous='false' ref='swipe'>
 				<!-- 第一页 -->
@@ -21,7 +21,7 @@
 							<!-- 中间人体图 -->
 							<li class="col2">
 								<!-- <img src="/static/healthArchives/bg-human.png" alt="" v-if='maleShow'>
-																			<img src="/static/healthArchives/bg-woman.png" alt="" v-else> -->
+																				<img src="/static/healthArchives/bg-woman.png" alt="" v-else> -->
 								<span v-for='(item,index) in showdata[0]' :key='index+"1"' :style='blink(item)' :class='setClass(item)' @click='scalebox(item)'></span>
 								<span v-for='(item,index) in showdata[1]' :key='index+"2"' :style='blink(item)' :class='setClass(item)' @click='scalebox(item)'></span>
 							</li>
@@ -45,7 +45,7 @@
 							</li>
 							<li class="col2">
 								<!-- <img src="/static/healthArchives/bg-human.png" alt="" v-if='maleShow'>
-																			<img src="/static/healthArchives/bg-woman.png" alt="" v-else> -->
+																				<img src="/static/healthArchives/bg-woman.png" alt="" v-else> -->
 								<span v-for='(item,index) in showdata[2]' :key='index' :style='blink(item)' :class='setClass(item)' @click='scalebox(item)'></span>
 							</li>
 						</ul>
@@ -796,7 +796,6 @@
 				left: 0;
 				width: 100%;
 				img {
-					
 					height: 19.2rem;
 					position: absolute;
 					top: 0;
@@ -805,10 +804,10 @@
 					right: 0;
 					margin: auto;
 				}
-				.womanBgImg{
-					width: 5rem;
+				.womanBgImg {
+					width: 7rem;
 				}
-				.manBgImg{
+				.manBgImg {
 					width: 7rem;
 				}
 			}
@@ -923,12 +922,12 @@
 			left: 1.2rem;
 		}
 		.pressure-circle {
-			top: 9rem;
-			left: 5.6rem;
+			top: 9.5rem;
+			left: 5.7rem;
 		}
 		.pressure-circle-female {
-			top: 9rem;
-			left: 5.5rem;
+			top: 9.5rem;
+			left: 5.7rem;
 		}
 		.ecg-circle {
 			top: 4.5rem;
@@ -939,12 +938,12 @@
 			left: 4rem;
 		}
 		.oxygen-circle {
-			top: 14rem;
-			left: 2rem;
+			top: 13.5rem;
+			left: 1.8rem;
 		}
 		.oxygen-circle-female {
-			top: 14rem;
-			left: 2rem;
+			top: 13.5rem;
+			left: 1.8rem;
 		}
 		.sleep-circle {
 			top: 0.5rem;

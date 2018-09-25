@@ -3,7 +3,7 @@
     <div class="body_22">
       <div class="body_221">你是否有过敏史？</div>
       <div class="body_222">
-        <el-switch v-model="allergyHistory">
+        <el-switch  v-model="allergyHistory">
         </el-switch>
       </div>
     </div>
@@ -25,6 +25,7 @@
 <style lang="scss">
   @import "./allergic.scss";
   .allergic {
+  
     .body_22 {
       background: #fff;
       width: 100%;
