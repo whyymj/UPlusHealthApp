@@ -24,7 +24,7 @@
         width: 17rem;
         background: #fff;
         margin: 0.5rem auto ;
-        border-bottom:1px solid #fff;
+        // border-bottom:1px solid #fff;
         h3 {
             font-size: 0.8rem;
             font-family: 'PingFangSC-Medium';

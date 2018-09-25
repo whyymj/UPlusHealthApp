@@ -208,6 +208,7 @@
                 top: 2rem;
                 span {
                     font-size: 1.1rem;
+                    font-weight: 500!important;
                     font-family: 'NotoSansCJKsc-Medium';
                     color: rgba(51, 51, 51, 1);
                     font-weight: 600;
@@ -254,6 +255,7 @@
                 width: 4rem;
                 span {
                     font-size: 1.1rem;
+                    font-weight: 500!important;
                     font-family: 'NotoSansCJKsc-Medium';
                     color: rgba(51, 51, 51, 1);
                     font-weight: 600;
@@ -263,7 +265,7 @@
                 padding: 0 0.2rem;
                 height: 0.9rem;
                 /*background: rgba(34, 131, 226, 1);*/
-               	background: #FFFFFF;
+                background: #FFFFFF;
                 border-radius: 0.2rem;
                 font-size: 0.6rem;
                 font-family: "PingFangSC-Regular";
@@ -313,6 +315,7 @@
                     bottom: 0.5rem;
                     span {
                         font-size: 1.1rem;
+                        font-weight: 500!important;
                         font-family: 'NotoSansCJKsc-Medium';
                         color: rgba(51, 51, 51, 1);
                         font-weight: 600;

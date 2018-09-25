@@ -2,17 +2,12 @@ import axios from 'axios'
 import myDatePicker from '../pressure/myDatePicker.vue';
 import mycollapse2 from '../sleep-music/mycollapse2.vue';
 export default {
-<<<<<<< HEAD
   name: 'temperature',
   components: {
-=======
-  name : 'temperature',
-  components : {
->>>>>>> 2c77f8a3bd2121acb0963c60448e34e928b98282
     myDatePicker,
     mycollapse2
   },
-  data() {
+  data () {
     return {
       ChooseTypePopupVisible: false,
       bluetoothVisible: false,
@@ -78,7 +73,7 @@ export default {
       }
     })
   },
-  methods : {
+  methods: {
     checkDateData(date) {
       var str = date.year + '-' + (date.month > 9
         ? date.month
