@@ -3,7 +3,7 @@
         <div class="button nearest" :class="{active:active==0}" @click='getdata(0)'>最近七次</div>
         <div class="button week" :class="{active:active==1}" @click='getdata(1)'>周</div>
         <!-- <div class="button month" :class="{active:active==2}" @click='getdata(2)'>月</div>
-                                                                                                                                                <div class="button year" :class="{active:active==3}" @click='getdata(3)'>年</div> -->
+            <div class="button year" :class="{active:active==3}" @click='getdata(3)'>年</div> -->
         <div id='main' ref='echarts'>
         </div>
         <div class="legend">
@@ -391,6 +391,7 @@
                     if (res.data.code === 'C0000') {
                         var list = that.deleteRepeatDate(res.data.data.map(function(item, index) {
                             var newitem = item;
+                            newitem.create_date = newitem.date;
                             newitem.date = new Date(item.create_date.replace('-', '/')).getDay() - 1;
                             if (newitem.date == -1) {
                                 newitem.date = 6;
@@ -427,6 +428,7 @@
                             if (res.data.code === 'C0000') {
                                 var list = res.data.data.map(function(item, index) {
                                     var newitem = item;
+                                    newitem.create_date = newitem.date;
                                     newitem.date = new Date(item.create_date.replace('-', '/')).getDay() - 1;
                                     if (newitem.date == -1) {
                                         newitem.date = 6;

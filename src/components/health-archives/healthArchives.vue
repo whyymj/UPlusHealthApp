@@ -911,7 +911,7 @@
 		}
 		.sugar-circle-female {
 			top: 10.5rem;
-			left: 0.5rem;
+			left: 0.9rem;
 		}
 		.temperature-circle {
 			top: 5.5rem;
@@ -919,7 +919,7 @@
 		}
 		.temperature-circle-female {
 			top: 4.6rem;
-			left: 1.2rem;
+			left: 1.6rem;
 		}
 		.pressure-circle {
 			top: 9.5rem;
@@ -927,7 +927,7 @@
 		}
 		.pressure-circle-female {
 			top: 9.5rem;
-			left: 5.7rem;
+			left: 5rem;
 		}
 		.ecg-circle {
 			top: 4.5rem;
@@ -935,7 +935,7 @@
 		}
 		.ecg-circle-female {
 			top: 4.5rem;
-			left: 4rem;
+			left: 3.7rem;
 		}
 		.oxygen-circle {
 			top: 13.5rem;
@@ -943,7 +943,7 @@
 		}
 		.oxygen-circle-female {
 			top: 13.5rem;
-			left: 1.8rem;
+			left: 2.4rem;
 		}
 		.sleep-circle {
 			top: 0.5rem;
