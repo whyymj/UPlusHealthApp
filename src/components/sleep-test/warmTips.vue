@@ -1,6 +1,6 @@
 <template>
     <div class='warmTips'>
-        <h1>温馨建议</h1>
+        <h1 v-show='list.length>0'>温馨建议</h1>
         <swiper :options="option" ref="swiperOption" v-if='list.length>0'>
             <!-- slides -->
             <swiper-slide v-for='(item,index) in list' :key='index'>
@@ -21,7 +21,7 @@
         watch: {
             tips() {
                 this.list = this.tips;
-                if (this.list.length % 2 == 1) {//填補一個无效的凑数用
+                if (this.list.length % 2 == 1) { //填補一個无效的凑数用
                     this.list.push({
                         type: -1
                     })

@@ -4,8 +4,8 @@
 			<!-- 导航条 -->
 			<mynav :navigateList='memberlist' :initnum='initnum' @clickNav='clickNav'></mynav>
 			<div class='bgHumanImg'>
-				<img src="/static/healthArchives/bg-human.png" alt="" class = 'manBgImg' v-if='maleShow'>
-				<img src="/static/healthArchives/bg-woman.png" alt="" class = 'womanBgImg' v-else>
+				<img src="/static/healthArchives/bg-human.svg" alt="" class='manBgImg' v-if='maleShow'>
+				<img src="/static/healthArchives/bg-woman.svg" alt="" class='womanBgImg' v-else>
 			</div>
 			<mt-swipe :auto="0" :show-indicators="false" @change="handleChange" :continuous='false' ref='swipe'>
 				<!-- 第一页 -->
@@ -21,7 +21,7 @@
 							<!-- 中间人体图 -->
 							<li class="col2">
 								<!-- <img src="/static/healthArchives/bg-human.png" alt="" v-if='maleShow'>
-													<img src="/static/healthArchives/bg-woman.png" alt="" v-else> -->
+																				<img src="/static/healthArchives/bg-woman.png" alt="" v-else> -->
 								<span v-for='(item,index) in showdata[0]' :key='index+"1"' :style='blink(item)' :class='setClass(item)' @click='scalebox(item)'></span>
 								<span v-for='(item,index) in showdata[1]' :key='index+"2"' :style='blink(item)' :class='setClass(item)' @click='scalebox(item)'></span>
 							</li>
@@ -45,7 +45,7 @@
 							</li>
 							<li class="col2">
 								<!-- <img src="/static/healthArchives/bg-human.png" alt="" v-if='maleShow'>
-													<img src="/static/healthArchives/bg-woman.png" alt="" v-else> -->
+																				<img src="/static/healthArchives/bg-woman.png" alt="" v-else> -->
 								<span v-for='(item,index) in showdata[2]' :key='index' :style='blink(item)' :class='setClass(item)' @click='scalebox(item)'></span>
 							</li>
 						</ul>
@@ -55,8 +55,11 @@
 			<p class='floatButton' @click="goFamilyManage"><img class='img' src="/static/healthArchives/index8.svg" alt=""></p>
 		</div>
 		<paginator :pagenum='pagenum' :pageindex='pageindex'></paginator>
-		<privacy :show="show"></privacy>
-		<firstLogin @firstlogin='first_login'></firstLogin>
+		<div v-show='showFirstLogin'>
+			<firstLogin @firstlogin='first_login'></firstLogin>
+		</div>
+		<privacy :show="show" @agree='agreePrivacy'></privacy>
+		<myLoadingModal :show='showMyLoadingModal'></myLoadingModal>
 	</div>
 </template>
 
@@ -69,7 +72,7 @@
 	import config from '../../../config/global.config'
 	import colorJudger from './color.js';
 	import myloading from '../global/Loading.vue';
-	import privacy from '../common/privacy.vue'
+	import privacy from '../common/privacy.vue';
 	import _ from 'lodash';
 	import {
 		Indicator
@@ -79,7 +82,6 @@
 		setTimeout
 	} from 'timers';
 	export default {
-		mixins: [myloading],
 		components: {
 			imgbox,
 			paginator,
@@ -94,6 +96,8 @@
 		},
 		data() {
 			return {
+				showFirstLogin: false,
+				showMyLoadingModal: true,
 				show: false,
 				initnum: 0, //初始页
 				maleShow: true,
@@ -185,6 +189,9 @@
 		},
 		computed: {},
 		methods: {
+			agreePrivacy() {
+				this.showFirstLogin = true;
+			},
 			first_login() {
 				window.localStorage.UPlusApp_firstLogin_sleepReport = false;
 			},
@@ -529,11 +536,11 @@
 								if (item.member_id == window._member_id) {
 									that.initnum = that.pageindex = index;
 								}
-								if (window.__newCreateMember__ == item.nick_name) {//优先展示新创建的人
+								if (window.__newCreateMember__ == item.nick_name) { //优先展示新创建的人
 									that.initnum = that.pageindex = index;
 								}
 							})
-							window.__newCreateMember__ = '';//新创建的家人
+							window.__newCreateMember__ = ''; //新创建的家人
 						}
 					} else {
 						this.createdList = [];
@@ -687,8 +694,9 @@
 				this.show = true;
 			}
 			var that = this;
+			that.showMyLoadingModal = true;
 			setTimeout(function() {
-				that.loadingmodal.close();
+				that.showMyLoadingModal = false;
 			}, 5000)
 			this.showdata = _.chunk(this.healthProResult, 3);
 			if (window._member_id === '') {
@@ -708,7 +716,7 @@
 				}
 				if (obj.code !== '') {
 					try {
-						const result = await this.$axios.post('/api/info', obj)
+						const result = await this.$axios.post('/api/info', obj);
 						if (result.data.code == 'C0000') {
 							window.localStorage.uplus_sleep_user_id = result.data.data.login_code; //暂存个人id
 							window.localStorage.uplus_sleep_user_disease = result.data.data.disease; //暂存个人慢病
@@ -741,15 +749,15 @@
 							}
 							this.getFamilyList() //请求全部家庭成员列表
 						}
-						that.loadingmodal.close();
+						that.showMyLoadingModal = false;
 						that.$router.replace({
 							path: '/healthRecordsB'
 						}) // 介绍页面
 					} catch (err) {
-						that.loadingmodal.close();
+						that.showMyLoadingModal = false;
 					}
 				} else {
-					that.loadingmodal.close();
+					that.showMyLoadingModal = false;
 					this.memberID = window._member_id
 					if (window._member_id === '') {
 						this.getUserInfo()
@@ -788,7 +796,6 @@
 				left: 0;
 				width: 100%;
 				img {
-					
 					height: 19.2rem;
 					position: absolute;
 					top: 0;
@@ -797,10 +804,10 @@
 					right: 0;
 					margin: auto;
 				}
-				.womanBgImg{
-					width: 5rem;
+				.womanBgImg {
+					width: 7rem;
 				}
-				.manBgImg{
+				.manBgImg {
 					width: 7rem;
 				}
 			}
@@ -904,7 +911,7 @@
 		}
 		.sugar-circle-female {
 			top: 10.5rem;
-			left: 0.5rem;
+			left: 0.9rem;
 		}
 		.temperature-circle {
 			top: 5.5rem;
@@ -912,15 +919,15 @@
 		}
 		.temperature-circle-female {
 			top: 4.6rem;
-			left: 1.2rem;
+			left: 1.6rem;
 		}
 		.pressure-circle {
-			top: 9rem;
-			left: 5.6rem;
+			top: 9.5rem;
+			left: 5.7rem;
 		}
 		.pressure-circle-female {
-			top: 9rem;
-			left: 5.5rem;
+			top: 9.5rem;
+			left: 5rem;
 		}
 		.ecg-circle {
 			top: 4.5rem;
@@ -928,15 +935,15 @@
 		}
 		.ecg-circle-female {
 			top: 4.5rem;
-			left: 4rem;
+			left: 3.7rem;
 		}
 		.oxygen-circle {
-			top: 14rem;
-			left: 2rem;
+			top: 13.5rem;
+			left: 1.8rem;
 		}
 		.oxygen-circle-female {
-			top: 14rem;
-			left: 2rem;
+			top: 13.5rem;
+			left: 2.4rem;
 		}
 		.sleep-circle {
 			top: 0.5rem;

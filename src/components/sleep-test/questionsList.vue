@@ -4,7 +4,7 @@
         <table>
             <tr v-for='(item,index) in list.options' :key='index' :style="{background:index%2==0?'#fff':'rgba(250,250,250,1)'}">
                 <td class="lefttd">{{item.lab}}</td>
-                <td class='righttd'>
+                <td class='righttd' >
                     <p @click='closeReInit'>
                         <el-radio v-model="radio" :label="index" v-if='type==1'></el-radio>
                         <el-checkbox v-model="checkbox" :label="index" @change='selectcheckbox' v-else></el-checkbox>
@@ -30,7 +30,8 @@
                 })
             },
             closeReInit() {
-                bus.$emit('closeReInitButton');
+
+                bus.$emit('closeReInitButton',this.id);
             }
         },
         data() {

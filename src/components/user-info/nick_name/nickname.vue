@@ -75,7 +75,7 @@
             font-size: 0.8rem;
             font-family: "PingFangSC-Regular";
             color: #fff;
-            border: 1px solid #f5f5f5;
+            /*border: 1px solid #f5f5f5;*/
             font-weight: 500;
         }
     }

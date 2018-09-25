@@ -6,7 +6,7 @@
                     <img src="/static/sleepMusicList/img5.png" alt="">
                 </div>
                 <div class="title">睡眠时长</div>
-                <div class="time"><span>{{Math.floor(sleepTimeLang/60)}}</span>小时<span>{{sleepTimeLang%60}}</span>分</div>
+                <div class="time"><span>{{Math.floor(sleepTimeLang/60)}}</span> 小时 <span>{{sleepTimeLang%60}}</span> 分 </div>
                 <div class="level">
                 </div><i class="el-icon-arrow-down rightarrow " v-if='rotateArr'></i><i class="el-icon-arrow-right rightarrow" v-else></i>
             </div>
@@ -17,7 +17,7 @@
                     <h6>{{item.title}}</h6>
                     <img src="/static/sleepMusicList/img6.png" alt="" v-if='item.detail!=""' @click='showdetail(item.detail)'>
                     <p>
-                        <span v-for='(val,key) in item.params' :key='key'>{{val.data}}<span>{{val.unit}}</span></span>
+                        <span v-for='(val,key) in item.params' :key='key'>{{val.data}}<span> {{val.unit}} </span></span>
                     </p>
                 </li>
             </ul>
@@ -207,7 +207,7 @@
                 left: 9.5rem;
                 top: 2rem;
                 span {
-                    font-size: 0.8rem;
+                    font-size: 1.1rem;
                     font-family: 'NotoSansCJKsc-Medium';
                     color: rgba(51, 51, 51, 1);
                     font-weight: 600;
@@ -253,7 +253,7 @@
                 left: 4rem;
                 width: 4rem;
                 span {
-                    font-size: 0.8rem;
+                    font-size: 1.1rem;
                     font-family: 'NotoSansCJKsc-Medium';
                     color: rgba(51, 51, 51, 1);
                     font-weight: 600;
@@ -312,7 +312,7 @@
                     right: 0.8rem;
                     bottom: 0.5rem;
                     span {
-                        font-size: 0.8rem;
+                        font-size: 1.1rem;
                         font-family: 'NotoSansCJKsc-Medium';
                         color: rgba(51, 51, 51, 1);
                         font-weight: 600;

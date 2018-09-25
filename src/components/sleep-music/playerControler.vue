@@ -12,6 +12,7 @@
             <div id="pauseSleepMusic" alt="" class='pause' @click='pauseAudio' v-else></div>
             <img src="/static/musicPlayer/right.svg" id='goThirtySec' alt="" class='right'>
         </div>
+        <myLoadingModal :show='showMyLoadingModal'></myLoadingModal>
     </div>
 </template>
 
@@ -21,13 +22,7 @@
         clearInterval,
         setTimeout
     } from 'timers';
-    import {
-        Loading
-    } from 'element-ui';
     export default {
-        components: {
-            Loading
-        },
         computed: {
             level() {
                 var title = this.params.name;
@@ -38,7 +33,7 @@
                     level = '中级'
                 } else if (this.params.level == 3) {
                     level = '高级'
-                }else{
+                } else {
                     return title
                 }
                 return title + "(" + level + ")"
@@ -94,8 +89,8 @@
                 position: 0,
                 timerDur: 0,
                 duration: 0,
-                loadingmodal: '',
                 audioSrc: '',
+                showMyLoadingModal: true
             }
         },
         methods: {
@@ -162,7 +157,7 @@
                                 // success callback
                                 function(position) {
                                     if (position > 0) {
-                                        that.loadingmodal.close()
+                                        that.showMyLoadingModal = false;
                                         that.position = Math.round(position);
                                     }
                                 },
@@ -223,15 +218,9 @@
             document.addEventListener('deviceready', function() {
                 that.receivedEvent(that.params.musicurl)
             }, false);
-            this.loadingmodal = Loading.service({
-                fullscreen: true,
-                background: 'rgba(0, 0, 0, 0.7)',
-                lock: true,
-                text: 'Loading',
-                spinner: 'el-icon-loading',
-            });
+            this.showMyLoadingModal = true;
             setTimeout(function() {
-                that.loadingmodal.close();
+                that.showMyLoadingModal = false;
             }, 10000)
         }
     }

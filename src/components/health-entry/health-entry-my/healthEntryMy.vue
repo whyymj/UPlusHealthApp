@@ -115,20 +115,20 @@
                 <mt-picker :slots="weightarr2" @change="select_weight2"></mt-picker>
             </div>
         </mt-popup>
+        <myLoadingModal :show='showMyLoadingModal'></myLoadingModal>
     </div>
 </template>
 <script>
     import tagslist from "../health-entry-family/tagsList";
     import axios from "axios";
     import config from '../../../../config/global.config'
-    import myloading from '../../global/Loading.vue';
     export default {
         components: {
             tagslist
         },
-        mixins: [myloading],
         data() {
             return {
+                showMyLoadingModal: true,
                 weight_picker: false,
                 height_picker: false,
                 birthday_picker: false,
@@ -230,6 +230,10 @@
                 sex: ''
             };
             var that = this;
+            this.showMyLoadingModal = true;
+            setTimeout(function() {
+                that.showMyLoadingModal = false;
+            }, 5000)
             var years = [];
             var months = [];
             var tall = [];
@@ -291,7 +295,7 @@
             this.birthday = userinfo.birthday.replace('-', '年').replace('-', '月');
             this.sex = userinfo.sex == 'male' ? '男' : '女';
             this.$axios.post('/api/getDiseaseList').then(function(res) {
-                that.loadingmodal.close();
+                that.showMyLoadingModal = false;
                 if (res.data.code == 'C0000') {
                     that.chromiclist = res.data.data.map(function(item) {
                         return {
@@ -322,10 +326,10 @@
                     that.chromiclist = newchromiclist;
                 }
             }).catch(function(res) { //慢病标签
-                that.loadingmodal.close();
+                that.showMyLoadingModal = false;
             })
             this.$axios.post('/api/getAllergyList').then(function(res) {
-                that.loadingmodal.close();
+                that.showMyLoadingModal = false;
                 if (res.data.code == 'C0000') {
                     that.allergylist = res.data.data.map(function(item) {
                         return {
@@ -356,7 +360,7 @@
                     that.allergylist = newallergylist
                 }
             }).catch(function(res) { //过敏标签 
-                that.loadingmodal.close();
+                that.showMyLoadingModal = false;
                 if (process.env.NODE_ENV == 'development') {
                     that.$axios.get('/static/testData/getAllergyList.json').then(function(res) {
                         if (res.data.code == 'C0000') {
@@ -585,7 +589,6 @@
 <style lang="scss">
     @import "./healthEntryMy.scss";
     .healthEntryFamily {
-        
         .nick_name,
         .sex_radio {
             width: 17.15rem;

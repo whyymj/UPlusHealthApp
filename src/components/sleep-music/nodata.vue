@@ -9,9 +9,9 @@
             <modal :showmodal='changeNow' @closemodal='closemodal'>
                 <div class='recordbox'>
                     <div class='imgbox'>
-                        <img src="/static/sleepMusicList/img7.png" class='img1' alt="">
-                        <img src="/static/sleepMusicList/img10.png" class='img2' alt="">
-                        <img src="/static/sleepMusicList/img8.png" class='img3' alt="">
+                        <img src="/static/sleepMusicList/img7.svg" class='img1' alt="">
+                        <img src="/static/sleepMusicList/img10.svg" class='img2' alt="">
+                        <img src="/static/sleepMusicList/img8.svg" class='img3' alt="">
                     </div>
                     <div class="body">
                         <div class='p'>连接<i> Apple Health </i>后，会将它的睡眠数据同步至<i> 优家App </i>睡眠报告。如果要调整它们之间的共享数据设置，请打开手机上的<i>Health</i><i>(健康)</i><i>应用 </i>，点击<i> 数据来源 </i>，找到优家App,启用或禁用共享权限。</div>
@@ -113,7 +113,7 @@
                 bottom: 0;
             }
             .img1 {
-                left: 0;
+                left: 0.5rem;
                 width: 3rem;
                 height: 3rem;
             }
@@ -125,7 +125,7 @@
                 margin: auto;
             }
             .img3 {
-                right: 0;
+                right: 0.5rem;
                 width: 3rem;
                 height: 3rem;
             }

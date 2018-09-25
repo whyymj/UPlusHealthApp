@@ -8,6 +8,7 @@
         </el-carousel>
         <div class="prevbutton" @click='prev' v-if='curnum>0'><i class="el-icon-back"></i>上一题</div>
         <div class='reInit' @click='reInit' v-if='reStart'>重新开始</div>
+        <myLoadingModal :show='showMyLoadingModal'></myLoadingModal>
     </div>
 </template>
 
@@ -19,9 +20,6 @@
         setTimeout
     } from 'timers';
     import {
-        Loading
-    } from 'element-ui';
-    import {
         Toast
     } from 'mint-ui';
     export default {
@@ -29,12 +27,11 @@
         components: {
             bar,
             questionlist,
-            Loading
         },
         data() {
             return {
+                showMyLoadingModal: true,
                 tmpCache: '',
-                loadingmodal: '',
                 doubleclick: false,
                 reStart: false,
                 autoplay: false,
@@ -45,7 +42,8 @@
                 initialindex: 0,
                 bar: '',
                 params: '',
-                tuId: ''
+                tuId: '',
+                submiting: false,
             }
         },
         watch: {
@@ -140,14 +138,14 @@
                     this.$refs.carousel.prev();
                     this.curnum--;
                 }
-                this.$emit('turnQestion', this.curnum);
+                // this.$emit('turnQestion', this.curnum);
             },
             next() {
                 if (this.curnum < this.list.length - 1) {
                     this.$refs.carousel.next();
                     this.curnum++;
                 }
-                this.$emit('turnQestion', this.curnum);
+                // this.$emit('turnQestion', this.curnum);
             },
             getOptions(data) {
                 var that = this;
@@ -223,18 +221,14 @@
                 }
                 this.initialindex = this.curnum;
             }
-            bus.$on('closeReInitButton', function() {
+            bus.$on('closeReInitButton', function(num) {
                 that.reStart = false;
+                that.$emit('turnQestion', num);
             })
             bus.$on('submitResult', function() { //这里提交答案
-                if (that.totalnum > 0 && that.cacheOptions['' + (that.totalnum - 1)].option.length > 0) {
-                    that.loadingmodal = Loading.service({
-                        fullscreen: true,
-                        background: 'rgba(0, 0, 0, 0.7)',
-                        lock: true,
-                        text: 'saving',
-                        spinner: 'el-icon-loading',
-                    });
+                if (!that.submiting && that.totalnum > 0 && that.cacheOptions['' + (that.totalnum - 1)].option.length > 0) {
+                    that.submiting = true; //防止反復提交
+                    that.showMyLoadingModal = true;
                     var result = [];
                     var finalstr = ''
                     for (var k in that.cacheOptions) {
@@ -246,7 +240,8 @@
                         tuId: that.params.tuId,
                         inputVal: finalstr
                     }).then(function(res) {
-                        that.loadingmodal.close();
+                        that.showMyLoadingModal = false;
+                        that.submitingf = false;
                         if (res.data.code == 'C0000') {
                             that.params.totalScore = res.data.data.totalScore;
                             that.params.allResult = finalstr;
@@ -256,17 +251,13 @@
                             });
                         }
                     }).catch(function() {
+                        that.submitingf = false;
                         that.$notify.error({
                             title: '错误',
-                            message: 'submitResult接口报错',
+                            message: '提交测试结果失败',
                             showClose: false
                         });
-                        that.loadingmodal.close()
-                        that.params.totalScore = 22;
-                        that.$router.push({
-                            path: '/sleepTestResult',
-                            query: that.params
-                        });
+                        that.showMyLoadingModal = false;
                     })
                 } else {
                     Toast({

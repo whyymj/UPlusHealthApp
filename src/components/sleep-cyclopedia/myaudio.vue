@@ -1,6 +1,5 @@
 <template>
     <div class='playerController'>
-        
         <img src="/static/musicPlayer/bigImg.jpg" alt="" class='bigImg'>
         <div class='progressBar'>
             <el-progress :percentage="percent" style='margin-top:2rem;' :show-text=false></el-progress>
@@ -12,6 +11,7 @@
             <div id="pauseSleepMusic" alt="" class='pause' @click='pauseAudio' v-else></div>
             <img src="/static/musicPlayer/right.svg" id='goThirtySec' alt="" class='right'>
         </div>
+        <myLoadingModal :show='showMyLoadingModal'></myLoadingModal>
     </div>
 </template>
 
@@ -21,13 +21,7 @@
         clearInterval,
         setTimeout
     } from 'timers';
-    import {
-        Loading
-    } from 'element-ui';
     export default {
-        components: {
-            Loading
-        },
         computed: {
             getPosition() {
                 var h = 0,
@@ -71,6 +65,7 @@
         },
         data() {
             return {
+                showMyLoadingModal: true,
                 playing: true,
                 audio: '',
                 params: '',
@@ -79,7 +74,6 @@
                 position: 0,
                 timerDur: 0,
                 duration: 0,
-                loadingmodal: '',
                 audioSrc: ''
             }
         },
@@ -147,7 +141,7 @@
                                 // success callback
                                 function(position) {
                                     if (position > 0) {
-                                        that.loadingmodal.close()
+                                        that.showMyLoadingModal = false;
                                         that.position = Math.round(position);
                                     }
                                 },
@@ -228,15 +222,9 @@
                     that.receivedEvent(that.params.musicurl)
                 }, false);
             }
-            this.loadingmodal = Loading.service({
-                fullscreen: true,
-                background: 'rgba(0, 0, 0, 0.7)',
-                lock: true,
-                text: 'Loading',
-                spinner: 'el-icon-loading',
-            });
+            that.showMyLoadingModal = true;
             setTimeout(function() {
-                that.loadingmodal.close();
+                that.showMyLoadingModal = false;
             }, 10000)
         }
     }

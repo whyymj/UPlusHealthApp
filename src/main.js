@@ -22,7 +22,8 @@ import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
 import axios from 'axios'
 // import vux
-import { InlineCalendar, Loading } from 'vux'
+import {InlineCalendar, Loading} from 'vux'
+
 
 import '../config/user.config'
 
@@ -31,35 +32,35 @@ Vue.use(ElementUI)
 Vue.prototype.$axios = axios
 
 Vue.config.productionTip = false
-Vue.component('h-header', () => import('./components/common/header.vue'))
-Vue.component('e-chart', () => import('./components/common/eChart'))
-Vue.component('chart', () => import('vue-echarts/components/ECharts'))
+Vue.component('myLoadingModal', () => import ('./components/global/myLoading.vue'));
+Vue.component('h-header', () => import ('./components/common/header.vue'))
+Vue.component('e-chart', () => import ('./components/common/eChart'))
+Vue.component('chart', () => import ('vue-echarts/components/ECharts'))
 Vue.component('inline-calendar', InlineCalendar)
 Vue.component('loading', Loading)
 Vue.use(MintUI)
 
-
 //添加拦截器
-axios.interceptors.request.use(function(config){
-	return config
-},function(err){
-	return Promise.reject(err)
-});
-axios.interceptors.response.use(function(response){
-	console.log('response',response);
-	return response
-},function(err){
+axios
+  .interceptors
+  .request
+  .use(function (config) {
+    return config
+  }, function (err) {
+    return Promise.reject(err)
+  });
+axios
+  .interceptors
+  .response
+  .use(function (response) {
+    console.log('response', response);
+    return response
+  }, function (err) {
 
-	return Promise.reject(err)
-});
-    
-    
+    return Promise.reject(err)
+  });
+
 /* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  router,
-  components: {
+new Vue({el: '#app', router, components: {
     App
-  },
-  template: '<App/>'
-})
+  }, template: '<App/>'})

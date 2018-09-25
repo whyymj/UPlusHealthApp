@@ -1,8 +1,9 @@
 <template>
     <div class='sleepTest'>
-        <h1>{{firstTitle}}-{{secondTitle}}<img src="/static/sleepMusicList/img6.png" alt=""></h1>
+        <h1>{{firstTitle}}-{{secondTitle}}</h1>
         <list :list='questions' :tuIdTmp='tuId' @turnQestion='turnQestion'></list>
         <div class="submit" v-show='canSubmit' @click='submitResult'>提交测试</div>
+        <myLoadingModal :show='showMyLoadingModal'></myLoadingModal>
     </div>
 </template>
 
@@ -36,7 +37,7 @@
         },
         data() {
             return {
-                loadingmodal: '',
+                showMyLoadingModal: true,
                 canSubmit: false,
                 questions: [],
                 tmpCache: '',
@@ -46,13 +47,7 @@
             }
         },
         mounted() {
-            this.loadingmodal = Loading.service({
-                fullscreen: true,
-                background: 'rgba(0, 0, 0, 0.7)',
-                lock: true,
-                text: 'Loading',
-                spinner: 'el-icon-loading',
-            });
+            this.showMyLoadingModal = true
             var params = this.$route.query;
             var that = this;
             this.secondTitle = params.templateSubTitle;
@@ -62,7 +57,7 @@
             var initArr = [];
             if (params.status == 1 && !window.__retest__) { //已經完成且非重測
                 window.__retest__ = false;
-                that.loadingmodal.close();
+                that.showMyLoadingModal = false;
                 this.$router.push({
                     path: '/sleepTestResult',
                     query: params
@@ -70,10 +65,10 @@
             } else {
                 this.$axios.post('/api/setUserTemplate', {
                     templateId: params.templateId,
-                    tuId: window.__retest__ ? '' : params.tuId, //重新測試不輸入
+                    tuId: params.tuId,
                     member_id: window._member_id,
                 }).then(function(res) {
-                    that.loadingmodal.close();
+                    that.showMyLoadingModal = false;
                     if (params.status === 0 || params.status === '0') { //中途退出
                         let instance = Toast({
                             message: '正从上次退出位置继续答题',
@@ -127,7 +122,7 @@
                         }
                     }
                 }).catch(function(res) {
-                    that.loadingmodal.close();
+                    that.showMyLoadingModal = false;
                     if (process.env.NODE_ENV == 'development') {
                         that.$axios.get('/static/testData/setUserTemplate.json').then(function(res) {
                             if (params.status === 0 || params.status === '0') { //中途退出

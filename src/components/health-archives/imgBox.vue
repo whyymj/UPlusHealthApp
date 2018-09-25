@@ -157,7 +157,6 @@
                 }
             })
             var obj = colorJudger(this.meta.moudle_name, this.meta.level);
-            console.log(this.meta.moudle_name, '>>>>>>>>>>>>>>', this.meta.level, '>>>>>>>>>', obj);
             this.tips = obj.tips;
             this.color = obj.color;
             this.bgcolor = obj.bg;

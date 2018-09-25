@@ -166,6 +166,7 @@
       <!-- <button class="device-input" @click="ChooseTypePopupVisible = true">设备录入</button> -->
       <button class="manual-input" @click="goManualEntry('entry-sugar')">手动录入</button>
     </footer>
+    <myLoadingModal :show='showMyLoadingModal'></myLoadingModal>
   </div>
 </template>
 <script type="text/javascript" src="./bloodSugar.js">

@@ -88,8 +88,8 @@
         let supportedTypes = ['HKCategoryTypeIdentifierSleepAnalysis'];
         window.plugins.healthkit.requestAuthorization({
           readTypes: supportedTypes,
-        }, function (value) {
-          alert('allll..........' + JSON.stringify(value))
+        },function(){
+          
         });
       },
       //保存信息

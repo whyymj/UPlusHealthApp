@@ -25,66 +25,69 @@
 </template>
 
 <script>
-import {
-    XDialog,
-    XButton
-} from 'vux'
-
-export default {
-    name: 'privacy',
-    props: {
-        show: Boolean
-    },
-    components: {
+    import {
         XDialog,
         XButton
-    },
-    data() {
-        return {
-            privacy_show: this.show,
-            privacy_again: false
-        }
-    },
-    watch:{
-        show(){
-            this.privacy_show=this.show;
-        }
-    },
-    methods: {
-        $_agree () { // 同意隐私协议
-            this.privacy_show = false;
-            localStorage.UPlusAPP_agree_privacyPlan=true;
+    } from 'vux'
+    export default {
+        name: 'privacy',
+        props: {
+            show: Boolean
         },
-        $_quit () { // 首次点击「不同意并退出」
-            this.privacy_show = false
-            this.privacy_again = true
+        components: {
+            XDialog,
+            XButton
         },
-        $_again () { // 同意
-            this.privacy_again = false
+        data() {
+            return {
+                privacy_show: this.show,
+                privacy_again: false
+            }
         },
-        $_exit () { // 再次点击「不同意并退出」
-            this.privacy_again = false
-            this.$router.go(-1)
+        watch: {
+            show() {
+                this.privacy_show = this.show;
+            }
+        },
+        methods: {
+            $_agree() { // 同意隐私协议
+                this.privacy_show = false;
+                this.$emit('agree', true)
+                localStorage.UPlusAPP_agree_privacyPlan = true;
+            },
+            $_quit() { // 首次点击「不同意并退出」
+                this.privacy_show = false
+                this.privacy_again = true
+                  this.$emit('agree', false)
+            },
+            $_again() { // 同意
+                this.privacy_again = false;
+                this.$emit('agree', false)
+            },
+            $_exit() { // 再次点击「不同意并退出」
+                this.privacy_again = false;
+                this.$emit('agree', false)
+                this.$router.go(-1)
+            }
         }
     }
-}
 </script>
 
 <style lang="scss" scoped>
-.dialog-demo {
-    .dialog-content {
-       box-sizing: border-box;
-       padding:0 0.5rem 0.6rem;
-        overflow: hidden;
+    .dialog-demo {
+        .dialog-content {
+            box-sizing: border-box;
+            padding: 0 0.5rem 0.6rem;
+            overflow: hidden;
+        }
+        h2 {
+            margin-top: 1rem;
+            font-size: 1rem;
+            font-weight: bold
+        }
+        p {
+            margin: .4rem;
+            text-align: justify
+        }
     }
-    h2 {
-        margin-top: 1rem;
-        font-size: 1rem;
-        font-weight: bold
-    }
-    p {
-        margin: .4rem;
-        text-align: justify
-    }
-}
 </style>
