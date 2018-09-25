@@ -109,13 +109,13 @@
                 sleepAboutData: [{
                     title: '睡眠测试',
                     content: '睡眠小测试，了解自己的睡眠问题。',
-                    src: "/static/sleepMusicList/exm1.jpg",
+                    src: "/static/sleepMusicList/sleeptest.jpg",
                     link: '测一测',
                     linkurl: '/enterToTest'
                 }, {
                     title: '睡眠百科',
                     content: '睡眠小百科，睡眠知识全收录。',
-                    src: "/static/sleepMusicList/exm2.jpg",
+                    src: "/static/sleepMusicList/sleepknowledge.jpg",
                     link: '立刻围观',
                     linkurl: '/sleepCyclopedia'
                 }]

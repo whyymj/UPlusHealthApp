@@ -159,6 +159,9 @@
                                     if (position > 0) {
                                         that.showMyLoadingModal = false;
                                         that.position = Math.round(position);
+                                        if(that.position>=that.duration){
+                                            that.playing=false;
+                                        }
                                     }
                                 },
                                 // error callback
@@ -212,16 +215,16 @@
         },
         mounted() { //h5实现的方式
             this.params = this.$route.query;
+            this.showMyLoadingModal = true;
+            setTimeout(function() {
+                that.showMyLoadingModal = false;
+            }, 10000)
             var that = this;
             //初始化音频插件
             that.audioSrc = that.params.musicurl;
             document.addEventListener('deviceready', function() {
                 that.receivedEvent(that.params.musicurl)
             }, false);
-            this.showMyLoadingModal = true;
-            setTimeout(function() {
-                that.showMyLoadingModal = false;
-            }, 10000)
         }
     }
 </script>

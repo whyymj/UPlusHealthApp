@@ -8,7 +8,7 @@
         </el-carousel>
         <div class="prevbutton" @click='prev' v-if='curnum>0'><i class="el-icon-back"></i>上一题</div>
         <div class='reInit' @click='reInit' v-if='reStart'>重新开始</div>
-        <myLoadingModal :show='showMyLoadingModal'></myLoadingModal>
+        <!-- <myLoadingModal :show='showMyLoadingModal'></myLoadingModal> -->
     </div>
 </template>
 
