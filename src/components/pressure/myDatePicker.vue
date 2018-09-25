@@ -28,7 +28,7 @@
             </thead>
             <tbody class='body'>
                 <tr v-show='showThisWeek'>
-                    <td v-for='(val,key) in thisWeekDates' :key='key' @click='selectdate(-1,key,val)'><span class='havedata' v-if='haveDataDays.indexOf(hasRecord(val))!=-1'></span><span class='today' :class='{active:activeTd(val)}' v-if='isToday(val)'>今天</span><span :class='{active:activeTd(val)}' :style="{opacity:opacity(val)}">{{val.date}}</span></td>
+                    <td v-for='(val,key) in thisWeekDates' :key='key' @click='selectdate(-1,key,val)'><span class='havedata' v-if='haveDataDays.indexOf(hasRecord(val))!=-1'></span><span class='today' :class='{active:activeTd(val)}' v-if='isToday(val)'>今天</span><span :class='{active:activeTd(val)}' :style="{opacity:opacity2(val)}">{{val.date}}</span></td>
                 </tr>
                 <tr v-for='(item,index) in datepicker' :key='index' v-show='!showThisWeek'>
                     <td v-for='(val,key) in item' :key='key' @click='selectdate(index,key,val)'><span class='havedata' v-if='haveDataDays.indexOf(hasRecord(val))!=-1'></span><span class='today' :class='{active:activeTd(val)}' v-if='isToday(val)'>今天</span><span :class='{active:activeTd(val)}' :style="{opacity:opacity(val)}">{{val.date}}</span></td>
@@ -72,7 +72,7 @@
             hasRecord(item) {
                 var that = this;
                 var str = '';
-                str = item.year + '-' + (item.month > 9 ? item.month : ('0' + item.month)) + '-' + (item.date > 9 ? item.date : '0' + item.date);
+                str = item.year + '-' + (item.month > 9 ? item.month*1 : ('0' + item.month*1)) + '-' + (item.date > 9 ? item.date*1 : '0' + item.date*1);
                 return str
             },
             update() {
@@ -131,9 +131,22 @@
                 }
                 return false;
             },
-            opacity(val) {
+            opacity(val) { //判断是否是当月的日期，不是的话透明度0.5
                 var tmp = new Date('' + val.year + '/' + val.month + '/' + val.date);
+                var arr = this.today.split("-");
+                if (arr[0] * 1 == val.year * 1 && arr[1] * 1 == val.month * 1 && arr[2] * 1 == val.date * 1) {
+                    return 0;
+                }
                 return (val.year == this.year && val.month == this.month && tmp.getTime() <= new Date().getTime()) ? 1 : 0.5
+            },
+            opacity2(val) { //判断本周日期，今天以后的为半透明，
+                console.log('ooooooo', val);
+                var tmp = new Date('' + val.year + '/' + val.month + '/' + val.date);
+                var arr = this.today.split("-");
+                if (arr[0] * 1 == val.year * 1 && arr[1] * 1 == val.month * 1 && arr[2] * 1 == val.date * 1) {
+                    return 0;
+                }
+                return tmp.getTime() <= new Date().getTime() ? 1 : 0.5
             }
         },
         mounted() {
@@ -175,7 +188,7 @@
                 }
             }).catch(function() {
                 if (process.env.NODE_ENV == 'development') {
-                    that.$axios.get('/static/testData/sleeGetExistDateList.json').then(function(res) {
+                    that.$axios.get('/static/testData/getExistDateList.json').then(function(res) {
                         if (res.data.code == 'C0000') {
                             that.haveDataDays = res.data.data.date_list;
                         }

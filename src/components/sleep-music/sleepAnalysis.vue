@@ -252,7 +252,7 @@
                 position: absolute;
                 top: 2rem;
                 left: 4rem;
-                width: 4rem;
+                // width: 4rem;
                 span {
                     font-size: 1.1rem;
                     font-weight: 500!important;

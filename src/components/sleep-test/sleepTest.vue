@@ -16,6 +16,9 @@
     import {
         Loading
     } from 'element-ui';
+    import {
+        setTimeout
+    } from 'timers';
     export default {
         name: 'sleepTest',
         components: {
@@ -50,6 +53,9 @@
             this.showMyLoadingModal = true
             var params = this.$route.query;
             var that = this;
+            setTimeout(function() {
+                that.showMyLoadingModal = false;
+            }, 10000)
             this.secondTitle = params.templateSubTitle;
             this.firstTitle = params.templateTitle;
             this.tmpCache = localStorage['saveUsersleepTemplate' + params.tuId] || ''; //暂存的答题结果

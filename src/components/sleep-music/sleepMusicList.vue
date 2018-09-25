@@ -48,7 +48,7 @@
 </template>
 
 <script>
-    import myDatePicker from '../pressure/myDatePicker.vue';
+    // import myDatePicker from '../pressure/myDatePicker.vue';
     import mycollapse2 from './mycollapse2.vue';
     import musiclist from "./musicList.vue";
     import player from "./player.vue";
@@ -69,7 +69,7 @@
         components: {
             musiclist,
             player,
-            myDatePicker,
+            myDatePicker:resolve => require(['../pressure/myDatePicker.vue'], resolve),
             sleepanalysis,
             echarts,
             aboutSleep,
@@ -309,8 +309,8 @@
                     let supportedTypes = ['HKCategoryTypeIdentifierSleepAnalysis'];
                     window.plugins.healthkit.requestAuthorization({
                         readTypes: supportedTypes,
-                    },function(res){
-console.log('apple health >>',res);
+                    }, function(res) {
+                        console.log('apple health >>', res);
                     });
                 } catch (e) {
                     this.iosshowdata = ''
@@ -625,7 +625,7 @@ console.log('apple health >>',res);
             background: #fff;
             border-radius: 0.6rem;
             margin: 0.5rem auto 0;
-            line-height: 1.2rem;
+            line-height: 1.4rem;
             font-size: 0.7rem;
             color: #666;
             box-sizing: border-box;
