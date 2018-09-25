@@ -309,6 +309,8 @@
                     let supportedTypes = ['HKCategoryTypeIdentifierSleepAnalysis'];
                     window.plugins.healthkit.requestAuthorization({
                         readTypes: supportedTypes,
+                    },function(res){
+console.log('apple health >>',res);
                     });
                 } catch (e) {
                     this.iosshowdata = ''
