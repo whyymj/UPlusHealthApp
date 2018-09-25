@@ -57,7 +57,7 @@ export default {
   mounted () {
     this.initWeightInfo()
     this.$nextTick(function () {
-      console.log(this.$refs.weightSwiper)
+      
       this.$refs.weightSwiper.swiper.virtual.update()
       this.$refs.weightSwiper.update()
     })

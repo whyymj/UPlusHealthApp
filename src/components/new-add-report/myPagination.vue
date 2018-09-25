@@ -14,7 +14,7 @@
             bottom: String
         },
         mounted() {
-            console.log(this.pagenum, this.pageindex);
+            
         }
     }
 </script>

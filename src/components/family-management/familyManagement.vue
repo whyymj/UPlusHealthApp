@@ -81,6 +81,7 @@
       }
     },
     mounted() {
+      var that=this;
       that.showMyLoadingModal = true;
       if (process.env.NODE_ENV == 'development') {
         this.createdList = []
