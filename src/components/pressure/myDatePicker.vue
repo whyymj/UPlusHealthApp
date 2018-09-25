@@ -72,7 +72,7 @@
             hasRecord(item) {
                 var that = this;
                 var str = '';
-                str = item.year + '-' + (item.month > 9 ? item.month*1 : ('0' + item.month*1)) + '-' + (item.date > 9 ? item.date*1 : '0' + item.date*1);
+                str = item.year + '-' + (item.month > 9 ? (item.month * 1) : ('0' + item.month * 1)) + '-' + (item.date > 9 ? (item.date * 1) : '0' + (item.date * 1));
                 return str
             },
             update() {

@@ -699,7 +699,7 @@
 				that.showMyLoadingModal = false;
 			}, 5000)
 			this.showdata = _.chunk(this.healthProResult, 3);
-			if (window._member_id === '') {
+			if (window._member_id == '') {
 				this.pageindex = this.initnum = 0;
 			} else {
 				this.memberlist.map(function(item, index) {

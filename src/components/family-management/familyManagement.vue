@@ -228,7 +228,7 @@
         });
       },
       skipTo(item) { //根据是否关联了用户
-        var id = item.member_id;
+        var id = item.member_id||'';
         window._member_id = id;
         if (!id) {
           this.$router.push({

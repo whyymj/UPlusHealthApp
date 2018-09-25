@@ -116,6 +116,7 @@ export default {
       try {
         const result = await axios.get(`/api/weight/three?member_id=${window._member_id}&date=${this.weightDate}&limit=N`)
         if (result.data.code === 'C0000') {
+
           if (result.data.data.length === 0) {
             this.weightRecordData = []
             this.$refs.noData.style.display = 'block'
@@ -137,12 +138,12 @@ export default {
           }
           this.initNews()
         }
+        this
+        .showMyLoadingModal=false;
       } catch (err) {
-        console.log('Whoops: ', err)
+        this
+        .showMyLoadingModal=false;
       }
-      this
-        .loadingmodal
-        .close();
     },
     async initDateList() {
       try {
