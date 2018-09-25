@@ -7,7 +7,7 @@
             </div>
             <div class="content" @click='play(index,item)'>
                 <div class="title">{{item.name}}</div>
-                <div class="time">耗时约{{getTime(item.time)}}分钟</div>
+                <div class="time">约{{getTime(item.time)}}分钟</div>
                 <div class="level">{{level(item.level)}}</div>
             </div>
         </div>

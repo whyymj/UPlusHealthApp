@@ -249,15 +249,15 @@
             .today {
                 background: #fff;
                 position: absolute;
-                width: 1.9rem;
-                height: 1.9rem;
+                width: 1.8rem;
+                height: 1.8rem;
                 box-sizing: border-box;
                 border: 1px solid rgba(38, 165, 253, 1);
                 color: rgba(38, 165, 253, 1);
                 text-align: center;
                 font-size: 0.7rem;
                 font-family: "PingFangSC-Regular";
-                line-height: 1.9rem;
+                line-height: 1.8rem;
                 top: 0;
                 left: 0;
                 bottom: 0;
