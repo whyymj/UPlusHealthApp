@@ -84,7 +84,7 @@ const router = new Router({
       redirect: '/'
     }, {
       path: '/',
-      redirect: 'login'
+      redirect: 'healthRecordsB'
     }, {
       path: '/privacy',
       name: 'privacy',

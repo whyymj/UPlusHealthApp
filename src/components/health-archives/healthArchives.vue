@@ -685,6 +685,13 @@
 				})
 			}
 		},
+		created() {
+			if (!window.localStorage.getItem('accountNumber')) {
+				window.localStorage.setItem('accountNumber', '1')
+				window.location.replace(`https://taccount.haier.com/oauth/authorize?client_id=jiangkangyun&response_type=code&state=qazwsx&redirect_uri=${config.url}`) // 测试环境
+      // window.location.replace(`https://account.haier.com/oauth/authorize?client_id=jiangkangyun&response_type=code&state=qazwsx&redirect_uri=${config.url}`)
+			}
+		},
 		mounted() {
 			window.__retest__ = false;
 			window.localStorage.uplus_sleep_user_info_cache = ''; //个人信息存储清空

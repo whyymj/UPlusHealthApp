@@ -73,10 +73,13 @@
         computed: {
             sleepHours() {
                 var lang = 0;
+                console.log('开始计算sleepHours》》》', this.showdata);
                 if (typeof this.showdata == 'object' && this.showdata.endDate) {
                     var end = this.showdata.endDate.replace('T', ' ');
                     var start = this.showdata.startDate.replace('T', ' ');
-                    lang = new Date(end) - new Date(start);
+                    console.log('end time ', end, 'start time ', start);
+                    lang = new Date(end).getTime() - new Date(start).getTime();
+                    console.log('获得时长h::', lang, '>>', Math.floor(lang / 3600000));
                 }
                 return Math.floor(lang / 3600000)
             },
@@ -84,8 +87,9 @@
                 if (typeof this.showdata == 'object' && this.showdata.endDate) {
                     var end = this.showdata.endDate.replace('T', ' ');
                     var start = this.showdata.startDate.replace('T', ' ');
-                    var lang = new Date(end) - new Date(start);
-                    return Math.floor(lang / 1000 / 60 % 60)
+                    var lang = new Date(end).getTime() - new Date(start).getTime();
+                    console.log('获得时长m::', lang, '>>', Math.floor(lang / 60000 % 60));
+                    return Math.floor(lang / 60000 % 60)
                 }
             },
             sleepStart() {
