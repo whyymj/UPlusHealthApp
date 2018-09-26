@@ -13,17 +13,13 @@
             <li>日</li>
         </ul>
         <div class="save" @click='confirm'>保存</div>
+         <myLoadingModal :show='showMyLoadingModal'></myLoadingModal>
     </div>
 </template>
 
 <script>
-    import {
-        Loading
-    } from 'element-ui';
     export default {
-        components: {
-            Loading
-        },
+        
         methods: {
             getMonthDate(year, month) {
                 var firstDay = new Date(year, month - 1, 1);
@@ -149,17 +145,12 @@
                 defaultD: 0,
                 params: {},
                 loading: true,
-                loadingmodal: ''
+                loadingmodal: '',
+                showMyLoadingModal:true
             }
         },
         mounted() {
-            this.loadingmodal = Loading.service({ //遮罩
-                fullscreen: true,
-                background: 'rgba(0, 0, 0, 0.7)',
-                lock: true,
-                text: 'Loading',
-                spinner: 'el-icon-loading',
-            });
+            this.showMyLoadingModal = true;
             var that = this;
             var years = [];
             var months = [];
@@ -210,7 +201,7 @@
             }];
             this.birthdayarr = [thisYear, thisMonth, today];
             setTimeout(function() {
-                that.loadingmodal.close();
+                that.showMyLoadingModal=false;
                 that.loading = false;
             }, 1000)
         },
