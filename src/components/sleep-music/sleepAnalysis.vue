@@ -3,7 +3,7 @@
         <mycollapse :havedata='havedata'>
             <div class="showdata" @click='scalemenu'>
                 <div class="imgbox">
-                    <img src="/static/sleepMusicList/img5.png" alt="">
+                    <img src="/static/sleepMusicList/img5.svg" alt="">
                 </div>
                 <div class="title">睡眠时长</div>
                 <div class="time"><span>{{Math.floor(sleepTimeLang/60)}}</span> 小时 <span>{{sleepTimeLang%60}}</span> 分 </div>
@@ -252,7 +252,7 @@
                 position: absolute;
                 top: 2rem;
                 left: 4rem;
-                width: 4rem;
+                // width: 4rem;
                 span {
                     font-size: 1.1rem;
                     font-weight: 500!important;

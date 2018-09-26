@@ -1,7 +1,7 @@
 <template>
     <div class='myLoadingModal' @touchmove.prevent v-show='show'>
         <div>
-            <img src="/static/healthArchives/heart.svg" alt="">
+            <img src="/static/healthArchives/heart.gif" alt="">
             <h6>加载中...</h6>
         </div>
     </div>

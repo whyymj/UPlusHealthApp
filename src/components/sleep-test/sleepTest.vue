@@ -3,7 +3,7 @@
         <h1>{{firstTitle}}-{{secondTitle}}</h1>
         <list :list='questions' :tuIdTmp='tuId' @turnQestion='turnQestion'></list>
         <div class="submit" v-show='canSubmit' @click='submitResult'>提交测试</div>
-        <myLoadingModal :show='showMyLoadingModal'></myLoadingModal>
+        <myLoadingModal v-show='showMyLoadingModal'></myLoadingModal>
     </div>
 </template>
 
@@ -16,6 +16,9 @@
     import {
         Loading
     } from 'element-ui';
+    import {
+        setTimeout
+    } from 'timers';
     export default {
         name: 'sleepTest',
         components: {
@@ -50,6 +53,9 @@
             this.showMyLoadingModal = true
             var params = this.$route.query;
             var that = this;
+            setTimeout(function() {
+                that.showMyLoadingModal = false;
+            }, 5000)
             this.secondTitle = params.templateSubTitle;
             this.firstTitle = params.templateTitle;
             this.tmpCache = localStorage['saveUsersleepTemplate' + params.tuId] || ''; //暂存的答题结果
@@ -69,6 +75,7 @@
                     member_id: window._member_id,
                 }).then(function(res) {
                     that.showMyLoadingModal = false;
+                    console.log('what the ffff');
                     if (params.status === 0 || params.status === '0') { //中途退出
                         let instance = Toast({
                             message: '正从上次退出位置继续答题',
@@ -123,6 +130,7 @@
                     }
                 }).catch(function(res) {
                     that.showMyLoadingModal = false;
+                    console.log('what the ffff');
                     if (process.env.NODE_ENV == 'development') {
                         that.$axios.get('/static/testData/setUserTemplate.json').then(function(res) {
                             if (params.status === 0 || params.status === '0') { //中途退出

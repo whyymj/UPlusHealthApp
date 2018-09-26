@@ -88,8 +88,8 @@
         let supportedTypes = ['HKCategoryTypeIdentifierSleepAnalysis'];
         window.plugins.healthkit.requestAuthorization({
           readTypes: supportedTypes,
-        },function(){
-          
+        },function(res){
+          console.log('getHealth>>>>>',res);
         });
       },
       //保存信息
@@ -98,6 +98,7 @@
         window.plugins.healthkit.monitorSampleType({
           'sampleType': 'HKCategoryTypeIdentifierSleepAnalysis'
         }, function (value) {
+          console.log('saveSleepInfo>>>>>',value);
           _this.getSleepInfo();
         })
       },
@@ -113,7 +114,7 @@
           'ascending': 'T',
         }, function (value) {
           alert("text+++++" + JSON.stringify(value));
-          console.log(value);
+          console.log('getSleepInfoData>>>',value);
         })
       },
       // /*************************音频*******************/
