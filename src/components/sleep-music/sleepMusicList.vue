@@ -151,10 +151,10 @@
                 }, 5000)
                 var that = this;
                 this.appleHealthData = '';
-                var check = val.year + '/' + (val.month > 9 ? val.month : '0' + val.month) + '/' + (val.date > 9 ? val.date : '0' + val.date);
+                var check = val.year + '/' + (val.month > 9 ? val.month : ('0' + val.month * 1)) + '/' + (val.date > 9 ? val.date : ('0' + val.date * 1));
                 this.saveSleepInfo(check);
                 this.$axios.post('/api/sleep/getByDay', {
-                    date: val.year + '-' + (val.month > 9 ? val.month : '0' + val.month) + '-' + (val.date > 9 ? val.date : '0' + val.date),
+                    date: val.year + '-' + (val.month > 9 ? val.month : ('0' + val.month * 1)) + '-' + (val.date > 9 ? val.date : ('0' + val.date * 1)),
                     member_id: window._member_id
                 }).then(function(res) {
                     if (res.data.code === 'C0000' && res.data.data) {
@@ -317,7 +317,8 @@
                         console.log('get apple health >+++++>', res);
                     });
                 } catch (e) {
-                    this.iosshowdata = ''
+                    this.iosshowdata = '';
+                    console.log('1.獲取苹果健康权限报错！！：', e);
                 }
             },
             //保存信息
@@ -331,6 +332,7 @@
                         _this.getSleepInfo(check);
                     })
                 } catch (e) {
+                    console.log('2.獲取苹果健康数据报错！！：', e);
                     this.iosshowdata = ''
                 }
                 // }
@@ -338,12 +340,12 @@
             //获取苹果健康数据信息
             getSleepInfo(check) {
                 var that = this;
-                var startDate = 0,
+                var startDate = new Date(new Date().getTime() - 364 * 24 * 60 * 60 * 1000), //一年前
                     endDate = new Date(),
-                    limit = 10;
+                    limit = 365;
                 if (check) {
-                    startDate = this.isios ? new Date(check + 'T' + '00:00') : new Date(check + ' 00:00');
-                    endDate = this.isios ? new Date(check + 'T' + '23:59:59') : new Date(check + ' 23:59:59');
+                    startDate = this.isios ? new Date(check + ) : new Date(check + ' 00:00');
+                    endDate = this.isios ? new Date(check) : new Date(check + ' 23:59:59');
                 }
                 // this.dialogVisible = false;
                 // if (window.plugins && window.plugins.healthkit) {
@@ -355,23 +357,25 @@
                         'limit': limit,
                         'ascending': 'T',
                     }, function(value) {
+                        console.log('huoqu apple health data:::::', value, check);
                         that.getAppleHealthData(value, check);
                     })
-                    if (!that.haveAuthor) { //这里只是用来判断是否有权限的
-                        window.plugins.healthkit.querySampleType({ //判断是否有权限
-                            'startDate': 0, // 开始时间
-                            'endDate': endDate, // now 结束时间
-                            'sampleType': 'HKCategoryTypeIdentifierSleepAnalysis',
-                            'limit': limit,
-                            'ascending': 'T',
-                        }, function(value) {
-                            if (value && value.length && typeof value == 'object') {
-                                that.haveAuthor = true;
-                                window.localStorage.UPlusApp_getAppleHealthData = true;
-                            }
-                        })
-                    }
+                    // if (!that.haveAuthor) { //这里只是用来判断是否有权限的
+                    //     window.plugins.healthkit.querySampleType({ //判断是否有权限
+                    //         'startDate': 0, // 开始时间
+                    //         'endDate': endDate, // now 结束时间
+                    //         'sampleType': 'HKCategoryTypeIdentifierSleepAnalysis',
+                    //         'limit': limit,
+                    //         'ascending': 'T',
+                    //     }, function(value) {
+                    //         if (value && value.length && typeof value == 'object') {
+                    //             that.haveAuthor = true;
+                    //             window.localStorage.UPlusApp_getAppleHealthData = true;
+                    //         }
+                    //     })
+                    // }
                 } catch (e) {
+                    console.log('3.处理苹果健康数据报错！！：', e);
                     this.iosshowdata = ''
                 }
                 // }
