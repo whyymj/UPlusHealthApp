@@ -52,10 +52,10 @@ export default {
   },
   mounted() {
     var that = this;
-    this.showMyLoadingModal = true
+    this.showMyLoadingModal = true;
     setTimeout(function () {
       that.showMyLoadingModal = false;
-    }, 10000)
+    }, 5000)
     this.initList()
     this.$nextTick(function () {
       this.chartOption()

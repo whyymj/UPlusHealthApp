@@ -69,7 +69,7 @@
         components: {
             musiclist,
             player,
-            myDatePicker:resolve => require(['../pressure/myDatePicker.vue'], resolve),
+            myDatePicker: resolve => require(['../pressure/myDatePicker.vue'], resolve),
             sleepanalysis,
             echarts,
             aboutSleep,
@@ -595,11 +595,26 @@
                     })
                 }
             })
-            this.$axios.post('/api/getSleepInfo', { //获取睡眠资讯
+            this.$axios.get('/static/sleepMusicList/getSleepInfo.json', { //获取睡眠资讯
                 pageSize: 2,
                 currentPage: 1
             }).then(function(res) {
-                that.sleepnewslist = res.data.data;
+                var arr = [];
+                var tmp = 0;
+                that.sleepnewslist = [];
+                while (arr.length != 2) {//随机取两条新闻
+                    if (arr.length == 0) {
+                        tmp = Math.random() * 3
+                        arr.push(Math.round(tmp))
+                    } else {
+                        tmp = Math.round(Math.random() * 3);
+                        if (tmp != arr[0]) {
+                            arr.push(tmp)
+                        }
+                    }
+                }
+                that.sleepnewslist.push(res.data[arr[0]]);//随机的新闻
+                that.sleepnewslist.push(res.data[arr[1]]);//随机的新闻
                 clearTimeout(that.thisloadingbar);
                 that.showMyLoadingModal = false;
             }).catch(function(res) {

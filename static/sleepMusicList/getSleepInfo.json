@@ -1,0 +1,50 @@
+[
+    {
+        "createTime": "2018-08-02 15:41:55",
+        "attachmentPath": "/static/sleepMusicList/news1.jpg",
+        "clickCount": 0,
+        "gotoUrl": "http://www.lifehaier.com/News/Advisory/detail/id/5844.html",
+        "termsId": "9",
+        "termsName": "睡眠资讯",
+        "menuOrder": 1,
+        "postTitle": "睡眠三招式”胜过安眠药：促进睡眠、调和五脏",
+        "postId": "11533195681471514",
+        "postAuthor": "寝安睡眠管家"
+    },
+    {
+        "createTime": "2018-08-02 15:41:10",
+        "attachmentPath": "/static/sleepMusicList/news4.png",
+        "clickCount": 0,
+        "gotoUrl": "http://www.lifehaier.com/News/Advisory/detail/id/4880.html",
+        "termsId": "9",
+        "termsName": "睡眠资讯",
+        "menuOrder": 1,
+        "postTitle": "为什么睡得越多反而越累？其实我们一直做错了",
+        "postId": "11533195657356892",
+        "postAuthor": "寝安睡眠管家"
+    },
+    {
+        "createTime": "2018-08-02 15:41:10",
+        "attachmentPath": "/static/sleepMusicList/news2.jpg",
+        "clickCount": 0,
+        "gotoUrl": "http://www.lifehaier.com/News/Advisory/detail/id/4048.html",
+        "termsId": "9",
+        "termsName": "睡眠资讯",
+        "menuOrder": 1,
+        "postTitle": "12点不睡不要脸,1点不睡不要命！医生为熬夜的你操碎了心",
+        "postId": "11533195657356892",
+        "postAuthor": "寝安睡眠管家"
+    },
+    {
+        "createTime": "2018-08-02 15:41:10",
+        "attachmentPath": "/static/sleepMusicList/news3.jpg",
+        "clickCount": 0,
+        "gotoUrl": "http://www.lifehaier.com/News/Advisory/detail/id/3166.html",
+        "termsId": "9",
+        "termsName": "睡眠资讯",
+        "menuOrder": 1,
+        "postTitle": "一个公式算出睡眠好坏，这8类失眠者终于有救了",
+        "postId": "11533195657356892",
+        "postAuthor": "寝安睡眠管家"
+    }
+]
