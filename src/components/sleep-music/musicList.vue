@@ -8,7 +8,7 @@
             <div class="content" @click='play(index,item)'>
                 <div class="title">{{item.name}}</div>
                 <div class="time">约{{getTime(item.time)}}分钟</div>
-                <div class="level">{{level(item.level)}}</div>
+                <div class="level" :style='{background:colorArr[item.level-1]}'>{{level(item.level)}}</div>
             </div>
         </div>
     </div>
@@ -48,7 +48,8 @@
         data() {
             return {
                 showaudio: false,
-                playindex: -1
+                playindex: -1,
+                colorArr:['#5DA2C5','#26A5FD','#F65261']
             }
         },
     }

@@ -179,7 +179,7 @@
         line-height: 1.3rem;
         top: 1.6rem;
         background: #ccc;
-        left: 65%;
+        left: 68%;
         width: 4.5rem;
         border-radius: .15rem;
         background-color: #26A6FF;
@@ -206,7 +206,7 @@
         line-height: 1.3rem;
         top: 1.6rem;
         background: #ccc;
-        right: 70%;
+        right: 72%;
         width: 4rem;
         border-radius: .15rem;
         background-color: #26A6FF;

@@ -3,7 +3,7 @@
 		<div class="button nearest" :class="{active:active==0}" @click='getdata(0)'>最近七次</div>
 		<div class="button week" :class="{active:active==1}" @click='getdata(1)'>周</div>
 		<!-- <div class="button month" :class="{active:active==2}" @click='getdata(2)'>月</div>
-																				<div class="button year" :class="{active:active==3}" @click='getdata(3)'>年</div> -->
+																							<div class="button year" :class="{active:active==3}" @click='getdata(3)'>年</div> -->
 		<div id='main2' ref='echarts'>
 		</div>
 		<div class="legend">
@@ -18,6 +18,53 @@
 
 <script>
 	export default {
+		props: ['nearestAppleHealthData'],
+		watch: {
+			nearestAppleHealthData() {
+				if (typeof this.nearestAppleHealthData == 'object' && this.nearestAppleHealthData.length && this.nearestAppleHealthData.length > 0) {
+					var that = this;
+					var arr = this.deleteRepeatDate(this.nearestAppleHealthData.map(function(item) {
+						var newitem = item;
+						newitem.date = new Date(item.create_date.replace('-', '/')).getTime();
+						return newitem;
+					})).sort(function(b, a) {
+						return a.date - b.date;
+					});
+					/**
+					 * 获取本周
+					 */
+					var now = new Date(); //当前日期
+					var nowDayOfWeek = now.getDay(); //今天本周的第几天
+					var nowDay = now.getDate(); //当前日
+					var nowMonth = now.getMonth(); //当前月
+					var nowYear = now.getYear(); //当前年
+					nowYear += (nowYear < 2000) ? 1900 : 0; //
+					//格式化日期：yyyy-MM-dd
+					function formatDate(date) {
+						var myyear = date.getFullYear();
+						var mymonth = date.getMonth() + 1;
+						var myweekday = date.getDate();
+						if (mymonth < 10) {
+							mymonth = "0" + mymonth;
+						}
+						if (myweekday < 10) {
+							myweekday = "0" + myweekday;
+						}
+						return (myyear + "-" + mymonth + "-" + myweekday);
+					}
+					//获得本周的开始日期
+					function getWeekStartDate() {
+						var weekStartDate = new Date(nowYear, nowMonth, nowDay - nowDayOfWeek);
+						return formatDate(weekStartDate);
+					}
+					var start = new Date(getWeekStartDate()).getTime();
+					this.nearDataFromApple = arr.slice(0, 7); //最近7次苹果健康数据
+					this.thisWeekDataFromApple = this.nearDataFromApple.filter(function(item) { //本周的苹果健康数据
+						return item.date >= start;
+					});
+				}
+			}
+		},
 		methods: {
 			deleteRepeatDate(arr) { //去除同一天的数据
 				var obj = {};
@@ -70,6 +117,22 @@
 						})
 					}
 					len = arr.length;
+				}
+				var that = this;
+				var len = this.thisWeekDataFromApple.length;
+				if (len > 0) {
+					arr = arr.map(function(item, index) {
+						if (item.sleepTime == '') {
+							for (var i = 0; i < len; i++) {
+								if (that.thisWeekDataFromApple[i].create_date == item.create_date) {
+									return that.thisWeekDataFromApple[i]
+								}
+							}
+							return item;
+						} else {
+							return item;
+						}
+					})
 				}
 				return arr;
 			},
@@ -215,6 +278,21 @@
 						})).sort(function(a, b) {
 							return a.date - b.date;
 						});
+						if (that.nearDataFromApple.length > 0) { //合并后台数据与苹果健康数据
+							var len = list.length;
+							var newarr = [];
+							newarr = that.nearDataFromApple.filter(function(item, index) {
+								for (var i = 0; i < len; i++) {
+									if (item.create_date == list[i].create_date) {
+										return false
+									}
+								}
+								return true;
+							})
+							list = list.concat(newarr).sort(function(a, b) {
+								return a.date - b.date;
+							}).slice(0, 7);
+						}
 						var formate = list.map(function(item, index) {
 							var arr = item.create_date.split('-')
 							return arr[1] + '月' + arr[2] + '日';
@@ -619,6 +697,8 @@
 		data() {
 			var that = this;
 			return {
+				nearDataFromApple: [],
+				thisWeekDataFromApple: [],
 				bigberImg: false,
 				sleepstarttimes: [],
 				sleependtimes: [],
