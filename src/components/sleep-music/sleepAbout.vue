@@ -2,7 +2,7 @@
     <div class='aboutSleep'>
         <h3>{{data.title}}</h3>
         <h6>{{data.content}}</h6>
-        <img :src="data.src" alt="">
+        <img :src="data.src" alt="" @click="turnTo(data.linkurl)">
         <a @click="turnTo(data.linkurl)">{{data.link}}</a>
     </div>
 </template>

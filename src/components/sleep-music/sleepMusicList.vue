@@ -203,6 +203,12 @@
                         that.sleepTimeLang = data.sleepTimeLang;
                         that.sleepQuality = data.quality;
                         that.sleepid = data.sleep_id;
+                        that.$axios.post('/api/updateErrorFlag', {//获取数据偏差信息
+                            sleep_id: data.sleep_id
+                        }).then(function(res) {
+                            console.log('data piancha',res);
+                            if(res.data){}
+                        })
                     } else {
                         that.paramslist = [];
                         that.detailAnalysis = "";
@@ -214,9 +220,6 @@
                 }).catch(function(res) { //获取用户最近一条测量记录,判断今天是否有记录信息
                     clearTimeout(that.thisloadingbar);
                     that.showMyLoadingModal = false;
-                    for (var k in res) {
-                        console.log(k, '=>>>>', res[k]);
-                    }
                     if (process.env.NODE_ENV == 'development') {
                         that.$axios.get('/static/testData/checkSomeDay.json').then(function(res) {
                             if (res.data.code === 'C0000') {
@@ -602,7 +605,7 @@
                 var arr = [];
                 var tmp = 0;
                 that.sleepnewslist = [];
-                while (arr.length != 2) {//随机取两条新闻
+                while (arr.length != 2) { //随机取两条新闻
                     if (arr.length == 0) {
                         tmp = Math.random() * 3
                         arr.push(Math.round(tmp))
@@ -613,8 +616,8 @@
                         }
                     }
                 }
-                that.sleepnewslist.push(res.data[arr[0]]);//随机的新闻
-                that.sleepnewslist.push(res.data[arr[1]]);//随机的新闻
+                that.sleepnewslist.push(res.data[arr[0]]); //随机的新闻
+                that.sleepnewslist.push(res.data[arr[1]]); //随机的新闻
                 clearTimeout(that.thisloadingbar);
                 that.showMyLoadingModal = false;
             }).catch(function(res) {

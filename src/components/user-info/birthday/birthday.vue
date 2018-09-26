@@ -3,27 +3,22 @@
     <div style='width:18.75rem;' class='my_userinfo_birthday'>
         <h3>生日</h3>
         <div class='birthday_container'>
-            <mt-picker :slots="slots1" @change="changeYears"></mt-picker>
-            <mt-picker :slots="slots2" @change="changeMonths" v-if='refreshmonth'></mt-picker>
-            <mt-picker :slots="slots3" @change="changeDates" v-if='refreshdate'></mt-picker>
+            <mt-picker style='font-weight:600' :slots="slots1" @change="changeYears"></mt-picker>
+            <mt-picker style='font-weight:600'  :slots="slots2" @change="changeMonths" v-if='refreshmonth'></mt-picker>
+            <mt-picker style='font-weight:600' :slots="slots3" @change="changeDates" v-if='refreshdate'></mt-picker>
+            <ul class='date_title'>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;年</li>
+                <li>月</li>
+                <li>日</li>
+            </ul>
         </div>
-        <ul class='date_title'>
-            <li>年</li>
-            <li>月</li>
-            <li>日</li>
-        </ul>
         <div class="save" @click='confirm'>保存</div>
+        <myLoadingModal :show='showMyLoadingModal'></myLoadingModal>
     </div>
 </template>
 
 <script>
-    import {
-        Loading
-    } from 'element-ui';
     export default {
-        components: {
-            Loading
-        },
         methods: {
             getMonthDate(year, month) {
                 var firstDay = new Date(year, month - 1, 1);
@@ -149,17 +144,12 @@
                 defaultD: 0,
                 params: {},
                 loading: true,
-                loadingmodal: ''
+                loadingmodal: '',
+                showMyLoadingModal: true
             }
         },
         mounted() {
-            this.loadingmodal = Loading.service({ //遮罩
-                fullscreen: true,
-                background: 'rgba(0, 0, 0, 0.7)',
-                lock: true,
-                text: 'Loading',
-                spinner: 'el-icon-loading',
-            });
+            this.showMyLoadingModal = true;
             var that = this;
             var years = [];
             var months = [];
@@ -210,7 +200,7 @@
             }];
             this.birthdayarr = [thisYear, thisMonth, today];
             setTimeout(function() {
-                that.loadingmodal.close();
+                that.showMyLoadingModal = false;
                 that.loading = false;
             }, 1000)
         },
@@ -244,6 +234,7 @@
         .birthday_container {
             position: relative;
             overflow: hidden;
+            margin-top: 5rem;
             .unit1,
             .unit2,
             .unit3 {
@@ -285,9 +276,10 @@
         .date_title {
             height: 2rem;
             width: 100%;
-            float: left;
-            border-top: 1px solid #f5f5f5;
-            border-bottom: 1px solid #f5f5f5;
+            position: absolute;
+            top: 50%;
+            left:1.4rem;
+            transform: translate(0,-52%);
             li {
                 width: 33.3%;
                 height: 100%;
