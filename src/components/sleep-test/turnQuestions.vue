@@ -260,11 +260,11 @@
                         that.showMyLoadingModal = false;
                     })
                 } else {
-                    Toast({
-                        message: '请先选择答案',
-                        position: 'bottom',
-                        duration: 2000
-                    });
+                    // Toast({
+                    //     message: '请先选择答案',
+                    //     position: 'bottom',
+                    //     duration: 2000
+                    // });
                 }
             })
         }

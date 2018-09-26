@@ -203,11 +203,11 @@
                         that.sleepTimeLang = data.sleepTimeLang;
                         that.sleepQuality = data.quality;
                         that.sleepid = data.sleep_id;
-                        that.$axios.post('/api/updateErrorFlag', {//获取数据偏差信息
+                        that.$axios.post('/api/updateErrorFlag', { //获取数据偏差信息
                             sleep_id: data.sleep_id
                         }).then(function(res) {
-                            console.log('data piancha',res);
-                            if(res.data){}
+                            console.log('data piancha', res);
+                            if (res.data) {}
                         })
                     } else {
                         that.paramslist = [];
@@ -278,6 +278,7 @@
                 this.showBigEcharts = !this.showBigEcharts;
             },
             getAppleHealthData(val, check) { //例子数据，获取苹果健康数据
+                console.log('check that date apple data>>++++>>>>', val, check);
                 var that = this;
                 var data = val || [];
                 this.appleHealthData = val || [];
@@ -313,7 +314,7 @@
                     window.plugins.healthkit.requestAuthorization({
                         readTypes: supportedTypes,
                     }, function(res) {
-                        console.log('apple health >>', res);
+                        console.log('get apple health >+++++>', res);
                     });
                 } catch (e) {
                     this.iosshowdata = ''

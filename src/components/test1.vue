@@ -98,7 +98,6 @@
         window.plugins.healthkit.monitorSampleType({
           'sampleType': 'HKCategoryTypeIdentifierSleepAnalysis'
         }, function (value) {
-          console.log('saveSleepInfo>>>>>',value);
           _this.getSleepInfo();
         })
       },
@@ -113,7 +112,7 @@
           'limit': 10,
           'ascending': 'T',
         }, function (value) {
-          alert("text+++++" + JSON.stringify(value));
+          
           console.log('getSleepInfoData>>>',value);
         })
       },
