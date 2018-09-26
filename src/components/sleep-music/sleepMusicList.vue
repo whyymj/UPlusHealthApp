@@ -151,7 +151,7 @@
                 }, 5000)
                 var that = this;
                 this.appleHealthData = '';
-                var check = val.year + '/' + (val.month > 9 ? val.month : ('0' + val.month * 1)) + '/' + (val.date > 9 ? val.date : ('0' + val.date * 1));
+                var check = val.year + '-' + (val.month > 9 ? val.month : ('0' + val.month * 1)) + '-' + (val.date > 9 ? val.date : ('0' + val.date * 1));
                 this.saveSleepInfo(check);
                 this.$axios.post('/api/sleep/getByDay', {
                     date: val.year + '-' + (val.month > 9 ? val.month : ('0' + val.month * 1)) + '-' + (val.date > 9 ? val.date : ('0' + val.date * 1)),
@@ -344,8 +344,8 @@
                     endDate = new Date(),
                     limit = 365;
                 if (check) {
-                    startDate = this.isios ? new Date(check + ) : new Date(check + ' 00:00');
-                    endDate = this.isios ? new Date(check) : new Date(check + ' 23:59:59');
+                    startDate = this.isios ? new Date(check + 'T00:00:00+08:00') : new Date(check + ' 00:00');
+                    endDate = this.isios ? new Date(check + 'T23:59:59+08:00') : new Date(check + ' 23:59:59');
                 }
                 // this.dialogVisible = false;
                 // if (window.plugins && window.plugins.healthkit) {
