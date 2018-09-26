@@ -1,6 +1,6 @@
 <template>
     <div class='aboutSleep'>
-        <h3>{{data.title}}</h3>
+        <h3 @click='tmp'>{{data.title}}</h3>
         <h6>{{data.content}}</h6>
         <img :src="data.src" alt="" @click="turnTo(data.linkurl)">
         <a @click="turnTo(data.linkurl)">{{data.link}}</a>
@@ -13,6 +13,11 @@
         methods: {
             turnTo(url) {
                 this.$router.push(url);
+            },
+            tmp() {
+                this.$router.push({
+                    path: '/test1'
+                });
             }
         }
     }
