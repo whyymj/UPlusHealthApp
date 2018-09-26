@@ -290,11 +290,12 @@
                 var year = today.getFullYear(),
                     month = today.getMonth() + 1,
                     date = today.getDate(),
-                    datestr = year + '-' + (month > 9 ? month : '0' + month) + '-' + (date > 9 ? date : '0' + date);
+                    datestr = year + '-' + (month > 9 ? month : ('0' + month * 1)) + '-' + (date > 9 ? date : ('0' + date * 1));
                 this.iosshowdata = data.filter(function(item) {
                     var endtime = item.endDate.split('T')[0];
                     return endtime === datestr
                 })[0] || '';
+                console.log('将要展示的数据？？？？',this.iosshowdata);
                 if (this.iosshowdata) { //如果有数据就上传后台
                     that.$axios.post('/api/insertByIphone', {
                         sleepTime: that.iosshowdata.startDate.replace('T', ' ').split('+')[0],
@@ -344,8 +345,9 @@
                     endDate = new Date(),
                     limit = 365;
                 if (check) {
-                    startDate = this.isios ? new Date(check + 'T00:00:00+08:00') : new Date(check + ' 00:00');
+                    startDate = this.isios ? new Date(new Date(check + 'T00:00:00+08:00').getTime() - 24 * 3600 * 1000) : new Date(check + ' 00:00');
                     endDate = this.isios ? new Date(check + 'T23:59:59+08:00') : new Date(check + ' 23:59:59');
+                    endDate = endDate.getTime() > new Date().getTime() ? new Date() : endDate;
                 }
                 // this.dialogVisible = false;
                 // if (window.plugins && window.plugins.healthkit) {
@@ -430,7 +432,7 @@
             var today = new Date();
             var month = today.getMonth() + 1;
             var date = today.getDate();
-            var str = today.getFullYear() + '/' + (month > 9 ? month : '0' + month) + '/' + (date > 9 ? date : '0' + date);
+            var str = today.getFullYear() + '-' + (month > 9 ? month : ('0' + month * 1)) + '-' + (date > 9 ? date : ('0' + date * 1));
             this.saveSleepInfo(str); //获取今天的苹果健康数据 
             // }
             if (window.localStorage.wh_fromPage == 'music') { //是否直接进入音乐页面
