@@ -1289,7 +1289,7 @@ router.post('/api/changeMemberInfo', (req, res, next) => {
   })
   _req.end()
 })
-//  修改家庭成员
+// 获取睡眠数据偏差信息
 router.post('/api/updateErrorFlag', (req, res, next) => {
   const postData = querystring.stringify(req.body)
 

@@ -15,7 +15,7 @@
 							<!-- 左侧的一列 -->
 							<li class="col1">
 								<div class='row' v-for='(item,index) in showdata[0]' :key='index'>
-									<imgbox :meta='item' position='left'></imgbox>
+									<imgbox :meta='item' position='left' :createdList='createdList'></imgbox>
 								</div>
 							</li>
 							<!-- 中间人体图 -->
@@ -28,7 +28,7 @@
 							<!-- 右侧一列 -->
 							<li class="col3">
 								<div class='row' v-for='(item,index) in showdata[1]' :key='index'>
-									<imgbox :meta='item' position='right'></imgbox>
+									<imgbox :meta='item' position='right' :createdList='createdList'></imgbox>
 								</div>
 							</li>
 						</ul>

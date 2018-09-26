@@ -131,7 +131,7 @@
                 activebox: false
             }
         },
-        props: ['meta', 'position'],
+        props: ['meta', 'position','createdList'],
         computed: {
             display() {
                 console.log(this.meta, this.meta.value, this.meta.value == '' || this.meta.value == 0)
@@ -141,7 +141,6 @@
         watch: {
             meta() {
                 var obj = colorJudger(this.meta.moudle_name, this.meta.level);
-                console.log('*******', this.meta.moudle_name, '>>>>>>>>>>>>>>', this.meta.level, '>>>>>>>>>', obj);
                 this.tips = obj.tips;
                 this.color = obj.color;
                 this.bgcolor = obj.bg;
