@@ -230,8 +230,8 @@
         animation: scaleBox 3s;
     }
     .shadow {
-        width: 2.5rem;
-        height: 2.5rem;
+        width: 2.56rem;
+        height:  2.56rem;
         border-radius: 50%;
         margin: auto;
         position: absolute;
@@ -286,7 +286,7 @@
         }
         20% {
             -webkit-transform: scale(1.4) translateX(-2px);
-            transform: scale(1.4)translateX(-2px);
+            transform: scale(1.4) translateX(-2px);
         }
         80% {
             -webkit-transform: scale(1.4) translateX(-2px);
@@ -298,8 +298,8 @@
         }
     }
     .box {
-        width: 2.5rem;
-        height: 2.5rem;
+        width: 2.56rem;
+        height: 2.56rem;
         border-radius: 50%;
         position: relative;
         margin: auto;
