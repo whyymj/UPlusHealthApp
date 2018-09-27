@@ -1,6 +1,7 @@
 <template>
     <div class='sleepMusic'>
         <div class="tabbars">
+            <!-- 音乐暂时隐藏，宽度设为100%（原50%） -->
             <div class="tabbar" @click='clickSpan(0)'><span :class='{active:activeSpan==0}'>睡眠报告</span></div>
             <div class="tabbar" @click='clickSpan(1)'><span :class='{active:activeSpan==1}'>睡眠练习</span></div>
         </div>
@@ -20,7 +21,7 @@
                 <sleepanalysis :sleepTimeLang='sleepTimeLang' :paramslist='paramslist' :detailAnalysis='detailAnalysis' @deleteThis='deleteThis' :level='sleepQuality' v-if='todayManuInputData'></sleepanalysis>
                 <!-- 如果无手动录入，且有苹果健康数据就显示从apple health获取的数据 -->
                 <iosdatashower :showdata='iosshowdata' :sleepid='sleep_id' v-if='!todayManuInputData&&iosshowdata!=""'></iosdatashower>
-                <!-- 如果有数据偏差就显示 -->
+                <!-- 如果有数据偏差就显示，暂时未启用 -->
                 <datadeviation v-if='dataDeviat'></datadeviation>
                 <!-- 如果没有手动录入的数据并且无苹果健康数据就显示 ,根据有无权限判断显示内容以及跳转路径-->
                 <nodata v-if='!todayManuInputData&&iosshowdata===""' :haveAuthor='haveAuthor'></nodata>
@@ -35,7 +36,7 @@
             </div>
             <div class="page page2" v-show='activeSpan==1'>
                 <musiclist :musiclist='list'></musiclist>
-                <!-- <player></player> -->
+                
                 <div class="tips">
                     <h6><img src="/static/sleepMusicList/img3.png" alt="">
                         <span>以上服务由寝安提供</span></h6>
@@ -328,6 +329,37 @@
             saveSleepInfo(check, end) {
                 try {
                     let _this = this;
+                    this.$axios.get('/static/testData/mockAppleHealth.json').then(function(res) { //测试代码++++++++++++++
+                        var value = res.data;
+                        _this.nearestAppleHealthData = value.map(function(item) {
+                            var start = item.startDate.replace('T', ' ').split('+')[0];
+                            var end = item.endDate.replace('T', ' ').split('+')[0];
+                            return {
+                                bedTimeLang: null,
+                                create_date: item.endDate.split('T')[0],
+                                errorFlag: null,
+                                getupTime: null,
+                                influence: null,
+                                quality: null,
+                                sleepAnalysis: null,
+                                sleepEfficiency: null,
+                                sleepTime: start,
+                                sleepTimeLang: Math.round((new Date(end).getTime() - new Date(start).getTime()) / 1000 / 60),
+                                sleep_id: null,
+                                sleepingtime: null,
+                                startTime: null,
+                                tools_name: null,
+                                user_id: null,
+                                wakeTime: end,
+                                from:'appleHealth'
+                            }
+                        })
+                        _this.appleHealthDates = value.map(function(item) {
+                            var endtime = item.endDate.split('T')[0];
+                            return endtime;
+                        });
+                        
+                    })
                     // if (window.plugins && window.plugins.healthkit) {
                     window.plugins.healthkit.monitorSampleType({
                         'sampleType': 'HKCategoryTypeIdentifierSleepAnalysis'
@@ -367,7 +399,7 @@
                     }, function(value) {
                         that.getAppleHealthData(value, check); //用于展示当天的数据
                     })
-                    window.plugins.healthkit.querySampleType({ //判断是否有权限
+                    window.plugins.healthkit.querySampleType({ //判断是否有权限,同时初始化最近的苹果健康数据，用于曲线展示
                         'startDate': (typeof end == 'string') ? new Date(check) : new Date(new Date().getTime() - 400 * 24 * 60 * 60 * 1000), // 开始时间
                         'endDate': (typeof end == 'string') ? new Date(end) : new Date(), //  结束时间
                         'sampleType': 'HKCategoryTypeIdentifierSleepAnalysis',
@@ -394,7 +426,8 @@
                                     startTime: null,
                                     tools_name: null,
                                     user_id: null,
-                                    wakeTime: end
+                                    wakeTime: end,
+                                     from:'appleHealth'
                                 }
                             })
                         }
@@ -450,12 +483,16 @@
                 app = navigator.appVersion;
             var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //g
             var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-            this.isios = isIOS;
+            // this.isios = isIOS;
+            this.isios=false;//注释掉苹果健康数据功能，nodata组件里面也有
             // 判断是否已经获取过苹果健康数据权限
             if (window.localStorage.UPlusApp_getAppleHealthData && (window.localStorage.UPlusApp_getAppleHealthData == 'true' || window.localStorage.UPlusApp_getAppleHealthData == true)) {
                 this.haveAuthor = true;
             }
-            this.getHealth(); //获取苹果健康数据权限
+
+            // 注释掉，不在获取苹果健康权限
+            // this.getHealth(); //获取苹果健康数据权限
+
             this.showMyLoadingModal = true;
             this.thisloadingbar = setTimeout(function() {
                 that.showMyLoadingModal = false;
@@ -464,8 +501,10 @@
             var month = today.getMonth() + 1;
             var date = today.getDate();
             var str = today.getFullYear() + '-' + (month > 9 ? month : ('0' + month * 1)) + '-' + (date > 9 ? date : ('0' + date * 1));
-            this.saveSleepInfo(str); //获取今天的苹果健康数据 
-            // }
+
+            // 注释掉，不在获取苹果健康数据
+            // this.saveSleepInfo(str); //获取今天的苹果健康数据 
+          
             if (window.localStorage.wh_fromPage == 'music') { //是否直接进入音乐页面
                 this.activeSpan = 1;
             }

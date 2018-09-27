@@ -4,8 +4,8 @@ module.exports = {
     // url: 'http://healthrecord.haier.net/healthRecordsB',
     url: 'http://10.130.95.125:8088/healthRecordsB', // app 免登录 URL 配置
     // host: '123.103.113.201:8085',
-    host: '10.130.94.227',//95.118
-    port: '9020',
+    host: '123.103.113.201',//95.118
+    port: '8085',
     path: '/healthcare',
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded',

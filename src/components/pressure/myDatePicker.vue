@@ -45,6 +45,7 @@
         props: ['hidetop', 'flag', 'appleHealthDates'],
         watch: {
             appleHealthDates() {
+                console.log('received data::::+++++++++', this.appleHealthDates);
                 if (typeof this.appleHealthDates == 'object' && this.appleHealthDates.length && this.appleHealthDates.length > 0) {
                     this.haveDataDays = this.cacheHaveDataDays.concat(this.appleHealthDates)
                 } else {
@@ -206,8 +207,14 @@
                 if (process.env.NODE_ENV == 'development') {
                     that.$axios.get('/static/testData/getExistDateList.json').then(function(res) {
                         if (res.data.code == 'C0000') {
-                            that.haveDataDays = res.data.data.date_list;
-                        }
+                    that.haveDataDays = res.data.data.date_list;
+                    that.cacheHaveDataDays = res.data.data.date_list.slice();
+                    if (typeof that.appleHealthDates == 'object' && that.appleHealthDates.length && that.appleHealthDates.length > 0) {
+                        that.haveDataDays = that.cacheHaveDataDays.concat(that.appleHealthDates)
+                    } else {
+                        that.haveDataDays = that.cacheHaveDataDays;
+                    }
+                }
                     })
                 }
             })

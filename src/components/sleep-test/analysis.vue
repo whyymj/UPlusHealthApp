@@ -1,6 +1,6 @@
 <template>
     <div class='analysis'>
-        <h2>分析结果</h2>
+        <h2>结果分析</h2>
         <span class="result">{{analysis.title}}</span>
         <p class="detail">{{analysis.detail}}</p>
     </div>

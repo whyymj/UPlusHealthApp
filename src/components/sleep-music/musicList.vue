@@ -86,12 +86,11 @@
                 }
             }
             .content {
-                width: 16.8rem;
                 height: 100%;
-                padding-left: 2rem;
                 position: absolute;
                 top: 0;
-                left: 2rem;
+                left: 0;
+                right:0;
                 box-sizing: border-box;
                 border-bottom: 1px solid rgba(245, 245, 245, 1);
                 .title {
@@ -100,7 +99,7 @@
                     color: rgba(51, 51, 51, 1);
                     position: absolute;
                     top: 0.4rem;
-                    left: 0;
+                    left: 2rem;
                     font-weight: 500;
                 }
                 .time {
@@ -109,7 +108,7 @@
                     color: rgba(153, 153, 153, 1);
                     position: absolute;
                     bottom: 0.4rem;
-                    left: 0;
+                    left: 2rem;
                 }
                 .level {
                     position: absolute;

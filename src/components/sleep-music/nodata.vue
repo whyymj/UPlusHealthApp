@@ -43,7 +43,8 @@
         props: ['haveAuthor'],
         mounted() {
             var u = navigator.userAgent
-            this.isIos = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+            // this.isIos = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端,注释掉，禁用apple health 功能
+            this.isIos=false;
             if (window.localStorage.UPlusApp_getAppleHealthData && (window.localStorage.UPlusApp_getAppleHealthData == 'true' || window.localStorage.UPlusApp_getAppleHealthData == true)) {
                 this.isIos = true;
             }

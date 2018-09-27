@@ -159,8 +159,8 @@
                                     if (position > 0) {
                                         that.showMyLoadingModal = false;
                                         that.position = Math.round(position);
-                                        if(that.position>=that.duration){
-                                            that.playing=false;
+                                        if (that.position >= that.duration-1) {
+                                            that.playing = false;
                                         }
                                     }
                                 },
@@ -191,7 +191,11 @@
                 this.$$("goThirtySec").onclick = function() {
                     var time = that.position + 30;
                     if (that.duration > 0) {
-                        time = time > that.duration ? that.duration : time;
+                        time = (time >= that.duration) ? that.duration : time;
+                        if (time == that.duration) {
+                            that.my_media.pause();
+                            that.playing = false;
+                        }
                         that.position = time;
                         that.my_media.seekTo(time * 1000);
                     }

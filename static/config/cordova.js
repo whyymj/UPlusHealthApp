@@ -18,7 +18,7 @@
  specific language governing permissions and limitations
  under the License.
 */
-;(function() {
+!(function() {
 var PLATFORM_VERSION_BUILD_LABEL = '4.5.4';
 // file: src/scripts/require.js
 
@@ -1268,6 +1268,7 @@ window.setTimeout(function () {
         logUnfiredChannels(platformInitChannelsArray);
         logUnfiredChannels(channel.deviceReadyChannelsArray);
     }
+    console.log('pppppppppppppppp');
 }, 5000);
 
 // Replace navigator before any modules are required(), to ensure it happens as soon as possible.
@@ -2099,6 +2100,7 @@ exports.injectScript = function (url, onload, onerror) {
     // onerror fires for malformed URLs.
     script.onerror = onerror;
     script.src = url;
+    console.log('loading>>>',script);
     document.head.appendChild(script);
 };
 
