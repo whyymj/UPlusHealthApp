@@ -9,13 +9,12 @@
 </template>
 
 <script>
-import myframe from '../global/myIframe';
+
     export default {
         props: ['newslist'],
         methods: {
             toUrl(url) {
-            //    window.location.href=url;
-            //    window.open(url)
+                
                this.$router.push({
                    path:'/newsAbout',
                    query:{

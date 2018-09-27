@@ -760,7 +760,15 @@ export default {
         : index
     },
     openDetail(item) {
-      window.open(`http://lifehaier.com/News/Advisory/detail/id/${item.news_id}.html`)
+      this
+      .$router
+      .push({
+        path: '/newsAbout',
+        query: {
+          url: `http://lifehaier.com/News/Advisory/detail/id/${item.news_id}.html`
+        }
+      })
+      
     },
     fnGetAllData() {
       if (this.sugarDate === '') {
