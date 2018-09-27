@@ -44,6 +44,14 @@
                 privacy_again: false
             }
         },
+        mounted() {
+            // 同意了隐私协议或者永久拒绝，就不在显示隐私协议弹窗
+            if (window.localStorage.uplus_sleep_privacy_aggrement == '1' || window.localStorage.uplus_sleep_privacy_aggrement == '-2') { //是否同意了隐私协议
+                this.privacy_show = false;
+                this.$emit('agree', true)
+                localStorage.UPlusAPP_agree_privacyPlan = true;
+            }
+        },
         watch: {
             show() {
                 this.privacy_show = this.show;
@@ -54,20 +62,32 @@
                 this.privacy_show = false;
                 this.$emit('agree', true)
                 localStorage.UPlusAPP_agree_privacyPlan = true;
+                this.$axios.post('/api/aggreePrivaceAgreement', {
+                    type: '0',
+                    flag: 1
+                })
             },
             $_quit() { // 首次点击「不同意并退出」
                 this.privacy_show = false
                 this.privacy_again = true
-                  this.$emit('agree', false)
+                this.$emit('agree', false)
             },
             $_again() { // 同意
                 this.privacy_again = false;
                 this.$emit('agree', false)
+                this.$axios.post('/api/aggreePrivaceAgreement', {
+                    type: '0',
+                    flag: 1
+                })
             },
             $_exit() { // 再次点击「不同意并退出」
                 this.privacy_again = false;
                 this.$emit('agree', false)
                 this.$router.go(-1)
+                this.$axios.post('/api/aggreePrivaceAgreement', {
+                    type: '0',
+                    flag: -1
+                })
             }
         }
     }

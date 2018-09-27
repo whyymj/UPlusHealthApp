@@ -75,7 +75,7 @@ const serverError = resolve => require(['@/components/error-message/serverError.
 const editFamily = resolve => require(['@/components/user-info/editFamily.vue'], resolve)
 const editFriends = resolve => require(['@/components/user-info/editFriends.vue'], resolve)
 const additionInfo= resolve => require(['@/components/user-info/additionInfo/additionInfo.vue'], resolve)
-
+const newsAbout= resolve => require(['@/components/global/myIframe.vue'], resolve)
 const router = new Router({
   mode: 'history',
   routes: [
@@ -525,6 +525,13 @@ const router = new Router({
         title: '身高'
       },
       component: userInfoHeight
+    }, {
+      path: '/newsAbout',
+      name: 'newsAbout',
+      meta: {
+        title: '新闻'
+      },
+      component: newsAbout
     }
 
   ]
