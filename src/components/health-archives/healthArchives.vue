@@ -20,8 +20,8 @@
 							</li>
 							<!-- 中间人体图 -->
 							<li class="col2">
-								<!-- <img src="/static/healthArchives/bg-human.png" alt="" v-if='maleShow'>
-																				<img src="/static/healthArchives/bg-woman.png" alt="" v-else> -->
+					<!-- <img src="/static/healthArchives/bg-human.png" alt="" v-if='maleShow'>
+						<img src="/static/healthArchives/bg-woman.png" alt="" v-else> -->
 								<span v-for='(item,index) in showdata[0]' :key='index+"1"' :style='blink(item)' :class='setClass(item)' @click='scalebox(item)'></span>
 								<span v-for='(item,index) in showdata[1]' :key='index+"2"' :style='blink(item)' :class='setClass(item)' @click='scalebox(item)'></span>
 							</li>
@@ -45,7 +45,7 @@
 							</li>
 							<li class="col2">
 								<!-- <img src="/static/healthArchives/bg-human.png" alt="" v-if='maleShow'>
-																				<img src="/static/healthArchives/bg-woman.png" alt="" v-else> -->
+								<img src="/static/healthArchives/bg-woman.png" alt="" v-else> -->
 								<span v-for='(item,index) in showdata[2]' :key='index' :style='blink(item)' :class='setClass(item)' @click='scalebox(item)'></span>
 							</li>
 						</ul>
@@ -96,6 +96,7 @@
 		},
 		data() {
 			return {
+				showPrivacy: true,
 				showFirstLogin: false,
 				showMyLoadingModal: true,
 				show: false,
@@ -685,13 +686,6 @@
 				})
 			}
 		},
-		created() {
-			if (!window.localStorage.getItem('accountNumber')) {
-				window.localStorage.setItem('accountNumber', '1')
-				window.location.replace(`https://taccount.haier.com/oauth/authorize?client_id=jiangkangyun&response_type=code&state=qazwsx&redirect_uri=${config.url}`) // 测试环境
-      // window.location.replace(`https://account.haier.com/oauth/authorize?client_id=jiangkangyun&response_type=code&state=qazwsx&redirect_uri=${config.url}`)
-			}
-		},
 		mounted() {
 			window.__retest__ = false;
 			window.localStorage.uplus_sleep_user_info_cache = ''; //个人信息存储清空
@@ -721,11 +715,12 @@
 					code: this.$route.query.code || window.location.href.substring(window.location.href.indexOf('=') + 1, window.location.href.indexOf('&')),
 					url: config.url
 				}
-				if (obj.code !== '') {
+				if (obj.code != '') {
 					try {
 						const result = await this.$axios.post('/api/info', obj);
 						if (result.data.code == 'C0000') {
 							window.localStorage.uplus_sleep_user_id = result.data.data.login_code; //暂存个人id
+							window.localStorage.uplus_sleep_privacy_aggrement = result.data.data.privacy_aggrement.split('|')[0]; //暂存是否同意隐私协议
 							window.localStorage.uplus_sleep_user_disease = result.data.data.disease; //暂存个人慢病
 							window.localStorage.uplus_sleep_user_allergy = result.data.data.allergy; //暂存个人过敏
 							window.localStorage.uplus_sleep_user_info = JSON.stringify({

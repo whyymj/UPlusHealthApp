@@ -74,7 +74,8 @@ const serverError = resolve => require(['@/components/error-message/serverError.
 
 const editFamily = resolve => require(['@/components/user-info/editFamily.vue'], resolve)
 const editFriends = resolve => require(['@/components/user-info/editFriends.vue'], resolve)
-const additionInfo= resolve => require(['@/components/user-info/additionInfo/additionInfo.vue'], resolve)
+const additionInfo = resolve => require(['@/components/user-info/additionInfo/additionInfo.vue'], resolve)
+const newsAbout = resolve => require(['@/components/global/myIframe.vue'], resolve)
 
 const router = new Router({
   mode: 'history',
@@ -84,7 +85,7 @@ const router = new Router({
       redirect: '/'
     }, {
       path: '/',
-      redirect: 'healthRecordsB'
+      redirect: 'login'
     }, {
       path: '/privacy',
       name: 'privacy',
@@ -100,8 +101,7 @@ const router = new Router({
       meta: {
         title: '海尔健康'
       },
-      // component: login
-      component: healthRecordsB
+      component: login
     }, {
       path: '/introduction',
       name: 'introduction',
@@ -526,6 +526,13 @@ const router = new Router({
         title: '身高'
       },
       component: userInfoHeight
+    }, {
+      path: '/newsAbout',
+      name: 'newsAbout',
+      meta: {
+        title: '新闻'
+      },
+      component: newsAbout
     }
 
   ]
