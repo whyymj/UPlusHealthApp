@@ -100,7 +100,8 @@ const router = new Router({
       meta: {
         title: '海尔健康'
       },
-      component: login
+      // component: login
+      component: healthRecordsB
     }, {
       path: '/introduction',
       name: 'introduction',

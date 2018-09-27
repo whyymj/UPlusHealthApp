@@ -44,9 +44,6 @@ app.use((req, res, next) => {
     // handle http request headers
     console.log('Cookies: ', req.session)
     res.setHeader('Access-Control-Allow-Origin', '*')
-    // if (!req.session.user) {
-    //   req.session.user = {}
-    // }
   }
   next()
 })
