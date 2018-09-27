@@ -8,7 +8,7 @@
             <div class="page page1" v-show='activeSpan==0'>
                 <mycollapse2 animateT='500'>
                     <div>
-                        <myDatePicker flag='7' @checkDateData='checkDateData'></myDatePicker>
+                        <myDatePicker flag='7' @checkDateData='checkDateData' :appleHealthDates='appleHealthDates'></myDatePicker>
                     </div>
                 </mycollapse2>
                 <div class='tipDeleteData' v-if='tipDeleteData&&todayManuInputData'>
@@ -24,7 +24,7 @@
                 <datadeviation v-if='dataDeviat'></datadeviation>
                 <!-- 如果没有手动录入的数据并且无苹果健康数据就显示 ,根据有无权限判断显示内容以及跳转路径-->
                 <nodata v-if='!todayManuInputData&&iosshowdata===""' :haveAuthor='haveAuthor'></nodata>
-                <echarts @showbig='showbig'></echarts>
+                <echarts @showbig='showbig' :nearestAppleHealthData='nearestAppleHealthData'></echarts>
                 <!-- 睡眠百科 -->
                 <aboutSleep v-for='(item,index) in sleepAboutData' :data='item' :key='index'></aboutSleep>
                 <aboutNews :newslist='sleepnewslist'></aboutNews>
@@ -42,7 +42,7 @@
                 </div>
             </div>
         </div>
-        <bigechart @showbig='showbig' v-if='showBigEcharts'></bigechart>
+        <bigechart @showbig='showbig' v-if='showBigEcharts' :nearestAppleHealthData='nearestAppleHealthData'></bigechart>
         <myLoadingModal :show='showMyLoadingModal'></myLoadingModal>
     </div>
 </template>
@@ -97,6 +97,7 @@
                 sleepQuality: 0,
                 sleepTimeLang: "",
                 appleHealthData: '', //从苹果健康获取的数据
+                nearestAppleHealthData: '',
                 iosshowdata: '',
                 todayManuInputData: false, //今天是否手动录入数据
                 sleepnewslist: [],
@@ -118,7 +119,8 @@
                     src: "/static/sleepMusicList/sleepknowledge.jpg",
                     link: '立刻围观',
                     linkurl: '/sleepCyclopedia'
-                }]
+                }],
+                appleHealthDates: []
             };
         },
         methods: {
@@ -295,7 +297,7 @@
                     var endtime = item.endDate.split('T')[0];
                     return endtime === datestr
                 })[0] || '';
-                console.log('将要展示的数据？？？？',this.iosshowdata);
+                console.log('将要展示的数据？？？？', this.iosshowdata);
                 if (this.iosshowdata) { //如果有数据就上传后台
                     that.$axios.post('/api/insertByIphone', {
                         sleepTime: that.iosshowdata.startDate.replace('T', ' ').split('+')[0],
@@ -323,14 +325,14 @@
                 }
             },
             //保存信息
-            saveSleepInfo(check) {
+            saveSleepInfo(check, end) {
                 try {
                     let _this = this;
                     // if (window.plugins && window.plugins.healthkit) {
                     window.plugins.healthkit.monitorSampleType({
                         'sampleType': 'HKCategoryTypeIdentifierSleepAnalysis'
                     }, (value) => {
-                        _this.getSleepInfo(check);
+                        _this.getSleepInfo(check, end);
                     })
                 } catch (e) {
                     console.log('2.獲取苹果健康数据报错！！：', e);
@@ -339,14 +341,18 @@
                 // }
             },
             //获取苹果健康数据信息
-            getSleepInfo(check) {
+            getSleepInfo(check, end) {
                 var that = this;
                 var startDate = new Date(new Date().getTime() - 364 * 24 * 60 * 60 * 1000), //一年前
                     endDate = new Date(),
                     limit = 365;
-                if (check) {
+                if (check && !end) { //只传入一个参数,查询当天
                     startDate = this.isios ? new Date(new Date(check + 'T00:00:00+08:00').getTime() - 24 * 3600 * 1000) : new Date(check + ' 00:00');
                     endDate = this.isios ? new Date(check + 'T23:59:59+08:00') : new Date(check + ' 23:59:59');
+                    endDate = endDate.getTime() > new Date().getTime() ? new Date() : endDate;
+                } else if (check && end) { //传入起点与终点,查找范围
+                    startDate = this.isios ? new Date(new Date(check + 'T00:00:00+08:00').getTime() - 24 * 3600 * 1000) : new Date(check + ' 00:00');
+                    endDate = this.isios ? new Date(end + 'T23:59:59+08:00') : new Date(end + ' 23:59:59');
                     endDate = endDate.getTime() > new Date().getTime() ? new Date() : endDate;
                 }
                 // this.dialogVisible = false;
@@ -359,23 +365,48 @@
                         'limit': limit,
                         'ascending': 'T',
                     }, function(value) {
-                        console.log('huoqu apple health data:::::', value, check);
-                        that.getAppleHealthData(value, check);
+                        that.getAppleHealthData(value, check); //用于展示当天的数据
                     })
-                    // if (!that.haveAuthor) { //这里只是用来判断是否有权限的
-                    //     window.plugins.healthkit.querySampleType({ //判断是否有权限
-                    //         'startDate': 0, // 开始时间
-                    //         'endDate': endDate, // now 结束时间
-                    //         'sampleType': 'HKCategoryTypeIdentifierSleepAnalysis',
-                    //         'limit': limit,
-                    //         'ascending': 'T',
-                    //     }, function(value) {
-                    //         if (value && value.length && typeof value == 'object') {
-                    //             that.haveAuthor = true;
-                    //             window.localStorage.UPlusApp_getAppleHealthData = true;
-                    //         }
-                    //     })
-                    // }
+                    window.plugins.healthkit.querySampleType({ //判断是否有权限
+                        'startDate': (typeof end == 'string') ? new Date(check) : new Date(new Date().getTime() - 400 * 24 * 60 * 60 * 1000), // 开始时间
+                        'endDate': (typeof end == 'string') ? new Date(end) : new Date(), //  结束时间
+                        'sampleType': 'HKCategoryTypeIdentifierSleepAnalysis',
+                        'limit': (typeof end == 'string') ? (new Date(end).getTime() - new Date(check).getTime() / 24 / 3600 / 1000) : 400,
+                        'ascending': 'T',
+                    }, function(value) {
+                        if (that.nearestAppleHealthData === '') { //获取苹果健康最近的数据，用于曲线图展示
+                            that.nearestAppleHealthData = value.map(function(item) {
+                                var start = item.startDate.replace('T', ' ').split('+')[0];
+                                var end = item.endDate.replace('T', ' ').split('+')[0];
+                                return {
+                                    bedTimeLang: null,
+                                    create_date: item.endDate.split('T')[0],
+                                    errorFlag: null,
+                                    getupTime: null,
+                                    influence: null,
+                                    quality: null,
+                                    sleepAnalysis: null,
+                                    sleepEfficiency: null,
+                                    sleepTime: start,
+                                    sleepTimeLang: Math.round((new Date(end).getTime() - new Date(start).getTime()) / 1000 / 60),
+                                    sleep_id: null,
+                                    sleepingtime: null,
+                                    startTime: null,
+                                    tools_name: null,
+                                    user_id: null,
+                                    wakeTime: end
+                                }
+                            })
+                        }
+                        that.appleHealthDates = value.map(function(item) {
+                            var endtime = item.endDate.split('T')[0];
+                            return endtime;
+                        });
+                        if (value && value.length && typeof value == 'object') {
+                            that.haveAuthor = true;
+                            window.localStorage.UPlusApp_getAppleHealthData = true;
+                        }
+                    })
                 } catch (e) {
                     console.log('3.处理苹果健康数据报错！！：', e);
                     this.iosshowdata = ''
