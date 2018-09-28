@@ -111,13 +111,13 @@
                 sleepAboutData: [{
                     title: '睡眠测试',
                     content: '睡眠小测试，了解自己的睡眠问题。',
-                    src: "/static/sleepMusicList/sleeptest.jpg",
+                    src: "/static/sleepMusicList/sleeptest.png",
                     link: '测一测',
                     linkurl: '/enterToTest'
                 }, {
                     title: '睡眠百科',
                     content: '睡眠小百科，睡眠知识全收录。',
-                    src: "/static/sleepMusicList/sleepknowledge.jpg",
+                    src: "/static/sleepMusicList/sleepknowledge.png",
                     link: '立刻围观',
                     linkurl: '/sleepCyclopedia'
                 }],
@@ -329,37 +329,37 @@
             saveSleepInfo(check, end) {
                 try {
                     let _this = this;
-                    this.$axios.get('/static/testData/mockAppleHealth.json').then(function(res) { //测试代码++++++++++++++
-                        var value = res.data;
-                        _this.nearestAppleHealthData = value.map(function(item) {
-                            var start = item.startDate.replace('T', ' ').split('+')[0];
-                            var end = item.endDate.replace('T', ' ').split('+')[0];
-                            return {
-                                bedTimeLang: null,
-                                create_date: item.endDate.split('T')[0],
-                                errorFlag: null,
-                                getupTime: null,
-                                influence: null,
-                                quality: null,
-                                sleepAnalysis: null,
-                                sleepEfficiency: null,
-                                sleepTime: start,
-                                sleepTimeLang: Math.round((new Date(end).getTime() - new Date(start).getTime()) / 1000 / 60),
-                                sleep_id: null,
-                                sleepingtime: null,
-                                startTime: null,
-                                tools_name: null,
-                                user_id: null,
-                                wakeTime: end,
-                                from:'appleHealth'
-                            }
-                        })
-                        _this.appleHealthDates = value.map(function(item) {
-                            var endtime = item.endDate.split('T')[0];
-                            return endtime;
-                        });
+                    // this.$axios.get('/static/testData/mockAppleHealth.json').then(function(res) { //测试代码++++++++++++++
+                    //     var value = res.data;
+                    //     _this.nearestAppleHealthData = value.map(function(item) {
+                    //         var start = item.startDate.replace('T', ' ').split('+')[0];
+                    //         var end = item.endDate.replace('T', ' ').split('+')[0];
+                    //         return {
+                    //             bedTimeLang: null,
+                    //             create_date: item.endDate.split('T')[0],
+                    //             errorFlag: null,
+                    //             getupTime: null,
+                    //             influence: null,
+                    //             quality: null,
+                    //             sleepAnalysis: null,
+                    //             sleepEfficiency: null,
+                    //             sleepTime: start,
+                    //             sleepTimeLang: Math.round((new Date(end).getTime() - new Date(start).getTime()) / 1000 / 60),
+                    //             sleep_id: null,
+                    //             sleepingtime: null,
+                    //             startTime: null,
+                    //             tools_name: null,
+                    //             user_id: null,
+                    //             wakeTime: end,
+                    //             from:'appleHealth'
+                    //         }
+                    //     })
+                    //     _this.appleHealthDates = value.map(function(item) {
+                    //         var endtime = item.endDate.split('T')[0];
+                    //         return endtime;
+                    //     });
                         
-                    })
+                    // })
                     // if (window.plugins && window.plugins.healthkit) {
                     window.plugins.healthkit.monitorSampleType({
                         'sampleType': 'HKCategoryTypeIdentifierSleepAnalysis'

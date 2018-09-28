@@ -197,7 +197,7 @@
                     for (var i = 0; i < len; i++) {
                         item = e.path[i];
                         if (item.className === 'questionListRadio' || item.className === 'nextbut') {
-                            console.log('ooonext>>>>')
+                            
                             that.next(function() {
                                 that.turnQuestBar = setTimeout(function() {
                                     that.turningQuestoin = false;
