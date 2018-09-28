@@ -21,10 +21,6 @@ export default {
       showTitle: false
     }
   },
-  created() {
-    window.location.replace(`https://taccount.haier.com/oauth/authorize?client_id=jiangkangyun&response_type=code&state=qazwsx&redirect_uri=${config.url}`) // 测试环境
-    // window.location.replace(`https://account.haier.com/oauth/authorize?client_id=jiangkangyun&response_type=code&state=qazwsx&redirect_uri=${config.url}`)
-  },
   mounted() {
     (async () => {
       const tv_result = await axios.get('/api/tv/login')

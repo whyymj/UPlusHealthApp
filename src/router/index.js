@@ -102,6 +102,7 @@ const router = new Router({
         title: '海尔健康'
       },
       component: login
+      // component: healthRecordsB
     }, {
       path: '/introduction',
       name: 'introduction',

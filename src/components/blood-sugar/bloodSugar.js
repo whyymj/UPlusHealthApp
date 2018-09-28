@@ -72,13 +72,13 @@ export default {
       }
     })
   },
-  methods : {
+  methods: {
     checkDateData(date) {
       var str = date.year + '-' + (date.month > 9
         ? date.month
         : ('0' + date.month)) + '-' + (date.date > 9
-        ? date.date
-        : ('0' + date.date));
+          ? date.date
+          : ('0' + date.date));
       this.onChange(str);
     },
     goManualEntry(type) {
@@ -508,14 +508,14 @@ export default {
       let option = {
         grid: {
           left: '0',
-          right: '0',
+          right: '20px',
           bottom: '5px',
-          top: '30px',
+          top: '25px',
           containLabel: true
         },
-        textStyle: {
-          color: '#aaa'
-        },
+        // textStyle: {
+        //   color: '#aaa'
+        // },
         tooltip: {
           alwaysShowContent: false,
           backgroundColor: '#26A5FD',
@@ -633,12 +633,8 @@ export default {
             let minNum = data.map(_ => {
               return _.min
             })
-            let minLine = Math
-              .min
-              .apply(null, minNum) - 2
-            return Math.round(minLine) > 0
-              ? Math.round(minLine)
-              : 0
+            let minLine = Math.min.apply(null, minNum) - 2
+            return Math.round(minLine) > 0 ? Math.round(minLine) : 0
           }
         },
         series: [
@@ -760,7 +756,15 @@ export default {
         : index
     },
     openDetail(item) {
-      window.open(`http://lifehaier.com/News/Advisory/detail/id/${item.news_id}.html`)
+      this
+      .$router
+      .push({
+        path: '/newsAbout',
+        query: {
+          url: `http://lifehaier.com/News/Advisory/detail/id/${item.news_id}.html`
+        }
+      })
+      
     },
     fnGetAllData() {
       if (this.sugarDate === '') {

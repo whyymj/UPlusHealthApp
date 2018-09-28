@@ -1,10 +1,10 @@
 <template>
     <div style='width:100%; height:100%;position:relative;padding:1rem 0;' class='wh_imgbox'>
-        <p class='shadow' :class='{active:activebox}' :style="{background:bgcolor}"></p>
+        <p class='shadow' :class='{active:activebox}' :style="{background:bgcolor,width:boxW,height:boxW}"></p>
         <p class="tips-r" :class='{active:activebox}' v-if="position=='right'">{{tips}}</p>
         <p class="tips" :class='{active:activebox}' v-else>{{tips}}</p>
-        <div class='box' :class='{active:activebox}' :style="{background:bgcolor}" @click='toReport'><i :class='[icon]' :style='{color:color}'>
-                        <i class="path2" v-if='icon=="ico-sleep_icon"'></i><i class="path3" v-if='icon=="ico-sleep_icon"'></i><i class="path4" v-if='icon=="ico-sleep_icon"'></i><i class="path5" v-if='icon=="ico-sleep_icon"'></i></i><span :style="{color:color}">{{meta.moudle_name}}</span></div>
+        <div class='box' :class='{active:activebox}' :style="{background:bgcolor,width:boxW,height:boxW}" @click='toReport'><i :class='[icon]' :style='{color:color}'>
+                <i class="path2" v-if='icon=="ico-sleep_icon"'></i><i class="path3" v-if='icon=="ico-sleep_icon"'></i><i class="path4" v-if='icon=="ico-sleep_icon"'></i><i class="path5" v-if='icon=="ico-sleep_icon"'></i></i><span :style="{color:color}">{{meta.moudle_name}}</span></div>
         <div class='detail' v-if='icon!="ico-sleep_icon"'><span class='cont' :style="{display:display}">{{meta.value}}</span><span class='unit' :style="{display:display}">{{unit}}</span></div>
         <!-- 下面是睡眠时间的显示 -->
         <div class='detail sleepdetail' v-else><span class='cont' :style="{display:display}">{{Math.floor(meta.value/60)}}<span class='unit' :style="{display:display}">小时</span></span><span class='cont' :style="{display:display}">{{Math.floor(meta.value%60)}}<span class='unit' :style="{display:display}">分</span></span>
@@ -128,10 +128,11 @@
                 color: "#fff",
                 tips: '',
                 icon: '',
-                activebox: false
+                activebox: false,
+                boxW: 0
             }
         },
-        props: ['meta', 'position','createdList'],
+        props: ['meta', 'position', 'createdList'],
         computed: {
             display() {
                 console.log(this.meta, this.meta.value, this.meta.value == '' || this.meta.value == 0)
@@ -150,6 +151,8 @@
         },
         mounted() {
             var that = this;
+            const w = document.documentElement.clientWidth || document.body.clientWidth;
+            this.boxW = 2.6 * (w / 375) * 20 + "px";
             bus.$on('scalebox', function(name) {
                 if (!that.activebox && that.meta.moudle_name == name) {
                     that.activebox = true;
@@ -230,8 +233,8 @@
         animation: scaleBox 3s;
     }
     .shadow {
-        width: 2.56rem;
-        height:  2.56rem;
+        // width: 2.5666rem;
+        // height: 2.56666rem;
         border-radius: 50%;
         margin: auto;
         position: absolute;
@@ -298,8 +301,8 @@
         }
     }
     .box {
-        width: 2.56rem;
-        height: 2.56rem;
+        // width: 2.56666rem;
+        // height: 2.56666rem;
         border-radius: 50%;
         position: relative;
         margin: auto;

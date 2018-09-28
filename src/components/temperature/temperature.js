@@ -302,7 +302,7 @@ export default {
               .data
               .data
               .map((_, i) => {
-                return + _[1]
+                return +_[1]
               })
             : result.data.data
           let d = args === 'seven'
@@ -646,9 +646,7 @@ export default {
             let minNum = data.map(_ => {
               return _.min
             })
-            let minLine = Math
-              .min
-              .apply(null, minNum) - 2
+            let minLine = Math.min.apply(null, minNum) - 2
             return Math.round(minLine) > 0
               ? Math.round(minLine)
               : 0
@@ -906,7 +904,14 @@ export default {
         : index
     },
     openDetail(item) {
-      window.open(`http://lifehaier.com/News/Advisory/detail/id/${item.news_id}.html`)
+      this
+        .$router
+        .push({
+          path: '/newsAbout',
+          query: {
+            url: `http://lifehaier.com/News/Advisory/detail/id/${item.news_id}.html`
+          }
+        })
     },
     fnGetAllData() {
       if (this.temperatureDate === '') {

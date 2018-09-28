@@ -1,5 +1,7 @@
 <template>
-
+  <div v-if="accountNumber === '1'">
+    <h3>hello world...</h3>
+  </div>
 </template>
 
 <script type="text/javascript">
@@ -8,9 +10,19 @@
 
   export default {
     name: 'introduction',
-    created () {
+    data() {
+      return {
+        accountNumber: ''
+      }
     },
+    created() {
+      if (!window.sessionStorage.getItem('accountNumber')) {
+        window.location.replace(`https://taccount.haier.com/oauth/authorize?client_id=jiangkangyun&response_type=code&state=qazwsx&redirect_uri=${config.url}`) // 测试环境
+        // window.location.replace(`https://account.haier.com/oauth/authorize?client_id=jiangkangyun&response_type=code&state=qazwsx&redirect_uri=${config.url}`)
+      }
+  	},
     mounted () {
+      this.accountNumber = window.sessionStorage.getItem('accountNumber') || ''
       // if (window.location.search) {
       //   // 扫描二维码打开
       //   axios.post('/api/tv/login', {code: 'true'})
@@ -33,6 +45,13 @@
       //   })
       // }
 
+    },
+    beforeDestroy() {
+      if (window.sessionStorage.getItem('accountNumber') !== '1') {
+			  window.sessionStorage.setItem('accountNumber', '1')
+      } else {
+        window.sessionStorage.removeItem('accountNumber')
+      }
     },
     methods: {
     }

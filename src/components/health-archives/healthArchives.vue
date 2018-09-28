@@ -20,8 +20,7 @@
 							</li>
 							<!-- 中间人体图 -->
 							<li class="col2">
-					<!-- <img src="/static/healthArchives/bg-human.png" alt="" v-if='maleShow'>
-						<img src="/static/healthArchives/bg-woman.png" alt="" v-else> -->
+				
 								<span v-for='(item,index) in showdata[0]' :key='index+"1"' :style='blink(item)' :class='setClass(item)' @click='scalebox(item)'></span>
 								<span v-for='(item,index) in showdata[1]' :key='index+"2"' :style='blink(item)' :class='setClass(item)' @click='scalebox(item)'></span>
 							</li>
@@ -44,8 +43,7 @@
 								</div>
 							</li>
 							<li class="col2">
-								<!-- <img src="/static/healthArchives/bg-human.png" alt="" v-if='maleShow'>
-								<img src="/static/healthArchives/bg-woman.png" alt="" v-else> -->
+							
 								<span v-for='(item,index) in showdata[2]' :key='index' :style='blink(item)' :class='setClass(item)' @click='scalebox(item)'></span>
 							</li>
 						</ul>
