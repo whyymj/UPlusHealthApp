@@ -81,7 +81,7 @@
 					var result = {};
 					console.log("memberid", that.data)
 					if(that.data.member_id) {//获取家庭成员的信息
-						result = await axios.post('/api/member', {
+						result = await axios.post('/api/checkMemberInfo', {
 							member_id: that.data.member_id
 						})
 					} else { //获取个人的信息
