@@ -1,3 +1,6 @@
+// fix android 4.4 issue
+import '@babel/polyfill'
+
 // The Vue build version to load with the `import` command (runtime-only or
 // standalone) has been set in webpack.base.conf with an alias.
 import './common/css/reset.css'
@@ -22,8 +25,10 @@ import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
 import axios from 'axios'
 // import vux
-import {InlineCalendar, Loading} from 'vux'
-
+import {
+  InlineCalendar,
+  Loading
+} from 'vux'
 
 import '../config/user.config'
 
@@ -32,15 +37,19 @@ Vue.use(ElementUI)
 Vue.prototype.$axios = axios
 
 Vue.config.productionTip = false
-Vue.component('myLoadingModal', () => import ('./components/global/myLoading.vue'));
-Vue.component('h-header', () => import ('./components/common/header.vue'))
-Vue.component('e-chart', () => import ('./components/common/eChart'))
-Vue.component('chart', () => import ('vue-echarts/components/ECharts'))
+Vue.component('myLoadingModal', () =>
+  import('./components/global/myLoading.vue'))
+Vue.component('h-header', () =>
+  import('./components/common/header.vue'))
+Vue.component('e-chart', () =>
+  import('./components/common/eChart'))
+Vue.component('chart', () =>
+  import('vue-echarts/components/ECharts'))
 Vue.component('inline-calendar', InlineCalendar)
 Vue.component('loading', Loading)
 Vue.use(MintUI)
 
-//添加拦截器
+// 添加拦截器
 axios
   .interceptors
   .request
@@ -48,19 +57,23 @@ axios
     return config
   }, function (err) {
     return Promise.reject(err)
-  });
+  })
 axios
   .interceptors
   .response
   .use(function (response) {
-    console.log('response', response);
+    console.log('response', response)
     return response
   }, function (err) {
-
     return Promise.reject(err)
-  });
+  })
 
 /* eslint-disable no-new */
-new Vue({el: '#app', router, components: {
+new Vue({
+  el: '#app',
+  router,
+  components: {
     App
-  }, template: '<App/>'})
+  },
+  template: '<App/>'
+})

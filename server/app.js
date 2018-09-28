@@ -15,7 +15,7 @@ const news = require('./news/index')
 const sleep = require('./sleep/index')
 const app = express()
 
-const PORT = 8088 || process.env.PORT
+const PORT = 3001 || process.env.PORT
 
 // parse application/json
 app.use(bodyParser.json({
@@ -44,9 +44,6 @@ app.use((req, res, next) => {
     // handle http request headers
     console.log('Cookies: ', req.session)
     res.setHeader('Access-Control-Allow-Origin', '*')
-    // if (!req.session.user) {
-    //   req.session.user = {}
-    // }
   }
   next()
 })
