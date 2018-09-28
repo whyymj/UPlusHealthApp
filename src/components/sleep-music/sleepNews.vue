@@ -9,18 +9,16 @@
 </template>
 
 <script>
-
     export default {
         props: ['newslist'],
         methods: {
             toUrl(url) {
-                
-               this.$router.push({
-                   path:'/newsAbout',
-                   query:{
-                       url:url
-                   }
-               })
+                this.$router.push({
+                    path: '/newsAbout',
+                    query: {
+                        url: url
+                    }
+                })
             }
         }
     }
@@ -30,13 +28,14 @@
     .aboutNews {
         width: 17rem;
         background: #fff;
-        margin: 0.5rem auto ;
-        border-bottom:1px solid #fff;
+        margin: 0.5rem auto;
+        border-bottom: 1px solid #fff;
+        border-radius: 0.1rem;
         h3 {
             font-size: 0.8rem;
             font-family: 'PingFangSC-Medium';
             color: rgba(17, 17, 17, 1);
-            font-weight: 600;
+           font-weight: 700;
             padding: 1rem 1rem 0.5rem 1rem;
         }
         .newsbox {

@@ -90,6 +90,7 @@
         }
     }
     .dataDeviation {
+         border-radius:0.1rem;
         background: #fff;
         width: 17rem;
         height: 5rem;

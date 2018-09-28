@@ -119,7 +119,7 @@
                     bottom: 0;
                     margin: auto;
                     background: rgba(34, 131, 226, 1);
-                    border-radius: 0.2rem;
+                    border-radius: 0.1rem;
                     padding: 0 0.2rem;
                     font-size: 0.6rem;
                     font-family: 'PingFangSC-Regular';

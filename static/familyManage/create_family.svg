@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>Group</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="家人管理" transform="translate(-22.000000, -372.000000)" stroke="#33B5FC">
+            <g id="Group" transform="translate(23.000000, 373.000000)">
+                <path d="M11.2924116,10.7075884 L11.2924116,4.69241163 C11.2924116,4.53099764 11.1617596,4.4 11,4.4 C10.838586,4.4 10.7075884,4.53099764 10.7075884,4.69241163 L10.7075884,10.7075884 L4.69241163,10.7075884 C4.53099764,10.7075884 4.4,10.838586 4.4,11 C4.4,11.1617596 4.53099764,11.2927573 4.69241163,11.2927573 L10.7075884,11.2927573 L10.7075884,17.3075884 C10.7075884,17.469348 10.838586,17.6 11,17.6 C11.1617596,17.6 11.2924116,17.469348 11.2924116,17.3075884 L11.2924116,11.2927573 L17.3075884,11.2927573 C17.4690024,11.2927573 17.6,11.1617596 17.6,11 C17.6,10.838586 17.4690024,10.7075884 17.3075884,10.7075884 L11.2924116,10.7075884 Z" id="Fill-1" stroke-width="0.5" fill="#33B5FC"></path>
+                <circle id="Oval" cx="11" cy="11" r="11"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

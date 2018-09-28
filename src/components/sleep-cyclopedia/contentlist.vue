@@ -3,6 +3,7 @@
         <ul>
             <li v-for='(item,index) in list' :key='index' @click='turnTo(item)'>
                 <img :src="item.img" alt="" class='bgimg'>
+                <p class="gradientBG"></p>
                 <h6>{{item.title}}</h6>
                 <span>{{item.type||'图文'}}</span>
                 <img :src="turnimg(item.type)" alt="" class='iconimg' v-if='item&&item.indexOf&&item.indexOf("漫画") != -1'>
@@ -59,11 +60,10 @@
             height: 1.5rem;
             overflow: hidden;
             text-overflow: ellipsis;
-            
             line-height: 1.5rem;
             padding: 0 1rem;
             width: 100%;
-            background:linear-gradient(left rgba(0, 0, 0, 1),rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 1)) ;
+            background: linear-gradient(to left, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6));
             border-top-left-radius: 0.3rem;
             border-top-right-radius: 0.3rem;
         }
@@ -77,9 +77,17 @@
                 margin-bottom: 0.5rem;
                 overflow: hidden;
                 border-radius: 0.3rem;
+                .gradientBG,
                 .bgimg {
                     width: 100%;
                     height: 100%;
+                }
+                .gradientBG {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    background: radial-gradient(rgba(0, 0, 0, 0) 40%,  rgba(0, 0, 0, 0.1) 90%, rgba(0, 0, 0, 0.2));
+                    /* 标准的语法 */
                 }
                 .iconimg {
                     width: 2.5rem;

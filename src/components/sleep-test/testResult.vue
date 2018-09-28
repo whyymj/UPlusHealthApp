@@ -6,7 +6,7 @@
         <warmTips :tips='tips'></warmTips>
         <div class="button">
             <div class="retry" :class='{saved:hadSaved}' @click='reTest'>重新测试</div>
-            <div class="save" @click='save' v-if='!hadSaved'>保存测试</div>
+            <div class="save" @click='save' v-if='!hadSaved'>{{status==1?"返回列表":"保存测试"}}</div>
         </div>
         <myLoadingModal :show='showMyLoadingModal'></myLoadingModal>
     </div>
@@ -45,6 +45,7 @@
             this.secondTitle = params.templateSubTitle;
             this.firstTitle = params.templateTitle;
             this.params = params;
+            this.status = params.status;
             this.allResult = params.allResult || localStorage['saveUsersleepTemplate' + that.params.tuId] || '';
             this.$axios.post('/api/getUserTemplateAnalysis', { //获取用户睡眠量表分析数据
                 tuId: params.tuId,
@@ -71,7 +72,6 @@
                 } else {}
             }).catch(function(res) {
                 that.showMyLoadingModal = false;
-                console.log('false');
                 that.$axios.get('/static/testData/getUserTemplateAnalysis.json').then(function(res) {
                     if (res.data.code == 'C0000') {
                         that.testScore = res.data.data.gradesStr.split('分')[0];
@@ -101,6 +101,7 @@
         },
         data() {
             return {
+                status: 0,
                 scoreSet: '',
                 firstTitle: '',
                 secondTitle: '',

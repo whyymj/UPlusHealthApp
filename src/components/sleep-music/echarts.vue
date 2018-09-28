@@ -1025,6 +1025,7 @@
         position: relative;
         margin: auto;
         margin-top: 0.5rem;
+        border-radius:0.2rem;
         .button {
             z-index: 1000;
             position: absolute;
@@ -1099,9 +1100,11 @@
         .scale {
             width: 1rem;
             height: 1rem;
+            margin:0.5rem;
             position: absolute;
-            top: 0.5rem;
-            right: 0.5rem;
+            top: 0;
+            right: 0;
+            z-index:1000;
         }
     }
 </style>

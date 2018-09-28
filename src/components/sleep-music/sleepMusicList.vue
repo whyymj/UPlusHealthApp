@@ -36,7 +36,6 @@
             </div>
             <div class="page page2" v-show='activeSpan==1'>
                 <musiclist :musiclist='list'></musiclist>
-                
                 <div class="tips">
                     <h6><img src="/static/sleepMusicList/img3.png" alt="">
                         <span>以上服务由寝安提供</span></h6>
@@ -358,7 +357,6 @@
                     //         var endtime = item.endDate.split('T')[0];
                     //         return endtime;
                     //     });
-                        
                     // })
                     // if (window.plugins && window.plugins.healthkit) {
                     window.plugins.healthkit.monitorSampleType({
@@ -427,7 +425,7 @@
                                     tools_name: null,
                                     user_id: null,
                                     wakeTime: end,
-                                     from:'appleHealth'
+                                    from: 'appleHealth'
                                 }
                             })
                         }
@@ -489,10 +487,8 @@
             if (window.localStorage.UPlusApp_getAppleHealthData && (window.localStorage.UPlusApp_getAppleHealthData == 'true' || window.localStorage.UPlusApp_getAppleHealthData == true)) {
                 this.haveAuthor = true;
             }
-
             // 注释掉，不在获取苹果健康权限
             this.getHealth(); //获取苹果健康数据权限
-
             this.showMyLoadingModal = true;
             this.thisloadingbar = setTimeout(function() {
                 that.showMyLoadingModal = false;
@@ -501,10 +497,8 @@
             var month = today.getMonth() + 1;
             var date = today.getDate();
             var str = today.getFullYear() + '-' + (month > 9 ? month : ('0' + month * 1)) + '-' + (date > 9 ? date : ('0' + date * 1));
-
             // 注释掉，不在获取苹果健康数据
             this.saveSleepInfo(str); //获取今天的苹果健康数据 
-          
             if (window.localStorage.wh_fromPage == 'music') { //是否直接进入音乐页面
                 this.activeSpan = 1;
             }
@@ -512,6 +506,9 @@
                 window.localStorage.UPlusApp_firstLogin_sleepMusicList = true;
             }
             var that = this;
+            document.getElementsByClassName('page1')[0].onscroll = function(e) { //记录滚动距离
+                localStorage.Uplus_sleepmusiclist_scrollTop = this.scrollTop;
+            }
             bus.$on('toManuInput', function() {
                 that.toManuInput();
             })
@@ -697,7 +694,11 @@
                 that.sleepnewslist.push(res.data[arr[1]]); //随机的新闻
                 clearTimeout(that.thisloadingbar);
                 that.showMyLoadingModal = false;
+                that.$nextTick(function() {//直接到达上一次访问的地方
+                    document.getElementsByClassName('page1')[0].scrollTop = localStorage.Uplus_sleepmusiclist_scrollTop ;
+                })
             }).catch(function(res) {
+                
                 if (process.env.NODE_ENV == 'development') {
                     that.$axios.get('/static/testData/getSleepInfo.json').then(function(res) {
                         that.sleepnewslist = res.data;

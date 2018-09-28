@@ -44,7 +44,7 @@
                 </div>
             </div>
             <div class="body_2">
-                <div class="body_21" style='font-weight:500;'>健康信息</div>
+                <div class="body_21" style='font-weight:700;'>健康信息</div>
                 <div class="body_22">
                     <div class="body_221">你是否有慢病史？</div>
                     <div class="body_222">

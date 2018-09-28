@@ -36,12 +36,12 @@
         </div>
       </div>
       <!-- <div class="associated-create add-friends " @click="openCreate()">
-                                                                    <img class="addFriends" src='/static/familyManage/link.png'>
-                                                                    <span class="add" id='addf'>添加好友<i>（已有U+账号）</i></span>
-                                                                  </div> -->
+                                                                          <img class="addFriends" src='/static/familyManage/link.png'>
+                                                                          <span class="add" id='addf'>添加好友<i>（已有U+账号）</i></span>
+                                                                        </div> -->
       <p class='additionTips'>注：无法查看未启用健康档案的用户信息</p>
       <div class="associated-create" @click="openCreate()">
-        <i class="create fa fa-plus"></i> <span class="create">创建家人</span>
+        <img src="/static/familyManage/create_family.svg" alt="" class='create_family'> <span class="create">创建家人</span>
       </div>
     </div>
     <firstLogin @firstlogin='first_login'></firstLogin>
@@ -81,7 +81,7 @@
       }
     },
     mounted() {
-      var that=this;
+      var that = this;
       that.showMyLoadingModal = true;
       if (process.env.NODE_ENV == 'development') {
         this.createdList = []
@@ -228,7 +228,7 @@
         });
       },
       skipTo(item) { //根据是否关联了用户
-        var id = item.member_id||'';
+        var id = item.member_id || '';
         window._member_id = id;
         if (!id) {
           this.$router.push({
@@ -308,7 +308,26 @@
     .family-img {
       width: 2.6rem;
       height: 2.6rem;
-      border: 1px solid #2283E2;
+      border: 1px solid rgba(34, 131, 226, 0.4);
+    }
+    .associated-create {
+      position: relative;
+      height: 2.5rem;
+      .create_family {
+        width: 1.1rem;
+        height: 1.1rem;
+        position: absolute;
+        top: 0;
+        left: 0.75rem;
+        bottom: 0;
+        margin: auto;
+      }
+      .create {
+        position: absolute;
+        left: 2.25rem;
+        top: 50%;
+        transform: translate(0, -50%);
+      }
     }
     .add-friends {
       .addFriends {

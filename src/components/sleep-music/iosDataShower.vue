@@ -189,7 +189,9 @@
 </script>
 
 <style lang='scss' scoped>
-    .analysis {}
+    .analysis {
+         border-radius:0.1rem;
+    }
     .modalContent {
         font-size: 0.7rem;
         font-family: 'PingFangSC-Regular';

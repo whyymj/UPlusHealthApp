@@ -266,7 +266,7 @@
                 height: 0.9rem;
                 /*background: rgba(34, 131, 226, 1);*/
                 background: #FFFFFF;
-                border-radius: 0.2rem;
+                border-radius: 0.1rem;
                 font-size: 0.6rem;
                 font-family: "PingFangSC-Regular";
                 color: rgba(255, 255, 255, 1);

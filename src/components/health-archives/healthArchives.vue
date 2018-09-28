@@ -685,6 +685,7 @@
 			}
 		},
 		mounted() {
+			localStorage.Uplus_sleepmusiclist_scrollTop=0;//睡眠报告滚动记录清0
 			window.__retest__ = false;
 			window.localStorage.uplus_sleep_user_info_cache = ''; //个人信息存储清空
 			if (window.localStorage.UPlusAPP_agree_privacyPlan && (window.localStorage.UPlusAPP_agree_privacyPlan == 'true' || window.localStorage.UPlusAPP_agree_privacyPlan == true)) { //存储获取苹果健康数据的权限

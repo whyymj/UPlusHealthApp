@@ -138,6 +138,7 @@
         height: 5rem;
         margin: 0.5rem auto;
         position: relative;
+         border-radius:0.1rem;
         h6 {
             font-size: 0.8rem;
             font-family: 'PingFangSC-Medium';
@@ -145,7 +146,7 @@
             position: absolute;
             top: 1rem;
             left: 1rem;
-            font-weight: 600;
+            font-weight: 700;
         }
         span {
             position: absolute;

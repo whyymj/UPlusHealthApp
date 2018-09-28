@@ -28,11 +28,12 @@
         width: 17rem;
         margin: 0.5rem auto 0;
         background: #fff;
+        border-radius: 0.1rem;
         h3 {
             font-size: 0.8rem;
             font-family: 'PingFangSC-Medium';
             color: rgba(17, 17, 17, 1);
-            font-weight: 600;
+           font-weight: 700;
             padding: 1rem 1rem 0.5rem 1rem;
         }
         h6 {
