@@ -1,122 +1,124 @@
 <template>
-    <div class="healthEntryFamily">
-        <div class="body">
-            <div class="body_1">
-                <div class="body_11">
-                    <div class="body_11_txt">基本信息</div>
-                </div>
-                <div class="body_12">
-                    <div class="body_121" @click='choose_nick_name'>
-                        <span class="body_1211">昵称</span>
-                        <span class="body_1212">&middot;</span>
-                        <el-input v-model="input_nick_name" placeholder="请输入昵称（不超过16字符）" maxlength=16 @change='input_nick'></el-input>
-                        <span class="body_1213"><span></span>&nbsp;&nbsp;<i class="el-icon-arrow-right" style='color:#DADADA;'></i></span>
+    <div class='healthEntryFamilyCon'>
+        <div class="healthEntryFamily">
+            <div class="body">
+                <div class="body_1">
+                    <div class="body_11">
+                        <div class="body_11_txt">基本信息</div>
                     </div>
-                    <div class="body_121" @click='choose_sex'>
-                        <span class="body_1211">性别</span>
-                        <span class="body_1212">&middot;</span>
-                        <el-input v-model="sex" placeholder="请选择性别" readonly></el-input>
-                        <span class="body_1213"><span></span>&nbsp;&nbsp;<i class="el-icon-arrow-right" style='color:#DADADA;'></i></span>
-                    </div>
-                    <div class="body_121" @click='pick_birthday'>
-                        <span class="body_1211">生日</span>
-                        <span class="body_1212">&middot;</span>
-                        <el-input v-model="birthday" placeholder="请选择生日" readonly></el-input>
-                        <span class="body_1213"><span></span>&nbsp;&nbsp;<i class="el-icon-arrow-right" style='color:#DADADA;'></i></span>
-                    </div>
-                    <div class="body_121" @click='pick_height'>
-                        <span class="body_1211">身高</span>
-                        <span class="body_1212">&middot;</span>
-                        <el-input v-model="tall" placeholder="请选择身高" readonly></el-input>
-                        <span class="body_1213"><span></span>&nbsp;&nbsp;<i class="el-icon-arrow-right" style='color:#DADADA;'></i></span>
-                    </div>
-                    <div class="body_121" @click='pick_weight'>
-                        <span class="body_1211">体重</span>
-                        <span class="body_1212">&middot;</span>
-                        <el-input v-model="weight" placeholder="请选择体重" readonly></el-input>
-                        <span class="body_1213"><span></span>&nbsp;&nbsp;<i class="el-icon-arrow-right" style='color:#DADADA;'></i></span>
-                    </div>
-                    <div class="body_122">
-                        <div class="body_1221">
-                            *蓝点圆点标示的为必填选项
+                    <div class="body_12">
+                        <div class="body_121" @click='choose_nick_name'>
+                            <span class="body_1211">昵称</span>
+                            <span class="body_1212">&middot;</span>
+                            <el-input v-model="input_nick_name" placeholder="请输入昵称（不超过16字符）" maxlength=16 @change='input_nick'></el-input>
+                            <span class="body_1213"><span></span>&nbsp;&nbsp;<i class="el-icon-arrow-right" style='color:#DADADA;'></i></span>
+                        </div>
+                        <div class="body_121" @click='choose_sex'>
+                            <span class="body_1211">性别</span>
+                            <span class="body_1212">&middot;</span>
+                            <el-input v-model="sex" placeholder="请选择性别" readonly></el-input>
+                            <span class="body_1213"><span></span>&nbsp;&nbsp;<i class="el-icon-arrow-right" style='color:#DADADA;'></i></span>
+                        </div>
+                        <div class="body_121" @click='pick_birthday'>
+                            <span class="body_1211">生日</span>
+                            <span class="body_1212">&middot;</span>
+                            <el-input v-model="birthday" placeholder="请选择生日" readonly></el-input>
+                            <span class="body_1213"><span></span>&nbsp;&nbsp;<i class="el-icon-arrow-right" style='color:#DADADA;'></i></span>
+                        </div>
+                        <div class="body_121" @click='pick_height'>
+                            <span class="body_1211">身高</span>
+                            <span class="body_1212">&middot;</span>
+                            <el-input v-model="tall" placeholder="请选择身高" readonly></el-input>
+                            <span class="body_1213"><span></span>&nbsp;&nbsp;<i class="el-icon-arrow-right" style='color:#DADADA;'></i></span>
+                        </div>
+                        <div class="body_121" @click='pick_weight'>
+                            <span class="body_1211">体重</span>
+                            <span class="body_1212">&middot;</span>
+                            <el-input v-model="weight" placeholder="请选择体重" readonly></el-input>
+                            <span class="body_1213"><span></span>&nbsp;&nbsp;<i class="el-icon-arrow-right" style='color:#DADADA;'></i></span>
+                        </div>
+                        <div class="body_122">
+                            <div class="body_1221">
+                                *蓝点圆点标示的为必填选项
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="body_2">
-                <div class="body_21" style='font-weight:700;'>健康信息</div>
-                <div class="body_22">
-                    <div class="body_221">你是否有慢病史？</div>
-                    <div class="body_222">
-                        <el-switch v-model="chronDiseaseHistory">
-                        </el-switch>
+                <div class="body_2">
+                    <div class="body_21" style='font-weight:700;'>健康信息</div>
+                    <div class="body_22" @click='clickChronDiseaseHistory'>
+                        <div class="body_221">你是否有慢病史？</div>
+                        <div class="body_222">
+                            <el-switch v-model="chronDiseaseHistory">
+                            </el-switch>
+                        </div>
                     </div>
-                </div>
-                <div class="body_122" v-show='chronDiseaseHistory'>
-                    <div class="body_1221 body_231">请选择慢病标签&nbsp;&nbsp;&nbsp;(可多选)：</div>
-                </div>
-                <tagslist :tags='chromiclist' :clear='clearChronDiseaseHistory' name='chronic' @choose='chooseChromic' v-show='chronDiseaseHistory'></tagslist>
-                <div class="body_22">
-                    <div class="body_221">你是否有过敏史？</div>
-                    <div class="body_222">
-                        <el-switch v-model="allergyHistory">
-                        </el-switch>
+                    <div class="body_122" v-show='chronDiseaseHistory'>
+                        <div class="body_1221 body_231">请选择慢病标签&nbsp;&nbsp;&nbsp;(可多选)：</div>
                     </div>
+                    <tagslist :tags='chromiclist' :clear='clearChronDiseaseHistory' name='chronic' @choose='chooseChromic' v-show='chronDiseaseHistory'></tagslist>
+                    <div class="body_22 " @click='clickAllergyHistory'>
+                        <div class="body_221">你是否有过敏史？</div>
+                        <div class="body_222">
+                            <el-switch v-model="allergyHistory">
+                            </el-switch>
+                        </div>
+                    </div>
+                    <div class="body_122" v-show='allergyHistory'>
+                        <div class="body_1221 body_231">请选择过敏源&nbsp;&nbsp;&nbsp;(可多选)：</div>
+                    </div>
+                    <tagslist :tags='allergylist' name='allergy' :clear='clearAllergyHistory' @choose='chooseAllergy' v-show='allergyHistory'></tagslist>
                 </div>
-                <div class="body_122" v-show='allergyHistory'>
-                    <div class="body_1221 body_231">请选择过敏源&nbsp;&nbsp;&nbsp;(可多选)：</div>
-                </div>
-                <tagslist :tags='allergylist' name='allergy' :clear='clearAllergyHistory' @choose='chooseAllergy' v-show='allergyHistory'></tagslist>
             </div>
+            <!-- 生日选择 -->
+            <mt-popup v-model="birthday_picker" position="bottom">
+                <div style='width:18.75rem;'>
+                    <ul class=' confirmbutton confirm_birthday'>
+                        <li @click="cancel('birthday')">取消</li>
+                        <li @click="confirm('birthday')">确认</li>
+                    </ul>
+                    <mt-picker :slots="slots1" @change="changeYears"></mt-picker>
+                    <mt-picker :slots="slots2" @change="changeMonths" v-if='reloadMonth'></mt-picker>
+                    <mt-picker :slots="slots3" @change="changeDates" v-if='relaodDate'></mt-picker>
+                    <ul class='date_title'>
+                        <li>年</li>
+                        <li>月</li>
+                        <li>日</li>
+                    </ul>
+                </div>
+            </mt-popup>
+            <!-- 性别选择 -->
+            <el-dialog title="性别" :visible.sync="sex_radio" :modal-append-to-body='false' width='95%'>
+                <div class='sex_box'>
+                    <ul>
+                        <li style='border-bottom:1px solid #eee;' class='sex_li' :class='{active:sextmp==0}' @click='confirm_sex(0)'>男</li>
+                        <li @click='confirm_sex(1)' class='sex_li' :class='{active:sextmp==1}'>女</li>
+                    </ul>
+                </div>
+                <div class="button" @click="confirm('sex')">确定</div>
+            </el-dialog>
+            <!-- 身高选择 -->
+            <mt-popup v-model="height_picker" class='height_picker' position="bottom">
+                <div style='width:18.75rem;'>
+                    <ul class=' confirmbutton confirm_birthday'>
+                        <li @click="cancel('height')">取消</li>
+                        <li @click="confirm('height')">确认</li>
+                    </ul>
+                    <mt-picker :slots="tallarr" @change="select_tall"></mt-picker>
+                </div>
+            </mt-popup>
+            <mt-popup v-model="weight_picker" class='weight_picker' position="bottom">
+                <div style='width:18.75rem;'>
+                    <ul class=' confirmbutton confirm_birthday'>
+                        <li @click="cancel('weight')">取消</li>
+                        <li @click="confirm('weight')">确认</li>
+                    </ul>
+                    <mt-picker :slots="weightarr1" @change="select_weight1"></mt-picker>
+                    <mt-picker :slots="weightarr2" @change="select_weight2"></mt-picker>
+                </div>
+            </mt-popup>
+            <myLoadingModal :show='showMyLoadingModal'></myLoadingModal>
         </div>
-        <!-- 生日选择 -->
-        <mt-popup v-model="birthday_picker" position="bottom">
-            <div style='width:18.75rem;'>
-                <ul class=' confirmbutton confirm_birthday'>
-                    <li @click="cancel('birthday')">取消</li>
-                    <li @click="confirm('birthday')">确认</li>
-                </ul>
-                <mt-picker :slots="slots1" @change="changeYears"></mt-picker>
-                <mt-picker :slots="slots2" @change="changeMonths" v-if='reloadMonth'></mt-picker>
-                <mt-picker :slots="slots3" @change="changeDates" v-if='relaodDate'></mt-picker>
-                <ul class='date_title'>
-                    <li>年</li>
-                    <li>月</li>
-                    <li>日</li>
-                </ul>
-            </div>
-        </mt-popup>
-        <!-- 性别选择 -->
-        <el-dialog title="性别" :visible.sync="sex_radio" :modal-append-to-body='false' width='95%'>
-            <div class='sex_box'>
-                <ul>
-                    <li style='border-bottom:1px solid #eee;' class='sex_li' :class='{active:sextmp==0}' @click='confirm_sex(0)'>男</li>
-                    <li @click='confirm_sex(1)' class='sex_li' :class='{active:sextmp==1}'>女</li>
-                </ul>
-            </div>
-            <div class="button" @click="confirm('sex')">确定</div>
-        </el-dialog>
-        <!-- 身高选择 -->
-        <mt-popup v-model="height_picker" class='height_picker' position="bottom">
-            <div style='width:18.75rem;'>
-                <ul class=' confirmbutton confirm_birthday'>
-                    <li @click="cancel('height')">取消</li>
-                    <li @click="confirm('height')">确认</li>
-                </ul>
-                <mt-picker :slots="tallarr" @change="select_tall"></mt-picker>
-            </div>
-        </mt-popup>
-        <mt-popup v-model="weight_picker" class='weight_picker' position="bottom">
-            <div style='width:18.75rem;'>
-                <ul class=' confirmbutton confirm_birthday'>
-                    <li @click="cancel('weight')">取消</li>
-                    <li @click="confirm('weight')">确认</li>
-                </ul>
-                <mt-picker :slots="weightarr1" @change="select_weight1"></mt-picker>
-                <mt-picker :slots="weightarr2" @change="select_weight2"></mt-picker>
-            </div>
-        </mt-popup>
-        <myLoadingModal :show='showMyLoadingModal'></myLoadingModal>
         <div class="bottom">
             <div :class="{ 'bottom_text':true, 'bottom_text_bg': !isSave}" @click="save">完成</div>
         </div>
@@ -452,6 +454,12 @@
             })
         },
         methods: {
+            clickAllergyHistory(e) {
+                this.allergyHistory = !this.allergyHistory;
+            },
+            clickChronDiseaseHistory(e) {
+                this.chronDiseaseHistory = !this.chronDiseaseHistory;
+            },
             confirm_sex(sex) {
                 this.sextmp = sex;
                 if (sex == 0) {
@@ -671,6 +679,28 @@
  
 <style lang="scss">
     @import "./healthEntryFamily.scss";
+    .healthEntryFamilyCon {
+        .bottom {
+            width: 18.75rem;
+            height: 2.6rem;
+            text-align: center; //  margin-top:1rem;
+            position: fixed;
+            bottom: 0;
+            background: #ccc;
+            z-index: 9999;
+            .bottom_text {
+                font-size: 0.8rem;
+                width: 100%;
+                height: 100%;
+                font-family: 'PingFangSC-Regular';
+                color: #FFFFFF;
+                line-height: 2.6rem;
+            }
+            .bottom_text_bg {
+                background: rgba(38, 166, 255, 1);
+            }
+        }
+    }
     .healthEntryFamily {
         .nick_name,
         .sex_radio {

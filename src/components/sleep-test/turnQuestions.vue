@@ -276,10 +276,10 @@
                                 query: that.params
                             });
                         }
-                    }).catch(function() {
+                    }).catch(function(e) {
                         that.submiting = false;
                         that.$notify.error({
-                            title: '错误',
+                            title: '请重试',
                             message: '提交测试结果失败',
                             showClose: false
                         });
@@ -292,11 +292,11 @@
                         }
                     })
                 } else {
-                    // Toast({
-                    //     message: '请先选择答案',
-                    //     position: 'bottom',
-                    //     duration: 2000
-                    // });
+                    Toast({
+                        message: '正在提交，请稍后',
+                        position: 'bottom',
+                        duration: 2000
+                    });
                 }
             })
         }
