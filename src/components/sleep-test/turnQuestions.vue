@@ -252,7 +252,6 @@
                 that.$emit('turnQestion', num);
             })
             bus.$on('submitResult', function() { //这里提交答案
-            
                 if (!that.submiting && that.totalnum > 0 && that.cacheOptions['' + (that.totalnum - 1)].option.length > 0) {
                     that.submiting = true; //防止反復提交
                     that.showMyLoadingModal = true;
@@ -262,14 +261,13 @@
                         result.push(that.cacheOptions[k].lineId + '&' + that.cacheOptions[k].option.join(','))
                     }
                     finalstr = result.join('|');
-                    console.log(finalstr);
                     that.$axios.post('/api/saveUserTemplate', { //最终保存结果
                         member_id: window._member_id,
                         tuId: that.params.tuId,
                         inputVal: finalstr
                     }).then(function(res) {
                         that.showMyLoadingModal = false;
-                        that.submitingf = false;
+                        that.submiting = false;
                         if (res.data.code == 'C0000') {
                             that.params.totalScore = res.data.data.totalScore;
                             that.params.allResult = finalstr;
@@ -279,13 +277,19 @@
                             });
                         }
                     }).catch(function() {
-                        that.submitingf = false;
+                        that.submiting = false;
                         that.$notify.error({
                             title: '错误',
                             message: '提交测试结果失败',
                             showClose: false
                         });
                         that.showMyLoadingModal = false;
+                        if (process.env.NODE_ENV == 'development') {
+                            that.$router.push({
+                                path: '/sleepTestResult',
+                                query: that.params
+                            });
+                        }
                     })
                 } else {
                     // Toast({
