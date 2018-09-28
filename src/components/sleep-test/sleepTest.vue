@@ -75,7 +75,6 @@
                     member_id: window._member_id,
                 }).then(function(res) {
                     that.showMyLoadingModal = false;
-                    console.log('what the ffff');
                     if (params.status === 0 || params.status === '0') { //中途退出
                         let instance = Toast({
                             message: '正从上次退出位置继续答题',

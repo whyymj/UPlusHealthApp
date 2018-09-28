@@ -262,7 +262,7 @@
                 height: 0.4rem;
                 background: rgba(38, 165, 253, 1);
                 border-radius: 50%;
-                box-shadow: 0 0 0.2rem rgba(38, 165, 253, 1);
+                // box-shadow: 0 0 0.2rem rgba(38, 165, 253, 1);
                 bottom: 0.1rem;
                 left: 0;
                 right: 0;

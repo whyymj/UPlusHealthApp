@@ -197,7 +197,6 @@
                     for (var i = 0; i < len; i++) {
                         item = e.path[i];
                         if (item.className === 'questionListRadio' || item.className === 'nextbut') {
-                            console.log('ooonext>>>>')
                             that.next(function() {
                                 that.turnQuestBar = setTimeout(function() {
                                     that.turningQuestoin = false;
@@ -253,6 +252,7 @@
                 that.$emit('turnQestion', num);
             })
             bus.$on('submitResult', function() { //这里提交答案
+            
                 if (!that.submiting && that.totalnum > 0 && that.cacheOptions['' + (that.totalnum - 1)].option.length > 0) {
                     that.submiting = true; //防止反復提交
                     that.showMyLoadingModal = true;
