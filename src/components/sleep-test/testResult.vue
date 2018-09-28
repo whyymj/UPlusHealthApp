@@ -6,7 +6,7 @@
         <warmTips :tips='tips'></warmTips>
         <div class="button">
             <div class="retry" :class='{saved:hadSaved}' @click='reTest'>重新测试</div>
-            <div class="save" @click='save' v-if='!hadSaved'>返回</div>
+            <div class="save" @click='save' v-if='!hadSaved'>保存测试</div>
         </div>
         <myLoadingModal :show='showMyLoadingModal'></myLoadingModal>
     </div>
@@ -71,7 +71,27 @@
                 } else {}
             }).catch(function(res) {
                 that.showMyLoadingModal = false;
-                
+                console.log('false');
+                that.$axios.get('/static/testData/getUserTemplateAnalysis.json').then(function(res) {
+                    if (res.data.code == 'C0000') {
+                        that.testScore = res.data.data.gradesStr.split('分')[0];
+                        that.scoreSet = res.data.data.scoreNormal;
+                        that.totalscore = res.data.data.total;
+                        that.analysis = {
+                            title: res.data.data.scoreInfo,
+                            detail: res.data.data.scoreSuggest
+                        }
+                        that.tips = res.data.data.ttLineAudioSubList.map(function(item) {
+                            return {
+                                title: item.lineTitle,
+                                body: "关注身体的每个部位，缓解躯体不适",
+                                audio: item.audioUrl,
+                                img: item.imgUrl,
+                                type: item.resourceType
+                            }
+                        })
+                    } else {}
+                })
             })
         },
         components: {

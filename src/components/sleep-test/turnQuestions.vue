@@ -319,11 +319,10 @@
             top: 3rem;
         }
         .prevbutton {
-            width: 5rem;
             height: 1rem;
             border-radius: 1rem;
             text-align: right;
-            padding: 0 0.5rem;
+            
             background: #fff;
             font-size: 0.75rem;
             font-family: 'PingFangSC-Regular';
@@ -331,6 +330,7 @@
             color: rgba(50, 182, 230, 1);
             position: absolute;
             top: 0;
+            left:6.5%;
             z-index: 10;
         }
     }

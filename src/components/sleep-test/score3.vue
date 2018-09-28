@@ -72,7 +72,7 @@
             position: absolute;
             top: 0.7rem;
             left: 0.7rem;
-            font-weight: 600;
+            font-weight: 700;
             line-height: 0.8rem;
         }
         .score {

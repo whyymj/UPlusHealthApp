@@ -24,10 +24,14 @@
         left: 0;
         bottom: 0;
         right: 0;
+        -webkit-overflow-scrolling: touch;
+        overflow: scroll;
         iframe {
             width: 100%;
-            height: 100%;
             float: left;
+            -webkit-overflow-scrolling: touch;
+            overflow: scroll;
+            height: 100%;
         }
     }
 </style>

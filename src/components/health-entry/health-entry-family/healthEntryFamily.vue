@@ -69,9 +69,6 @@
                 <tagslist :tags='allergylist' name='allergy' :clear='clearAllergyHistory' @choose='chooseAllergy' v-show='allergyHistory'></tagslist>
             </div>
         </div>
-        <div class="bottom">
-            <div :class="{ 'bottom_text':true, 'bottom_text_bg': !isSave}" @click="save">完成</div>
-        </div>
         <!-- 生日选择 -->
         <mt-popup v-model="birthday_picker" position="bottom">
             <div style='width:18.75rem;'>
@@ -80,8 +77,8 @@
                     <li @click="confirm('birthday')">确认</li>
                 </ul>
                 <mt-picker :slots="slots1" @change="changeYears"></mt-picker>
-                <mt-picker :slots="slots2" @change="changeMonths"></mt-picker>
-                <mt-picker :slots="slots3" @change="changeDates"></mt-picker>
+                <mt-picker :slots="slots2" @change="changeMonths" v-if='reloadMonth'></mt-picker>
+                <mt-picker :slots="slots3" @change="changeDates" v-if='relaodDate'></mt-picker>
                 <ul class='date_title'>
                     <li>年</li>
                     <li>月</li>
@@ -120,6 +117,9 @@
             </div>
         </mt-popup>
         <myLoadingModal :show='showMyLoadingModal'></myLoadingModal>
+        <div class="bottom">
+            <div :class="{ 'bottom_text':true, 'bottom_text_bg': !isSave}" @click="save">完成</div>
+        </div>
     </div>
 </template>
 <script>
@@ -187,7 +187,12 @@
                 toast: '',
                 isSave: true, //保存标签     
                 route: '',
-                memberId: ''
+                memberId: '',
+                thisYear: '',
+                thisMonth: '',
+                today: '',
+                reloadMonth: true,
+                relaodDate: true
             };
         },
         watch: {
@@ -243,9 +248,10 @@
             var months = [];
             var tall = [];
             var days = [];
-            var thisYear = new Date().getFullYear();
-            var thisMonth = new Date().getMonth() + 1;
-            var today = new Date().getDate();
+            this.thisYear = new Date().getFullYear();
+            this.thisMonth = new Date().getMonth() + 1;
+            this.today = new Date().getDate();
+            console.log();
             var weightarr = [];
             for (var i = 200; i > 1; i--) {
                 weightarr.push(i);
@@ -257,13 +263,13 @@
                 textAlign: "center",
                 defaultIndex: 125
             }];
-            for (var i = thisYear; i >= 1900; i--) {
+            for (var i = this.thisYear; i >= 1900; i--) {
                 years.push(i);
             }
-            for (var i = thisMonth; i > 0; i--) {
+            for (var i = this.thisMonth; i > 0; i--) {
                 months.push(i > 9 ? i : '0' + i);
             }
-            for (var i = today; i > 0; i--) {
+            for (var i = this.today; i > 0; i--) {
                 days.push(i > 9 ? i : '0' + i)
             }
             for (var i = 250; i > 100; i--) {
@@ -294,11 +300,10 @@
                 className: "slot3",
                 textAlign: "center"
             }];
-            this.birthdayarr = [thisYear, thisMonth, today];
+            this.birthdayarr = [this.thisYear, this.thisMonth, this.today];
             this.tall = '';
             this.weight = '';
             this.birthday = ''
-            //     console.log(thisYear, thisMonth);
             this.$axios.post('/api/getDiseaseList').then(function(res) {
                 that.showMyLoadingModal = false;
                 if (res.data.code == 'C0000') {
@@ -516,21 +521,54 @@
             },
             changeYears(picker, values) {
                 this.birthdayarr[0] = values[0];
+                var arr = [];
+                for (var i = this.thisMonth; i > 0; i--) {
+                    arr.push(i > 9 ? i : ('0' + i));
+                }
+                var months = values[0] == this.thisYear ? arr : [12, 11, 10, '09', '08', '07', '06', '05', '04', '03', '02', '01'];
                 var days = this.getMonthDate(this.birthdayarr[0], this.birthdayarr[1] * 1).reverse().map(function(item, index) {
                     return item.date > 9 ? item.date : '0' + item.date;
                 })
-                this.slots3 = [{
-                    flex: 1,
-                    values: days,
-                    className: "slot3",
-                    textAlign: "center"
-                }];
+                var that = this;
+                if (this.reloadMonth) {
+                    this.reloadMonth = false;
+                    this.relaodDate = false;
+                    this.$nextTick(function() {
+                        that.slots2 = [{
+                            flex: 1,
+                            values: months,
+                            className: "slot3",
+                            textAlign: "center"
+                        }];
+                        that.slots3 = [{
+                            flex: 1,
+                            values: days,
+                            className: "slot3",
+                            textAlign: "center"
+                        }];
+                        this.reloadMonth = true;
+                        this.relaodDate = true;
+                    })
+                }
             },
             changeMonths(picker, values) {
                 this.birthdayarr[1] = values[0];
                 var days = this.getMonthDate(this.birthdayarr[0], this.birthdayarr[1] * 1).reverse().map(function(item, index) {
                     return item.date > 9 ? item.date : '0' + item.date;
                 })
+                var that = this;
+                if (this.relaodDate) {
+                    this.relaodDate = false;
+                    this.$nextTick(function() {
+                        that.slots3 = [{
+                            flex: 1,
+                            values: days,
+                            className: "slot3",
+                            textAlign: "center"
+                        }];
+                        this.relaodDate = true;
+                    })
+                }
                 this.slots3 = [{
                     flex: 1,
                     values: days,
@@ -612,9 +650,7 @@
                         .catch(function(err) {
                             if (process.env.NODE_ENV == 'development') {
                                 if (that.route) {
-                                    that.$router.push({
-                                        path: that.route
-                                    })
+                                    that.$router.go(-1)
                                 } else {
                                     that.$router.push({
                                         path: '/healthArchives'

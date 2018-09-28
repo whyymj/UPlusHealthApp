@@ -3,7 +3,7 @@
         <div class="button nearest" :class="{active:active==0}" @click='getdata(0)'>最近七次</div>
         <div class="button week" :class="{active:active==1}" @click='getdata(1)'>周</div>
         <!-- <div class="button month" :class="{active:active==2}" @click='getdata(2)'>月</div>
-                                                                                                                                <div class="button year" :class="{active:active==3}" @click='getdata(3)'>年</div> -->
+                                                                                                                                                                                                                                                        <div class="button year" :class="{active:active==3}" @click='getdata(3)'>年</div> -->
         <div id='main' ref='echarts'>
         </div>
         <div class="legend">
@@ -63,6 +63,7 @@
                     this.thisWeekDataFromApple = this.nearDataFromApple.filter(function(item) { //本周的苹果健康数据
                         return item.date >= start;
                     });
+                    console.log('oooohhhhhh2', this.nearDataFromApple, this.thisWeekDataFromApple);
                 }
             }
         },
@@ -127,21 +128,41 @@
                 }
                 var that = this;
                 var len = this.thisWeekDataFromApple.length;
+                var timelist = ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期天'];
                 if (len > 0) {
-                    arr = arr.map(function(item, index) {
-                        if (item.sleepTime == '') {
-                            for (var i = 0; i < len; i++) {
-                                if (that.thisWeekDataFromApple[i].create_date == item.create_date) {
-                                    return that.thisWeekDataFromApple[i]
-                                }
-                            }
-                            return item;
-                        } else {
-                            return item;
+                    arr = arr.concat(that.thisWeekDataFromApple.map(function(item) {
+                        var date = new Date(item.wakeTime).getDay() - 1;
+                        if (date == -1) {
+                            date = 6;
+                        }
+                        return {
+                            create_date: item.create_date,
+                            date: date,
+                            sleepTime: item.sleepTime,
+                            sleepTimeLang: item.sleepTimeLang,
+                            time: timelist[date],
+                            wakeTime: item.wakeTime,
+                            from: 'appleHealth'
+                        }
+                    }))
+                    var obj = {};
+                    arr.map(function(item, index) { //利用object过滤重复数据，并且优先展示后台接口获取的数据，最后才展示apple health数据
+                        if (!obj[item.date]) {
+                            obj[item.date] = item;
+                        } else if (obj[item.date].sleepTime == '') { //如果没有手动输入的数据，就显示apple health的数据
+                            obj[item.date] = item;
+                        } else if (obj[item.date].from == 'appleHealth' && item.sleepTime !== '') { //后台获取的数据存在就优先展示
+                            obj[item.date] = item;
                         }
                     })
+                    arr = [];
+                    for (var key in obj) {
+                        arr.push(obj[key])
+                    }
                 }
-                return arr;
+                return arr.sort(function(a, b) {
+                    return a.date - b.date;
+                });
             },
             getdata(index) {
                 this.myChart.showLoading();
@@ -284,20 +305,36 @@
                         })).sort(function(a, b) {
                             return a.date - b.date;
                         });
-                        if (that.nearDataFromApple.length > 0) {//合并后台数据与苹果健康数据
+                        if (that.nearDataFromApple.length > 0) { //合并后台数据与苹果健康数据
                             var len = list.length;
-                            var newarr = [];
-                            newarr = that.nearDataFromApple.filter(function(item, index) {
-                                for (var i = 0; i < len; i++) {
-                                    if (item.create_date == list[i].create_date) {
-                                        return false
-                                    }
+                            var obj = {};
+                            list = list.concat(that.nearDataFromApple.map(function(item) {
+                                return {
+                                    create_date: item.create_date,
+                                    date: new Date(item.create_date.replace('-', '/')).getTime(),
+                                    sleepTime: item.sleepTime,
+                                    sleepTimeLang: item.sleepTimeLang,
+                                    // time: timelist[date],
+                                    wakeTime: item.wakeTime,
+                                    from: 'appleHealth'
                                 }
-                                return true;
-                            })
-                            list = list.concat(newarr).sort(function(a, b) {
-                                return a.date - b.date;
-                            }).slice(0, 7);
+                            }));
+                            list.map(function(item) {
+                                if (!obj[item.create_date]) {
+                                    obj[item.create_date] = item;
+                                } else if (obj[item.create_date].from == 'appleHealth') {
+                                    obj[item.create_date] = item;
+                                }
+                            });
+                            list = [];
+                            for (var key in obj) {
+                                list.push(obj[key])
+                            }
+                            list = list.sort(function(a, b) {
+                                return b.date - a.date
+                            }).slice(0, 7).sort(function(a, b) {
+                                return a.date - b.date
+                            });
                         }
                         var formate = list.map(function(item, index) {
                             var arr = item.create_date.split('-')
@@ -411,9 +448,38 @@
                                     var newitem = item;
                                     newitem.date = new Date(item.create_date.replace('-', '/')).getTime();
                                     return newitem;
-                                }).sort(function(a, b) {
-                                    return a.date - b.date;
                                 });
+                                if (that.nearDataFromApple.length > 0) { //合并后台数据与苹果健康数据
+                                    var len = list.length;
+                                    var obj = {};
+                                    list = list.concat(that.nearDataFromApple.map(function(item) {
+                                        return {
+                                            create_date: item.create_date,
+                                            date: new Date(item.create_date.replace('-', '/')).getTime(),
+                                            sleepTime: item.sleepTime,
+                                            sleepTimeLang: item.sleepTimeLang,
+                                            // time: timelist[date],
+                                            wakeTime: item.wakeTime,
+                                            from: 'appleHealth'
+                                        }
+                                    }));
+                                    list.map(function(item) {
+                                        if (!obj[item.create_date]) {
+                                            obj[item.create_date] = item;
+                                        } else if (obj[item.create_date].from == 'appleHealth') {
+                                            obj[item.create_date] = item;
+                                        }
+                                    });
+                                    list = [];
+                                    for (var key in obj) {
+                                        list.push(obj[key])
+                                    }
+                                    list = list.sort(function(a, b) {
+                                        return b.date - a.date
+                                    }).slice(0, 7).sort(function(a, b) {
+                                        return a.date - b.date
+                                    });
+                                }
                                 var formate = list.map(function(item, index) {
                                     var arr = item.create_date.split('-')
                                     return arr[1] + '月' + arr[2] + '日';
@@ -517,6 +583,9 @@
                                 });
                                 list = that.fillThisWeekArr(list);
                                 that.sleeplengthtimes = list.map(function(item, index) {
+                                    var startT = that.dealtime(item.sleepTime);
+                                    startT = startT <= 8 ? startT + 24 : startT;
+                                    var endT = that.dealtime(item.wakeTime) + 24;
                                     that.sleepstarttimes.push(startT);
                                     that.sleependtimes.push(endT);
                                     return (item.sleepTimeLang / 60).toFixed(1);
@@ -901,6 +970,49 @@
             setTimeout(function() {
                 that.myChart.hideLoading();
             }, 4000)
+            console.log('oooohhhhhh', this.nearestAppleHealthData);
+            if (typeof this.nearestAppleHealthData == 'object' && this.nearestAppleHealthData.length && this.nearestAppleHealthData.length > 0) {
+                var that = this;
+                var arr = this.deleteRepeatDate(this.nearestAppleHealthData.map(function(item) {
+                    var newitem = item;
+                    newitem.date = new Date(item.create_date.replace('-', '/')).getTime();
+                    return newitem;
+                })).sort(function(b, a) {
+                    return a.date - b.date;
+                });
+                /**
+                 * 获取本周
+                 */
+                var now = new Date(); //当前日期
+                var nowDayOfWeek = now.getDay(); //今天本周的第几天
+                var nowDay = now.getDate(); //当前日
+                var nowMonth = now.getMonth(); //当前月
+                var nowYear = now.getYear(); //当前年
+                nowYear += (nowYear < 2000) ? 1900 : 0; //
+                //格式化日期：yyyy-MM-dd
+                function formatDate(date) {
+                    var myyear = date.getFullYear();
+                    var mymonth = date.getMonth() + 1;
+                    var myweekday = date.getDate();
+                    if (mymonth < 10) {
+                        mymonth = "0" + mymonth;
+                    }
+                    if (myweekday < 10) {
+                        myweekday = "0" + myweekday;
+                    }
+                    return (myyear + "-" + mymonth + "-" + myweekday);
+                }
+                //获得本周的开始日期
+                function getWeekStartDate() {
+                    var weekStartDate = new Date(nowYear, nowMonth, nowDay - nowDayOfWeek);
+                    return formatDate(weekStartDate);
+                }
+                var start = new Date(getWeekStartDate()).getTime();
+                this.nearDataFromApple = arr.slice(0, 7); //最近7次苹果健康数据
+                this.thisWeekDataFromApple = this.nearDataFromApple.filter(function(item) { //本周的苹果健康数据
+                    return item.date >= start;
+                });
+            }
         }
     }
 </script>

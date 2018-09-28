@@ -58,12 +58,12 @@
             font-family: 'PingFangSC-Regular';
             color: rgba(179, 179, 179, 1);
             position: absolute;
-            left: 1rem;
+            left: 6.5%;
         }
         .shower {
             position: absolute;
             top: 0;
-            right: 1rem;
+            right:6.5%;
             font-size: 0.75rem;
             font-family: 'PingFangSC-Medium';
             color: rgba(50, 182, 230, 1);
