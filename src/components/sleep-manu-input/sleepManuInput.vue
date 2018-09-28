@@ -90,13 +90,13 @@
                             }).then(function(res) {
                                 that.showMyLoadingModal = false;
                                 if (res.data && res.data.code == 'C0000') {
-                                    that.$router.push('/sleepMusicList');
+                                    that.$router.go(-1);
                                 } else {
                                     MessageBox.alert('请稍后重试', '请求失败');
                                 }
                             }).catch(function() {
                                 that.showMyLoadingModal = false;
-                                that.$router.push('/sleepMusicList');
+                                
                             });
                         } else {
                             this.$axios.post('/api/sleep/insert', {

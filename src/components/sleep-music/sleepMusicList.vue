@@ -483,15 +483,15 @@
                 app = navigator.appVersion;
             var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //g
             var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-            // this.isios = isIOS;
-            this.isios=false;//注释掉苹果健康数据功能，nodata组件里面也有
+            this.isios = isIOS;
+            // this.isios=false;//注释掉苹果健康数据功能，nodata组件里面也有
             // 判断是否已经获取过苹果健康数据权限
             if (window.localStorage.UPlusApp_getAppleHealthData && (window.localStorage.UPlusApp_getAppleHealthData == 'true' || window.localStorage.UPlusApp_getAppleHealthData == true)) {
                 this.haveAuthor = true;
             }
 
             // 注释掉，不在获取苹果健康权限
-            // this.getHealth(); //获取苹果健康数据权限
+            this.getHealth(); //获取苹果健康数据权限
 
             this.showMyLoadingModal = true;
             this.thisloadingbar = setTimeout(function() {
@@ -503,7 +503,7 @@
             var str = today.getFullYear() + '-' + (month > 9 ? month : ('0' + month * 1)) + '-' + (date > 9 ? date : ('0' + date * 1));
 
             // 注释掉，不在获取苹果健康数据
-            // this.saveSleepInfo(str); //获取今天的苹果健康数据 
+            this.saveSleepInfo(str); //获取今天的苹果健康数据 
           
             if (window.localStorage.wh_fromPage == 'music') { //是否直接进入音乐页面
                 this.activeSpan = 1;

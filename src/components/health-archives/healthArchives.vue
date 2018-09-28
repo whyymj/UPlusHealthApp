@@ -876,8 +876,8 @@
 				position: relative;
 				span {
 					position: absolute;
-					width: 0.8rem;
-					height: 0.8rem;
+					width: 0.65rem;
+					height: 0.65rem;
 					background: rgba(51, 51, 51, .17);
 					box-shadow: 0 0 0 8px rgba(51, 51, 51, .05);
 					border-radius: 50%;

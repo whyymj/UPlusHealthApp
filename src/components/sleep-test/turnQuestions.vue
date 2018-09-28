@@ -17,7 +17,8 @@
     import bar from './progressBar';
     import bus from '../../assets/healthSleep/bus.js';
     import {
-        setTimeout
+        setTimeout,
+        clearTimeout
     } from 'timers';
     import {
         Toast
@@ -44,6 +45,8 @@
                 params: '',
                 tuId: '',
                 submiting: false,
+                turningQuestoin: false,
+                turnQuestBar: ''
             }
         },
         watch: {
@@ -140,10 +143,13 @@
                 }
                 // this.$emit('turnQestion', this.curnum);
             },
-            next() {
+            next(fn) {
                 if (this.curnum < this.list.length - 1) {
                     this.$refs.carousel.next();
                     this.curnum++;
+                }
+                if (fn) {
+                    fn()
                 }
                 // this.$emit('turnQestion', this.curnum);
             },
@@ -182,8 +188,29 @@
             this.params = this.$route.query;
             this.tuId = this.params.tuId;
             document.getElementsByClassName('turnQuestions')[0].onclick = function(e) {
-                if (e.target.className === 'el-radio__original' || e.target.className === 'nextbut') {
-                    that.next()
+                var len = e.path.length;
+                var item = '';
+                if (!that.turningQuestoin) {
+                    that.turningQuestoin = true;
+                    clearTimeout(that.turnQuestBar);
+                    that.turnQuestBar = '';
+                    for (var i = 0; i < len; i++) {
+                        item = e.path[i];
+                        if (item.className === 'questionListRadio' || item.className === 'nextbut') {
+                            console.log('ooonext>>>>')
+                            that.next(function() {
+                                that.turnQuestBar = setTimeout(function() {
+                                    that.turningQuestoin = false;
+                                }, 500)
+                            });
+                            break;
+                        }
+                    }
+                    if (!that.turnQuestBar) {
+                        that.turnQuestBar = setTimeout(function() {
+                            that.turningQuestoin = false;
+                        }, 200)
+                    }
                 }
             }
             if (this.list && this.list.length) {
@@ -235,6 +262,7 @@
                         result.push(that.cacheOptions[k].lineId + '&' + that.cacheOptions[k].option.join(','))
                     }
                     finalstr = result.join('|');
+                    console.log(finalstr);
                     that.$axios.post('/api/saveUserTemplate', { //最终保存结果
                         member_id: window._member_id,
                         tuId: that.params.tuId,
@@ -322,7 +350,6 @@
             height: 1rem;
             border-radius: 1rem;
             text-align: right;
-            
             background: #fff;
             font-size: 0.75rem;
             font-family: 'PingFangSC-Regular';
@@ -330,7 +357,7 @@
             color: rgba(50, 182, 230, 1);
             position: absolute;
             top: 0;
-            left:6.5%;
+            left: 6.5%;
             z-index: 10;
         }
     }
