@@ -173,14 +173,14 @@ const router = new Router({
         title: '关联家人'
       },
       component: associatedFamilyR
-    },  {
+    }, {
       path: '/additionInfo',
       name: 'additionInfo',
       meta: {
         title: '关联备注'
       },
       component: additionInfo
-    },{
+    }, {
       path: '/associationRequest/:phone',
       name: 'associationRequest',
       meta: {
