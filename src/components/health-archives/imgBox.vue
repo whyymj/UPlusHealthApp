@@ -22,7 +22,7 @@
         methods: {
             toReport() {
                 var that = this;
-                console.log('meta', this.meta, window._member_id == '');
+                
                 this.goPages(this.meta)
             },
             async goPages(item) {

@@ -2,10 +2,10 @@
     <div class='myquestions'>
         <h1>{{list.title}}</h1>
         <table>
-            <tr v-for='(item,index) in list.options' :key='index' :style="{background:index%2==0?'#fff':'rgba(250,250,250,1)'}">
+            <tr :class='type==1?"questionListRadio":"questionListCheckbox"' v-for='(item,index) in list.options' :key='index' :style="{background:index%2==0?'#fff':'rgba(250,250,250,1)'}" @click='selectoption(index)'>
                 <td class="lefttd">{{item.lab}}</td>
-                <td class='righttd' >
-                    <p @click='closeReInit'>
+                <td class='righttd'>
+                    <p>
                         <el-radio v-model="radio" :label="index" v-if='type==1'></el-radio>
                         <el-checkbox v-model="checkbox" :label="index" @change='selectcheckbox' v-else></el-checkbox>
                     </p>
@@ -22,16 +22,26 @@
     export default {
         props: ['list', 'id', 'total'],
         methods: {
+            selectoption(index) {
+                if (this.type == 1) {
+                    this.radio = index
+                } else {
+                    var tmp = this.checkbox.indexOf(index);
+                    if (tmp == -1) {
+                        this.checkbox.push(index)
+                    } else if (tmp >= 0) {
+                        this.checkbox.splice(tmp, 1);
+                    }
+                    this.selectcheckbox();
+                }
+                bus.$emit('closeReInitButton', this.id);//关闭重新开始按钮
+            },
             selectcheckbox() {
                 var that = this;
                 this.$emit('selectQuestion', {
                     questnum: that.id,
                     option: that.checkbox
                 })
-            },
-            closeReInit() {
-
-                bus.$emit('closeReInitButton',this.id);
             }
         },
         data() {
@@ -46,6 +56,7 @@
         },
         watch: {
             radio() {
+                
                 if (this.type == 1) {
                     var that = this;
                     this.$emit('selectQuestion', {
@@ -102,8 +113,8 @@
         table {
             width: 100%;
             td {
-                height: 2rem;
-                line-height: 2rem;
+                height: 2.2rem;
+                line-height: 2.2rem;
                 position: relative;
                 padding: 0 1rem;
                 font-size: 0.75rem;
