@@ -34,7 +34,7 @@
                     }
                     this.selectcheckbox();
                 }
-                bus.$emit('closeReInitButton', this.id);//关闭重新开始按钮
+                bus.$emit('closeReInitButton', this.id); //关闭重新开始按钮
             },
             selectcheckbox() {
                 var that = this;
@@ -56,7 +56,6 @@
         },
         watch: {
             radio() {
-                
                 if (this.type == 1) {
                     var that = this;
                     this.$emit('selectQuestion', {
@@ -155,19 +154,24 @@
                         span,
                         .el-radio__inner {
                             position: absolute;
+                            -webkit-box-sizing: border-box;
                             box-sizing: border-box;
                             border: 0;
-                            top: 0;
-                            left: 0;
-                            width: 100%;
-                            height: 100%;
+                            top: 0.1rem;
+                            left: 0.1rem;
+                            width: 0.9rem;
+                            height: 0.9rem;
                             bottom: 0;
                             right: 0;
-                            margin: auto;
+                            /* margin: auto; */
                             input {
                                 width: 100%;
                                 height: 100%;
                             }
+                        }
+                        .el-radio__inner::after {
+                            width: 0;
+                            height: 0;
                         }
                     }
                     .el-checkbox {
