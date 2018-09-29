@@ -1,4 +1,20 @@
-<!DOCTYPE html><html><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1,minimum-scale=1"><meta name=referrer content=no-referrer><meta name=renderer content=webkit><meta name=format-detection content="telephone=no"><meta name=msapplication-tap-highlight content=no><title></title><script src=/static/config/cordova.js></script><script src=/static/config/HealthKit.js></script><link href=//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css rel=stylesheet><script src=/static/js/vconsole.min.js></script><script>// init vConsole
+<!DOCTYPE html><html><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1,minimum-scale=1"><meta name=referrer content=no-referrer><meta name=renderer content=webkit><meta name=format-detection content="telephone=no"><meta name=msapplication-tap-highlight content=no><title></title><script>// 判断是否是ios系统
+    var u = navigator.userAgent,
+      app = navigator.appVersion;
+    var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //g
+    var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+
+    if (isIOS) {
+      var script = document.createElement("script");
+      // onload fires even when script fails loads with an error.
+      script.src = '/static/ios/cordova.js';
+      document.head.appendChild(script);
+    } else {
+      var script = document.createElement("script");
+      // onload fires even when script fails loads with an error.
+      script.src = '/static/andriod/cordova.js';
+      document.head.appendChild(script);
+    }</script><link href=//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css rel=stylesheet><script src=/static/js/vconsole.min.js></script><script>// init vConsole
     var vConsole = new VConsole();</script><link rel=stylesheet href=https://use.fontawesome.com/releases/v5.1.0/css/all.css integrity=sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt crossorigin=anonymous><script type=text/javascript>!function (e, t, n, g, i) { e[i] = e[i] || function () { (e[i].q = e[i].q || []).push(arguments) }, n = t.createElement("script"), tag = t.getElementsByTagName("script")[0], n.async = 1, n.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + g, tag.parentNode.insertBefore(n, tag) }(window, document, "script", "assets.growingio.com/op/2.0/gio.js", "gio");
     gio('init', '8e09ee54efee37b0',
       {
@@ -9,4 +25,4 @@
       });
 
     //put your custom page code here
-    gio('send');</script><link href=/static/css/app.5654ab4a0d83c48a451f5fd726686c2e.css rel=stylesheet></head><body><div id=app></div><script></script><script type=text/javascript src=/static/js/manifest.956026678c8db83ee2af.js></script><script type=text/javascript src=/static/js/vendor.5355061dd808d2da58ac.js></script><script type=text/javascript src=/static/js/app.89e6af17fa670487971b.js></script></body></html>
+    gio('send');</script><link href=/static/css/app.af480afbab98071ea6387a07c60b25ec.css rel=stylesheet></head><body><div id=app></div><script src=/static/config/HealthKit.js></script><script type=text/javascript src=/static/js/manifest.2049f766e029629e6b53.js></script><script type=text/javascript src=/static/js/vendor.e9153d90bf1aa771626a.js></script><script type=text/javascript src=/static/js/app.9386cd45974789feceab.js></script></body></html>
