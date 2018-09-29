@@ -11,6 +11,26 @@
   <meta name="msapplication-tap-highlight" content="no" />
   <title></title>
   <script>
+    function loadmore() {
+      var script = document.createElement("script");
+      // onload fires even when script fails loads with an error.
+      script.src = '/static/config/HealthKit.js';
+      document.head.appendChild(script);
+
+      script = document.createElement("script");
+      // onload fires even when script fails loads with an error.
+      script.src = '/static/config/Camera.js';
+      document.head.appendChild(script);
+      script = document.createElement("script");
+      // onload fires even when script fails loads with an error.
+      script.src = '/static/config/CameraConstants.js';
+      document.head.appendChild(script);
+      script = document.createElement("script");
+      // onload fires even when script fails loads with an error.
+      script.src = '/static/config/CameraPopoverOptions.js';
+      document.head.appendChild(script);
+
+    }
     // 判断是否是ios系统
     var u = navigator.userAgent,
       app = navigator.appVersion;
@@ -21,17 +41,16 @@
       var script = document.createElement("script");
       // onload fires even when script fails loads with an error.
       script.src = '/static/ios/cordova.js';
+      script.onload = loadmore;
       document.head.appendChild(script);
     } else {
       var script = document.createElement("script");
       // onload fires even when script fails loads with an error.
       script.src = '/static/andriod/cordova.js';
+      script.onload = loadmore;
       document.head.appendChild(script);
     }
-    script = document.createElement("script");
-    // onload fires even when script fails loads with an error.
-    script.src = '/static/config/HealthKit.js';
-    document.head.appendChild(script);
+
 
   </script>
   <!-- <script src="/static/config/cordova.js"></script> -->
@@ -66,9 +85,9 @@
 <body>
   <div id="app"></div>
   <!-- built files will be auto injected -->
-  <script src="/static/config/Camera.js"></script>
+  <!-- <script src="/static/config/Camera.js"></script>
   <script src="/static/config/CameraConstants.js"></script>
-  <script src="/static/config/CameraPopoverOptions.js"></script>
+  <script src="/static/config/CameraPopoverOptions.js"></script> -->
   <!-- <script src="/static/config/HealthKit.js"></script> -->
 </body>
 

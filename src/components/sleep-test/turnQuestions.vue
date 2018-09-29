@@ -188,22 +188,17 @@
             this.params = this.$route.query;
             this.tuId = this.params.tuId;
             document.getElementsByClassName('turnQuestions')[0].onclick = function(e) {
-                var len = e.path.length;
-                var item = '';
+                var item = e.target || e.srcElement;
                 if (!that.turningQuestoin) {
                     that.turningQuestoin = true;
                     clearTimeout(that.turnQuestBar);
                     that.turnQuestBar = '';
-                    for (var i = 0; i < len; i++) {
-                        item = e.path[i];
-                        if (item.className === 'questionListRadio' || item.className === 'nextbut') {
-                            that.next(function() {
-                                that.turnQuestBar = setTimeout(function() {
-                                    that.turningQuestoin = false;
-                                }, 500)
-                            });
-                            break;
-                        }
+                    if (item.className.indexOf('questionListRadio') != -1 || item.className.indexOf('nextbut') != -1) {
+                        that.next(function() {
+                            that.turnQuestBar = setTimeout(function() {
+                                that.turningQuestoin = false;
+                            }, 500)
+                        });
                     }
                     if (!that.turnQuestBar) {
                         that.turnQuestBar = setTimeout(function() {

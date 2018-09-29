@@ -94,6 +94,7 @@
 		},
 		data() {
 			return {
+				createdList:[],
 				showPrivacy: true,
 				showFirstLogin: false,
 				showMyLoadingModal: true,

@@ -2,8 +2,8 @@
     <div class='myquestions'>
         <h1>{{list.title}}</h1>
         <table>
-            <tr :class='type==1?"questionListRadio":"questionListCheckbox"' v-for='(item,index) in list.options' :key='index' :style="{background:index%2==0?'#fff':'rgba(250,250,250,1)'}" @click='selectoption(index)'>
-                <td class="lefttd">{{item.lab}}</td>
+            <tr v-for='(item,index) in list.options' :key='index' :style="{background:index%2==0?'#fff':'rgba(250,250,250,1)'}" @click='selectoption(index)'>
+                <td class="lefttd" :class='type==1?"questionListRadio":"questionListCheckbox"'>{{item.lab}}</td>
                 <td class='righttd'>
                     <p>
                         <el-radio v-model="radio" :label="index" v-if='type==1'></el-radio>
@@ -111,6 +111,11 @@
         overflow: hidden;
         table {
             width: 100%;
+            tr {
+                position: relative;
+                overflow: hidden;
+                height:2.2rem;
+            }
             td {
                 height: 2.2rem;
                 line-height: 2.2rem;
@@ -220,7 +225,9 @@
             }
             .lefttd {
                 text-align: left;
-                width: 80%;
+                position: absolute;
+                z-index: 1000;
+                width: 100%;
             }
             .righttd {
                 text-align: right;
