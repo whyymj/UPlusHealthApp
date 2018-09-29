@@ -65,57 +65,64 @@
                 </div>
             </div>
             <!-- 生日选择 -->
-            <mt-popup v-model="birthday_picker" position="bottom">
-                <div style='width:18.75rem;'>
-                    <ul class=' confirmbutton confirm_birthday'>
-                        <li @click="cancel('birthday')">取消</li>
-                        <li @click="confirm('birthday')">确认</li>
-                    </ul>
-                    <mt-picker :slots="slots1" @change="changeYears"></mt-picker>
-                    <mt-picker :slots="slots2" @change="changeMonths"></mt-picker>
-                    <mt-picker :slots="slots3" @change="changeDates"></mt-picker>
-                    <ul class='date_title'>
-                        <li>年</li>
-                        <li>月</li>
-                        <li>日</li>
-                    </ul>
-                </div>
-            </mt-popup>
+            <div @touchmove.prevent>
+                <mt-popup v-model="birthday_picker" position="bottom">
+                    <div style='width:18.75rem;'>
+                        <ul class=' confirmbutton confirm_birthday'>
+                            <li @click="cancel('birthday')">取消</li>
+                            <li @click="confirm('birthday')">确认</li>
+                        </ul>
+                        <mt-picker :slots="slots1" @change="changeYears"></mt-picker>
+                        <mt-picker :slots="slots2" @change="changeMonths" v-if='reloadMonth'></mt-picker>
+                        <mt-picker :slots="slots3" @change="changeDates" v-if='relaodDate'></mt-picker>
+                        <span class="date_title date_title1">年</span>
+                        <span class="date_title date_title2">月</span>
+                        <span class="date_title date_title3">日</span>
+                    </div>
+                </mt-popup>
+            </div>
             <!-- 性别选择 -->
-            <el-dialog title="性别" :visible.sync="sex_radio" :modal-append-to-body='false' width='95%'>
-                <div class='sex_box'>
-                    <ul>
-                        <li style='border-bottom:1px solid #eee;' class='sex_li' :class='{active:sextmp==0}' @click='confirm_sex(0)'>男</li>
-                        <li @click='confirm_sex(1)' class='sex_li' :class='{active:sextmp==1}'>女</li>
-                    </ul>
-                </div>
-                <div class="button" @click="confirm('sex')">确定</div>
-            </el-dialog>
+            <div @touchmove.prevent>
+                <el-dialog title="性别" :visible.sync="sex_radio" :modal-append-to-body='false' width='95%'>
+                    <div class='sex_box'>
+                        <ul>
+                            <li style='border-bottom:1px solid #eee;' class='sex_li' :class='{active:sextmp==0}' @click='confirm_sex(0)'>男</li>
+                            <li @click='confirm_sex(1)' class='sex_li' :class='{active:sextmp==1}'>女</li>
+                        </ul>
+                    </div>
+                    <div class="button" @click="confirm('sex')">确定</div>
+                </el-dialog>
+            </div>
             <!-- 身高选择 -->
-            <mt-popup v-model="height_picker" class='height_picker' position="bottom">
-                <div style='width:18.75rem;position:relative;overflow:hidden;'>
-                    <ul class=' confirmbutton confirm_birthday'>
-                        <li @click="cancel('height')">取消</li>
-                        <li @click="confirm('height')">确认</li>
-                    </ul>
-                    <span class="height_unit">厘米</span>
-                    <mt-picker :slots="tallarr" @change="select_tall"></mt-picker>
-                </div>
-            </mt-popup>
-            <mt-popup v-model="weight_picker" class='weight_picker' position="bottom">
-                <div style='width:18.75rem;position:relative;overflow:hidden;'>
-                    <ul class=' confirmbutton confirm_birthday'>
-                        <li @click="cancel('weight')">取消</li>
-                        <li @click="confirm('weight')">确认</li>
-                    </ul>
-                    <span class="weight_unit">公斤</span>
-                    <mt-picker :slots="weightarr1" @change="select_weight1"></mt-picker>
-                    <mt-picker :slots="weightarr2" @change="select_weight2"></mt-picker>
-                </div>
-            </mt-popup>
+            <div @touchmove.prevent>
+                <mt-popup v-model="height_picker" class='height_picker' position="bottom">
+                    <div style='width:18.75rem;position:relative;overflow:hidden;'>
+                        <ul class=' confirmbutton confirm_birthday'>
+                            <li @click="cancel('height')">取消</li>
+                            <li @click="confirm('height')">确认</li>
+                        </ul>
+                        <span class="height_unit">厘米</span>
+                        <mt-picker :slots="tallarr" @change="select_tall"></mt-picker>
+                    </div>
+                </mt-popup>
+            </div>
+            <div @touchmove.prevent>
+                <mt-popup v-model="weight_picker" class='weight_picker' position="bottom">
+                    <div style='width:18.75rem;position:relative;overflow:hidden;'>
+                        <ul class=' confirmbutton confirm_birthday'>
+                            <li @click="cancel('weight')">取消</li>
+                            <li @click="confirm('weight')">确认</li>
+                        </ul>
+                          <span class="weightunit weightunit1">.</span>
+                        <span class="weightunit weightunit2">公斤</span>
+                        <mt-picker :slots="weightarr1" @change="select_weight1"></mt-picker>
+                        <mt-picker :slots="weightarr2" @change="select_weight2"></mt-picker>
+                    </div>
+                </mt-popup>
+            </div>
             <myLoadingModal :show='showMyLoadingModal'></myLoadingModal>
         </div>
-        <div class="bottom">
+        <div class="bottom" v-show="!sex_radio&&!birthday_picker&&!height_picker&&!weight_picker">
             <div :class="{ 'bottom_text':true, 'bottom_text_bg': !isSave}" @click="save">完成</div>
         </div>
     </div>
@@ -130,6 +137,8 @@
         },
         data() {
             return {
+                reloadMonth: true,
+                relaodDate: true,
                 showMyLoadingModal: true,
                 weight_picker: false,
                 height_picker: false,
@@ -183,7 +192,10 @@
                 isSave: true, //保存按钮
                 route: '',
                 disease: '',
-                allergy: ''
+                allergy: '',
+                thisYear: '',
+                thisMonth: '',
+                today: '',
             };
         },
         watch: {
@@ -240,9 +252,9 @@
             var months = [];
             var tall = [];
             var days = [];
-            var thisYear = new Date().getFullYear();
-            var thisMonth = new Date().getMonth() + 1;
-            var today = new Date().getDate();
+            this.thisYear = new Date().getFullYear();
+            this.thisMonth = new Date().getMonth() + 1;
+            this.today = new Date().getDate();
             var weightarr = [];
             for (var i = 200; i > 1; i--) {
                 weightarr.push(i)
@@ -254,13 +266,13 @@
                 textAlign: "center",
                 defaultIndex: 125
             }];
-            for (var i = thisYear; i >= 1900; i--) {
+            for (var i = this.thisYear; i >= 1900; i--) {
                 years.push(i);
             }
-            for (var i = thisMonth; i > 0; i--) {
+            for (var i = this.thisMonth; i > 0; i--) {
                 months.push(i > 9 ? i : '0' + i);
             }
-            for (var i = today; i > 0; i--) {
+            for (var i = this.today; i > 0; i--) {
                 days.push(i > 9 ? i : '0' + i)
             }
             for (var i = 250; i > 100; i--) {
@@ -291,7 +303,7 @@
                 className: "slot3",
                 textAlign: "center"
             }];
-            this.birthdayarr = [thisYear, thisMonth, today];
+            this.birthdayarr = [this.thisYear, this.thisMonth, this.today];
             this.tall = userinfo.height + '厘米';
             this.weight = userinfo.weight + '公斤';
             this.birthday = userinfo.birthday.replace('-', '年').replace('-', '月');
@@ -399,7 +411,7 @@
             })
         },
         methods: {
-              clickAllergyHistory(e) {
+            clickAllergyHistory(e) {
                 this.allergyHistory = !this.allergyHistory;
             },
             clickChronDiseaseHistory(e) {
@@ -481,21 +493,54 @@
             },
             changeYears(picker, values) {
                 this.birthdayarr[0] = values[0];
+                var arr = [];
+                for (var i = this.thisMonth; i > 0; i--) {
+                    arr.push(i > 9 ? i : ('0' + i));
+                }
+                var months = values[0] == this.thisYear ? arr : [12, 11, 10, '09', '08', '07', '06', '05', '04', '03', '02', '01'];
                 var days = this.getMonthDate(this.birthdayarr[0], this.birthdayarr[1] * 1).reverse().map(function(item, index) {
                     return item.date > 9 ? item.date : '0' + item.date;
                 })
-                this.slots3 = [{
-                    flex: 1,
-                    values: days,
-                    className: "slot3",
-                    textAlign: "center"
-                }];
+                var that = this;
+                if (this.reloadMonth) {
+                    this.reloadMonth = false;
+                    this.relaodDate = false;
+                    this.$nextTick(function() {
+                        that.slots2 = [{
+                            flex: 1,
+                            values: months,
+                            className: "slot3",
+                            textAlign: "center"
+                        }];
+                        that.slots3 = [{
+                            flex: 1,
+                            values: days,
+                            className: "slot3",
+                            textAlign: "center"
+                        }];
+                        this.reloadMonth = true;
+                        this.relaodDate = true;
+                    })
+                }
             },
             changeMonths(picker, values) {
                 this.birthdayarr[1] = values[0];
                 var days = this.getMonthDate(this.birthdayarr[0], this.birthdayarr[1] * 1).reverse().map(function(item, index) {
                     return item.date > 9 ? item.date : '0' + item.date;
                 })
+                var that = this;
+                if (this.relaodDate) {
+                    this.relaodDate = false;
+                    this.$nextTick(function() {
+                        that.slots3 = [{
+                            flex: 1,
+                            values: days,
+                            className: "slot3",
+                            textAlign: "center"
+                        }];
+                        this.relaodDate = true;
+                    })
+                }
                 this.slots3 = [{
                     flex: 1,
                     values: days,
@@ -596,12 +641,17 @@
 <style lang="scss">
     @import "./healthEntryMy.scss";
     .healthEntryFamilyCon {
+        .picker-selected {
+            font-size: 22px;
+            font-family: 'PingFangSC-Semibold';
+            font-weight: 600;
+            color: rgba(34, 131, 226, 1);
+        }
         .bottom {
             width: 18.75rem;
             height: 2.6rem;
             text-align: center;
-            z-index: 9999;
-            //  margin-top:1rem;
+            z-index: 9999; //  margin-top:1rem;
             position: fixed;
             left: 0;
             bottom: 0;
@@ -681,7 +731,7 @@
                 width: 2.5rem;
                 font-size: 0.8rem;
                 font-family: 'PingFangSC-Regular';
-                font-weight: 400;
+                font-weight: 600;
                 color: rgba(51, 51, 51, 1);
             }
         }
@@ -718,6 +768,8 @@
                 overflow: hidden;
                 li {
                     width: 100%;
+                    font-size: 0.8rem;
+                    font-weight: 600;
                     height: 50%;
                     box-sizing: border-box;
                 }
@@ -760,34 +812,47 @@
             right: 0;
             margin: auto;
         }
-        .date_title {
-            height: 2rem;
-            width: 100%;
-            float: left;
-            li {
-                width: 33.3%;
-                height: 100%;
-                text-align: center;
-                float: left;
-                line-height: 2rem;
-                font-size: 0.7rem;
-                font-weight: 600;
-                font-family: "PingFangSC-Regular";
+      .date_title {
+            height: 36px;
+            line-height: 32px;
+            position: absolute;
+            bottom: 72px;
+            font-size: 0.8rem;
+            font-family: 'PingFangSC-Regular';
+            font-weight: 600;
+            color: rgba(51, 51, 51, 1);
+            z-index: 100;
+            &.date_title1 {
+                left: 27%
+            }
+            &.date_title2 {
+                left: 57%
+            }
+            &.date_title3 {
+                left: 90%
             }
         }
         .weight_picker {
             width: 18.75rem;
-            .weight_unit {
+           .weightunit {
+                height: 36px;
+                line-height: 34px;
                 position: absolute;
-                bottom: 81px;
-                right: 1.1rem;
-                height: 1rem;
-                line-height: 1rem;
-                width: 2.5rem;
+                bottom: 72px;
                 font-size: 0.8rem;
                 font-family: 'PingFangSC-Regular';
-                font-weight: 400;
+                font-weight: 600;
                 color: rgba(51, 51, 51, 1);
+                z-index: 100;
+                &.weightunit1 {
+                    left: 49%;
+                    font-size: 22px;
+                    color: #2283E2;
+                    font-weight: 700;
+                }
+                &.weightunit2 {
+                    left: 80%;
+                }
             }
             .picker {
                 width: 50%;
@@ -818,6 +883,7 @@
         .sex_li.active {
             color: #32b6e6;
             font-weight: 600;
+               font-size: 1rem;
         }
     }
 </style>

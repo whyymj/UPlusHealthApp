@@ -3,7 +3,7 @@
         <div class="button nearest" :class="{active:active==0}" @click='getdata(0)'>最近七次</div>
         <div class="button week" :class="{active:active==1}" @click='getdata(1)'>周</div>
         <!-- <div class="button month" :class="{active:active==2}" @click='getdata(2)'>月</div>
-                                                                                                                                                                                                                                                        <div class="button year" :class="{active:active==3}" @click='getdata(3)'>年</div> -->
+                                                                                                                                                                                                                                                                        <div class="button year" :class="{active:active==3}" @click='getdata(3)'>年</div> -->
         <div id='main' ref='echarts'>
         </div>
         <div class="legend">
@@ -820,13 +820,16 @@
                             endH = endH > 24 ? endH - 24 : endH;
                             endH = endH > 9 ? endH : '0' + endH;
                             endM = endM > 9 ? endM : '0' + endM;
-                            return time + '<br/>' + tar.seriesName + ' : ' + tar.value + '小时' + '<span style="width:8px;height:8px;border-radius:50%;background:#2283E2;display:inline-block;margin:0 3px 0 10px;border:1px solid #fff;"></span>' + startH + ':' + startM + '<span style="width:8px;height:8px;border-radius:50%;background:#F5B616;display:inline-block;margin:0 3px 0 10px;border:1px solid #fff;"></span>' + endH + ":" + endM;
+                           
+                            if (isNaN(endH) || isNaN(startH) || isNaN(startM) || isNaN(endM)) {} else {
+                                return time + '<br/>' + tar.seriesName + ' : ' + tar.value + '小时' + '<span style="width:8px;height:8px;border-radius:50%;background:#2283E2;display:inline-block;margin:0 3px 0 10px;border:1px solid #fff;"></span>' + startH + ':' + startM + '<span style="width:8px;height:8px;border-radius:50%;background:#F5B616;display:inline-block;margin:0 3px 0 10px;border:1px solid #fff;"></span>' + endH + ":" + endM;
+                            }
                         },
                         position: function(pos, params, el, elRect, size) {
                             var obj = {
                                 top: 40
                             };
-                            obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30;
+                            obj[['left', 'right'][+(pos[0] > size.viewSize[0] / 2)]] = 30;
                             return obj;
                         },
                     },
@@ -1025,7 +1028,7 @@
         position: relative;
         margin: auto;
         margin-top: 0.5rem;
-        border-radius:0.2rem;
+        border-radius: 0.2rem;
         .button {
             z-index: 1000;
             position: absolute;
@@ -1100,11 +1103,11 @@
         .scale {
             width: 1rem;
             height: 1rem;
-            margin:0.5rem;
+            margin: 0.5rem;
             position: absolute;
             top: 0;
             right: 0;
-            z-index:1000;
+            z-index: 1000;
         }
     }
 </style>

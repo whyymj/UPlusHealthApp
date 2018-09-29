@@ -3,7 +3,7 @@
 		<div class="button nearest" :class="{active:active==0}" @click='getdata(0)'>最近七次</div>
 		<div class="button week" :class="{active:active==1}" @click='getdata(1)'>周</div>
 		<!-- <div class="button month" :class="{active:active==2}" @click='getdata(2)'>月</div>
-																							<div class="button year" :class="{active:active==3}" @click='getdata(3)'>年</div> -->
+																								<div class="button year" :class="{active:active==3}" @click='getdata(3)'>年</div> -->
 		<div id='main2' ref='echarts'>
 		</div>
 		<div class="legend">
@@ -502,8 +502,9 @@
 						that.$axios.get('/static/testData/getByWeek.json').then(function(res) {
 							if (res.data.code === 'C0000') {
 								var list = res.data.data.map(function(item, index) {
-									newitem.create_date = newitem.date;
 									var newitem = item;
+									newitem.create_date = newitem.date;
+									
 									newitem.date = new Date(item.create_date.replace('-', '/')).getDay() - 1;
 									if (newitem.date == -1) {
 										newitem.date = 6;
@@ -744,13 +745,19 @@
 							endH = endH > 24 ? endH - 24 : endH;
 							endH = endH > 9 ? endH : '0' + endH;
 							endM = endM > 9 ? endM : '0' + endM;
-							return time + '<br/>' + tar.seriesName + ' : ' + tar.value + '小时' + '<span style="width:8px;height:8px;border-radius:50%;background:#2283E2;display:inline-block;margin:0 3px 0 10px;border:1px solid #fff;"></span>' + startH + ':' + startM + '<span style="width:8px;height:8px;border-radius:50%;background:#F5B616;display:inline-block;margin:0 3px 0 10px;border:1px solid #fff;"></span>' + endH + ":" + endM;
+							endH = isNaN(endH) ? '' : endH;
+							startH = isNaN(startH) ? '' : startH;
+							startM = isNaN(startM) ? '' : startM;
+							endM = isNaN(endM) ? '' : endM;
+						  if (isNaN(endH) || isNaN(startH) || isNaN(startM) || isNaN(endM)) {} else {
+                                return time + '<br/>' + tar.seriesName + ' : ' + tar.value + '小时' + '<span style="width:8px;height:8px;border-radius:50%;background:#2283E2;display:inline-block;margin:0 3px 0 10px;border:1px solid #fff;"></span>' + startH + ':' + startM + '<span style="width:8px;height:8px;border-radius:50%;background:#F5B616;display:inline-block;margin:0 3px 0 10px;border:1px solid #fff;"></span>' + endH + ":" + endM;
+                            }
 						},
 						position: function(pos, params, dom, rect, size) {
 							var obj = {
 								right: -70
 							};
-							obj[['top', 'bottom'][+(pos[1] < size.viewSize[1] / 2)]] = 120;
+							obj[['top', 'bottom'][+(pos[1] > size.viewSize[1] / 2)]] = 120;
 							return obj;
 						}
 					},

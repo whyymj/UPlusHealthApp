@@ -4,7 +4,7 @@
         <p class="tips-r" :class='{active:activebox}' v-if="position=='right'">{{tips}}</p>
         <p class="tips" :class='{active:activebox}' v-else>{{tips}}</p>
         <div class='box' :class='{active:activebox}' :style="{background:bgcolor,width:boxW,height:boxW}" @click='toReport'><i :class='[icon]' :style='{color:color}'>
-                <i class="path2" v-if='icon=="ico-sleep_icon"'></i><i class="path3" v-if='icon=="ico-sleep_icon"'></i><i class="path4" v-if='icon=="ico-sleep_icon"'></i><i class="path5" v-if='icon=="ico-sleep_icon"'></i></i><span :style="{color:color}">{{meta.moudle_name}}</span></div>
+        <i class="path2" v-if='icon=="ico-sleep_icon"' style='font-size:1.3rem'></i><i class="path3" style='font-size:1.3rem' v-if='icon=="ico-sleep_icon"'></i><i class="path4" style='font-size:1.3rem' v-if='icon=="ico-sleep_icon"'></i><i style='font-size:1.3rem' class="path5" v-if='icon=="ico-sleep_icon"'></i></i><span :style="{color:color}">{{meta.moudle_name}}</span></div>
         <div class='detail' v-if='icon!="ico-sleep_icon"'><span class='cont' :style="{display:display}">{{meta.value}}</span><span class='unit' :style="{display:display}">{{unit}}</span></div>
         <!-- 下面是睡眠时间的显示 -->
         <div class='detail sleepdetail' v-else><span class='cont' :style="{display:display}">{{Math.floor(meta.value/60)}}<span class='unit' style='font-weight:600' :style="{display:display}">小时</span></span><span class='cont' :style="{display:display}">{{Math.floor(meta.value%60)}}<span class='unit' style='font-weight:600'  :style="{display:display}">分</span></span>
@@ -22,7 +22,6 @@
         methods: {
             toReport() {
                 var that = this;
-                
                 this.goPages(this.meta)
             },
             async goPages(item) {

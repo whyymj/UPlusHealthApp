@@ -115,6 +115,7 @@
                     right: 1rem;
                     height: 0.9rem;
                     line-height: 0.9rem;
+                    box-sizing: border-box;
                     top: 0;
                     bottom: 0;
                     margin: auto;

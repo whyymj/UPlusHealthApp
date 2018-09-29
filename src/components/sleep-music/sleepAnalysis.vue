@@ -53,7 +53,7 @@
         data() {
             return {
                 isIos: true, //是否是ios机
-                rotateArr: false,
+                rotateArr: true,
                 roting: false,
                 havedata: true, //控制刪除模块按钮的显示
                 show: false,
@@ -106,6 +106,7 @@
         },
         watch: {},
         mounted() {
+            bus.$emit('scalemenu')//默认展开分析表
             var u = navigator.userAgent
             this.isIos = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
             var that = this;

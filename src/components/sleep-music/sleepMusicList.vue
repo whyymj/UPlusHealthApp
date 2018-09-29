@@ -37,7 +37,7 @@
             <div class="page page2" v-show='activeSpan==1'>
                 <musiclist :musiclist='list'></musiclist>
                 <div class="tips">
-                    <h6><img src="/static/sleepMusicList/img3.png" alt="">
+                    <h6><img src="/static/sleepMusicList/img3.svg" alt="">
                         <span>以上服务由寝安提供</span></h6>
                 </div>
             </div>
@@ -694,11 +694,10 @@
                 that.sleepnewslist.push(res.data[arr[1]]); //随机的新闻
                 clearTimeout(that.thisloadingbar);
                 that.showMyLoadingModal = false;
-                that.$nextTick(function() {//直接到达上一次访问的地方
-                    document.getElementsByClassName('page1')[0].scrollTop = localStorage.Uplus_sleepmusiclist_scrollTop ;
+                that.$nextTick(function() { //直接到达上一次访问的地方
+                    document.getElementsByClassName('page1')[0].scrollTop = localStorage.Uplus_sleepmusiclist_scrollTop;
                 })
             }).catch(function(res) {
-                
                 if (process.env.NODE_ENV == 'development') {
                     that.$axios.get('/static/testData/getSleepInfo.json').then(function(res) {
                         that.sleepnewslist = res.data;
@@ -757,6 +756,9 @@
                 img,
                 span {
                     vertical-align: middle;
+                }
+                img{
+                    margin-top:-0.1rem;
                 }
             }
         }

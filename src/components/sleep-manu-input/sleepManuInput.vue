@@ -1,9 +1,11 @@
 <template>
-    <div class="sleepManuInput">
-        <sleeptime :list='items' @getSleepTimes='getSleepTimes'></sleeptime>
-        <sleepquality :quality='quality' :factors='factors' @chooseQuality='chooseQuality' @chooseFactor='chooseFactor'></sleepquality>
+    <div>
+        <div class="sleepManuInput">
+            <sleeptime :list='items' @getSleepTimes='getSleepTimes'></sleeptime>
+            <sleepquality :quality='quality' :factors='factors' @chooseQuality='chooseQuality' @chooseFactor='chooseFactor'></sleepquality>
+            <myLoadingModal :show='showMyLoadingModal'></myLoadingModal>
+        </div>
         <div class="button" :class='{canSubmit:(cansub&&sleepqualityres!=="")}' @click='submitResult'>保存</div>
-        <myLoadingModal :show='showMyLoadingModal'></myLoadingModal>
     </div>
 </template>
 
@@ -208,31 +210,38 @@
 </script>
 
 <style lang='scss' scoped>
+    .button {
+        width: 100%;
+        height: 2.5rem;
+        background: #ccc;
+        line-height: 2.5rem;
+        font-size: 0.8rem;
+        font-family: 'PingFangSC-Regular';
+        color: rgba(255, 255, 255, 1);
+        text-align: center;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        z-index: 100;
+    }
+    .canSubmit {
+        width: 100%;
+        height: 2.5rem;
+        background: #26A6FF;
+        line-height: 2.5rem;
+        font-size: 0.8rem;
+        font-family: 'PingFangSC-Regular';
+        color: rgba(255, 255, 255, 1);
+        text-align: center;
+    }
     .sleepManuInput {
         /* position: fixed; */
         height: 100%;
         width: 100%;
         background: #fff;
+        padding-bottom:2.5rem;
+        overflow: hidden;
+        -webkit-overflow-scrolling: touch;
         /* overflow: auto; */
-        .button {
-            width: 100%;
-            height: 3rem;
-            background: #ccc;
-            line-height: 3rem;
-            font-size: 0.8rem;
-            font-family: 'PingFangSC-Regular';
-            color: rgba(255, 255, 255, 1);
-            text-align: center;
-        }
-        .canSubmit {
-            width: 100%;
-            height: 3rem;
-            background: #26A6FF;
-            line-height: 3rem;
-            font-size: 0.8rem;
-            font-family: 'PingFangSC-Regular';
-            color: rgba(255, 255, 255, 1);
-            text-align: center;
-        }
     }
 </style>
