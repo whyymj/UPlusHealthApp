@@ -151,7 +151,7 @@
                 return (val.year == this.year && val.month == this.month && tmp.getTime() <= new Date().getTime()) ? 1 : 0.5
             },
             opacity2(val) { //判断本周日期，今天以后的为半透明，
-                console.log('ooooooo', val);
+            
                 var tmp = new Date('' + val.year + '/' + val.month + '/' + val.date);
                 var arr = this.today.split("-");
                 if (arr[0] * 1 == val.year * 1 && arr[1] * 1 == val.month * 1 && arr[2] * 1 == val.date * 1) {

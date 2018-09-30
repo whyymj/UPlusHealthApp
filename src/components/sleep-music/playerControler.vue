@@ -90,7 +90,8 @@
                 timerDur: 0,
                 duration: 0,
                 audioSrc: '',
-                showMyLoadingModal: true
+                showMyLoadingModal: true,
+                timeBar: ''
             }
         },
         methods: {
@@ -113,7 +114,7 @@
                 }
                 // 播放音频
                 if (that.my_media && that.my_media.play) {
-                    if (that.position >= that.duration) { //如果是已經播放到最後，就從頭開始
+                    if (that.duration > 0 && that.position >= that.duration-1) { //如果是已經播放到最後，就從頭開始
                         that.position = 0;
                         that.my_media.seekTo(0.001);
                     }
@@ -143,10 +144,6 @@
                     }
                     // 播放音频
                     if (that.my_media && that.my_media.play) {
-                        if (that.position >= that.duration) { //如果是已經播放到最後，就從頭開始
-                            that.position = 0;
-                            that.my_media.seekTo(0.001);
-                        }
                         that.my_media.play();
                         that.playing = true;
                     }
@@ -165,16 +162,17 @@
                             that.my_media.getCurrentPosition(
                                 // success callback
                                 function(position) {
-                                    if (position > 0) {
-                                        that.showMyLoadingModal = false;
-                                        that.position = Math.round(position);
-                                        if (that.position >= that.duration - 1 && that.playing) {
-                                            setTimeout(function() {
-                                                that.playing = false;
-                                                that.position = that.duration;
-                                                that.my_media.pause();
-                                            }, 1000)
-                                        }
+                                    that.showMyLoadingModal = false;
+                                    that.position = Math.round(position);
+                                    if (that.duration > 0 && that.position >= that.duration - 1 && that.playing) {
+                                        that.timeBar = setTimeout(function() {
+                                            that.position = 0;
+                                            that.my_media.seekTo(0);
+                                            that.pauseAudio();
+                                        }, 1000)
+                                    } else if (that.duration > 0 && position < 0) {
+                                        that.position = 0;
+                                        that.my_media.seekTo(0);
                                     }
                                 },
                                 // error callback
@@ -205,12 +203,15 @@
                     var time = that.position + 30;
                     if (that.duration > 0) {
                         time = (time >= that.duration) ? that.duration : time;
-                        if (time == that.duration) {
+                        if (time >= that.duration) {
                             that.my_media.pause();
                             that.playing = false;
+                            that.position = time;
+                            that.my_media.seekTo(time * 1000);
+                        } else {
+                            that.position = time;
+                            that.my_media.seekTo(time * 1000);
                         }
-                        that.position = time;
-                        that.my_media.seekTo(time * 1000);
                     }
                 }
                 this.$$("backThirtySec").onclick = function() {

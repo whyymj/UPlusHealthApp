@@ -36,7 +36,7 @@
       app = navigator.appVersion;
     var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //g
     var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-
+    window.systemTypeIs = isIOS ? 'ios' : 'android';
     if (isIOS) {
       var script = document.createElement("script");
       // onload fires even when script fails loads with an error.

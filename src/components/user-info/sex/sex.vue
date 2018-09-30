@@ -50,7 +50,7 @@
 <style lang='scss' scoped>
     .userinfo_sex {
         position: fixed;
-        top: 0;
+        top: 35%;
         left: 0;
         width: 100%;
         height: 100%;

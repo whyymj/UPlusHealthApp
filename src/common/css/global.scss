@@ -1,10 +1,11 @@
 @import "./variable.scss";
-.wh_mytimepicker {
+
+.wh_userinfo_tall,.wh_userinfo_weight,.wh_mytimepicker,.my_userinfo_birthday{
   .picker-selected {
-      font-size: 22px;
-      color: #26A6FF!important;
-      font-weight: 700;
-  }
+    font-size: 22px;
+    color: #26A6FF!important;
+    font-weight: 700;
+}
 }
 @font-face {
   font-family: 'icomoon';

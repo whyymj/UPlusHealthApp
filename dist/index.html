@@ -23,7 +23,7 @@
       app = navigator.appVersion;
     var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //g
     var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-
+    window.systemTypeIs = isIOS ? 'ios' : 'android';
     if (isIOS) {
       var script = document.createElement("script");
       // onload fires even when script fails loads with an error.
@@ -47,4 +47,4 @@
       });
 
     //put your custom page code here
-    gio('send');</script><link href=/static/css/app.600d6fabfcc9e779eddeda95d0c4c2cc.css rel=stylesheet></head><body><div id=app></div><script type=text/javascript src=/static/js/manifest.93e4fc5cb757dcc3ff68.js></script><script type=text/javascript src=/static/js/vendor.e9153d90bf1aa771626a.js></script><script type=text/javascript src=/static/js/app.15a9a68b08d683000a8d.js></script></body></html>
+    gio('send');</script><link href=/static/css/app.529472e89a72443fd5f66399baff8413.css rel=stylesheet></head><body><div id=app></div><script type=text/javascript src=/static/js/manifest.1326f92658782fa38f11.js></script><script type=text/javascript src=/static/js/vendor.e9153d90bf1aa771626a.js></script><script type=text/javascript src=/static/js/app.5891c5dbc9543e881009.js></script></body></html>

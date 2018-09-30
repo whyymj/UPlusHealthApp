@@ -82,8 +82,7 @@
             bottom: 72px;
         }
         .height_box {
-            border-top: 1px solid #f5f5f5;
-            border-bottom: 1px solid #f5f5f5;
+            
             position: relative;
             margin-top: 7rem;
             .unit {
