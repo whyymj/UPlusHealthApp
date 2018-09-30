@@ -98,7 +98,7 @@
 				showMyLoadingModal: true,
 				show: false,
 				initnum: 0, //初始页
-				maleShow: true,
+				maleShow: false,
 				pagenum: 2,
 				memberID: '',
 				pageindex: 0,
@@ -919,8 +919,8 @@
 			left: 1.2rem;
 		}
 		.temperature-circle-female {
-			top: 4.6rem;
-			left: 1.6rem;
+			top: 5.6rem;
+			left: 1.1rem;
 		}
 		.pressure-circle {
 			top: 9.5rem;
@@ -932,7 +932,7 @@
 		}
 		.ecg-circle {
 			top: 4.5rem;
-			left: 4rem;
+			left: 3.8rem;
 		}
 		.ecg-circle-female {
 			top: 4.5rem;
@@ -944,7 +944,7 @@
 		}
 		.oxygen-circle-female {
 			top: 13.5rem;
-			left: 2.4rem;
+			left: 2.1rem;
 		}
 		.sleep-circle {
 			top: 0.5rem;

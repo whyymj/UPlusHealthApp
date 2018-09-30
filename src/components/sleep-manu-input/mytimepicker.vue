@@ -7,7 +7,7 @@
             </div>
             <div style='width:18.75rem' v-if='popupVisible'>
                 <mt-picker style='width:50%;float:left;' :slots="slots1" @change="onValuesChange1"></mt-picker>
-                <mt-picker style='width:50%;float:left;' :slots="slots2" @change="onValuesChange2"></mt-picker>
+                <mt-picker style='width:50%;float:left;' :slots="slots2" @change="onValuesChange2" v-if='!valuesChangeing'></mt-picker>
             </div>
         </mt-popup>
     </div>
@@ -50,7 +50,7 @@
                     this.hourArr = this.hourArr.sort(function(a, b) {
                         return a - b
                     })
-                    console.log('area>', this.hourArr, this.area);
+                    
                     this.startHour = this.startTime[0].split(':')[0] * 1 || 0; //默认的值
                     this.startMin = this.startTime[0].split(':')[1] * 1 || 0; //默认的值
                     this.endHour = this.endTime[0].split(':')[0] * 1; //默认的值
@@ -89,7 +89,7 @@
                     }];
                     this.slots1 = slots1;
                     this.slots2 = slots2;
-                    console.log('slots>', this.slots1, this.slots2);
+                    
                 }
             },
             cancel() {
@@ -102,7 +102,13 @@
                 this.$emit('confirm', [h > 9 ? h : '0' + h, m > 9 ? m : '0' + m])
             },
             onValuesChange1(picker, values) {
+                var that = this;
+             
                 if (this.area && this.area.length) {
+                    this.valuesChangeing = true;
+                    this.$nextTick(function() {
+                        that.valuesChangeing = false;
+                    })
                     var curHour = values[0] || this.hourArr[0];
                     var startmin = curHour * 60;
                     var flag;
@@ -136,6 +142,7 @@
         },
         data() {
             return {
+                valuesChangeing: false,
                 startTime: [],
                 endTime: [],
                 curHour: -1,

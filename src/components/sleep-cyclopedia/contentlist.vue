@@ -5,8 +5,8 @@
                 <img :src="item.img" alt="" class='bgimg'>
                 <p class="gradientBG"></p>
                 <h6>{{item.title}}</h6>
-                <span>{{item.type||'图文'}}</span>
-                <img :src="turnimg(item.type)" alt="" class='iconimg' v-if='item&&item.indexOf&&item.indexOf("漫画") != -1'>
+                <span>{{item.type}}</span>
+                <img :src="turnimg(item.type)" alt="" class='iconimg' v-if='(typeof item.type=="string")&&item.type.indexOf("漫画") == -1'>
             </li>
         </ul>
     </div>
@@ -49,7 +49,7 @@
         width: 100%;
         overflow: auto;
         margin-top: 0.5rem;
-         -webkit-overflow-scrolling: touch;
+        -webkit-overflow-scrolling: touch;
         h6 {
             position: absolute;
             color: #fff;
@@ -87,7 +87,7 @@
                     position: absolute;
                     top: 0;
                     left: 0;
-                    background: radial-gradient(rgba(0, 0, 0, 0) 40%,  rgba(0, 0, 0, 0.1) 90%, rgba(0, 0, 0, 0.2));
+                    background: radial-gradient(rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.1) 90%, rgba(0, 0, 0, 0.2));
                     /* 标准的语法 */
                 }
                 .iconimg {

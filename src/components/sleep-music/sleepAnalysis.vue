@@ -15,7 +15,7 @@
             <ul class='blocks'>
                 <li v-for='(item,index) in paramslist' :key='index' :style="{float:index%2==1?'right':'left','border-right':index%2==0?'1px solid #F8F8F8':'none','border-top':(index==2||index==3)?'1px solid #F8F8F8':'none'}">
                     <h6>{{item.title}}</h6>
-                    <img src="/static/sleepMusicList/img6.png" alt="" v-if='item.detail!=""' @click='showdetail(item.detail)'>
+                    <img src="/static/sleepMusicList/img6.svg" alt="" v-if='item.detail!=""' @click='showdetail(item.detail)'>
                     <p>
                         <span v-for='(val,key) in item.params' :key='key'>{{val.data}}<span> {{val.unit}} </span></span>
                     </p>
@@ -100,13 +100,11 @@
             },
             contArr() {
                 if (typeof this.detailAnalysis == 'string') {
-                   
                     return this.detailAnalysis.split('<br />');
                 }
             }
         },
-        watch: {
-        },
+        watch: {},
         mounted() {
             var u = navigator.userAgent
             this.isIos = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
@@ -176,6 +174,7 @@
             width: 100%;
             height: 4rem;
             background: #fff;
+            border-radius: 0.2rem;
             h6 {
                 font-size: 0.6rem;
                 font-family: 'PingFangSC-Regular';
@@ -288,6 +287,7 @@
             width: 100%;
             position: relative;
             overflow: hidden;
+            border-radius: 0.2rem;
             li {
                 width: 50%;
                 height: 4rem;

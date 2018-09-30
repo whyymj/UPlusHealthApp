@@ -43,6 +43,7 @@
             width: 15rem;
             position: relative;
             margin: 0 auto 0.6rem;
+            border:none;
             img {
                 width: 5.1rem;
                 height: 4rem;

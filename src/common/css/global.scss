@@ -1,5 +1,11 @@
 @import "./variable.scss";
-
+.wh_mytimepicker {
+  .picker-selected {
+      font-size: 22px;
+      color: #26A6FF!important;
+      font-weight: 700;
+  }
+}
 @font-face {
   font-family: 'icomoon';
   src:  url('../fonts/icomoon.eot?5gc8gh');

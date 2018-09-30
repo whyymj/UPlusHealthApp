@@ -113,7 +113,12 @@
                 }
                 // 播放音频
                 if (that.my_media && that.my_media.play) {
+                    if (that.position >= that.duration) { //如果是已經播放到最後，就從頭開始
+                        that.position = 0;
+                        that.my_media.seekTo(0.001);
+                    }
                     that.my_media.play();
+                    that.playing = true;
                 }
             },
             pauseAudio() {
@@ -138,6 +143,10 @@
                     }
                     // 播放音频
                     if (that.my_media && that.my_media.play) {
+                        if (that.position >= that.duration) { //如果是已經播放到最後，就從頭開始
+                            that.position = 0;
+                            that.my_media.seekTo(0.001);
+                        }
                         that.my_media.play();
                         that.playing = true;
                     }
@@ -159,8 +168,12 @@
                                     if (position > 0) {
                                         that.showMyLoadingModal = false;
                                         that.position = Math.round(position);
-                                        if (that.position >= that.duration-1) {
-                                            that.playing = false;
+                                        if (that.position >= that.duration - 1 && that.playing) {
+                                            setTimeout(function() {
+                                                that.playing = false;
+                                                that.position = that.duration;
+                                                that.my_media.pause();
+                                            }, 1000)
                                         }
                                     }
                                 },
