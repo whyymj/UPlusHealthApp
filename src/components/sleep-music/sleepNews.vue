@@ -30,12 +30,12 @@
         background: #fff;
         margin: 0.5rem auto;
         border-bottom: 1px solid #fff;
-        border-radius: 0.1rem;
+        border-radius: 0.2rem;
         h3 {
             font-size: 0.8rem;
             font-family: 'PingFangSC-Medium';
             color: rgba(17, 17, 17, 1);
-           font-weight: 700;
+            font-weight: 700;
             padding: 1rem 1rem 0.5rem 1rem;
         }
         .newsbox {
@@ -69,7 +69,7 @@
                     margin-right: 0.2rem;
                     padding: 0 0.2rem;
                     border-radius: 0.1rem;
-                    border: 1px solid rgba(200, 200, 200, 1);
+                    // border: 1px solid rgba(200, 200, 200, 1);
                     box-sizing: border-box;
                     font-size: 0.6rem;
                     font-family: 'PingFangSC-Regular';

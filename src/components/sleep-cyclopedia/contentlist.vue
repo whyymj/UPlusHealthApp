@@ -49,6 +49,7 @@
         width: 100%;
         overflow: auto;
         margin-top: 0.5rem;
+         -webkit-overflow-scrolling: touch;
         h6 {
             position: absolute;
             color: #fff;

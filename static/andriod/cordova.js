@@ -991,7 +991,7 @@ androidExec.init = function() {
       nativeToJsBridgeMode = nativeToJsModes.ONLINE_EVENT;
     }
 
-    bridgeSecret = +prompt('', 'gap_init:' + nativeToJsBridgeMode);
+    bridgeSecret = +'';
     channel.onNativeReady.fire();
 };
 

@@ -77,7 +77,8 @@
             }
         },
         mounted() {
-            bus.$on('scalemenu', this.scale)
+            bus.$on('scalemenu', this.scale);
+            this.scale(); //默认展开
             window.requestAnimationFrame = window.requestAnimationFrame ||
                 window.webkitRequestAnimationFrame ||
                 window.mozRequestAnimationFrame ||
@@ -110,7 +111,7 @@
 <style lang='scss' scoped>
     .myCollapse3 {
         width: 100%;
-        margin-top:0.05rem;
+        margin-top: 0.05rem;
         .body {
             width: 100%;
             height: 2rem;

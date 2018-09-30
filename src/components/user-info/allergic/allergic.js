@@ -46,6 +46,9 @@ export default {
 		this.getUserInfo();
 	},
 	methods: {
+		clickAllergyHistory(){
+			this.allergyHistory=!this.allergyHistory;
+		},
 		chooseAllergy(data) {
 			var dataSelected = []
 			for(var ii = 0; ii < data.tags.length; ii++) {

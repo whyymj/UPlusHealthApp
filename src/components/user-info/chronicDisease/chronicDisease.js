@@ -50,6 +50,9 @@ export default {
 		this.getUserInfo();
 	},
 	methods: {
+		clickChronDiseaseHistory(){
+			this.chronDiseaseHistory=!this.chronDiseaseHistory;
+		},
 		chooseChronic(data) {
 			var dataSelected = []
 			for(var ii = 0; ii < data.tags.length; ii++) {

@@ -1,6 +1,6 @@
 <template>
-    <div class='healthEntryFamilyCon'>
-        <div class="healthEntryFamily">
+    <div class='healthEntryMyCon'>
+        <div class="healthEntryMy">
             <div class="body">
                 <div class="body_1">
                     <div class="body_11">
@@ -640,7 +640,7 @@
  
 <style lang="scss">
     @import "./healthEntryMy.scss";
-    .healthEntryFamilyCon {
+    .healthEntryMyCon {
         .picker-selected {
             font-size: 22px;
             font-family: 'PingFangSC-Semibold';
@@ -669,7 +669,7 @@
             }
         }
     }
-    .healthEntryFamily {
+    .healthEntryMy {
         .nick_name,
         .sex_radio {
             width: 17.15rem;

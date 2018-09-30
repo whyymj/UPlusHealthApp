@@ -100,13 +100,14 @@
             },
             contArr() {
                 if (typeof this.detailAnalysis == 'string') {
+                   
                     return this.detailAnalysis.split('<br />');
                 }
             }
         },
-        watch: {},
+        watch: {
+        },
         mounted() {
-            bus.$emit('scalemenu')//默认展开分析表
             var u = navigator.userAgent
             this.isIos = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
             var that = this;
@@ -252,8 +253,7 @@
                 color: rgba(153, 153, 153, 1);
                 position: absolute;
                 top: 2rem;
-                left: 4rem;
-                // width: 4rem;
+                left: 4rem; // width: 4rem;
                 span {
                     font-size: 1.1rem;
                     font-weight: 500!important;

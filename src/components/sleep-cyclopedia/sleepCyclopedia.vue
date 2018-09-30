@@ -139,6 +139,7 @@
 <style lang="scss">
     @import "./sleepCyclopedia.scss";
     .contentContainer {
+         -webkit-overflow-scrolling: touch;
         position: absolute;
         top: 3rem;
         bottom: 2rem;

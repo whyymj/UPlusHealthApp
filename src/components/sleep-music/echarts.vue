@@ -973,7 +973,6 @@
             setTimeout(function() {
                 that.myChart.hideLoading();
             }, 4000)
-            console.log('oooohhhhhh', this.nearestAppleHealthData);
             if (typeof this.nearestAppleHealthData == 'object' && this.nearestAppleHealthData.length && this.nearestAppleHealthData.length > 0) {
                 var that = this;
                 var arr = this.deleteRepeatDate(this.nearestAppleHealthData.map(function(item) {

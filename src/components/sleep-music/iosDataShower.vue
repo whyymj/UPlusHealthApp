@@ -75,8 +75,8 @@
                 var lang = 0;
                 console.log('开始计算sleepHours》》》', this.showdata);
                 if (typeof this.showdata == 'object' && this.showdata.endDate) {
-                    var end = this.showdata.endDate.replace('T', ' ');
-                    var start = this.showdata.startDate.replace('T', ' ');
+                    var end = this.showdata.endDate.replace('-', '/').split('+')[0];
+                    var start = this.showdata.startDate.replace('-', '/').split('+')[0];
                     console.log('end time ', end, 'start time ', start);
                     lang = new Date(end).getTime() - new Date(start).getTime();
                     console.log('获得时长h::', lang, '>>', Math.floor(lang / 3600000));
@@ -85,8 +85,8 @@
             },
             sleepMinutes() {
                 if (typeof this.showdata == 'object' && this.showdata.endDate) {
-                    var end = this.showdata.endDate.replace('T', ' ');
-                    var start = this.showdata.startDate.replace('T', ' ');
+                    var end = this.showdata.endDate.replace('-', '/').split('+')[0];
+                    var start = this.showdata.startDate.replace('-', '/').split('+')[0];
                     var lang = new Date(end).getTime() - new Date(start).getTime();
                     console.log('获得时长m::', lang, '>>', Math.floor(lang / 60000 % 60));
                     return Math.floor(lang / 60000 % 60)
@@ -190,7 +190,7 @@
 
 <style lang='scss' scoped>
     .analysis {
-         border-radius:0.1rem;
+         border-radius:0.2rem;
     }
     .modalContent {
         font-size: 0.7rem;

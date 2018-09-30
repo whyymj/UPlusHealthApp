@@ -687,11 +687,14 @@
 <style lang="scss">
     @import "./healthEntryFamily.scss";
     .healthEntryFamilyCon {
+        .picker-items {
+            font-size: 0.8rem;
+        }
         .picker-selected {
             font-size: 22px;
             font-family: 'PingFangSC-Semibold';
             font-weight: 600;
-            color: rgba(34, 131, 226, 1);
+            color: rgba(34, 131, 226, 1)!important;
         }
         .bottom {
             width: 18.75rem;
@@ -700,7 +703,7 @@
             position: fixed;
             bottom: 0;
             background: #ccc;
-            z-index: 99;
+            z-index: 0;
             .bottom_text {
                 font-size: 0.8rem;
                 width: 100%;
@@ -842,6 +845,7 @@
             text-align: center;
             background: #32b6e6;
             border-radius: 0.3rem;
+            // margin-bottom:1rem;
         }
         .el-dialog__header {
             border-top-left-radius: 0.3rem;

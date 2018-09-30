@@ -1,7 +1,7 @@
 <template>
   <div class="page allergic">
     <div class="body_22">
-      <div class="body_221">你是否有过敏史？</div>
+      <div class="body_221" @click='clickAllergyHistory'>你是否有过敏史？</div>
       <div class="body_222">
         <el-switch  v-model="allergyHistory">
         </el-switch>
@@ -40,6 +40,7 @@
         line-height: 2.3rem;
         padding-top: 0.45rem;
         float: left;
+        width:85%;
       }
       .body_222 {
         position: absolute;

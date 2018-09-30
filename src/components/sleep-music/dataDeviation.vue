@@ -90,12 +90,13 @@
         }
     }
     .dataDeviation {
-         border-radius:0.1rem;
+         border-radius:0.2rem;
         background: #fff;
         width: 17rem;
         height: 5rem;
         margin: 0.5rem auto;
         position: relative;
+        
         h6 {
             font-size: 0.8rem;
             font-family: 'PingFangSC-Medium';

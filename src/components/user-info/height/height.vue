@@ -45,9 +45,10 @@
             for (var i = 250; i > 100; i--) {
                 tall.push(i);
             }
+            console.log(that.params.val == '');
             this.tallarr = [{
                 flex: 1,
-                defaultIndex: 250 - that.params.val.split('厘米')[0],
+                defaultIndex: 250 - (that.params.val!='' ? that.params.val.split('厘米')[0] : 180),
                 values: tall,
                 className: "slot1",
                 textAlign: "center"
@@ -72,14 +73,14 @@
             font-size: 0.8rem;
             font-weight: 500;
         }
-      .borderBottom{
-          width:100%;
-          height:0;
-          position: absolute;
-          border-top:1px solid #eaeaea;
-          left:0;
-          bottom:72px;
-      }
+        .borderBottom {
+            width: 100%;
+            height: 0;
+            position: absolute;
+            border-top: 1px solid #eaeaea;
+            left: 0;
+            bottom: 72px;
+        }
         .height_box {
             border-top: 1px solid #f5f5f5;
             border-bottom: 1px solid #f5f5f5;

@@ -406,8 +406,8 @@
                     }, function(value) {
                         if (that.nearestAppleHealthData === '') { //获取苹果健康最近的数据，用于曲线图展示
                             that.nearestAppleHealthData = value.map(function(item) {
-                                var start = item.startDate.replace('T', ' ').split('+')[0];
-                                var end = item.endDate.replace('T', ' ').split('+')[0];
+                                var start = item.startDate.replace('-', '/').split('+')[0];
+                                var end = item.endDate.replace('-', '/').split('+')[0];
                                 return {
                                     bedTimeLang: null,
                                     create_date: item.endDate.split('T')[0],

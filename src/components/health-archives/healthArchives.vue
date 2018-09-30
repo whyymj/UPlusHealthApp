@@ -20,7 +20,6 @@
 							</li>
 							<!-- 中间人体图 -->
 							<li class="col2">
-				
 								<span v-for='(item,index) in showdata[0]' :key='index+"1"' :style='blink(item)' :class='setClass(item)' @click='scalebox(item)'></span>
 								<span v-for='(item,index) in showdata[1]' :key='index+"2"' :style='blink(item)' :class='setClass(item)' @click='scalebox(item)'></span>
 							</li>
@@ -43,7 +42,6 @@
 								</div>
 							</li>
 							<li class="col2">
-							
 								<span v-for='(item,index) in showdata[2]' :key='index' :style='blink(item)' :class='setClass(item)' @click='scalebox(item)'></span>
 							</li>
 						</ul>
@@ -94,7 +92,7 @@
 		},
 		data() {
 			return {
-				createdList:[],
+				createdList: [],
 				showPrivacy: true,
 				showFirstLogin: false,
 				showMyLoadingModal: true,
@@ -493,6 +491,7 @@
 						}
 					}
 				} catch (err) {
+					
 					console.log(err)
 				}
 			},
@@ -686,7 +685,7 @@
 			}
 		},
 		mounted() {
-			localStorage.Uplus_sleepmusiclist_scrollTop=0;//睡眠报告滚动记录清0
+			localStorage.Uplus_sleepmusiclist_scrollTop = 0; //睡眠报告滚动记录清0
 			window.__retest__ = false;
 			window.localStorage.uplus_sleep_user_info_cache = ''; //个人信息存储清空
 			if (window.localStorage.UPlusAPP_agree_privacyPlan && (window.localStorage.UPlusAPP_agree_privacyPlan == 'true' || window.localStorage.UPlusAPP_agree_privacyPlan == true)) { //存储获取苹果健康数据的权限

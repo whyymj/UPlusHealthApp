@@ -1,7 +1,7 @@
 <template>
   <div class="page chronicDisease">
     <div class="body_22">
-      <div class="body_221">你是否有慢病史？</div>
+      <div class="body_221" @click='clickChronDiseaseHistory'>你是否有慢病史？</div>
       <div class="body_222">
         <el-switch v-model="chronDiseaseHistory">
         </el-switch>
@@ -34,6 +34,7 @@
       position: relative;
       .body_221 {
         font-size: 0.75rem;
+        width:85%;
         font-family: PingFangSC-Regular;
         color: rgba(51, 51, 51, 1);
         line-height: 2.3rem;

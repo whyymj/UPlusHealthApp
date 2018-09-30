@@ -6,6 +6,7 @@
                 <mt-picker :slots="weightarr1" @change="select_weight1"></mt-picker>
                 <mt-picker :slots="weightarr2" @change="select_weight2"></mt-picker>
                 <span class="unit">公斤</span>
+                <span class=" unit unit2">.</span>
             </div>
         </div>
         <div class="save" @click='confirm'>保存</div>
@@ -73,7 +74,7 @@
             var that = this;
             this.params = this.$route.query;
             this.weightWhole[0] = Math.floor((typeof that.params.val == 'string') ? (that.params.val.split('公斤')[0]) : 75);
-            var tmp = (typeof that.params.val == 'string') ? (that.params.val.split('公斤')[0]) : '75.0';
+            var tmp = (typeof that.params.val == 'string' && that.params.val != '') ? (that.params.val.split('公斤')[0]) : '75.0';
             this.weightWhole[1] = tmp.split('.')[1] || 0;
             this.floatnum = this.weightWhole[1];
             var weightarr = [];
@@ -83,7 +84,7 @@
             this.weightarr1 = [{
                 flex: 1,
                 values: weightarr,
-                defaultIndex: 200 - Math.floor((typeof that.params.val == 'string') ? (that.params.val.split('公斤')[0]) : 75),
+                defaultIndex: 200 - Math.floor((typeof that.params.val == 'string' && that.params.val != '') ? (that.params.val.split('公斤')[0]) : 75),
                 className: "slot3",
                 textAlign: "center"
             }];
@@ -110,12 +111,12 @@
         width: 100%;
         height: 100%;
         background: #fff;
-        .css_center{
+        .css_center {
             position: fixed;
             overflow: hidden;
-            top:40%;
-            left:0;
-            transform: translate(0,-50%)
+            top: 40%;
+            left: 0;
+            transform: translate(0, -50%)
         }
         h3 {
             width: 100%;
@@ -142,6 +143,10 @@
                 font-family: PingFangSC-Regular;
                 font-weight: 400;
                 color: rgba(51, 51, 51, 1);
+                &.unit2 {
+                    font-weight: 700;
+                    left: 49%;
+                }
             }
         }
     }

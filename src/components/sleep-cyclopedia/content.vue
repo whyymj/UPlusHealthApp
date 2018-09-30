@@ -50,6 +50,7 @@
         position: fixed;
         width: 100%;
         height: 100%;
+         -webkit-overflow-scrolling: touch;
         top: 0;
         left: 0;
         overflow: auto;
