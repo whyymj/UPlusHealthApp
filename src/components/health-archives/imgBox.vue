@@ -3,10 +3,11 @@
         <p class='shadow' :class='{active:activebox}' :style="{background:bgcolor,width:boxW,height:boxW}"></p>
         <p class="tips-r" :class='{active:activebox}' v-if="position=='right'">{{tips}}</p>
         <p class="tips" :class='{active:activebox}' v-else>{{tips}}</p>
+
         <div class='box' :class='{active:activebox}' :style="{background:bgcolor,width:boxW,height:boxW}" @click='toReport'><i :class='[icon]' :style='{color:color}'><i class="path2" v-if='icon=="ico-sleep_icon"' style='font-size:1.3rem'></i><i class="path3" style='font-size:1.3rem' v-if='icon=="ico-sleep_icon"'></i><i class="path4" style='font-size:1.3rem' v-if='icon=="ico-sleep_icon"'></i><i style='font-size:1.3rem' class="path5" v-if='icon=="ico-sleep_icon"'></i></i><span :style="{color:color}">{{meta.moudle_name}}</span></div>
         <div class='detail' v-if='icon!="ico-sleep_icon"'><span class='cont' :style="{display:display}">{{meta.value}}</span><span class='unit' :style="{display:display}">{{unit}}</span></div>
         <!-- 下面是睡眠时间的显示 -->
-        <div class='detail sleepdetail' v-else><span class='cont' :style="{display:display}">{{Math.floor(meta.value/60)}}<span class='unit' style='font-weight:600' :style="{display:display}">小时</span></span><span class='cont' :style="{display:display}">{{Math.floor(meta.value%60)}}<span class='unit' style='font-weight:600'  :style="{display:display}">分</span></span>
+        <div class='detail sleepdetail' v-else><span class='cont' :style="{display:display}">{{Math.floor(meta.value/60)}}<span class='unit' style='font-weight:700' :style="{display:display}">小时</span></span><span class='cont' :style="{display:display}">{{Math.floor(meta.value%60)}}<span class='unit' style='font-weight:700'  :style="{display:display}">分</span></span>
         </div>
     </div>
 </template>
@@ -175,9 +176,10 @@
         line-height: 1.6rem;
     }
     .tips {
+        text-align: right;
         position: absolute;
         height: 1.3rem;
-        line-height: 1.3rem;
+        line-height: 1.5rem;
         top: 1.6rem;
         background: #ccc;
         left: 68%;
@@ -195,6 +197,7 @@
         backface-visibility: hidden;
         -webkit-backface-visibility: hidden;
         /* Chrome 和 Safari */
+        box-shadow: 0 0 1px #fff;
         width: 0;
         -webkit-transition: width .3s ease-in;
         transition: width .3s ease-in;
@@ -207,9 +210,10 @@
     .tips-r {
         position: absolute;
         height: 1.3rem;
-        line-height: 1.3rem;
+        line-height: 1.5rem;
         top: 1.6rem;
         background: #ccc;
+         box-shadow: 0 0 1px #fff;
         right: 72%;
         width: 4rem;
         border-radius: .15rem;
@@ -221,7 +225,7 @@
         white-space: nowrap;
         overflow: hidden;
         -webkit-transform: perspective(150px) rotateY(15deg);
-        transform: perspective(600px) rotateY(25deg);
+        transform: perspective(400px) rotateY(25deg);
         backface-visibility: hidden;
         -webkit-backface-visibility: hidden;
         /* Chrome 和 Safari */
@@ -237,8 +241,7 @@
         animation: scaleBox 3s;
     }
     .shadow {
-        // width: 2.5666rem;
-        // height: 2.56666rem;
+        
         border-radius: 50%;
         margin: auto;
         position: absolute;
@@ -371,15 +374,15 @@
     }
     .cont {
         font-size: 1.2rem;
-        font-weight: 500;
+        font-weight: 600;
         font-family: 'ArialMT';
         color: #3C3939;
         line-height: 1.4rem;
     }
     .unit {
         font-size: 0.6rem;
-        font-weight: 500;
-        font-family: ArialMT;
+        font-weight: 600;
+        font-family: 'ArialMT';
         color: #B3B3B3;
         line-height: 0.7rem;
     }

@@ -87,7 +87,7 @@
                     position: absolute;
                     top: 0;
                     left: 0;
-                    background: radial-gradient(rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.1) 90%, rgba(0, 0, 0, 0.2));
+                    background: linear-gradient(210deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.08) 10%, rgba(0, 0, 0, 0.05) 15%, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)),linear-gradient(-210deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.08) 10%, rgba(0, 0, 0, 0.05) 15%, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0));
                     /* 标准的语法 */
                 }
                 .iconimg {
