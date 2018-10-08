@@ -571,7 +571,9 @@
 						}
 					}).catch(function(res) {})
 				} catch (err) {
-					if (process.env.NODE_ENV == 'development') {}
+					if (process.env.NODE_ENV == 'development') {
+						
+					}
 				}
 			},
 			async initList() { //获取成员的健康指标列表

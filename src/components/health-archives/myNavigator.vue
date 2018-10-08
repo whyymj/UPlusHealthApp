@@ -37,7 +37,7 @@
                 var that = this;
                 this.active = this.initnum || 0;
                 this.$nextTick(function() {
-                    that.swiper.slideTo(that.initnum || 0, 1000, false)
+                    that.swiper.slideTo(that.initnum || 0, 500, false)
                 })
             }
         },
@@ -50,7 +50,7 @@
                     notNextTick: true,
                     // swiper configs 所有的配置同swiper官方api配置
                     autoplay: 3000,
-                    speed: 200,
+                    speed: 150,
                     // direction : 'vertical',
                     // effect: "coverflow",
                     // loop : true,
@@ -94,7 +94,7 @@
             this.active = this.initnum || 0;
             var that = this;
             this.$nextTick(function() {
-                that.swiper.slideTo(that.initnum || 0, 1000, false)
+                that.swiper.slideTo(that.initnum || 0, 500, false)
             })
         }
     }
