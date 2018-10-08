@@ -74,7 +74,8 @@
                 position: 0,
                 timerDur: 0,
                 duration: 0,
-                audioSrc: ''
+                audioSrc: '',
+                timeBar: ''
             }
         },
         methods: {
@@ -97,7 +98,12 @@
                 }
                 // 播放音频
                 if (that.my_media && that.my_media.play) {
+                    if (that.duration > 0 && that.position >= that.duration - 1) { //如果是已經播放到最後，就從頭開始
+                        that.position = 0;
+                        that.my_media.seekTo(0.001);
+                    }
                     that.my_media.play();
+                    that.playing = true;
                 }
             },
             pauseAudio() {
@@ -140,9 +146,17 @@
                             that.my_media.getCurrentPosition(
                                 // success callback
                                 function(position) {
-                                    if (position > 0) {
-                                        that.showMyLoadingModal = false;
-                                        that.position = Math.round(position);
+                                    that.showMyLoadingModal = false;
+                                    that.position = Math.round(position);
+                                    if (that.duration > 0 && that.position >= that.duration - 1 && that.playing) {
+                                        that.timeBar = setTimeout(function() {
+                                            that.position = 0;
+                                            that.my_media.seekTo(0);
+                                            that.pauseAudio();
+                                        }, 1000)
+                                    } else if (that.duration > 0 && position < 0) {
+                                        that.position = 0;
+                                        that.my_media.seekTo(0);
                                     }
                                 },
                                 // error callback
@@ -172,9 +186,18 @@
                 this.$$("goThirtySec").onclick = function() {
                     var time = that.position + 30;
                     if (that.duration > 0) {
-                        time = time > that.duration ? that.duration : time;
-                        that.position = time;
-                        that.my_media.seekTo(time * 1000);
+                        time = (time >= that.duration) ? that.duration : time;
+                        if (time >= that.duration) {
+                            
+                            that.my_media.seekTo(time * 1000);
+                            that.position = time;
+                            that.$nextTick(function() {
+                                that.playing = false;
+                            })
+                        } else {
+                            that.position = time;
+                            that.my_media.seekTo(time * 1000);
+                        }
                     }
                 }
                 this.$$("backThirtySec").onclick = function() {

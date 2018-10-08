@@ -34,8 +34,11 @@
         },
         watch: {
             initnum() {
+                var that = this;
                 this.active = this.initnum || 0;
-                this.swiper.slideTo(this.initnum || 0, 1000, false)
+                this.$nextTick(function() {
+                    that.swiper.slideTo(that.initnum || 0, 1000, false)
+                })
             }
         },
         data() {
@@ -89,7 +92,10 @@
         },
         mounted() {
             this.active = this.initnum || 0;
-            this.swiper.slideTo(this.initnum || 0, 1000, false)
+            var that = this;
+            this.$nextTick(function() {
+                that.swiper.slideTo(that.initnum || 0, 1000, false)
+            })
         }
     }
 </script>

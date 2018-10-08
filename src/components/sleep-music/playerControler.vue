@@ -114,7 +114,7 @@
                 }
                 // 播放音频
                 if (that.my_media && that.my_media.play) {
-                    if (that.duration > 0 && that.position >= that.duration-1) { //如果是已經播放到最後，就從頭開始
+                    if (that.duration > 0 && that.position >= that.duration - 1) { //如果是已經播放到最後，就從頭開始
                         that.position = 0;
                         that.my_media.seekTo(0.001);
                     }
@@ -190,24 +190,18 @@
                         that.duration = Math.round(that.my_media.getDuration());
                     }, 1000);
                 }
-                // this.$$("playSleepMusic").onclick = function() {
-                //     that.playing = !that.playing;
-                //     playAudio();
-                //     getDuration();
-                // }
-                // this.$$("pauseSleepMusic").onclick = function() {
-                //     pauseAudio();
-                //     that.playing = !that.playing;
-                // }
+                
                 this.$$("goThirtySec").onclick = function() {
                     var time = that.position + 30;
                     if (that.duration > 0) {
                         time = (time >= that.duration) ? that.duration : time;
                         if (time >= that.duration) {
-                            that.my_media.pause();
-                            that.playing = false;
-                            that.position = time;
+                            
                             that.my_media.seekTo(time * 1000);
+                            that.position = time;
+                            that.$nextTick(function() {
+                                that.playing = false;
+                            })
                         } else {
                             that.position = time;
                             that.my_media.seekTo(time * 1000);
